@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { Link } from 'react-router-dom'
+import IncomeModalComp from '../components/IncomeModalComp'
 
 export default function Home() {
   return (
@@ -23,6 +24,8 @@ export default function Home() {
         <Link to='/mypage'>마이페이지</Link>
         <Link to='/'>로그아웃</Link>
       </div>
+      <hr />
+      <IncomeModalComp/>
     </div>
   )
 }
