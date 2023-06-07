@@ -46,7 +46,7 @@ export default function Login() {
             updateDoc(docRef, { login: true })
               .then(() => {
                 console.log("updateDoc 실행");
-                navigate('/signupfm');
+                navigate('/account/create/financial-manager');
               })
               .catch((error) => {
                 console.log("실패했습니다: ", error);
@@ -56,14 +56,14 @@ export default function Login() {
             updateDoc(docRef, { login: true })
               .then(() => {
                 console.log("updateDoc 실행");
-                navigate('/signuppu');
+                navigate('/account/create/personal-user');
               })
               .catch((error) => {
                 console.log("실패했습니다: ", error);
               });
           } else {
             console.log("해당 UID에 대한 문서를 찾을 수 없습니다.");
-            navigate('/1'); // 동작을 취소하고 '/1' 페이지로 이동
+            navigate('/account/login'); // 동작을 취소하고 '/1' 페이지로 이동
           }
         })
         .catch((error) => {
@@ -106,7 +106,7 @@ export default function Login() {
                   updateDoc(fmDocRef, { login: true })
                     .then(() => {
                       console.log("Financial Manager updateDoc 실행");
-                      navigate('/signupfm');
+                      navigate('/account/create/financial-manager');
                     })
                     .catch((error) => {
                       console.log("Financial Manager 실패했습니다: ", error);
@@ -116,7 +116,7 @@ export default function Login() {
                   updateDoc(puDocRef, { login: true })
                     .then(() => {
                       console.log("Personal User updateDoc 실행");
-                      navigate('/signuppu');
+                      navigate('/account/create/personal-user');
                     })
                     .catch((error) => {
                       console.log("Personal User 실패했습니다: ", error);
@@ -167,7 +167,7 @@ export default function Login() {
               updateDoc(fmDocRef, { login: true })
               .then(() => {
                 console.log("Financial Manager updateDoc 실행");
-                navigate('/signupfm');
+                navigate('/account/create/financial-manager');
               })
               .catch((error) => {
                 console.log("Financial Manager 실패했습니다: ", error);
@@ -178,7 +178,7 @@ export default function Login() {
               updateDoc(puDocRef, { login: true })
               .then(() => {
                 console.log("Personal User updateDoc 실행");
-                navigate('/signuppu');
+                navigate('/account/create/personal-user');
               })
               .catch((error) => {
                 console.log("Personal User 실패했습니다: ", error);
