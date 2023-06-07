@@ -9,19 +9,13 @@ const CategoryLB = styled.label`
   cursor: pointer;
 `
 
-export default function CategoryBtn({children, name, value, ...rest}) {
-  const onClickCategory = (e) => {
+export default function CategoryLabel({children, ...rest}) {
+  const handleChange = (e) => {
     rest.onChange(e)
   }
   return (
     <CategoryLB>
-      <input 
-        type="radio" 
-        name={name}
-        value={value}
-        onChange={onClickCategory} 
-        {...rest} 
-    />
+      <input type="radio" {...rest} onChange={handleChange} /> {/* 라디오 버튼에 onChange 이벤트 핸들러 추가 */}
       {children}
     </CategoryLB>
   )
