@@ -2,9 +2,8 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 
 import Home from './member_PCH/pages/Home';
-import Login from './member_HHS/pages/Login';
 import CreateAccount from './member_PC/pages/CreateAccount';
-import CreateUserForm from './member_HHS/pages/CreateUserForm';
+// import CreateUserForm from './member_HHS/pages/CreateUserForm';
 import CreateManagerForm from './member_PC/pages/CreateManagerForm';
 import Layout from './pages/Layout';
 import MoneyCalendar from './member_JSH/pages/MoneyCalendar';
@@ -20,15 +19,28 @@ import Mypage from './member_HHS/pages/Mypage';
 import MypageEdit from './member_HHS/pages/MypageEdit';
 import MypageReservation from './member_HHS/pages/MypageReservation';
 
+import LoginForm from './member_PC_HS/page/LoginForm';
+import Login from './member_PC_HS/page/Login';
+import Create from './member_PC_HS/page/Create';
+import SignupFM from './member_PC_HS/components/SignupFM';
+import SignupPU from './member_PC_HS/components/SignupPU';
+
 function App() {
   return (
     <div className="App">
       <Routes>
+        {/* HHS */}
+        <Route path='/' element={<LoginForm />}>
+          <Route path='/' element={<Create />}/>
+          <Route path='/1' element={<Login />}/>
+        </Route>
+        <Route path='/signuppu' element={<SignupPU />} />
+        <Route path='/signupfm' element={<SignupFM/>}/>
 
-        <Route path='/' element={<Home/>}/>
-        <Route path='/login' element={<Login/>}/>
+        {/* <Route path='/' element={<Home/>}/> */}
+        {/* <Route path='/login' element={<Login/>}/> */}
         <Route path='/createaccount' element={<CreateAccount/>}/>
-        <Route path='/createaccount/personaluser' element={<CreateUserForm/>}/>
+        {/* <Route path='/createaccount/personaluser' element={<CreateUserForm/>}/> */}
         <Route path='/createaccount/financialmanager' element={<CreateManagerForm/>}/>
 
         <Route element={<Layout/>}>
