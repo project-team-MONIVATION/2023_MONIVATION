@@ -231,7 +231,7 @@ export default function SignupFM() {
         await updateDoc(docRef, updateData);
         console.log("Document successfully updated!(소셜로그인 예상)");
         alert("회원가입에 성공했습니다!");
-        navigate('/1')
+        navigate('/account/login')
       }
       /* 소셜로그인해서 uid값을 못 찾아왔을때 */ 
       /* 그리고 기존에 add했던 uid가 포함된 값을 삭제해야함 */
@@ -270,7 +270,7 @@ export default function SignupFM() {
           login : false,
         })
         alert("회원가입에 성공했습니다!(일반이메일 예상)")
-        navigate('/1')
+        navigate('/account/login')
     })
     .catch((error) => {
         // 회원가입에 실패했을때

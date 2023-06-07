@@ -1,8 +1,9 @@
 // 메인페이지 
 
-import React from 'react'
-import { Link } from 'react-router-dom'
-import IncomeModalComp from '../components/IncomeModalComp'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import IncomeModalComp from '../components/IncomeModalComp';
+import ExpenseModalComp from '../components/ExpenseModalComp';
 
 export default function Home() {
   return (
@@ -11,8 +12,8 @@ export default function Home() {
       <div>
         로그인 안 하면 보임
         <br />
-        <Link to='/login'>로그인</Link>
-        <Link to='/createaccount'>회원가입</Link>
+        <Link to='/account/login'>로그인</Link>
+        <Link to='/account/create'>회원가입</Link>
       </div>
       <br />
       <div>
@@ -26,6 +27,8 @@ export default function Home() {
       </div>
       <hr />
       <IncomeModalComp/>
+      <hr />
+      <ExpenseModalComp/>
     </div>
   )
 }

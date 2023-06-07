@@ -1,41 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import Calendar from 'react-calendar';
+import React, { useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
-import CategoryBtn from '../features/CategoryBtn';
-import IncomeComp from './IncomeComp';
-import IncomeRepeatComp from './IncomeRepeatComp';
+import InputIncomeComp from './InputIncomeComp';
+import InputIncomeRepeatComp from './InputIncomeRepeatComp';
 
 export default function IncomeModalComp() {
+  const [showModal, setShowModal] = useState(false);
   const [showIncome, setShowIncome] = useState(true);
-  const [showRepeatIncome, setShowRepeatIncome] = useState(false);
+  const [showIncomeRepeat, setShowIncomeRepeat] = useState(false);
 
   const onShowIncome = () => {
     setShowIncome(true); 
-    setShowRepeatIncome(false);
+    setShowIncomeRepeat(false);
   }
 
   const onShowRepeatIncome = () => {
     setShowIncome(false);
-    setShowRepeatIncome(true);
+    setShowIncomeRepeat(true);
   }
 
   return (
     <div>
-      <button onClick={ onShowIncome }>일반수입</button>
-      <button onClick={ onShowRepeatIncome }>반복수입</button>
-
-      {/** 일반수입 입력 */}
+      <button onClick={()=>{setShowModal(true)}}>수입</button>
       {
-        showIncome && <IncomeComp/>
-      }
+        showModal && (
+          <div>
+            <button onClick={() => {setShowModal(false)}}>X</button><br />
+            <button onClick={ onShowIncome }>일반수입</button>
+            <button onClick={ onShowRepeatIncome }>반복수입</button>
 
-      {/** 반복수입 입력 */}
-      {
-        showRepeatIncome && <IncomeRepeatComp/>
-          /*
-          
-        */
+            {/** 일반수입 입력 */}
+            {
+              showIncome && <InputIncomeComp/>
+            }
+
+            {/** 반복수입 입력 */}
+            {
+              showIncomeRepeat && <InputIncomeRepeatComp/>
+            }
+          </div>
+        )
       }
+      
     </div>
   )
 }
