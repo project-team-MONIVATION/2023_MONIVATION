@@ -8,7 +8,7 @@ export default function TotalStatComp() {
   //const [inputs, setInputs] = useState();
   // 일반 지출 리덕스
   const exlist = useSelector((state)=>(state.ex));
-  // 저금 리덕스ㅇ
+  // 저금 리덕스ㅇddd
   const savelist = useSelector((state)=>(state.save));
   return (
     <div style={{height : "538px", 
