@@ -2,15 +2,22 @@ import React, { useState } from 'react'
 import Calendar from 'react-calendar';
 
 import CategoryBtn from '../features/CategoryBtn';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../../database/firebase';
+import { useDispatch, useSelector } from 'react-redux';
 
 
-export default function InputIncomeComp() {
+
+export default function InputIncomeComp({ handleSubmit }) {
   const [showCal, setShowCal] = useState(false);
   const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [memo, setMemo] = useState();
   const [IncomeList, setIncomeList] = useState([]);
+
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
   const onClickCal = (e) => {
     e.preventDefault();
@@ -35,16 +42,18 @@ export default function InputIncomeComp() {
     return valueDate;
   }
 
-  const addIncome = (e) => {
+  const addIncome = async(e) => {
     e.preventDefault();
-    const newIncome = {
+    // 작성된 값을 firestore의 money_income 컬렉션에 추가
+    const docRec = await addDoc(collection(db, "money_income"), {
+      uid : user.uid,
       date : date,
       price : price,
       category : selectedCategory,
-      memo: memo
-    }
-    setIncomeList(newIncome);
-    console.log(newIncome);
+      memo : memo
+    });
+    // submit 이벤트 처리 완료 후 handleSubmit 함수를 호출합니다.
+    handleSubmit();
   }
 
   return (
@@ -118,7 +127,20 @@ export default function InputIncomeComp() {
           <textarea name="" id="" cols="30" rows="10" onChange={(e)=>{setMemo(e.target.value)}}/>
         </div>
 
-        <input type="submit" value="입력" disabled={!date || !price || !selectedCategory}/>
+        <input 
+          type="submit" 
+          value="입력" 
+          disabled={!date || !price || !selectedCategory}
+          onClick={()=>{
+            dispatch(addIncome({
+              uid : user.uid,
+              date : date,
+              price : price,
+              category : selectedCategory,
+              memo : memo
+            }))
+          }}
+        />
       </form>
     </div>
   )

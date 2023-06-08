@@ -1,15 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const IncomeSlice = createSlice({
+
+// 일반수입 리덕스
+export const incomeSlice = createSlice({
   name : "income",
-  initialState: {
-    uid : null,
-    date : null,
-    price : null,
-    category : null,
-    memo : null
-  },
+  initialState: [],
   reducers : {
-    addIncome : (state, action) => {}
+    addIncome : (state, action) => {
+      const newIncome = action.payload;
+      state.push(newIncome);
+    }
   }
 })
+
+
+export const { addIncome } = incomeSlice.actions;
+export default incomeSlice.reducer; 

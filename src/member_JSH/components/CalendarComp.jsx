@@ -122,7 +122,7 @@ export default function CalendarComp() {
           activeModal === 1 && (
             <Modal isOpen={modalIsOpen}>
               <button onClick={()=>setModalIsOpen(false)}>X</button>
-              <IncomeModalComp/>
+              <IncomeModalComp setModalIsOpen={setModalIsOpen}/>
             </Modal>
           )
         }
@@ -131,7 +131,7 @@ export default function CalendarComp() {
           activeModal === 2 && (
             <Modal isOpen={modalIsOpen}>
               <button onClick={()=>setModalIsOpen(false)}>X</button>
-              <ExpenseModalComp/>
+              <ExpenseModalComp setModalIsOpen={setModalIsOpen}/>
             </Modal>
           )
         }

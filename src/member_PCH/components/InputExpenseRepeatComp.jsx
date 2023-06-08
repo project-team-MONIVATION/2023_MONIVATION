@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import CategoryBtn from '../features/CategoryBtn';
 
-export default function InputExpenseRepeatComp() {
+export default function InputExpenseRepeatComp({ handleSubmit }) {
   const [showCal, setShowCal] = useState(false);
   const [date, setDate] = useState(new Date());
   const [showPeriod, setShowPeriod] = useState(false);
@@ -113,7 +113,7 @@ export default function InputExpenseRepeatComp() {
 
         <label>기간</label>
         <div>
-          <span>{startDate && changeDate(startDate)} ~ {endDate ? changeDate(endDate) : "0000-00-00"}</span>
+          <span>{startDate && changeDate(startDate)} ~ {endDate ? changeDate(endDate) : "0000-00-00"} {cycle}</span>
           <button onClick={ onClickPeriod }>아이콘</button>
         </div>
         <div>

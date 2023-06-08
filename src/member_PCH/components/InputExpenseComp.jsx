@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import CategoryBtn from '../features/CategoryBtn';
 
-export default function InputExpenseComp() {
+export default function InputExpenseComp({ handleSubmit }) {
   const [showCal, setShowCal] = useState(false);
   const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState("");

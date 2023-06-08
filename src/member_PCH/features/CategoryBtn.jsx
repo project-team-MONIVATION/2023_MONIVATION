@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 
-const CategoryLB = styled.label`
+const CategoryButton = styled.label`
   padding: 7px 14px;
   background-color: #F4E8AE;
   border: 0;
@@ -14,7 +14,7 @@ export default function CategoryBtn({children, name, value, ...rest}) {
     rest.onChange(e)
   }
   return (
-    <CategoryLB>
+    <CategoryButton>
       <input 
         type="radio" 
         name={name}
@@ -23,6 +23,6 @@ export default function CategoryBtn({children, name, value, ...rest}) {
         {...rest} 
     />
       {children}
-    </CategoryLB>
+    </CategoryButton>
   )
 }

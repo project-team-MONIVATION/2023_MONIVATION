@@ -3,7 +3,7 @@ import 'react-calendar/dist/Calendar.css';
 import InputIncomeComp from './InputIncomeComp';
 import InputIncomeRepeatComp from './InputIncomeRepeatComp';
 
-export default function IncomeModalComp() {
+export default function IncomeModalComp({ setModalIsOpen }) {
   const [showIncome, setShowIncome] = useState(true);
   const [showIncomeRepeat, setShowIncomeRepeat] = useState(false);
 
@@ -17,6 +17,11 @@ export default function IncomeModalComp() {
     setShowIncomeRepeat(true);
   }
 
+  const handleSubmit = () => {
+    // submit 후 모달을 닫기 위함
+    setModalIsOpen(false);
+  };
+
   return (
     <div>
             <button onClick={ onShowIncome }>일반수입</button>
@@ -24,12 +29,12 @@ export default function IncomeModalComp() {
 
             {/** 일반수입 입력 */}
             {
-              showIncome && <InputIncomeComp/>
+              showIncome && <InputIncomeComp handleSubmit={handleSubmit}/>
             }
 
             {/** 반복수입 입력 */}
             {
-              showIncomeRepeat && <InputIncomeRepeatComp/>
+              showIncomeRepeat && <InputIncomeRepeatComp handleSubmit={handleSubmit}/>
             }
     </div>
   )

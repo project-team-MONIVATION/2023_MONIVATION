@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import Calendar from 'react-calendar'
 
 import CategoryBtn from '../features/CategoryBtn'
+import { useDispatch, useSelector } from 'react-redux';
 
-export default function InputIncomeRepeatComp() {
+export default function InputIncomeRepeatComp({ handleSubmit }) {
   const [showCal, setShowCal] = useState(false);
   const [date, setDate] = useState(new Date());
   const [showPeriod, setShowPeriod] = useState(false);
@@ -16,6 +17,10 @@ export default function InputIncomeRepeatComp() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [memo, setMemo] = useState();
   const [IncomeRepeatList, setIncomeRepeatList] = useState([]);
+
+  const user = useSelector((state) => state.user.user)
+
+  const dispatch = useDispatch();
 
   const onClickCal = (e) => {
     e.preventDefault();
@@ -102,7 +107,7 @@ export default function InputIncomeRepeatComp() {
 
         <label>기간</label>
         <div>
-          <span>{startDate && changeDate(startDate)} ~ {endDate ? changeDate(endDate) : "0000-00-00"}</span>
+          <span>{startDate && changeDate(startDate)} ~ {endDate ? changeDate(endDate) : "0000-00-00"} {cycle}</span>
           <button onClick={ onClickPeriod }>아이콘</button>
         </div>
         <div>
@@ -188,7 +193,20 @@ export default function InputIncomeRepeatComp() {
           <textarea name="" id="" cols="30" rows="10" onChange={(e)=>{setMemo(e.target.value)}}/>
         </div>
 
-        <input type="submit" value="입력" disabled={!date || !startDate || !cycle || !price || !selectedCategory}/>
+        <input 
+          type="submit" 
+          value="입력" 
+          disabled={!date || !startDate || !cycle || !price || !selectedCategory}
+          onClick={()=>{
+            dispatch(addIncomeRepeat({
+              uid : user.uid,
+              date : date,
+              price : price,
+              category : selectedCategory,
+              memo : memo
+            }))
+          }}
+        />
       </form>
     </div>
   )
