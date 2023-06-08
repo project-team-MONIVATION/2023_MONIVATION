@@ -29,18 +29,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        {/* HHS */}
-        {/*
-          <Route path='/' element={<LoginForm />}>
-          <Route path='/' element={<Create />}/>
-          <Route path='/1' element={<Login />}/>
-        </Route>
-        <Route path='/signuppu' element={<SignupPU />} />
-        <Route path='/signupfm' element={<SignupFM/>}/>
-        */
-        }
         <Route path='/' element={<Home/>}/>
-
 
         <Route path='/account' element={<LoginForm/>}>
           <Route path='/account/create' element={<Create />}/>
