@@ -2,9 +2,6 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 
 import Home from './member_PCH/pages/Home';
-import CreateAccount from './member_PC/pages/CreateAccount';
-// import CreateUserForm from './member_HHS/pages/CreateUserForm';
-import CreateManagerForm from './member_PC/pages/CreateManagerForm';
 import Layout from './pages/Layout';
 import MoneyCalendar from './member_JSH/pages/MoneyCalendar';
 import MoneyChart from './member_LJC/pages/MoneyChart';
@@ -29,23 +26,13 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        {/* HHS */}
-        {/*
-          <Route path='/' element={<LoginForm />}>
-          <Route path='/' element={<Create />}/>
-          <Route path='/1' element={<Login />}/>
-        </Route>
-        <Route path='/signuppu' element={<SignupPU />} />
-        <Route path='/signupfm' element={<SignupFM/>}/>
-        */
-        }
         <Route path='/' element={<Home/>}/>
-
 
         <Route path='/account' element={<LoginForm/>}>
           <Route path='/account/create' element={<Create />}/>
           <Route path='/account/login' element={<Login />}/>
         </Route>
+
         <Route path='/account/create/personal-user' element={<SignupPU/>}/>
         <Route path='/account/create/financial-manager' element={<SignupFM/>}/>
 

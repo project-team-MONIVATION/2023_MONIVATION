@@ -42,7 +42,7 @@ export default function SignupFM() {
   /* 이메일 인증링크 전송 */
   const sendVerificationEmail = () => {
     const actionCodeSettings = {
-      url: `http://localhost:3000/signupfm?email=${inputEmail}`,    
+      url: `http://localhost:3000/account/create/financial-manager?email=${inputEmail}`,    
       handleCodeInApp : true,
     };
 
@@ -267,7 +267,7 @@ export default function SignupFM() {
           field : selectedButtons,
           intro : textareaValue,        
           startDate : Timestamp.fromDate(new Date()),
-          login : false,
+          login : "email",
         })
         alert("회원가입에 성공했습니다!(일반이메일 예상)")
         navigate('/account/login')
