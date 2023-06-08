@@ -33,6 +33,7 @@ function App() {
           <Route path='/account/create' element={<Create />}/>
           <Route path='/account/login' element={<Login />}/>
         </Route>
+
         <Route path='/account/create/personal-user' element={<SignupPU/>}/>
         <Route path='/account/create/financial-manager' element={<SignupFM/>}/>
 
