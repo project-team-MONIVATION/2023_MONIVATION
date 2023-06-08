@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { auth, db } from '../../database/firebase';
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, where, getDocs, query } from 'firebase/firestore'
 import WrapForm from '../styleComponent/WrapForm'
 import InputBox from '../styleComponent/Create/InputBox'
 import SignupForm from '../styleComponent/Create/SignupForm'
@@ -15,9 +15,30 @@ export default function Create() {
   const [showPersonalUsers, setShowPersonalUsers] = useState(false);
   const [showFinancialManagers, setShowFinancialManagers] = useState(false);
 
-  useEffect(() => {
-    initKakao();
-  }, []);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [invitationCode, setInvitationCode] = useState("");
+
+  // 모달창 함수
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setInvitationCode("");
+  };
+  const handleInvitationCodeChange = (event) => {
+    setInvitationCode(event.target.value);
+  };
+
+  const handleConfirmation = () => {
+    // 초대코드 확인 로직
+    if (invitationCode === "1234") {
+      handleFM();
+    } else {
+      alert("초대코드가 올바르지 않습니다.");
+    }
+    handleModalClose();
+  };
 
   const handlePU = () => {
     setShowPersonalUsers(true);
@@ -29,9 +50,15 @@ export default function Create() {
     setShowPersonalUsers(false);
   }
 
-  // 자산관리사 카카오 회원가입
+  // 카카오초기화 실행
+  useEffect(() => {
+    initKakao();
+  }, []);
+
+  // 카카오 초기화
   const { Kakao } = window;
   const initKakao = async () => {
+    // 나중에 가려야할듯
     const jsKey = "e25b5c7301e9bb85c28b676fd9125b63";
     if (Kakao && !Kakao.isInitialized()) {
       await Kakao.init(jsKey);
@@ -39,44 +66,48 @@ export default function Create() {
     }
   };
 
-  /* 개인유저 로그인 */
+  /* 개인유저 카카오 로그인 */
   const kakaoLoginPU = async () => {
     await Kakao.Auth.login({
-      success(res) {
+      success: async(res) => {
         console.log(res);
         // 이 토큰이 로그인할때 딱히 필요가 없어보임
         Kakao.Auth.setAccessToken(res.access_token);
         console.log("카카오 로그인 성공");
 
-        Kakao.API.request({
-          url: "/v2/user/me",
-          success(res) {
-            console.log("카카오 인가 요청 성공");
-            const kakaoAccount = res.kakao_account;
-            console.log(res);
-            
-            const data = {
-              name : kakaoAccount.profile.nickname,
-              photo : kakaoAccount.profile.profile_image_url,
-              email : kakaoAccount.email ? kakaoAccount.email : "x",
-              uid : res.id,
-              login : false,
-              nickname : "호선"
-            }
+        try {
+          const userInfo = await Kakao.API.request({
+            url: "/v2/user/me",
+          });
+          console.log("카카오 인가 요청 성공");
+          const kakaoAccount = userInfo.kakao_account;
+          console.log(userInfo);
+  
+          const data = {
+            uid: userInfo.id,
+            name: kakaoAccount.profile.nickname,
+            photo: kakaoAccount.profile.profile_image_url,
+            email: kakaoAccount.email ? kakaoAccount.email : "x",
+            login: "kakao",
+          };
 
-            addDoc(collection(db, "personal_users"), data)
-            .then(()=>{
-              navigate('/account/create/personal-user', { state : data } )
-            })
-            .catch((error)=>{
-              console.log("실패했습니다: ", error)
-            })
-            
-          },
-          fail(error) {
-            console.log(error);
-          },
-        });
+          // 이미 존재하는 uid인지 확인
+          const financialManagerRef = collection(db, "personal_users");
+          const querySnapshot = await getDocs(
+            query(financialManagerRef, where("uid", "==", data.uid))
+          );
+          // 이미 존재한다면 실행중지
+          if (!querySnapshot.empty) {
+            alert("이미 아이디가 존재합니다.");
+            navigate('/account/login')
+            return;
+          }
+          // 아니라면 진행
+          navigate("/account/create/personal-user", { state: data });
+          await addDoc(financialManagerRef, data);
+        } catch (error) {
+          console.log("실패했습니다: ", error);
+        }
       },
       fail(error) {
         console.log(error);
@@ -84,10 +115,13 @@ export default function Create() {
     });
   };
 
-  // 구글로 로그인
+  // 생성자 : new를 이용하여 새로운 객체를 생성
+  const provider = new GoogleAuthProvider();
+
+  // 개인유저 구글로 로그인
   const onGoogleLoginPU = () =>{
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
@@ -97,21 +131,25 @@ export default function Create() {
         // ...
         const userData = {
           name : user.displayName,
+          photo : user.photoURL,
           email : user.email,
           uid : user.uid,
-          photo : user.photoURL,
-          login : false,
-          nickname : "박찬"
+          login : "google",
         }
 
-        addDoc(collection(db, "personal_users"), userData)
-        .then(()=>{
-          navigate('/account/create/personal-user', { state : userData })
-        })
-        .catch((error)=>{
-          console.log("실패했습니다: ", error)
-        })
-
+        const financialManagerRef = collection(db, "personal_users");
+        const querySnapshot = await getDocs(
+          query(financialManagerRef, where("uid", "==", userData.uid))
+        );
+        // 이미 존재한다면 중지
+        if (!querySnapshot.empty) {
+          alert("이미 아이디가 존재합니다.");
+          navigate("/account/login"); // 이미 아이디가 존재하므로 페이지로 이동
+          return; // 함수 실행 중지
+        }
+        // 아니라면 진행
+        await addDoc(financialManagerRef, userData);
+        navigate("/account/create/personal-user", { state: userData });
 
       }).catch((error) => {
         // Handle Errors here.
@@ -125,58 +163,59 @@ export default function Create() {
       });
   }
 
-  /* 자산관리사 로그인 */
+  /* 자산관리사 카카오 로그인 */
   const kakaoLoginFM = async () => {
     await Kakao.Auth.login({
-      success(res) {
+      success: async(res) => {
         console.log(res);
         // 이 토큰이 로그인할때 딱히 필요가 없어보임
         Kakao.Auth.setAccessToken(res.access_token);
         console.log("카카오 로그인 성공");
 
-        Kakao.API.request({
-          url: "/v2/user/me",
-          success(res) {
-            console.log("카카오 인가 요청 성공");
-            const kakaoAccount = res.kakao_account;
-            console.log(res);
-            
-            const data = {
-              name : kakaoAccount.profile.nickname,
-              photo : kakaoAccount.profile.profile_image_url,
-              email : kakaoAccount.email ? kakaoAccount.email : "x",
-              uid : res.id,
-              login : "false",
-              nickname : "호선"
-            }
-
-            addDoc(collection(db, "financial_managers"), data)
-            .then(()=>{
-              navigate('/account/create/financial-manager', { state : data } )
-            })
-            .catch((error)=>{
-              console.log("실패했습니다: ", error)
-            })
-            
-          },
-          fail(error) {
-            console.log(error);
-          },
-        });
+        try {
+          const userInfo = await Kakao.API.request({
+            url: "/v2/user/me",
+          });
+          console.log("카카오 인가 요청 성공");
+          const kakaoAccount = userInfo.kakao_account;
+          console.log(userInfo);
+  
+          const data = {
+            uid: userInfo.id,
+            name: kakaoAccount.profile.nickname,
+            email: kakaoAccount.email ? kakaoAccount.email : "x",
+            photo: kakaoAccount.profile.profile_image_url,
+            login: "kakao",
+          };
+  
+          // 이미 존재하는 uid인지 확인
+          const financialManagerRef = collection(db, "financial_managers");
+          const querySnapshot = await getDocs(
+            query(financialManagerRef, where("uid", "==", data.uid))
+          );
+          // 이미 존재한다면 실행중지
+          if (!querySnapshot.empty) {
+            alert("이미 아이디가 존재합니다.");
+            navigate('/account/login')
+            return;
+          }
+          // 아니라면 진행
+          navigate("/account/create/financial-manager", { state: data });
+          await addDoc(financialManagerRef, data);
+        } catch (error) {
+          console.log("실패했습니다: ", error);
+        }
       },
       fail(error) {
         console.log(error);
       },
     });
   };
-
-  // 생성자 : new를 이용하여 새로운 객체를 생성
-  const provider = new GoogleAuthProvider();
   
-  // 구글로 로그인
+  // 자산관리사 구글로 로그인
   const onGoogleLoginFM = () =>{
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
@@ -189,20 +228,24 @@ export default function Create() {
           email : user.email,
           uid : user.uid,
           photo : user.photoURL,
-          login : false,
-          nickname : "박찬"
+          login : "google",
         }
 
-        addDoc(collection(db, "financial_managers"), userData)
-        .then(()=>{
-          navigate('/account/create/financial-manager', { state : userData })
-        })
-        .catch((error)=>{
-          console.log("실패했습니다: ", error)
-        })
-
-
-      }).catch((error) => {
+        const financialManagerRef = collection(db, "financial_managers");
+        const querySnapshot = await getDocs(
+          query(financialManagerRef, where("uid", "==", userData.uid))
+        );
+        // 이미 존재한다면 중지
+        if (!querySnapshot.empty) {
+          alert("이미 아이디가 존재합니다.");
+          navigate("/account/login"); // 이미 아이디가 존재하므로 '/1' 페이지로 이동
+          return; // 함수 실행 중지
+        }
+        // 아니라면 진행
+        await addDoc(financialManagerRef, userData);
+        navigate("/account/create/financial-manager", { state: userData });
+      })
+      .catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -221,7 +264,7 @@ export default function Create() {
           {/* 내용 2 */}
           {showPersonalUsers && (
             <BtnBox>
-              <img src="img/logo.png" alt="" style={{width:"100px"}}/>
+              <img src="/img/logo.png" alt="" style={{width:"100px"}}/>
               <h2>Let's create <br /> a personal account</h2>
 
               <WithEmailBtn>
@@ -230,14 +273,14 @@ export default function Create() {
                 <div>
                   <button onClick={onGoogleLoginPU}>
                     <img
-                      src="img/google.png"
+                      src="/img/google.png"
                       alt="구글 로그인 버튼"
                     />
                   </button>
 
                   <button onClick={kakaoLoginPU}>
                     <img
-                      src="img/kakao.png"
+                      src="/img/kakao.png"
                       alt="카카오 로그인 버튼"
                     />
                   </button>
@@ -248,7 +291,7 @@ export default function Create() {
           {/* 내용 3 */}
           {showFinancialManagers && (
             <BtnBox>
-              <img src="img/logo.png" alt="" style={{width:"100px"}}/>
+              <img src="/img/logo.png" alt="" style={{width:"100px"}}/>
               <h2>Let's create <br /> a financial account</h2>
               
               <WithEmailBtn>
@@ -257,14 +300,14 @@ export default function Create() {
                 <div>
                   <button onClick={onGoogleLoginFM}>
                     <img
-                      src="img/google.png"
+                      src="/img/google.png"
                       alt="구글 로그인 버튼"
                     />
                   </button>
 
                   <button onClick={kakaoLoginFM}>
                     <img
-                      src="img/kakao.png"
+                      src="/img/kakao.png"
                       alt="카카오 로그인 버튼"
                     />
                   </button>
@@ -275,14 +318,46 @@ export default function Create() {
         </InputBox>
       ) : (
         <InputBox>
-          <img src="img/logo.png" alt="" style={{width:"100px"}}/>
+          <img src="/img/logo.png" alt="" style={{width:"100px"}}/>
           <h2>WELCOME!</h2>
           <div>
             <SignupForm onClick={handlePU}>Personal User</SignupForm>
           </div>
           <div>
-            <SignupForm onClick={handleFM}>Financial Manager</SignupForm>
+            <SignupForm onClick={handleModalOpen}>Financial Manager</SignupForm>
           </div>
+          {/* 모달창 수정필요 */}
+        {isModalOpen && (
+          <div style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
+            <div
+              style={{
+                backgroundColor: "white",
+                padding: "50px",
+              }}
+            > 
+              <label>초대코드를 입력하세요</label>
+              <br />
+              <input
+                type="text"
+                value={invitationCode}
+                onChange={handleInvitationCodeChange}
+              />
+              <br />
+              <button onClick={handleConfirmation}>확인</button>
+              <button onClick={handleModalClose}>취소</button>
+            </div>
+          </div>
+          )}
         </InputBox>
       )}
     </WrapForm>
