@@ -4,7 +4,6 @@ import InputIncomeComp from './InputIncomeComp';
 import InputIncomeRepeatComp from './InputIncomeRepeatComp';
 
 export default function IncomeModalComp() {
-  const [showModal, setShowModal] = useState(false);
   const [showIncome, setShowIncome] = useState(true);
   const [showIncomeRepeat, setShowIncomeRepeat] = useState(false);
 
@@ -20,11 +19,6 @@ export default function IncomeModalComp() {
 
   return (
     <div>
-      <button onClick={()=>{setShowModal(true)}}>수입</button>
-      {
-        showModal && (
-          <div>
-            <button onClick={() => {setShowModal(false)}}>X</button><br />
             <button onClick={ onShowIncome }>일반수입</button>
             <button onClick={ onShowRepeatIncome }>반복수입</button>
 
@@ -37,10 +31,6 @@ export default function IncomeModalComp() {
             {
               showIncomeRepeat && <InputIncomeRepeatComp/>
             }
-          </div>
-        )
-      }
-      
     </div>
   )
 }

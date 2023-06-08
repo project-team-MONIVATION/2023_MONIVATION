@@ -5,7 +5,6 @@ import InputExpenseRepeatComp from './InputExpenseRepeatComp';
 
 
 export default function ExpenseModalComp() {
-  const [showModal, setShowModal] = useState(false);
   const [showExpense, setShowExpense] = useState(true);
   const [showExpenseRepeat, setShowExpenseRepeat] = useState(false);
 
@@ -21,21 +20,13 @@ export default function ExpenseModalComp() {
 
   return (
     <div>
-      <button onClick={()=>{setShowModal(true)}}>지출</button>
+      <button onClick={ onShowExpense }>일반지출</button>
+      <button onClick={ onShowExpenseRepeat }>반복지출</button>
       {
-        showModal && (
-          <div>
-            <button onClick={()=>{setShowModal(false)}}>X</button><br />
-            <button onClick={ onShowExpense }>일반지출</button>
-            <button onClick={ onShowExpenseRepeat }>반복지출</button>
-            {
-              showExpense && <InputExpenseComp/>
-            }
-            {
-              showExpenseRepeat && <InputExpenseRepeatComp/>
-            }
-          </div>
-        )
+        showExpense && <InputExpenseComp/>
+      }
+      {
+        showExpenseRepeat && <InputExpenseRepeatComp/>
       }
     </div>
   )
