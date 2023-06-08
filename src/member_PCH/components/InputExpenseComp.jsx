@@ -40,8 +40,6 @@ export default function InputExpenseComp() {
   const DD = String(date.getDate()).padStart(2,"0")
   const valueDate = `${YYYY}-${MM}-${DD}`
 
-  /** form 에 모든 값을 입력하고 submit할 때 해당 user의 문서 값을 수입,지출 컬렉션의 userid 필드로 전달해준 후 값을 그 외 필드에 전달해줌 */
-
   const addExpense = (e) => {
     e.preventDefault();
     const newExpense = {

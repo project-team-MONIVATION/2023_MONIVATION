@@ -10,3 +10,5 @@ export default configureStore({
     user : userSlice,
     imp : inputImpSlice,
     ex : inputExSlice,
+  }
+})
