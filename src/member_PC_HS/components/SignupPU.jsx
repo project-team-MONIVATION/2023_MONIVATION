@@ -39,7 +39,7 @@ export default function SignupPU() {
   /* 이메일 인증링크 전송 */
   const sendVerificationEmail = () => {
     const actionCodeSettings = {
-      url: `http://localhost:3000/signuppu?email=${inputEmail}`,    
+      url: `http://localhost:3000/account/create/personal-user?email=${inputEmail}`,    
       handleCodeInApp : true,
     };
 
@@ -243,7 +243,7 @@ export default function SignupPU() {
           phone : phoneNum,
           birth : selectedYear + "년" + selectedMonth + "월" + selectedDay + "일",       
           startDate : Timestamp.fromDate(new Date()),
-          login : false,
+          login : "email",
         })
         alert("회원가입에 성공했습니다!(일반이메일 예상)")
         navigate('/account/login')
