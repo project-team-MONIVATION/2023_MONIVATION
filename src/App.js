@@ -5,9 +5,6 @@ import { useDispatch } from 'react-redux';
 import { userLogin } from './member_PC_HS/slice/userSlice';
 
 import Home from './member_PCH/pages/Home';
-import CreateAccount from './member_PC/pages/CreateAccount';
-// import CreateUserForm from './member_HHS/pages/CreateUserForm';
-import CreateManagerForm from './member_PC/pages/CreateManagerForm';
 import Layout from './pages/Layout';
 import MoneyCalendar from './member_JSH/pages/MoneyCalendar';
 import MoneyChart from './member_LJC/pages/MoneyChart';
@@ -51,6 +48,7 @@ function App() {
           <Route path='/account/create' element={<Create />}/>
           <Route path='/account/login' element={<Login />}/>
         </Route>
+
         <Route path='/account/create/personal-user' element={<SignupPU/>}/>
         <Route path='/account/create/financial-manager' element={<SignupFM/>}/>
         <Route path='/display' element={<Display />} />
