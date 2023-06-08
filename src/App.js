@@ -1,5 +1,8 @@
 import './App.css';
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { userLogin } from './member_PC_HS/slice/userSlice';
 
 import Home from './member_PCH/pages/Home';
 import CreateAccount from './member_PC/pages/CreateAccount';
@@ -24,8 +27,21 @@ import Login from './member_PC_HS/page/Login';
 import Create from './member_PC_HS/page/Create';
 import SignupFM from './member_PC_HS/components/SignupFM';
 import SignupPU from './member_PC_HS/components/SignupPU';
+// 실험용
+import Display from './member_PC_HS/page/Display';
 
 function App() {
+
+  const dispatch = useDispatch();
+  // 화면 새로고침(F5)할 때마다 확인
+  // app컴포넌트는 한번 마운트되고 새로고침 또는 꺼질때까지 마운트되지않는다
+  useEffect(()=>{
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    if(user) {
+      dispatch(userLogin(user))
+    }
+  }, []);
+
   return (
     <div className="App">
       <Routes>
@@ -37,7 +53,7 @@ function App() {
         </Route>
         <Route path='/account/create/personal-user' element={<SignupPU/>}/>
         <Route path='/account/create/financial-manager' element={<SignupFM/>}/>
-
+        <Route path='/display' element={<Display />} />
 
         <Route element={<Layout/>}>
           <Route path='/calendar' element={<MoneyCalendar/>}/>

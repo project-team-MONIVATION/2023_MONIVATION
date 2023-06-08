@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { auth, db } from '../../database/firebase';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { doc, getDocs, query, where, collection } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { userLogin } from '../slice/userSlice';
@@ -36,11 +37,30 @@ export default function Login() {
       const user = userCredential.user;
       console.log(user)
       
-      dispatch(userLogin({
-        uid : user.uid,
-      }))
-      
+      const fmCollectionRef = collection(db, 'financial_managers');
+      const puCollectionRef = collection(db, 'personal_users');
+      const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+      const puQuery = query(puCollectionRef, where('uid', '==', user.uid));
 
+      Promise.all([getDocs(fmQuery), getDocs(puQuery)])
+      .then(([fmQuerySnapshot, puQuerySnapshot]) => {
+        if (fmQuerySnapshot.empty && puQuerySnapshot.empty) {
+          // 회원가입을 먼저 진행해야 함
+          alert("회원가입을 먼저 진행해주세요");
+        } 
+        // 로그인한 유저가 개인회원인지 자산관리사인지 일단은 필요하지않다고 판단(uid만 들고옴)
+        else {
+          // uid에 해당하는 사용자가 존재하므로 로그인 처리
+          console.log("로그인 성공");
+          dispatch(userLogin({
+            uid: user.uid,
+          }));
+          navigate('/display')
+        } 
+      })
+      .catch((error) => {
+        console.log("실패했습니다: ", error);
+      });
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -66,12 +86,31 @@ export default function Login() {
             console.log("카카오 인가 요청 성공");
             const kakaoAccount = res.kakao_account;
             console.log(res);
-            
-            dispatch(userLogin({
-              uid : res.id,
-              // 혹시 소셜로그인한사람이 이메일에 동의안해서 이값이 없을수도 있기에 이메일은 패스
-            }))
-            
+
+            const fmCollectionRef = collection(db, 'financial_managers');
+            const puCollectionRef = collection(db, 'personal_users');
+            const fmQuery = query(fmCollectionRef, where('uid', '==', res.id));
+            const puQuery = query(puCollectionRef, where('uid', '==', res.id));
+
+            Promise.all([getDocs(fmQuery), getDocs(puQuery)])
+            .then(([fmQuerySnapshot, puQuerySnapshot]) => {
+              if (fmQuerySnapshot.empty && puQuerySnapshot.empty) {
+                // 회원가입을 먼저 진행해야 함
+                alert("회원가입을 먼저 진행해주세요");
+              } 
+              // 로그인한 유저가 개인회원인지 자산관리사인지 일단은 필요하지않다고 판단(uid만 들고옴)
+              else {
+                // uid에 해당하는 사용자가 존재하므로 로그인 처리
+                console.log("로그인 성공");
+                dispatch(userLogin({
+                  uid: res.id,
+                }));
+                navigate('/display')
+              } 
+            })
+            .catch((error) => {
+              console.log("실패했습니다: ", error);
+            });
           },
           fail(error) {
             console.log(error);
@@ -97,9 +136,30 @@ export default function Login() {
         // The signed-in user info.
         const user = result.user;
         
-        dispatch(userLogin({
-          uid : user.uid,
-      }))
+        const fmCollectionRef = collection(db, 'financial_managers');
+        const puCollectionRef = collection(db, 'personal_users');
+        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+        const puQuery = query(puCollectionRef, where('uid', '==', user.uid));
+
+        Promise.all([getDocs(fmQuery), getDocs(puQuery)])
+        .then(([fmQuerySnapshot, puQuerySnapshot]) => {
+          if (fmQuerySnapshot.empty && puQuerySnapshot.empty) {
+            // 회원가입을 먼저 진행해야 함
+            alert("회원가입을 먼저 진행해주세요");
+          } 
+          // 로그인한 유저가 개인회원인지 자산관리사인지 일단은 필요하지않다고 판단(uid만 들고옴)
+          else {
+            // uid에 해당하는 사용자가 존재하므로 로그인 처리
+            console.log("로그인 성공");
+            dispatch(userLogin({
+              uid: user.uid,
+            }));
+            navigate('/display')
+          } 
+        })
+        .catch((error) => {
+          console.log("실패했습니다: ", error);
+        });
 
       }).catch((error) => {
         // Handle Errors here.
