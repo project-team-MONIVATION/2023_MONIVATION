@@ -9,17 +9,17 @@ import BackGround from '../styleComponent/BackGround'
 export default function LoginForm() {
   return (
     <BackGround>
-      <Logo>MONIVATION</Logo>
+      <Link to='/'><Logo>MONIVATION</Logo></Link>
       
       <Btns>
         <CreateBtn> 
         {/* style={{display: "inline-block", padding: "10px", border: "solid black 1px"}}> */}
-          <Link to='/'>Create Account</Link>
+          <Link to='/account/create'>Create Account</Link>
         </CreateBtn>
 
         <LoginBtn> 
         {/* style={{display: "inline-block", padding: "10px", border: "solid black 1px"}}> */}
-          <Link to='/1'>Login</Link>
+          <Link to='/account/login'>Login</Link>
         </LoginBtn>
       </Btns>
       

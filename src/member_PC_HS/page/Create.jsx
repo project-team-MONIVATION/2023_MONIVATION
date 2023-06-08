@@ -66,7 +66,7 @@ export default function Create() {
 
             addDoc(collection(db, "personal_users"), data)
             .then(()=>{
-              navigate('/signuppu', { state : data } )
+              navigate('/account/create/personal-user', { state : data } )
             })
             .catch((error)=>{
               console.log("실패했습니다: ", error)
@@ -106,7 +106,7 @@ export default function Create() {
 
         addDoc(collection(db, "personal_users"), userData)
         .then(()=>{
-          navigate('/signuppu', { state : userData })
+          navigate('/account/create/personal-user', { state : userData })
         })
         .catch((error)=>{
           console.log("실패했습니다: ", error)
@@ -152,7 +152,7 @@ export default function Create() {
 
             addDoc(collection(db, "financial_managers"), data)
             .then(()=>{
-              navigate('/signupfm', { state : data } )
+              navigate('/account/create/financial-manager', { state : data } )
             })
             .catch((error)=>{
               console.log("실패했습니다: ", error)
@@ -195,7 +195,7 @@ export default function Create() {
 
         addDoc(collection(db, "financial_managers"), userData)
         .then(()=>{
-          navigate('/signupfm', { state : userData })
+          navigate('/account/create/financial-manager', { state : userData })
         })
         .catch((error)=>{
           console.log("실패했습니다: ", error)
@@ -225,7 +225,7 @@ export default function Create() {
               <h2>Let's create <br /> a personal account</h2>
 
               <WithEmailBtn>
-                <Link to="/signuppu">With Email</Link>
+                <Link to="/account/create/personal-user">With Email</Link>
                 <p> or create account with </p>
                 <div>
                   <button onClick={onGoogleLoginPU}>
@@ -252,7 +252,7 @@ export default function Create() {
               <h2>Let's create <br /> a financial account</h2>
               
               <WithEmailBtn>
-                <Link to ='/signupfm'>With Email</Link>
+                <Link to ='/account/create/financial-manager'>With Email</Link>
                 <p> or create account with </p>
                 <div>
                   <button onClick={onGoogleLoginFM}>

@@ -30,18 +30,25 @@ function App() {
     <div className="App">
       <Routes>
         {/* HHS */}
-        <Route path='/' element={<LoginForm />}>
+        {/*
+          <Route path='/' element={<LoginForm />}>
           <Route path='/' element={<Create />}/>
           <Route path='/1' element={<Login />}/>
         </Route>
         <Route path='/signuppu' element={<SignupPU />} />
         <Route path='/signupfm' element={<SignupFM/>}/>
+        */
+        }
+        <Route path='/' element={<Home/>}/>
 
-        {/* <Route path='/' element={<Home/>}/> */}
-        {/* <Route path='/login' element={<Login/>}/> */}
-        <Route path='/createaccount' element={<CreateAccount/>}/>
-        {/* <Route path='/createaccount/personaluser' element={<CreateUserForm/>}/> */}
-        <Route path='/createaccount/financialmanager' element={<CreateManagerForm/>}/>
+
+        <Route path='/account' element={<LoginForm/>}>
+          <Route path='/account/create' element={<Create />}/>
+          <Route path='/account/login' element={<Login />}/>
+        </Route>
+        <Route path='/account/create/personal-user' element={<SignupPU/>}/>
+        <Route path='/account/create/financial-manager' element={<SignupFM/>}/>
+
 
         <Route element={<Layout/>}>
           <Route path='/calendar' element={<MoneyCalendar/>}/>
