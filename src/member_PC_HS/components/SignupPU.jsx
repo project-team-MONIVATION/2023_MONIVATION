@@ -193,7 +193,24 @@ export default function SignupPU() {
         nickname: nick,
         phone: phoneNum,
         birth: selectedYear + "년" + selectedMonth + "월" + selectedDay + "일",
-        startDate : Timestamp.fromDate(new Date())
+        startDate : Timestamp.fromDate(new Date()),
+        challenge : {
+          challenge1 : {
+            attend : false,
+            done : false,
+            time : null,
+          },
+          challenge2 : {
+            attend : false,
+            done : false,
+            time : null,
+          },
+          challenge3 : {
+            attend : false,
+            done : false,
+            time : null,
+          }
+        }
       };
   
       if (!querySnapshot.empty) {
@@ -244,6 +261,23 @@ export default function SignupPU() {
           birth : selectedYear + "년" + selectedMonth + "월" + selectedDay + "일",       
           startDate : Timestamp.fromDate(new Date()),
           login : "email",
+          challenge : {
+            challenge1 : {
+              attend : false,
+              done : false,
+              time : null,
+            },
+            challenge2 : {
+              attend : false,
+              done : false,
+              time : null,
+            },
+            challenge3 : {
+              attend : false,
+              done : false,
+              time : null,
+            }
+          }
         })
         alert("회원가입에 성공했습니다!(일반이메일 예상)")
         navigate('/account/login')
