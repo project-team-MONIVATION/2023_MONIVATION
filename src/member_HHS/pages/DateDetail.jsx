@@ -230,7 +230,7 @@ export default function DateDetail({ closeModal }) {
                   ))}
                 </div>
                 <div>
-                    <h4>반복지출</h4>
+                    <h4>반복지출 왜 안됨</h4>
                     <h4>{expenseRepeat.reduce((total, board) => total + board.price, 0)}</h4>
                 </div>
                 <div>
