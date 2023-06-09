@@ -55,6 +55,7 @@ export default function Login() {
         } else {
           // 회원가입을 먼저 진행해야 함
           alert("회원가입을 먼저 진행해주세요");
+
           return;
         }
         
@@ -70,6 +71,7 @@ export default function Login() {
           .catch((error) => {
             console.log("실패했습니다: ", error);
           });
+
       })
       .catch((error) => {
         console.log("실패했습니다: ", error);
@@ -118,6 +120,7 @@ export default function Login() {
               } else {
                 // 회원가입을 먼저 진행해야 함
                 alert("회원가입을 먼저 진행해주세요");
+
                 return;
               }
               
@@ -133,6 +136,8 @@ export default function Login() {
                 .catch((error) => {
                   console.log("실패했습니다: ", error);
                 });
+
+             
             })
             .catch((error) => {
               console.log("실패했습니다: ", error);
@@ -161,6 +166,7 @@ export default function Login() {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
+        console.log(user)
         
         const fmCollectionRef = collection(db, 'financial_managers');
         const puCollectionRef = collection(db, 'personal_users');
@@ -168,6 +174,7 @@ export default function Login() {
         const puQuery = query(puCollectionRef, where('uid', '==', user.uid));
 
         Promise.all([getDocs(fmQuery), getDocs(puQuery)])
+
             .then(([fmQuerySnapshot, puQuerySnapshot]) => {
               let userDocRef;
               
@@ -199,6 +206,8 @@ export default function Login() {
             .catch((error) => {
               console.log("실패했습니다: ", error);
             });
+
+        
 
       }).catch((error) => {
         // Handle Errors here.

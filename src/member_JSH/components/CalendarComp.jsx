@@ -10,6 +10,8 @@ import {useSelector, useDispatch} from 'react-redux';
 // 리듀서 import
 import { addImp } from '../slices/inputImpSlice';
 import { addEx } from '../slices/inputExSlice';
+import IncomeModalComp from '../../member_PCH/components/IncomeModalComp';
+import ExpenseModalComp from '../../member_PCH/components/ExpenseModalComp';
 
 
 export default function CalendarComp() {
@@ -24,11 +26,11 @@ export default function CalendarComp() {
     const exlist = useSelector((state)=>(state.ex));
     // 저금 리덕스
     const savelist = useSelector((state)=>(state.save));
-    
-    
+
+
 
     const dispatch = useDispatch();
-    
+
     const [modalIsOpen, setModalIsOpen] = useState(false);
     //const [tilecontents, setTilecontents] = useState("수입/지출");
     // 입력받은 수입,지출,저금 state
@@ -65,7 +67,7 @@ export default function CalendarComp() {
         prev2Label={null}
         navigationAriaLive={null}
         locale="en"
-        
+
         tileContent={({date, view})=>{
           let imp, ex;
           for(let input of implist ){
@@ -119,31 +121,8 @@ export default function CalendarComp() {
         {
           activeModal === 1 && (
             <Modal isOpen={modalIsOpen}>
-              <div>
-              <form onSubmit={(e)=>{e.preventDefault()}}>
-                <label htmlFor="">날짜</label><br />
-                <input type='date' value={inputDate} onChange={(e)=>setInputDate(e.target.value)}/>
-                <br />
-                <label htmlFor="">금액</label><br />
-                <input type="number" value={inputImp} onChange={(e)=>setInputImp(e.target.value)}/>
-                <br />
-                <label htmlFor="">카테고리</label><br />
-                <button>category1</button>
-                <button>category2</button>
-                <button>category3</button><br />
-                <label htmlFor="">메모</label><br />
-                <textarea cols="30" rows="10" value={textValue} onChange={(e)=>setTextValue(e.target.value)}></textarea><br />
-                <button onClick={()=>{
-                  dispatch(addImp({date : new Date(inputDate), imp : inputImp, category : "", memo : setTextValue}))
-                  //console.log(inputDate);
-                  //console.log(textValue);
-                  setModalIsOpen(false);
-                  }
-                }>입력</button>
-                <button onClick={()=>setModalIsOpen(false)}>취소</button>
-              </form>
-              
-              </div>
+              <button onClick={()=>setModalIsOpen(false)}>X</button>
+              <IncomeModalComp setModalIsOpen={setModalIsOpen}/>
             </Modal>
           )
         }
@@ -151,43 +130,8 @@ export default function CalendarComp() {
         {
           activeModal === 2 && (
             <Modal isOpen={modalIsOpen}>
-              <div>
-                <h3>지출 모달 창</h3>
-                <form>
-                <label htmlFor="">날짜</label><br/>
-                <input type='date' value={inputDate} onChange={(e)=>setInputDate(e.target.value)}/><br/>
-                <label htmlFor="">금액</label><br/>
-                <input type="number" value={inputEx} onChange={(e)=>setInputEx(e.target.value)}/>
-                <br />
-                <label htmlFor="">결제수단</label><br/>
-                <select name="" id="">
-                  <option value="" selected>선택</option>
-                  <option value="check-card">체크카드</option>
-                  <option value="credit-card">신용카드</option>
-                  <option value="cash">현금</option>
-                </select>
-                <select name="" id="">
-                  <option value="" selected>선택</option>
-                  <option value="full-payment">일시불</option>
-                  <option value="three-month">3개월</option>
-                  <option value="six-month">6개월</option>
-                </select><br/>
-                <label htmlFor="">카테고리</label><br/>
-                <button>category1</button>
-                <button>category2</button>
-                <button>category3</button><br />
-                <label htmlFor="">메모</label><br />
-                <textarea cols="30" rows="10" value={textValue} onChange={(e)=>setTextValue(e.target.value)}></textarea><br />
-                <button onClick={()=>{
-                  dispatch(addEx({date : new Date(inputDate), ex : inputEx, paywith : "", installment : "", category : "", memo : setTextValue}))
-                  //console.log(inputDate);
-                  //console.log(textValue);
-                  setModalIsOpen(false);
-                  }
-                }>입력</button>
-                <button onClick={()=>setModalIsOpen(false)}>취소</button>
-                </form>
-              </div>
+              <button onClick={()=>setModalIsOpen(false)}>X</button>
+              <ExpenseModalComp setModalIsOpen={setModalIsOpen}/>
             </Modal>
           )
         }

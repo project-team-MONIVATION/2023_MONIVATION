@@ -8,7 +8,7 @@ export default configureStore({
   reducer : {
     user : userSlice,
     imp : inputImpSlice,
-    ex : inputExSlice,
+    ex : inputExSlice
   }
 })
 

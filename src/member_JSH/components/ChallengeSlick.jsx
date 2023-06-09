@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Slider from "react-slick";
 import '../css/slick.css'
 import "slick-carousel/slick/slick-theme.css";
-
+import "slick-carousel/slick/slick.css";
 
 function SampleNextArrow(props) {
     const { className, style, onClick } = props;

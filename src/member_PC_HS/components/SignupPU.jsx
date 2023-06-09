@@ -209,8 +209,8 @@ export default function SignupPU() {
             attend : false,
             done : false,
             time : null,
-          },
-        } 
+          }
+        }
       };
   
       if (!querySnapshot.empty) {
@@ -276,8 +276,8 @@ export default function SignupPU() {
               attend : false,
               done : false,
               time : null,
-            },
-          } 
+            }
+          }
         })
         alert("회원가입에 성공했습니다!(일반이메일 예상)")
         navigate('/account/login')
