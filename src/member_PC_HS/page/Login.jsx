@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { auth, db } from '../../database/firebase';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { doc, getDocs, query, where, collection } from 'firebase/firestore';
+import { doc, getDoc, getDocs, query, where, collection } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { userLogin } from '../slice/userSlice';
@@ -44,19 +44,32 @@ export default function Login() {
 
       Promise.all([getDocs(fmQuery), getDocs(puQuery)])
       .then(([fmQuerySnapshot, puQuerySnapshot]) => {
-        if (fmQuerySnapshot.empty && puQuerySnapshot.empty) {
+        let userDocRef;
+        
+        if (!fmQuerySnapshot.empty) {
+          // financial_managers 컬렉션에서 uid 값이 일치하는 문서가 있을 경우
+          userDocRef = doc(db, 'financial_managers', fmQuerySnapshot.docs[0].id);
+        } else if (!puQuerySnapshot.empty) {
+          // personal_users 컬렉션에서 uid 값이 일치하는 문서가 있을 경우
+          userDocRef = doc(db, 'personal_users', puQuerySnapshot.docs[0].id);
+        } else {
           // 회원가입을 먼저 진행해야 함
           alert("회원가입을 먼저 진행해주세요");
-        } 
-        // 로그인한 유저가 개인회원인지 자산관리사인지 일단은 필요하지않다고 판단(uid만 들고옴)
-        else {
-          // uid에 해당하는 사용자가 존재하므로 로그인 처리
-          console.log("로그인 성공");
-          dispatch(userLogin({
-            uid: user.uid,
-          }));
-          navigate('/display')
-        } 
+          return;
+        }
+        
+        getDoc(userDocRef)
+          .then((userDocSnapshot) => {
+            const userData = userDocSnapshot.data();  
+            dispatch(userLogin({
+              uid: userData.uid,
+              nickname: userData.nickname
+            }));
+            navigate('/display');
+          })
+          .catch((error) => {
+            console.log("실패했습니다: ", error);
+          });
       })
       .catch((error) => {
         console.log("실패했습니다: ", error);
@@ -94,19 +107,32 @@ export default function Login() {
 
             Promise.all([getDocs(fmQuery), getDocs(puQuery)])
             .then(([fmQuerySnapshot, puQuerySnapshot]) => {
-              if (fmQuerySnapshot.empty && puQuerySnapshot.empty) {
+              let userDocRef;
+              
+              if (!fmQuerySnapshot.empty) {
+                // financial_managers 컬렉션에서 uid 값이 일치하는 문서가 있을 경우
+                userDocRef = doc(db, 'financial_managers', fmQuerySnapshot.docs[0].id);
+              } else if (!puQuerySnapshot.empty) {
+                // personal_users 컬렉션에서 uid 값이 일치하는 문서가 있을 경우
+                userDocRef = doc(db, 'personal_users', puQuerySnapshot.docs[0].id);
+              } else {
                 // 회원가입을 먼저 진행해야 함
                 alert("회원가입을 먼저 진행해주세요");
-              } 
-              // 로그인한 유저가 개인회원인지 자산관리사인지 일단은 필요하지않다고 판단(uid만 들고옴)
-              else {
-                // uid에 해당하는 사용자가 존재하므로 로그인 처리
-                console.log("로그인 성공");
-                dispatch(userLogin({
-                  uid: res.id,
-                }));
-                navigate('/display')
-              } 
+                return;
+              }
+              
+              getDoc(userDocRef)
+                .then((userDocSnapshot) => {
+                  const userData = userDocSnapshot.data();  
+                  dispatch(userLogin({
+                    uid: userData.uid,
+                    nickname: userData.nickname
+                  }));
+                  navigate('/display');
+                })
+                .catch((error) => {
+                  console.log("실패했습니다: ", error);
+                });
             })
             .catch((error) => {
               console.log("실패했습니다: ", error);
@@ -142,24 +168,37 @@ export default function Login() {
         const puQuery = query(puCollectionRef, where('uid', '==', user.uid));
 
         Promise.all([getDocs(fmQuery), getDocs(puQuery)])
-        .then(([fmQuerySnapshot, puQuerySnapshot]) => {
-          if (fmQuerySnapshot.empty && puQuerySnapshot.empty) {
-            // 회원가입을 먼저 진행해야 함
-            alert("회원가입을 먼저 진행해주세요");
-          } 
-          // 로그인한 유저가 개인회원인지 자산관리사인지 일단은 필요하지않다고 판단(uid만 들고옴)
-          else {
-            // uid에 해당하는 사용자가 존재하므로 로그인 처리
-            console.log("로그인 성공");
-            dispatch(userLogin({
-              uid: user.uid,
-            }));
-            navigate('/display')
-          } 
-        })
-        .catch((error) => {
-          console.log("실패했습니다: ", error);
-        });
+            .then(([fmQuerySnapshot, puQuerySnapshot]) => {
+              let userDocRef;
+              
+              if (!fmQuerySnapshot.empty) {
+                // financial_managers 컬렉션에서 uid 값이 일치하는 문서가 있을 경우
+                userDocRef = doc(db, 'financial_managers', fmQuerySnapshot.docs[0].id);
+              } else if (!puQuerySnapshot.empty) {
+                // personal_users 컬렉션에서 uid 값이 일치하는 문서가 있을 경우
+                userDocRef = doc(db, 'personal_users', puQuerySnapshot.docs[0].id);
+              } else {
+                // 회원가입을 먼저 진행해야 함
+                alert("회원가입을 먼저 진행해주세요");
+                return;
+              }
+              
+              getDoc(userDocRef)
+                .then((userDocSnapshot) => {
+                  const userData = userDocSnapshot.data();  
+                  dispatch(userLogin({
+                    uid: userData.uid,
+                    nickname: userData.nickname
+                  }));
+                  navigate('/display');
+                })
+                .catch((error) => {
+                  console.log("실패했습니다: ", error);
+                });
+            })
+            .catch((error) => {
+              console.log("실패했습니다: ", error);
+            });
 
       }).catch((error) => {
         // Handle Errors here.

@@ -6,8 +6,10 @@ import { Link } from 'react-router-dom'
 export default function Asset() {
   return (
     <div>
-      <h1>자산관리</h1>
-      <Link to='/asset/managerlist'>더보기</Link>
+      <div>
+        <h2>Best 자산관리사</h2>
+        <Link to='/asset/managerlist'>더보기</Link>
+      </div>
     </div>
   )
 }
