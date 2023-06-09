@@ -18,6 +18,8 @@ import AssetReservation from './member_PC/pages/AssetReservation';
 import Mypage from './member_HHS/pages/Mypage';
 import MypageEdit from './member_HHS/pages/MypageEdit';
 import MypageReservation from './member_HHS/pages/MypageReservation';
+import SavingInput from './member_LJC/pages/SavingInput';
+import SavingList from './member_LJC/pages/SavingList';
 
 import LoginForm from './member_PC_HS/page/LoginForm';
 import Login from './member_PC_HS/page/Login';
@@ -26,6 +28,7 @@ import SignupFM from './member_PC_HS/components/SignupFM';
 import SignupPU from './member_PC_HS/components/SignupPU';
 // 실험용
 import Display from './member_PC_HS/page/Display';
+
 
 function App() {
 
@@ -69,6 +72,12 @@ function App() {
           <Route path='/mypage' element={<Mypage/>}/>
           <Route path='/mypage/edit' element={<MypageEdit/>}/>
           <Route path='/mypage/reservation' element={<MypageReservation/>}/>
+
+          {/* 저금 페이지 */}
+          <Route path='/savinginput' element={<SavingInput/>}/>
+          <Route path='/savinglist' element={<SavingList/>}/>
+          
+          
           <Route/>
         </Route>
       </Routes>

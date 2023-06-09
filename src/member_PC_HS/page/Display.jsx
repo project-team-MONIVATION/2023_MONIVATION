@@ -8,6 +8,7 @@ export default function Display() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const [datalist, setDatalist] = useState([]);
+  console.log(user)
 
   useEffect(() => {
     const getData = async () => {
