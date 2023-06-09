@@ -1,4 +1,3 @@
-import './App.css';
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -26,6 +25,13 @@ import SignupFM from './member_PC_HS/components/SignupFM';
 import SignupPU from './member_PC_HS/components/SignupPU';
 // 실험용
 import Display from './member_PC_HS/page/Display';
+
+
+// css
+import './styles/reset.css'
+import './styles/style.css'
+import './App.css';
+import './member_PCH/styles/main.css'
 
 function App() {
 

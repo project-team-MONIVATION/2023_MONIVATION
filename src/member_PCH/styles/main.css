@@ -1,0 +1,68 @@
+/* 메인페이지 CSS */ 
+#mainpage {
+  width: 100%;
+  height: 100vh;
+}
+
+/* 섹션1 */
+main #section1 .logobox {
+  box-sizing: border-box;
+  height: 40vh;
+  padding-top: 8vh;
+  padding-bottom: 5vh;
+}
+
+main #section1 .logobox .logo {
+  height: 100%;
+  background-image: url('../../assets/MONIVATION_assets/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: auto;
+}
+
+main #section1 .sloganbox {
+  height: 20vh;
+}
+
+main #section1 .sloganbox p {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+main #section1 .sloganbox .slogan {
+  width: 600px;
+  font-size: 2.5rem;
+  padding: 15px 0 10px 0;
+  margin: auto;
+}
+
+main #section1 .btnbox {
+  box-sizing: border-box;
+  height: 40vh;
+  background: linear-gradient(rgb(71, 140, 205), rgb(125, 33, 207));
+  padding: 5vh 0;
+}
+
+main #section1 .btnbox p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+main #section1 .btnbox button {
+  width: 100px;
+  height: 50px;
+  cursor: pointer;
+  border: 0;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+main #section1 .btnbox button:last-child {
+  margin-left: 10px;
+}
+
+main #section1 .btnbox button:hover {
+  background: linear-gradient(90deg, rgb(244, 215, 80), rgb(247, 224, 117) 50%, rgb(244, 215, 80));
+}
