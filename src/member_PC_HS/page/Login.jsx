@@ -55,7 +55,7 @@ export default function Login() {
           dispatch(userLogin({
             uid: user.uid,
           }));
-          navigate('/display')
+          navigate('/calendar')
         } 
       })
       .catch((error) => {
@@ -105,7 +105,7 @@ export default function Login() {
                 dispatch(userLogin({
                   uid: res.id,
                 }));
-                navigate('/display')
+                navigate('/calendar')
               } 
             })
             .catch((error) => {
@@ -155,7 +155,7 @@ export default function Login() {
             dispatch(userLogin({
               uid: user.uid,
             }));
-            navigate('/display')
+            navigate('/calendar')
           } 
         })
         .catch((error) => {

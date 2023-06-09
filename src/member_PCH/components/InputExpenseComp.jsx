@@ -1,28 +1,44 @@
 import React, { useState } from 'react';
+
 import Calendar from 'react-calendar';
+
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../../database/firebase';
+
+import { useSelector } from 'react-redux';
+
 import CategoryBtn from '../features/CategoryBtn';
 
-export default function InputExpenseComp() {
+export default function InputExpenseComp({ handleSubmit }) {
+
+  // uid 불러오기 위함
+  const user = useSelector((state) => state.user.user);
+
+  // 날짜 입력하는 캘린더 모달 state
   const [showCal, setShowCal] = useState(false);
+
+  // form의 입력 값 state
   const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState("");
   const [payment, setPayment] =useState("현금");
   const [installment, setInstallment] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [memo, setMemo] = useState("");
-  const [expenseList, setExpenseeList] = useState([]);
 
+  // 날짜 입력하는 캘린더 모달 on
   const onClickCal = (e) => {
     e.preventDefault();
     setShowCal(true);
   }
 
+  // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
   const onClickDate = (newDate) => {
     setDate(newDate);
     // console.log(newDate)
     setShowCal(false);
   }
 
+  // installment 값 입력
   const onInputInstallment = (e) => {
     if(payment === "카드") {
       setInstallment(e.target.value)
@@ -31,47 +47,52 @@ export default function InputExpenseComp() {
     }
   }
 
+  // selectedCategory 값 입력
   const onClickCategory = (e) => {
     setSelectedCategory(e.target.value);
   }
 
+  // 캘린더 모달에서 입력한 값을 form에 보여주기 위한 변환 함수
   const YYYY = String(date.getFullYear())
   const MM = String(date.getMonth()+1).padStart(2,"0")
   const DD = String(date.getDate()).padStart(2,"0")
   const valueDate = `${YYYY}-${MM}-${DD}`
 
-  const addExpense = (e) => {
+  // submit 이벤트
+  const inputExpense = async(e) => {
     e.preventDefault();
-    const newExpense = {
+    // 작성된 값을 firestore의 money_expense 컬렉션에 추가
+    const docRef = await addDoc(collection(db, "money_expense"), {
+      uid : user.uid,
       date : date,
       price : price,
       payment : payment,
       installment : payment==="카드" ? installment : null,
       category : selectedCategory,
-      memo: memo
-    }
-    setExpenseeList(newExpense);
-    console.log(newExpense);
+      memo : memo
+    });
+    // 입력 모달창을 닫기 위한 handleSubmit 함수를 호출
+    handleSubmit();
   }
+
   return (
     <div>
-      <form action="" onSubmit={addExpense}>
+      <form action="" onSubmit={inputExpense}>
 
         <label>날짜</label>
         <div>
           <span>{date && valueDate}</span>
           <button onClick={ onClickCal }>아이콘</button>
         </div>
-        <div>
-          {
-            showCal && (<Calendar onChange={ onClickDate } value={date}/>)
-          }
-        </div>
+        {
+          showCal && (<Calendar onChange={ onClickDate } value={date}/>)
+        }
 
         <label>금액</label>
         <div>
           <input 
             type="number" 
+            min= "0"
             onChange={(e)=>{setPrice(Number(e.target.value))}}
             required
           />
@@ -94,7 +115,7 @@ export default function InputExpenseComp() {
             payment && payment === "카드" && (
               <div>
                 <label>할부</label>
-                <input type="number" min='1' onChange={ onInputInstallment }/>
+                <input type="number" min="1" onChange={ onInputInstallment }/>
                 <span>개월</span>
               </div>
             )
@@ -195,10 +216,14 @@ export default function InputExpenseComp() {
 
         <label>메모</label>
         <div>
-          <textarea name="" id="" cols="30" rows="10" onChange={(e)=>setMemo(e.target.value)}/>
+          <textarea cols="30" rows="10" onChange={(e)=>setMemo(e.target.value)}/>
         </div>
 
-        <input type="submit" value="입력" disabled={!date || !price || !selectedCategory}/>
+        <input 
+          type="submit" 
+          value="입력" 
+          disabled={!date || !price || !selectedCategory}
+        />
       </form>
     </div>
   )
