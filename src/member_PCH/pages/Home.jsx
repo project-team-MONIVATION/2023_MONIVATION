@@ -25,10 +25,6 @@ export default function Home() {
         <Link to='/mypage'>마이페이지</Link>
         <Link to='/'>로그아웃</Link>
       </div>
-      <hr />
-      <IncomeModalComp/>
-      <hr />
-      <ExpenseModalComp/>
     </div>
   )
 }

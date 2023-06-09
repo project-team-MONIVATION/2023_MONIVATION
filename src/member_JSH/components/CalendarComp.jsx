@@ -26,11 +26,11 @@ export default function CalendarComp() {
     const exlist = useSelector((state)=>(state.ex));
     // 저금 리덕스
     const savelist = useSelector((state)=>(state.save));
-    
-    
+
+
 
     const dispatch = useDispatch();
-    
+
     const [modalIsOpen, setModalIsOpen] = useState(false);
     //const [tilecontents, setTilecontents] = useState("수입/지출");
     // 입력받은 수입,지출,저금 state
@@ -67,7 +67,7 @@ export default function CalendarComp() {
         prev2Label={null}
         navigationAriaLive={null}
         locale="en"
-        
+
         tileContent={({date, view})=>{
           let imp, ex;
           for(let input of implist ){
@@ -122,7 +122,7 @@ export default function CalendarComp() {
           activeModal === 1 && (
             <Modal isOpen={modalIsOpen}>
               <button onClick={()=>setModalIsOpen(false)}>X</button>
-              <IncomeModalComp/>
+              <IncomeModalComp setModalIsOpen={setModalIsOpen}/>
             </Modal>
           )
         }
@@ -131,7 +131,7 @@ export default function CalendarComp() {
           activeModal === 2 && (
             <Modal isOpen={modalIsOpen}>
               <button onClick={()=>setModalIsOpen(false)}>X</button>
-              <ExpenseModalComp/>
+              <ExpenseModalComp setModalIsOpen={setModalIsOpen}/>
             </Modal>
           )
         }
