@@ -1,67 +1,85 @@
 import React, { useState } from 'react'
+
 import Calendar from 'react-calendar'
 
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../../database/firebase';
+
+import { useSelector } from 'react-redux';
+
 import CategoryBtn from '../features/CategoryBtn'
-import { useDispatch, useSelector } from 'react-redux';
+
 
 export default function InputIncomeRepeatComp({ handleSubmit }) {
+
+  // uid 불러오기 위함
+  const user = useSelector((state) => state.user.user);
+
+  // 날짜 입력하는 캘린더 모달 state
   const [showCal, setShowCal] = useState(false);
-  const [date, setDate] = useState(new Date());
+
+  // 기간 입력하는 모달 state
   const [showPeriod, setShowPeriod] = useState(false);
+  // 기간 입력하는 모달의 캘린더 모달 state
   const [showStartCal, setShowStartCal] = useState(true);
   const [showEndCal, setShowEndCal] = useState(false);
+
+  // form의 입력 값 state
+  const [date, setDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
   const [cycle, setCycle] = useState("매일");
   const [price, setPrice] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [memo, setMemo] = useState();
-  const [IncomeRepeatList, setIncomeRepeatList] = useState([]);
+  const [memo, setMemo] = useState("");
 
-  const user = useSelector((state) => state.user.user)
-
-  const dispatch = useDispatch();
-
+  // 날짜 입력하는 캘린더 모달 on
   const onClickCal = (e) => {
     e.preventDefault();
     setShowCal(true);
   }
 
+  // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
   const onClickDate = (newDate) => {
     setDate(newDate);
-    // console.log(newDate)
     setShowCal(false);
   }
 
+  // 기간 입력하는 모달 on
   const onClickPeriod = (e) => {
     e.preventDefault();
     setShowPeriod(true);
   }
 
+  // 기간 입력하는 모달의 startDate 입력하는 캘린더 모달 on
   const onClickStartBtn = (e) => {
-    e.preventDefault();
     setShowStartCal(true);
     setShowEndCal(false);
   }
 
+  // startDate 값 입력
   const onClickStartDate = (newDate) => {
     setStartDate(newDate);
+    onClickEndBtn()
   }
 
+  // 기간 입력하는 모달의 endDate 입력하는 캘린더 모달 on
   const onClickEndBtn = (e) => {
-    e.preventDefault();
     setShowEndCal(true);
     setShowStartCal(false);
   }
 
+  // endDate 값 입력
   const onClickEndDate = (newDate) => {
     setEndDate(newDate);
   }
 
+  // selectedCategory 값 입력
   const onClickCategory = (e) => {
     setSelectedCategory(e.target.value)
   }
 
+  // 캘린더 모달에서 입력한 값을 form에 보여주기 위한 변환 함수
   const changeDate = (newDate) => {
     const YYYY = String(newDate.getFullYear())
     const MM = String(newDate.getMonth()+1).padStart(2,"0")
@@ -70,9 +88,12 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
     return valueDate;
   }
 
-  const addIncomeRepeat = (e) => {
+  // submit 이벤트
+  const inputIncomeRepeat = async(e) => {
     e.preventDefault();
-    const newIncomeRepeat = {
+    // 작성된 값을 firestore의 money_income_repeat 컬렉션에 추가
+    const docRef = await addDoc(collection(db, "money_income_repeat"), {
+      uid : user.uid,
       date : date,
       startDate : startDate,
       endDate : endDate,
@@ -80,67 +101,63 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
       price : price,
       category : selectedCategory,
       memo : memo
-    }
-    setIncomeRepeatList(newIncomeRepeat);
-    console.log(newIncomeRepeat);
+    });
+    // 입력 모달창을 닫기 위한 handleSubmit 함수를 호출
+    handleSubmit();
   }
 
   return (
     <div>
-      <form action="" onSubmit={addIncomeRepeat}>
+      <form action="" onSubmit={ inputIncomeRepeat }>
 
         <label>수입예정일</label>
         <div>
           <span>{date && changeDate(date)}</span>
           <button onClick={ onClickCal }>아이콘</button>
         </div>
-        <div>
-          {
-            showCal && (
-              <div>
-                <button type='button' onClick={()=>{setShowCal(false)}}>X</button>
-                <Calendar onChange={ onClickDate } value={date}/>
-              </div>
-            )
-          }
-        </div>
+        {
+          showCal && (
+            <div>
+              <button type='button' onClick={()=>{setShowCal(false)}}>X</button>
+              <Calendar onChange={ onClickDate } value={date}/>
+            </div>
+          )
+        }
 
         <label>기간</label>
         <div>
           <span>{startDate && changeDate(startDate)} ~ {endDate ? changeDate(endDate) : "0000-00-00"} {cycle}</span>
           <button onClick={ onClickPeriod }>아이콘</button>
         </div>
-        <div>
-          {
-            showPeriod && (
+        {
+          showPeriod && (
+            <div>
+              <button type='button' onClick={()=>{setShowPeriod(false)}}>X</button>
               <div>
-                <button type='button' onClick={()=>{setShowPeriod(false)}}>X</button>
-                <div>
-                  <button type='button' onClick={ onClickStartBtn }>시작일</button>
-                  <button type='button' onClick={ onClickEndBtn }>종료일</button>
-                  {
-                    showStartCal && (<Calendar onChange={ onClickStartDate } value={startDate} required/>)
-                  }
-                  {
-                    showEndCal && (<Calendar onChange={ onClickEndDate } value={endDate}/>)
-                  }
-                </div>
-                <div>
-                  <label>반복주기</label><br />
-                  <select name="cycle" id="" onChange={(e)=>{setCycle(e.target.value)}}>
-                    <option value="매일">매일</option>
-                    <option value="매주">매주</option>
-                    <option value="매월">매월</option>
-                    <option value="매년">매년</option>
-                  </select>
-                </div>
-                <button type='button' onClick={()=>{setShowPeriod(false)}}>
-                  입력
-                </button>
+                <button type='button' onClick={ onClickStartBtn }>시작일</button>
+                <button type='button' onClick={ onClickEndBtn }>종료일</button>
+                {
+                  showStartCal && (<Calendar onChange={ onClickStartDate } value={startDate} required/>)
+                }
+                {
+                  showEndCal && (<Calendar onChange={ onClickEndDate } value={endDate}/>)
+                }
               </div>
-            )
-          }
-        </div>
+              <div>
+                <label>반복주기</label><br />
+                <select name="cycle" id="" onChange={(e)=>{setCycle(e.target.value)}}>
+                  <option value="매일">매일</option>
+                  <option value="매주">매주</option>
+                  <option value="매월">매월</option>
+                  <option value="매년">매년</option>
+                </select>
+              </div>
+              <button type='button' onClick={()=>{setShowPeriod(false)}}>
+                입력
+              </button>
+            </div>
+          )
+        }
 
         <label>금액</label>
         <div>
@@ -190,22 +207,13 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
 
         <label>메모</label>
         <div>
-          <textarea name="" id="" cols="30" rows="10" onChange={(e)=>{setMemo(e.target.value)}}/>
+          <textarea cols="30" rows="10" onChange={(e)=>{setMemo(e.target.value)}}/>
         </div>
 
         <input 
           type="submit" 
           value="입력" 
           disabled={!date || !startDate || !cycle || !price || !selectedCategory}
-          onClick={()=>{
-            dispatch(addIncomeRepeat({
-              uid : user.uid,
-              date : date,
-              price : price,
-              category : selectedCategory,
-              memo : memo
-            }))
-          }}
         />
       </form>
     </div>
