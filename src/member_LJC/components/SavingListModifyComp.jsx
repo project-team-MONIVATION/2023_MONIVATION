@@ -8,7 +8,8 @@ import {db} from '../../database/firebase'
 
 import '../css/saving.css'
 
-export default function SavingListModifyComp({tmp}) {
+export default function SavingListModifyComp({tmp, getSavingData}) {
+    
 
     const [open, setOpen] = useState(false);
     const [value, onChange] = useState(new Date());
@@ -21,7 +22,7 @@ export default function SavingListModifyComp({tmp}) {
     // const [correctionbtn, setCorrectionbtn] =useState(false);
 
     // 열기 닫기
-        
+        const [isCheck, setCheck] = useState(false);
 
         const [modal, setModal] = useState(false);
 
@@ -38,13 +39,24 @@ export default function SavingListModifyComp({tmp}) {
     // 수정된 값들
     const [correctiontitle, setCorrectiontitle] = useState(tmp.title);
     const [correctionperiodunit, setCorrectionperiodunit] = useState(tmp.periodunit);
+    const [correctionclickday, setCorrectionclickday] = useState(tmp.clickday)
     const [correctionstart, setCorrectionstart] = useState(tmp.startday);
     const [correctionend, setCorrectionend] = useState(tmp.endday);
     const [correctionamount, setCorrectionamount] = useState(tmp.amount);
     const [correctionmemo, setCorrectionmemo] = useState(tmp.memo);
 
     
+    // (저금예정일 선택)클릭한 날짜
+    function gu (i) {
+        let year = i.getFullYear()
+        let month =  ('0' + (i.getMonth() + 1)).slice(-2);
+        let day = ('0' + (i.getDate())).slice(-2);
+        // 누른 날짜 yyyy-mm-dd 로 변환하기
+        let when = `${year}-${month}-${day}`
 
+        setCorrectionclickday(when)
+        setCheck(false)
+    }
 
     // (기간)시작날짜 
     function startperiod (i) {
@@ -79,20 +91,24 @@ export default function SavingListModifyComp({tmp}) {
         event.target.value = formattedValue;
     };
 
-    // 값 업데이트
-    // const updateData = async(id) => {
-    //     const querySnapshot = await getDocs(collection(db, "money_saving"))
-    //     await updateDoc(doc(db,"money_saving",id), {
+    //값 업데이트
+    const updateData = async(id) => {
+        console.log(id)
+        console.log("수정됨?")
 
-    //         title : setCorrectiontitle
+        // const fmDocRef = doc(db, "money_saving",tmp.id)
 
-
-
-
-
-    //     });
-        
-    // }
+        await updateDoc(doc(db,"money_saving",id), {
+            title : correctiontitle,
+            clickday : correctionclickday,
+            periodunit : correctionperiodunit,
+            startday : correctionstart,
+            endday : correctionend,
+            amount : correctionamount,
+            memo : correctionmemo
+        });
+        getSavingData()
+    }
 
 
 
@@ -100,6 +116,12 @@ export default function SavingListModifyComp({tmp}) {
 
         <div>
             <form
+            onSubmit={(e) => {
+                e.preventDefault();
+                updateData(tmp.id);
+                setOpen(false)
+                }
+            }
             >
                 <div>
                     <button
@@ -116,7 +138,31 @@ export default function SavingListModifyComp({tmp}) {
                                 value={correctiontitle}
                                 onChange={(e) => setCorrectiontitle(e.target.value)}
                             />
-
+        <br />
+                            <label>저금예정일</label>
+                            <input type="text" 
+                                required
+                                value={correctionclickday}
+                            />
+                            <div>
+                            <button
+                                type='button'
+                                onClick={() => {setCheck((e) => !e); setModal(false);}}
+                            >
+                            {isCheck ? "닫힘" : "열림"}
+                            </button>
+                            {isCheck && (
+                                <div className='modal-cal modal-cal2'>
+                                    <Calendar 
+                                        onChange={onChange} 
+                                        value={value}
+                                        onClickDay={(value, event) => gu(value)}
+                                    />
+                                </div>
+                                
+                            )}
+                            </div>
+        <br />
                             {/* 기간 바꾸기 시작 */}
                                 <label htmlFor="">기간(달력포함)</label>
                                 <input type="text"
@@ -173,6 +219,7 @@ export default function SavingListModifyComp({tmp}) {
                                             </div>
                                         )}
                             {/* 기간 바꾸기 끝 */}
+        <br />
 
 
 
@@ -189,6 +236,7 @@ export default function SavingListModifyComp({tmp}) {
                                     <option value="month">매월</option>
                                     <option value="year">매년</option>
                                 </select>
+        <br />
 
                             <label htmlFor="">금액</label>
                             <input type="text"
@@ -196,7 +244,7 @@ export default function SavingListModifyComp({tmp}) {
                                 value={correctionamount}
                                 onChange={e => setCorrectionamount(e.target.value)}
                             />
-
+        <br />
                             <label htmlFor="">메모</label>
                             <input type="text"
                                 value={correctionmemo}
@@ -205,10 +253,10 @@ export default function SavingListModifyComp({tmp}) {
         <br />
                             <button
                                 type='sumbit'
-                                onClick={updateData}
+                                
                             >수정값입력
                             </button>
-
+                                            
                         </div>
                     )}
                 </div>

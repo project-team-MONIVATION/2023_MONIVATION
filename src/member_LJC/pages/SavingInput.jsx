@@ -7,7 +7,7 @@ import {db} from '../../database/firebase'
 
 import '../css/saving.css'
 
-export default function Saving() {
+export default function Saving({setModalIsOpen}) {
     const [value, onChange] = useState(new Date());
     const user = useSelector((state) => state.user.user);
     
@@ -128,6 +128,7 @@ export default function Saving() {
         setAmount('');
         setTitle('');
         setMemo('');
+        setModalIsOpen()
     }
     
     
