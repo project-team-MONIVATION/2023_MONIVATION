@@ -54,7 +54,52 @@ export default function MoneyChartExpense() {
 
     useEffect(() => {
         getSavingData();
-    }, [user]);
+    }, [user]); // [user] 가바뀔떄마다 돈다
+
+    
+
+    // 누르면 그날의 카테고리와 가격이 나옴
+    const getexpenseData = async (i) => {
+        const fmCollectionRef = collection(db, "money_expense");
+        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+        const fmQuerySnapshot = await getDocs(fmQuery);
+    
+        let dataArray = [];
+        let newArray = [];
+    
+        fmQuerySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const timestamp = data.date;
+            const date = timestamp.toDate();
+        
+            // 클릭한 날짜와 데이터의 날짜를 비교
+            if (
+                i &&
+                date.getDate() === i.getDate() &&
+                date.getMonth() === i.getMonth() &&
+                date.getFullYear() === i.getFullYear()
+            ) {
+                dataArray.push({
+                ...data,
+                id: doc.id,
+                date: date.toLocaleDateString(),
+            });
+            }
+        });
+        console.log(dataArray);
+        let allcategorys = [];
+        let allprice = [];
+            
+        for (let i=0; i<dataArray.length; i++){
+            let categorys = dataArray[i].category;
+            let price = dataArray[i].price;
+            
+            allcategorys.push(categorys)
+            allprice.push(price);
+        }
+            setCategoryList(allcategorys);
+            setPriceList(allprice);
+    }
 
     // 지출 불러오기
     const getSavingData = async () => {
@@ -67,62 +112,50 @@ export default function MoneyChartExpense() {
                 navigate('/account/login');
             } else {
                 let dataArray = [];
+                let newArray = [];
+
                 fmQuerySnapshot.forEach((doc) => {
                     dataArray.push({
                         ...doc.data(),
                         id: doc.id,
                     });
                 });
-                
+
                 // console.log(checkday.getDate())
                 
                 // switch(checkday.getDate()){
                 //     case value.getDate() : 
-                let expenseday = [];
+                // let expenseday = [];
 
-                for (let i=0; i<dataArray.length; i++){
-                    let day = dataArray[i].date.toDate();
-                    expenseday.push(day.getDate())
-                }
-                setCheckday(expenseday)
-                
-                // switch(checkday){
-                //     case onedayclick.getDate() :
-                        let allcategorys = [];
-                        let allprice = [];
-                        
-                        for (let i=0; i<dataArray.length; i++){
-                            let categorys = dataArray[i].category;
-                            let price = dataArray[i].price;
-                            
-                            allcategorys.push(categorys)
-                            allprice.push(price);
-                        }
-                        setCategoryList(allcategorys);
-                        setPriceList(allprice);
-                    
-                //     default :
-                //         setCategoryList('');
-                //         setPriceList('');
-                        
+                // for (let i=0; i<dataArray.length; i++){
+                //     let day = dataArray[i].date.toDate();
+                //     expenseday.push(day.getDate())
                 // }
+                // setCheckday(expenseday)
                 
                 
-                
-                
-            
-            
-            
-            
+                        // let allcategorys = [];
+                        // let allprice = [];
+                        
+                        // for (let i=0; i<dataArray.length; i++){
+                        //     let categorys = dataArray[i].category;
+                        //     let price = dataArray[i].price;
+                        
+                        //     allcategorys.push(categorys)
+                        //     allprice.push(price);
+                        // }
+                        // setCategoryList(allcategorys);
+                        // setPriceList(allprice);
+
         }
     } catch (error) {
         console.log("실패했습니다", error);
     }
 };
 
-    console.log(today.getDate())
-    console.log(checkday)
-    console.log(onedayclick.getDate())
+
+
+    
     
     const data = {
         labels: categoryList,
@@ -156,6 +189,7 @@ export default function MoneyChartExpense() {
     return (
         <div>
             <h1>지출</h1>
+            <button onClick={getexpenseData}>테스트</button>
             <div>
                 <button>
                     <Link to="/calendar/chart/income">수입</Link>
@@ -166,11 +200,11 @@ export default function MoneyChartExpense() {
             </div>
 
             <div>
-            <Calendar 
-                onChange={onChange} 
-                value={value}
-                onClickDay={(value, event) => {setOnClickDay(value);}}
-            />
+                <Calendar 
+                    onChange={onChange} 
+                    value={value}
+                    onClickDay={(value, event) => {getexpenseData(value);}}
+                />
             </div>
             
             
@@ -180,9 +214,6 @@ export default function MoneyChartExpense() {
                 options={options} 
                 width="800px" height="800px" 
             />
-
-            
-            
         </div>
     )
 }
