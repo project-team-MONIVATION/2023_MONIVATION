@@ -31,20 +31,29 @@ export const options = {
 }
 
 export default function MoneyChartExpense() {
-
     const navigate = useNavigate();
-    
     const [value, onChange] = useState(new Date());
     const user = useSelector((state) => state.user.user);
 
     // 오늘 날짜
     const  today = new Date
-
+    // 최솟값 날짜
+    const [mindate, setMindate] = useState('');
     //날짜배열
     const [checkday, setCheckday] = useState('');
 
     // 클릭한 날짜
     const [onedayclick, setOnClickDay] = useState('');
+
+    // 일(day )열기 닫기
+    const [isCheck, setCheck] = useState(false);
+
+    // 기간 선택 열기 닫기
+    const [modal, setModal] = useState(false);
+        // (기간)시작날짜
+        const [ischeck2, setCheck2] = useState(true);
+        // (기간) 끝난 날짜
+        const [ischeck3, setCheck3] = useState(false);
 
     //카테고리
     const [categoryList , setCategoryList] = useState([]);
@@ -55,51 +64,6 @@ export default function MoneyChartExpense() {
     useEffect(() => {
         getSavingData();
     }, [user]); // [user] 가바뀔떄마다 돈다
-
-    
-
-    // 누르면 그날의 카테고리와 가격이 나옴
-    const getexpenseData = async (i) => {
-        const fmCollectionRef = collection(db, "money_expense");
-        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
-        const fmQuerySnapshot = await getDocs(fmQuery);
-    
-        let dataArray = [];
-        let newArray = [];
-    
-        fmQuerySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const timestamp = data.date;
-            const date = timestamp.toDate();
-        
-            // 클릭한 날짜와 데이터의 날짜를 비교
-            if (
-                i &&
-                date.getDate() === i.getDate() &&
-                date.getMonth() === i.getMonth() &&
-                date.getFullYear() === i.getFullYear()
-            ) {
-                dataArray.push({
-                ...data,
-                id: doc.id,
-                date: date.toLocaleDateString(),
-            });
-            }
-        });
-        console.log(dataArray);
-        let allcategorys = [];
-        let allprice = [];
-            
-        for (let i=0; i<dataArray.length; i++){
-            let categorys = dataArray[i].category;
-            let price = dataArray[i].price;
-            
-            allcategorys.push(categorys)
-            allprice.push(price);
-        }
-            setCategoryList(allcategorys);
-            setPriceList(allprice);
-    }
 
     // 지출 불러오기
     const getSavingData = async () => {
@@ -151,7 +115,84 @@ export default function MoneyChartExpense() {
     } catch (error) {
         console.log("실패했습니다", error);
     }
-};
+    };
+    
+    // 일별
+    // 누르면 그날의 카테고리와 가격이 나옴
+    const getexpenseData = async (i) => {
+        const fmCollectionRef = collection(db, "money_expense");
+        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+        const fmQuerySnapshot = await getDocs(fmQuery);
+    
+        let dataArray = [];
+        let newArray = [];
+    
+        fmQuerySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const timestamp = data.date;
+            const date = timestamp.toDate();
+        
+            // 클릭한 날짜와 데이터의 날짜를 비교
+            if (
+                
+                date.getDate() === i.getDate() &&
+                date.getMonth() === i.getMonth() &&
+                date.getFullYear() === i.getFullYear()
+            ) {
+                dataArray.push({
+                ...data,
+                id: doc.id,
+                date: date.toLocaleDateString(),
+                });
+            }
+        });
+
+        console.log(dataArray);
+        let allcategorys = [];
+        let allprice = [];
+            
+        for (let i=0; i<dataArray.length; i++){
+            let categorys = dataArray[i].category;
+            let price = dataArray[i].price;
+            
+            allcategorys.push(categorys)
+            allprice.push(price);
+        }
+            setCategoryList(allcategorys);
+            setPriceList(allprice);
+    }
+
+    const getexpensechoiseData = async (s,e) => {
+        const fmCollectionRef = collection(db, "money_expense");
+        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+        const fmQuerySnapshot = await getDocs(fmQuery);
+    
+        let dataArray = [];
+        let newArray = [];
+    
+        fmQuerySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const timestamp = data.date;
+            const date = timestamp.toDate();
+        
+            // 클릭한 날짜와 데이터의 날짜를 비교
+            if (
+                s,e &&
+                s.getDate() < date.getDate() < e.getDate() &&
+                s.getDate() < date.getMonth() < e.getMonth() &&
+                s.getDate() < date.getFullYear() < e.getFullYear()
+            ) {
+                dataArray.push({
+                ...data,
+                id: doc.id,
+                date: date.toLocaleDateString(),
+                });
+            }
+        });
+
+
+    }
+
 
 
 
@@ -189,7 +230,7 @@ export default function MoneyChartExpense() {
     return (
         <div>
             <h1>지출</h1>
-            <button onClick={getexpenseData}>테스트</button>
+
             <div>
                 <button>
                     <Link to="/calendar/chart/income">수입</Link>
@@ -199,13 +240,79 @@ export default function MoneyChartExpense() {
                 </button>
             </div>
 
-            <div>
-                <Calendar 
-                    onChange={onChange} 
-                    value={value}
-                    onClickDay={(value, event) => {getexpenseData(value);}}
-                />
-            </div>
+            {/* 일별  */}
+            <button 
+                onClick={() => {setCheck((e) => !e);}}
+            >
+                {isCheck ? "일" : "일"}
+            </button>
+            {isCheck && (
+                <div className='modal-cal modal-cal2'>
+                    <Calendar 
+                        onChange={onChange} 
+                        value={value}
+                        onClickDay={(value, event) => {getexpenseData(value);}}
+                    />
+                </div>
+            )}
+            {/* 선택한 기간별 */}
+            {<div>
+                    
+                    <button
+                        onClick={() => {setModal((e) => !e);}}
+                    >
+                        {modal ? "기간선택" : "기간선택"}
+                    </button>
+                    {/* 기간선택 모달창 */}
+                    {modal && (
+                    <div className='saving-period'>
+                        {/* 시작일 */}
+                        <button
+                            onClick={() => {setCheck2((e) => !e); setCheck(false); }}
+                        >
+                        <p style={{ color: ischeck2 ? "#BB363F" : "#000" }}>시작일</p>
+                        </button>
+                        {ischeck2 && (
+                            <div className='modal-cal'>
+                                <Calendar 
+                                    onChange={onChange}
+                                    value={value}
+                                    onClickDay={(value, event) => {setCheck2(false); setCheck3(true); setMindate(value);}}
+                                />
+                            </div>
+                        )}
+
+                        {/* 종료일 */}
+                        <button
+                            onClick={() => {setCheck3((e) => !e); setCheck(false); } }
+                        >
+                        <p style={{ color: ischeck3 ? "#BB363F" : "#000" }}>종료일</p>
+                        </button>
+                        {ischeck3 && (
+                            <div className='modal-cal'>
+                                <Calendar 
+                                    onChange={onChange} 
+                                    value={value}
+                                    onClickDay={(value, event) => {setCheck3(false);}}
+                                    minDate={mindate}
+                                />
+                            </div>
+                        )}
+
+                        {/* x닫기 버튼 */}
+                        <button
+                        onClick={() => {setModal((e) => !e);}}
+                        >
+                        {modal ? "X" : "열림"}
+                        </button>
+                    </div>
+                )}
+            </div>}
+
+
+            
+
+            
             
             
             
