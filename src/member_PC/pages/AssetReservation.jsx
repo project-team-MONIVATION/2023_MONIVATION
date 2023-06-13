@@ -22,15 +22,25 @@ export default function AssetReservation() {
 
   return (
     <div>
+      <h1>상담예약</h1>
       {/* 캘린더 */}
-      <div>
+      <div style={{float: "left"}}>
+        <div>
           <span>{date && changeDate(date)}</span>
         </div>
 
         <div>
           <Calendar onChange={ onClickDate } value={date}/>
         </div>
-      <h1>상담예약</h1>
+      </div>
+      
+      <div>
+        <h2>상담신청</h2>
+        <hr />
+        <p>이름</p>
+        <p>이메일 주소</p>
+        <p>휴대폰 번호</p>
+      </div>
       <Link to='/mypage/reservation'>예약</Link>
     </div>
   )

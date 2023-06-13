@@ -10,6 +10,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function AssetManagerProfile() {
+  const [liked, setLiked] = useState(false);
   const user = useSelector((state) => state.user.user);
 
   const [profile, setProfile] = useState();
@@ -18,8 +19,18 @@ export default function AssetManagerProfile() {
   const [date, setDate] = useState(new Date());
 
   const handleLike = async () => {
-  };
+    // 클릭 상태 변경
+    setLiked(!liked);
   
+    // Firestore에서 해당 문서의 likeNum 업데이트
+    const fmDocRef = doc(db, "financial_managers", params.id);
+    const fmDocSnap = await getDoc(fmDocRef);
+    if (fmDocSnap.exists()) {
+      const currentLikeNum = fmDocSnap.data().likeNum || 0;
+      const newLikeNum = liked ? currentLikeNum - 1 : currentLikeNum + 1;
+      await updateDoc(fmDocRef, { likeNum: newLikeNum });
+    }
+  };
 
   // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
   const onClickDate = (newDate) => {
@@ -57,7 +68,6 @@ export default function AssetManagerProfile() {
           <div style={{display: "flex", alignItems: "center"}}>
             <div>
               <p>{profile.name}</p>
-              <p>좋아요 수: {profile.likeNum}</p>
               {profile.intro.map((intro, i)=>(
                 <p key={i}>{intro}</p>
               ))}
@@ -66,7 +76,7 @@ export default function AssetManagerProfile() {
               <FontAwesomeIcon
                 icon={faHeart}
                 fontSize={20}
-                style={{ color: "black" }}
+                style={{ color: liked === false ? "black" : "red" }}
                 onClick={() => handleLike()}
               />
             </div>
@@ -83,6 +93,12 @@ export default function AssetManagerProfile() {
         </div>
 
       <Link to='/asset/managerID/profile/reservation'>상담예약(useParams 사용)</Link>
+      <FontAwesomeIcon
+        icon={faHeart}
+        fontSize={20}
+        style={{ color: "red" }}
+      />
+      {profile && profile.likeNum}
     </div>
   )
 }
