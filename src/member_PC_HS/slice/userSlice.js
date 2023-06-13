@@ -12,12 +12,14 @@ export const userSlice = createSlice({
             state.user = action.payload
             sessionStorage.setItem('user', JSON.stringify(action.payload))
         },
+        /** PCH */
         userLogout: (state, action) => {
             state.user = null;
         }
     }
 })
 
+/** PCH */
 export const logout = () => (dispatch) => {
     signOut(auth)
         .then(() => {
