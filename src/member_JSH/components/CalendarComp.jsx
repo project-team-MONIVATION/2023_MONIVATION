@@ -12,6 +12,8 @@ import { addImp } from '../slices/inputImpSlice';
 import { addEx } from '../slices/inputExSlice';
 import IncomeModalComp from '../../member_PCH/components/IncomeModalComp';
 import ExpenseModalComp from '../../member_PCH/components/ExpenseModalComp';
+// 저금 모달
+import SavingInput from '../../member_LJC/pages/SavingInput';
 
 
 export default function CalendarComp() {
@@ -142,6 +144,7 @@ export default function CalendarComp() {
               <div>
                 <h3>저금 모달 창</h3>
                 <button onClick={()=>setModalIsOpen(false)}>취소</button>
+                <SavingInput setModalIsOpen={setModalIsOpen}/>
               </div>
             </Modal>
           )
