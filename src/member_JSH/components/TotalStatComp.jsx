@@ -52,7 +52,7 @@ export default function TotalStatComp() {
           const fmQuery = query(fmCollectionRef, where('user', '==', user.uid));
           const fmQuerySnapshot = await getDocs(fmQuery);
 
-          if (user.uid.empty) {
+          if (!user.uid) {
               navigate('/account/login');
           } else {
               let dataArray = [];
@@ -62,6 +62,7 @@ export default function TotalStatComp() {
                   id: doc.id,
               });
               });
+              
               let total = 0;
 
               for (let i = 0; i < dataArray.length; i++) {

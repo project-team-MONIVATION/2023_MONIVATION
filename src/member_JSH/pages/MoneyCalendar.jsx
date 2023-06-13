@@ -11,7 +11,7 @@ export default function MoneyCalendar() {
       <h1>가계부 캘린더</h1>
       <TotalStatComp />
       <CalendarComp />
-      <Link to='/calendar/chart'>통계</Link>
+      <Link to='/calendar/chart/income'>통계</Link>
       <div>할부금</div>
       <div>첼린지</div>
       <div>목표금액</div>

@@ -1,0 +1,272 @@
+/* 메인페이지 CSS */ 
+#mainpage {
+  width: 100%;
+  height: 100vh;
+}
+
+/* 섹션1 */
+.coin-animation-left .coin-container {
+  left: 50px;
+}
+
+.coin-animation-right .coin-container {
+  right: 50px;
+}
+
+.coin-container{
+  position: absolute;
+  width: 30%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  
+}
+
+.coin {
+  background-image: url('../../assets/img/coin.png');
+  background-position: bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: fall 2s ease-in 1 forwards;
+  opacity: 0;
+  top:-180px;
+}
+
+@keyframes fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-180px);
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(52vh);
+  }
+  85% {
+    opacity: 1;
+    transform: translateY(50vh);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(52vh);
+
+  }
+}
+
+main #section1 .coinImg {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+main #section1 .logobox {
+  box-sizing: border-box;
+  height: 40vh;
+  padding-top: 8vh;
+  padding-bottom: 5vh;
+}
+
+main #section1 .logobox .logo {
+  height: 100%;
+  background-image: url('../../assets/MONIVATION_assets/logo_onlyillust.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: auto;
+}
+
+main #section1 .sloganbox {
+  height: 20vh;
+}
+
+main #section1 .sloganbox p {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+main #section1 .sloganbox h3 {
+  width: 600px;
+  font-size: 2rem;
+  padding: 15px 0 10px 0;
+  margin: auto;
+}
+
+main #section1 .sloganbox h1 {
+  font-size: 4rem;
+}
+
+main #section1 .btnbox {
+  box-sizing: border-box;
+  height: 40vh;
+  background: linear-gradient(rgb(71, 140, 205), rgb(125, 33, 207));
+  padding: 8vh 0;
+}
+
+main #section1 .btnbox p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+main #section1 .btnbox button {
+  width: 200px;
+  height: 50px;
+  cursor: pointer;
+  border: 0;
+  border-radius: 15px;
+  margin-top: 30px;
+}
+
+main #section1 .btnbox button:last-child {
+  margin-top: 15px;
+}
+
+main #section1 .btnbox button:hover {
+  background: linear-gradient(90deg, rgb(244, 215, 80), rgb(247, 224, 117) 50%, rgb(244, 215, 80));
+}
+
+
+/* 섹션 2 */
+main #section2 {
+  width: 100%;
+  height: 750px;
+  background-color: #ECECEC;
+}
+main #section2 .box-container {
+  box-sizing: border-box;
+  height: 700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 0 5%;
+}
+
+main #section2 .box-container .textbox,
+main #section2 .box-container .imgbox {
+  width: 50%;
+}
+
+
+/* 섹션 3 */
+main #section3 {
+  width: 100%;
+  height: 750px;
+  background-color: #ECECEC;
+}
+main #section3 .box-container {
+  box-sizing: border-box;
+  height: 700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 0 5%;
+}
+
+main #section3 .box-container .textbox,
+main #section3 .box-container .imgbox {
+  width: 50%;
+}
+
+
+/* 섹션 4 */
+main #section4 {
+  width: 100%;
+  height: 950px;
+  background-color: #ECECEC;
+}
+main #section4 .box-container {
+  box-sizing: border-box;
+  height: 900px;
+  background-color: white;
+  padding: 0 5%;
+}
+
+
+/* 섹션 5 */
+main #section5 {
+  width: 100%;
+  height: 750px;
+  background-color: #ECECEC;
+}
+main #section5 .box-container {
+  box-sizing: border-box;
+  height: 700px;
+  background-color: white;
+  padding: 0 5%;
+}
+
+
+/* 섹션 6 */
+main #section6 {
+  width: 100%;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* 푸터 */
+#mainpage footer {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 40vh;
+  padding: 5% 0;
+  background-color: #303030;
+  color: white;
+}
+
+#mainpage footer .title-sns {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+}
+
+#mainpage footer .title-sns .title {
+  width: 70%;
+  text-align: left;
+  font-size: 3rem;
+  font-family: 'Cafe24Ssurround';
+}
+
+#mainpage footer .title-sns .sns {
+  width: 12%;
+  height: 35px;
+  font-size: 1.5rem;
+  font-family: 'Cafe24Ssurround';
+  margin-left: 3%;
+}
+
+#mainpage footer .title-sns .sns:hover {
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+}
+
+#mainpage footer .about {
+  width: 90%;
+  margin: auto;
+  margin-top: 30px;
+  text-align: left;
+}
+
+#mainpage footer .about span {
+  font-size: 1.2rem;
+}
+
+#mainpage footer .about button {
+  border: 0;
+  background-color: inherit;
+  color: white;
+}
+
+#mainpage footer .about .copy {
+  position: absolute;
+  bottom: 5vh;
+  transform: translateY(-100%);
+}
