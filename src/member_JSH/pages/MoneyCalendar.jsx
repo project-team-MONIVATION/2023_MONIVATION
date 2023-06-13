@@ -12,6 +12,9 @@ export default function MoneyCalendar() {
       <TotalStatComp />
       <CalendarComp />
       <Link to='/calendar/chart'>통계</Link>
+      <div>할부금</div>
+      <div>첼린지</div>
+      <div>목표금액</div>
     </div>
   )
 }

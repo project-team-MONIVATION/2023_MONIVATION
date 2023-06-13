@@ -1,7 +1,7 @@
-import React, { useEffect, useState, } from 'react';
+import React, { useState, } from 'react';
 import { useSelector } from 'react-redux';
 import Calendar from 'react-calendar';
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, query, where, Timestamp, } from 'firebase/firestore';
+import { addDoc, collection, Timestamp, } from 'firebase/firestore';
 
 import {db} from '../../database/firebase'
 
@@ -250,7 +250,6 @@ export default function Saving({setModalIsOpen}) {
             <h2>금액</h2>
                 <div>
                     <input 
-                        // maxLength={11}
                         required
                         onInput={handleHyphen} 
                         type="text"

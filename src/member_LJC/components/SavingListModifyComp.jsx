@@ -1,8 +1,7 @@
-import React, { useEffect, useState, } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, } from 'react';
 import Calendar from 'react-calendar';
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, query, where, Timestamp, } from 'firebase/firestore';
-import { Navigate, useNavigate } from 'react-router-dom';
+import {  doc,  updateDoc, } from 'firebase/firestore';
+
 
 import {db} from '../../database/firebase'
 
@@ -13,13 +12,6 @@ export default function SavingListModifyComp({tmp, getSavingData}) {
 
     const [open, setOpen] = useState(false);
     const [value, onChange] = useState(new Date());
-    // const navigate = useNavigate();
-    // const user = useSelector((state) => state.user.user);
-
-    // const [savingList , setSavingList] = useState([]);
-
-    // // 수정버튼 열기닫기
-    // const [correctionbtn, setCorrectionbtn] =useState(false);
 
     // 열기 닫기
         const [isCheck, setCheck] = useState(false);
@@ -33,7 +25,7 @@ export default function SavingListModifyComp({tmp, getSavingData}) {
 
         const [mindate, setMindate] = useState('');
 
-    //기본 start날짜
+    
     
 
     // 수정된 값들
@@ -95,8 +87,6 @@ export default function SavingListModifyComp({tmp, getSavingData}) {
     const updateData = async(id) => {
         console.log(id)
         console.log("수정됨?")
-
-        // const fmDocRef = doc(db, "money_saving",tmp.id)
 
         await updateDoc(doc(db,"money_saving",id), {
             title : correctiontitle,
