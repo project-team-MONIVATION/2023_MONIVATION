@@ -57,11 +57,41 @@ export default function Home() {
             ? (
               <div className='btnbox'>
                 <p>{user.nickname}님 환영합니다</p>
-                <Link to='/calendar'>가계부</Link>
-                <Link to='/challenge'>챌린지</Link>
-                <Link to='/asset'>자산관리</Link>
-                <Link to='/mypage'>마이페이지</Link>
-                <button onClick={ onLogout }>로그아웃</button>
+                <motion.button
+                  onClick={()=>{navigate('calendar')}}
+                  whileHover={{ scale: 1.15 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  가계부
+                </motion.button>
+                <motion.button
+                  onClick={()=>{navigate('/challenge')}}
+                  whileHover={{ scale: 1.15 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  챌린지
+                </motion.button>
+                <motion.button
+                  onClick={()=>{navigate('/asset')}}
+                  whileHover={{ scale: 1.15 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  자산관리
+                </motion.button>
+                <motion.button
+                  onClick={()=>{navigate('/mypage')}}
+                  whileHover={{ scale: 1.15 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  마이페이지
+                </motion.button>
+                <motion.button
+                  onClick={onLogout}
+                  whileHover={{ scale: 1.15 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  로그아웃
+                </motion.button>
               </div>
               
             )
