@@ -63,7 +63,7 @@ function App() {
 
           <Route path='/asset' element={<Asset/>}/>
           <Route path='/asset/managerlist' element={<AssetManagerList/>}/>
-          <Route path='/asset/managerID/profile' element={<AssetManagerProfile/>}/>
+          <Route path='/asset/managerlist/:id' element={<AssetManagerProfile/>}/>
           <Route path='/asset/managerID/profile/reservation' element={<AssetReservation/>}/>
 
           <Route path='/mypage' element={<Mypage/>}/>
