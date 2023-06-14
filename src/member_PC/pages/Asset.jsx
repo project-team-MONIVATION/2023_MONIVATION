@@ -72,7 +72,6 @@ export default function Asset() {
     getList();
   },[])
   
-  
   return (
     <div>
       {/* 탭 바 */}
@@ -92,7 +91,7 @@ export default function Asset() {
                 <FontAwesomeIcon 
                   icon={faHeart}
                   fontSize={20}
-                  style={{ color: "red"}}
+                  style={{ color: "red" }}
                 />
               </div>
               <h3>{fm.name}</h3>
