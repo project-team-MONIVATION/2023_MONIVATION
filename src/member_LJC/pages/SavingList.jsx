@@ -27,7 +27,7 @@ export default function SavingList() {
             const fmQuery = query(fmCollectionRef, where('user', '==', user.uid));
             const fmQuerySnapshot = await getDocs(fmQuery);
 
-            if (fmQuerySnapshot.empty) {
+            if (!user.uid) {
                 navigate('/account/login');
             } else {
                 let dataArray = [];

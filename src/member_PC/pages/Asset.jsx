@@ -35,7 +35,6 @@ const PrevArrow = ({ onClick, style }) => {
 };
 
 export default function Asset() {
-  const [liked, setLiked] = useState(false);
   const user = useSelector((state) => state.user.user);
 
   const [bestFmList, setBestFmList] = useState([]);
@@ -50,52 +49,6 @@ export default function Asset() {
     slidesToScroll: 4,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />
-  };
-
-  const handleLike = async (fmId) => {
-    // 클릭 상태 변경
-    setLiked(!liked);
-  
-    // Firestore에서 해당 문서의 likeNum 업데이트
-    const fmDocRef = doc(db, "financial_managers", fmId);
-    const fmDocSnap = await getDoc(fmDocRef);
-    
-    if (fmDocSnap.exists()) {
-      const currentLikeNum = fmDocSnap.data().likeNum || 0;
-      const newLikeNum = liked ? currentLikeNum - 1 : currentLikeNum + 1;
-      await updateDoc(fmDocRef, { likeNum: newLikeNum });
-    }
-
-    // personal_users의 배열에 추가
-    const q = query(collection(db, "personal_users"), where('uid', '==', user.uid));
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      const userDocRef = querySnapshot.docs[0].ref;
-      const userDocSnapshot = await getDoc(userDocRef);
-
-      if (userDocSnapshot.exists()) {
-        const userData = userDocSnapshot.data();
-        const fmArray = userData.likeFm || [];
-
-        const fmIndex = fmArray.findIndex(fm => fm.fmUid === fmId); // fmUid가 현재 프로필의 id와 일치하는 인덱스 찾기
-
-        if (fmIndex !== -1) {
-          // 이미 좋아요한 자산관리사인 경우, 배열에서 해당 인덱스를 삭제
-          fmArray.splice(fmIndex, 1);
-        } else {
-          // 좋아요하지 않은 자산관리사인 경우, 배열에 새로운 자산관리사 추가
-          const newFm = {
-            fmUid: fmId,
-          };
-          fmArray.push(newFm);
-        }
-
-        await updateDoc(userDocRef, {
-          likeFm: [...fmArray] // 변경된 부분
-        });
-      }
-    }
   };
 
   useEffect(()=>{
@@ -119,40 +72,7 @@ export default function Asset() {
     getList();
   },[])
   
-  const checkLiked = useCallback(async (bestFmList) => {
-    if (user && user.uid) {
-      // personal_users에서 현재 사용자의 좋아요 상태 확인
-      const q = query(collection(db, "personal_users"), where('uid', '==', user.uid));
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        const userDocRef = querySnapshot.docs[0].ref;
-        const userDocSnapshot = await getDoc(userDocRef);
-
-        if (userDocSnapshot.exists()) {
-          const userData = userDocSnapshot.data();
-          const fmArray = userData.likeFm || [];
-
-          bestFmList.forEach((fm) => {
-            const fmIndex = fmArray.findIndex((item) => item.fmUid === fm.id); // fmUid가 현재 프로필의 id와 일치하는 인덱스 찾기
-
-            if (fmIndex !== -1) {
-              fm.liked = true;
-            } else {
-              fm.liked = false;
-            }
-          });
-
-          setBestFmList([...bestFmList]);
-        }
-      }
-    }
-  }, [user]);
-
-  useEffect(()=>{  
-    checkLiked(bestFmList);
-  }, [bestFmList])
-
+  
   return (
     <div>
       {/* 탭 바 */}
@@ -172,8 +92,7 @@ export default function Asset() {
                 <FontAwesomeIcon 
                   icon={faHeart}
                   fontSize={20}
-                  style={{ color: fm.liked ? "red" : "black" }}
-                  onClick={()=>{handleLike(fm.id)}}
+                  style={{ color: "red"}}
                 />
               </div>
               <h3>{fm.name}</h3>
