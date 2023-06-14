@@ -146,101 +146,63 @@ export default function MoneyChartExpense() {
     //         setPriceList(allprice);
     // }
 
+    
+
+    // function samecategory (i) {
+    //     i.map((tmp) => )
+
+    // }
 
     // 기간지정 비교 함수
     // 기간안에 데이터 들의 금액과 카테고리를 가져옴
     const getexpensechoiseData = async () => {
         let s = new Date(inputRef.current[0].value);
         let e = new Date(inputRef.current[1].value);
-        console.log(s,e)
-
-        if (e.getDate() === s.getDate() &&
-            e.getMonth() === s.getMonth() &&
-            e.getFullYear() === s.getFullYear()){
-            const fmCollectionRef = collection(db, "money_expense");
-            const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
-            const fmQuerySnapshot = await getDocs(fmQuery);
     
-            let dataArray = [];
-            console.log("s=e",dataArray)
-            
+        const fmCollectionRef = collection(db, "money_expense");
+        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid), where('date', '>=', s), where('date', '<=', e)) 
+        
+        let dayFilterDateList = [];
     
-            fmQuerySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const timestamp = data.date;
-                const date = timestamp.toDate();
-        
-                // 클릭한 날짜와 데이터의 날짜를 비교
-                if (
-                    date.getDate() === s.getDate() &&
-                    date.getMonth() === s.getMonth() &&
-                    date.getFullYear() === s.getFullYear()
-                ) {
-                    dataArray.push({
-                    ...data,
-                    id: doc.id,
-                    date: date.toLocaleDateString(),
-                    });
-                }
-            });
-
-        
-            let allcategorys = [];
-            let allprice = [];
-            
-            for (let i=0; i<dataArray.length; i++){
-                let categorys = dataArray[i].category;
-                let price = dataArray[i].price;
-                
-                allcategorys.push(categorys)
-                allprice.push(price);
-            }
-                setCategoryList(allcategorys);
-                setPriceList(allprice);
-            }
-
-        else {
-            const fmCollectionRef = collection(db, "money_expense");
-            const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+        try {
             const fmQuerySnapshot = await getDocs(fmQuery);
-        
-            let dataArray = [];
-            console.log("s / e",dataArray)
-            console.log(s,e)
-            
-        
+            console.log(fmQuerySnapshot)
             fmQuerySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const timestamp = data.date;
-                const date = timestamp.toDate();
-                // 클릭한 날짜와 데이터의 날짜를 비교
-                if (
-                    s.getDate() < date.getDate() < e.getDate() &&
-                    s.getMonth() < date.getMonth() < e.getMonth() &&
-                    s.getFullYear() < date.getFullYear() < e.getFullYear()
-                ) {
-                    dataArray.push({
-                    ...data,
-                    id: doc.id,
-                    date: date.toLocaleDateString(),
-                    });
-                    
-                }
-                let allcategorys = [];
-                let allprice = [];
-                
-                for (let i=0; i<dataArray.length; i++){
-                    let categorys = dataArray[i].category;
-                    let price = dataArray[i].price;
-                    
-                    allcategorys.push(categorys)
-                    allprice.push(price);
-                }
-                    setCategoryList(allcategorys);
-                    setPriceList(allprice);
+                dayFilterDateList.push(doc.data())
             });
+            console.log(dayFilterDateList[0].category)
+        } 
+        
+
+
+        catch (error) {
+            console.log('Error fetching data:', error);
         }
+
+        
     }
+
+
+    const getexpensechoiseData2 = async () => {
+        let s = new Date(inputRef.current[0].value);
+        let e = new Date(inputRef.current[1].value);
+        console.log(s, e);
+    
+        const fmCollectionRef = collection(db, "money_expense");
+        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid && 'date', '>=', s && 'date', '<=', e)) 
+        //   .where('date', '>=', s)
+        //   .where('date', '<=', e);
+      
+        try {
+          const fmQuerySnapshot = await getDocs(fmQuery);
+          console.log(fmQuerySnapshot)
+        //   fmQuerySnapshot.forEach((doc) => {
+        //     console.log(doc.id, doc.data());
+        //   });
+        } catch (error) {
+          console.log('Error fetching data:', error);
+        }
+      };
     
     useEffect(() => {   
         handleTest()
