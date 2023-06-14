@@ -33,8 +33,9 @@ import Display from './member_PC_HS/page/Display';
 import './styles/reset.css';
 import './styles/style.css';
 import './App.css';
-import './member_PCH/styles/main.css';
-
+import './member_PCH/styles/main.css'
+import MoneyChartIncome from './member_LJC/pages/MoneyChartIncome';
+import MoneyChartExpense from './member_LJC/pages/MoneyChartExpense';
 
 function App() {
 
@@ -64,7 +65,11 @@ function App() {
 
         <Route element={<Layout/>}>
           <Route path='/calendar' element={<MoneyCalendar/>}/>
+
+          {/* 통계 페이지+수입/지출 라우터 */}
           <Route path='/calendar/chart' element={<MoneyChart/>}/>
+          <Route path='/calendar/chart/income' element={<MoneyChartIncome/>}/>
+          <Route path='/calendar/chart/expense' element={<MoneyChartExpense/>}/>
           
           <Route path='/challenge' element={<ChallengeList/>}/>
           <Route path='/challenge/create' element={<ChallengeCreate/>}/>
@@ -82,6 +87,8 @@ function App() {
           {/* 저금 페이지 */}
           <Route path='/savinginput' element={<SavingInput/>}/>
           <Route path='/savinglist' element={<SavingList/>}/>
+
+          
           
           
           <Route/>
