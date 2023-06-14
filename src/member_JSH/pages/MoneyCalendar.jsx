@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import TotalStatComp from '../components/TotalStatComp'
 import CalendarComp from '../components/CalendarComp'
-import DateDetail from '../../member_HHS/pages/DateDetail';
+import DateDetail from '../../member_HHS/components/DateDetail';
 
 
 export default function MoneyCalendar() {
