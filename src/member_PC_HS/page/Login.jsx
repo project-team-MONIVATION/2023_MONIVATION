@@ -66,7 +66,7 @@ export default function Login() {
               uid: userData.uid,
               nickname: userData.nickname
             }));
-            navigate('/display');
+            navigate('/calendar');
           })
           .catch((error) => {
             console.log("실패했습니다: ", error);
@@ -131,13 +131,11 @@ export default function Login() {
                     uid: userData.uid,
                     nickname: userData.nickname
                   }));
-                  navigate('/display');
+                  navigate('/calendar');
                 })
                 .catch((error) => {
                   console.log("실패했습니다: ", error);
                 });
-
-             
             })
             .catch((error) => {
               console.log("실패했습니다: ", error);
@@ -197,7 +195,7 @@ export default function Login() {
                     uid: userData.uid,
                     nickname: userData.nickname
                   }));
-                  navigate('/display');
+                  navigate('/calendar');
                 })
                 .catch((error) => {
                   console.log("실패했습니다: ", error);

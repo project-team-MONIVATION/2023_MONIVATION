@@ -38,73 +38,77 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
   const onClickCal = (e) => {
     e.preventDefault();
     setShowCal(true);
-  }
+  };
 
   // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
   const onClickDate = (newDate) => {
     setDate(newDate);
     // console.log(newDate)
     setShowCal(false);
-  }
+  };
 
   // 기간 입력하는 모달 on
   const onClickPeriod = (e) => {
     e.preventDefault();
     setShowPeriod(true);
-  }
+  };
 
   // 기간 입력하는 모달의 startDate 입력하는 캘린더 모달 on 
   const onClickStartBtn = (e) => {
     setShowStartCal(true);
     setShowEndCal(false);
-  }
+  };
 
   // startDate 값 입력
   const onClickStartDate = (newDate) => {
     setStartDate(newDate);
     onClickEndBtn()
-  }
+  };
 
   // 기간 입력하는 모달의 endDate 입력하는 캘린더 모달 on
   const onClickEndBtn = (e) => {
     setShowEndCal(true);
     setShowStartCal(false);
-  }
+  };
 
   // endDate 값 입력
   const onClickEndDate = (newDate) => {
-    setEndDate(newDate);
-  }
+    if (startDate >= newDate) {
+      return alert('종료일은 시작일보다 작거나 같을 수 없습니다');
+    } else {
+      return setEndDate(newDate);
+    };
+  };
 
   // installment 값 입력
   const onInputInstallment = (e) => {
     if(payment === "카드") {
-      setInstallment(e.target.value)
+      return setInstallment(e.target.value);
     } else {
       return setInstallment(1);
-    }
-  }
+    };
+  };
 
   // selectedCategory 값 입력
   const onClickCategory = (e) => {
-    setSelectedCategory(e.target.value)
-  }
+    setSelectedCategory(e.target.value);
+  };
 
   // 캘린더 모달에서 입력한 값을 form에 보여주기 위한 변환 함수
   const changeDate = (newDate) => {
-    const YYYY = String(newDate.getFullYear())
-    const MM = String(newDate.getMonth()+1).padStart(2,"0")
-    const DD = String(newDate.getDate()).padStart(2,"0")
-    const valueDate = `${YYYY}-${MM}-${DD}`
+    const YYYY = String(newDate.getFullYear());
+    const MM = String(newDate.getMonth()+1).padStart(2,"0");
+    const DD = String(newDate.getDate()).padStart(2,"0");
+    const valueDate = `${YYYY}-${MM}-${DD}`;
     return valueDate;
-  }
+  };
 
 
   // submit 이벤트
   const inputExpenseRepeat = async(e) => {
     e.preventDefault();
     // 작성된 값을 firestore의 money_expense_repeat 컬렉션에 추가
-    const docRef = await addDoc(collection(db, "money_expense_repeat"), {
+    await addDoc(collection(db, "money_expense_repeat"), {
       uid : user.uid,
       date : date,
       startDate : startDate,
@@ -118,7 +122,7 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
     });
     // 입력 모달창을 닫기 위한 handleSubmit 함수를 호출
     handleSubmit();
-  }
+  };
 
 
   return (

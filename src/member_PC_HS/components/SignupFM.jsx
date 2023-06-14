@@ -35,9 +35,8 @@ export default function SignupFM() {
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedDay, setSelectedDay] = useState('');
 
-  const [textareaValue, setTextareaValue] = useState('');
+  const [textareaValue, setTextareaValue] = useState([]);
   const [selectedButtons, setSelectedButtons] = useState([]);
-
   
   /* 이메일 인증링크 전송 */
   const sendVerificationEmail = () => {
@@ -201,6 +200,12 @@ export default function SignupFM() {
   };
   const isButtonSelected = (buttonName) => selectedButtons.includes(buttonName);
 
+  /* 자기소개 배열작성 */
+  const handleTextareaChange = (e) => {
+    const lines = e.target.value.split('\n');
+    setTextareaValue(lines);
+  }
+
   /* 회원가입 구현 */
   const updateFirestoreDocument = async () => {
   if(uid) {
@@ -215,6 +220,7 @@ export default function SignupFM() {
         birth: selectedYear + "년" + selectedMonth + "월" + selectedDay + "일",
         field: selectedButtons,
         intro: textareaValue,
+        likeNum : 0,
         startDate : Timestamp.fromDate(new Date())
       };
   
@@ -265,7 +271,8 @@ export default function SignupFM() {
           phone : phoneNum,
           birth : selectedYear + "년" + selectedMonth + "월" + selectedDay + "일",
           field : selectedButtons,
-          intro : textareaValue,        
+          intro : textareaValue,
+          likeNum : 0,        
           startDate : Timestamp.fromDate(new Date()),
           login : "email",
         })
@@ -438,7 +445,7 @@ export default function SignupFM() {
         {/* 자산관리사 전문분야 */}
         <label htmlFor="">Professional Field(최대 3개)</label>
         <div>
-          {['경제기초', '기본세무', '부동산', '저축'].map((category) => (
+          {['#경제기초', '#기본세무', '#부동산', '#저축'].map((category) => (
             <FieldBtns
               key={category}
               type="button"
@@ -446,12 +453,12 @@ export default function SignupFM() {
               className={isButtonSelected(category) ? 'selected' : ''}
               style={{ backgroundColor: isButtonSelected(category) ? 'gray' : '' }}
             >
-              #{category}
+              {category}
             </FieldBtns>
           ))}
         </div>
         <div>
-          {['연말정산', '노후계획', '주식', '코인'].map((category) => (
+          {['#연말정산', '#노후계획', '#주식', '#코인'].map((category) => (
             <FieldBtns
               key={category}
               type="button"
@@ -459,12 +466,12 @@ export default function SignupFM() {
               className={isButtonSelected(category) ? 'selected' : ''}
               style={{ backgroundColor: isButtonSelected(category) ? 'gray' : '' }}
             >
-              #{category}
+              {category}
             </FieldBtns>
           ))}
         </div>
         <div>
-          {['사업자', '프리랜서', '상속/증여', '보험'].map((category) => (
+          {['#사업자', '#프리랜서', '#상속/증여', '#보험'].map((category) => (
             <FieldBtns
               key={category}
               type="button"
@@ -472,7 +479,7 @@ export default function SignupFM() {
               className={isButtonSelected(category) ? 'selected' : ''}
               style={{ backgroundColor: isButtonSelected(category) ? 'gray' : '' }}
             >
-              #{category}
+              {category}
             </FieldBtns>
           ))}
         </div>
@@ -486,8 +493,8 @@ export default function SignupFM() {
           cols="48" 
           rows="5"
           placeholder='자산관리 페이지에서 보여지는 내용입니다'
-          value={textareaValue}
-          onChange={(e) => setTextareaValue(e.target.value)}
+          value={textareaValue.join('\n')}
+          onChange={handleTextareaChange}
         ></textarea>
         <br />
 

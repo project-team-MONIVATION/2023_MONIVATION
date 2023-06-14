@@ -8,6 +8,7 @@ export default function Display() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const [datalist, setDatalist] = useState([]);
+  console.log(user)
 
   useEffect(() => {
     const getData = async () => {
@@ -24,21 +25,19 @@ export default function Display() {
 
         if (fmQuerySnapshot.empty && puQuerySnapshot.empty) {
           // uid값을 찾을 수 없음
-          navigate('/account/login');
+          navigate('/calendar');
         } else {
           // uid에 해당하는 사용자가 존재하므로 로그인 처리
           // 데이터를 활용하여 필요한 작업을 수행
           const dataArray = [];
           fmQuerySnapshot.forEach((doc) => {
             dataArray.push({
-              ...doc.data(),
-              id: doc.id,
+              ...doc.data()
             });
           });
           puQuerySnapshot.forEach((doc) => {
             dataArray.push({
-              ...doc.data(),
-              id: doc.id,
+              ...doc.data()
             });
           });
           setDatalist(dataArray);

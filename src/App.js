@@ -1,4 +1,3 @@
-import './App.css';
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -18,6 +17,8 @@ import AssetReservation from './member_PC/pages/AssetReservation';
 import Mypage from './member_HHS/pages/Mypage';
 import MypageEdit from './member_HHS/pages/MypageEdit';
 import MypageReservation from './member_HHS/pages/MypageReservation';
+import SavingInput from './member_LJC/pages/SavingInput';
+import SavingList from './member_LJC/pages/SavingList';
 
 import LoginForm from './member_PC_HS/page/LoginForm';
 import Login from './member_PC_HS/page/Login';
@@ -26,6 +27,15 @@ import SignupFM from './member_PC_HS/components/SignupFM';
 import SignupPU from './member_PC_HS/components/SignupPU';
 // 실험용
 import Display from './member_PC_HS/page/Display';
+
+
+// css
+import './styles/reset.css';
+import './styles/style.css';
+import './App.css';
+import './member_PCH/styles/main.css'
+import MoneyChartIncome from './member_LJC/pages/MoneyChartIncome';
+import MoneyChartExpense from './member_LJC/pages/MoneyChartExpense';
 
 function App() {
 
@@ -55,7 +65,11 @@ function App() {
 
         <Route element={<Layout/>}>
           <Route path='/calendar' element={<MoneyCalendar/>}/>
+
+          {/* 통계 페이지+수입/지출 라우터 */}
           <Route path='/calendar/chart' element={<MoneyChart/>}/>
+          <Route path='/calendar/chart/income' element={<MoneyChartIncome/>}/>
+          <Route path='/calendar/chart/expense' element={<MoneyChartExpense/>}/>
           
           <Route path='/challenge' element={<ChallengeList/>}/>
           <Route path='/challenge/create' element={<ChallengeCreate/>}/>
@@ -63,12 +77,20 @@ function App() {
 
           <Route path='/asset' element={<Asset/>}/>
           <Route path='/asset/managerlist' element={<AssetManagerList/>}/>
-          <Route path='/asset/managerID/profile' element={<AssetManagerProfile/>}/>
-          <Route path='/asset/managerID/profile/reservation' element={<AssetReservation/>}/>
+          <Route path='/asset/managerlist/:id' element={<AssetManagerProfile/>}/>
+          <Route path='/asset/managerID/profile/reservation/:id' element={<AssetReservation/>}/>
 
           <Route path='/mypage' element={<Mypage/>}/>
           <Route path='/mypage/edit' element={<MypageEdit/>}/>
           <Route path='/mypage/reservation' element={<MypageReservation/>}/>
+
+          {/* 저금 페이지 */}
+          <Route path='/savinginput' element={<SavingInput/>}/>
+          <Route path='/savinglist' element={<SavingList/>}/>
+
+          
+          
+          
           <Route/>
         </Route>
       </Routes>
