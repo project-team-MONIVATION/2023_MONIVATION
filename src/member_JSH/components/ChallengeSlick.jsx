@@ -1,32 +1,33 @@
 import React, { Component } from "react";
 import Slider from "react-slick";
-import '../css/slick.css'
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+import Card from 'react-bootstrap/Card';
+import { Link } from "react-router-dom";
 
 function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, display: "block", background: "black", height : "20px",
-      width : "20px", right:"10px"}}
-        onClick={onClick}
-      />
-    );
-  }
-  
-  function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        tyle={{ ...style, display: "block", background: "black", height : "20px",
-      width:"20px", zIndex:"9", left:"10px" }}
-        onClick={onClick}
-      />
-    );
-  }
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: "block", background: "black", height : "20px",
+    width : "20px", right:"10px"}}
+      onClick={onClick}
+    />
+  );
+}
+
+function SamplePrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: "block", background: "black", height : "20px",
+    width:"20px", zIndex:"9", left:"10px" }}
+      onClick={onClick}
+    />
+  );
+}
   
   export default class ChallengeSlick extends Component {
     render() {
@@ -36,34 +37,86 @@ function SampleNextArrow(props) {
         slidesToShow: 3,
         slidesToScroll: 1,
         arrows : true,
-        autoplay: true,
+        autoplay: false,
         speed: 2000,
         autoplaySpeed: 5000,
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />,
-        width : "500px"
       };
       return (
         <div>
+          <Link to='/challenge/challengeID/view'>챌린지1(useParams 설정)</Link>
         <h2>도전 챌린지</h2>
         <Slider {...settings}>
             <div>
-              <h3>1</h3>
+              <Link to='/challenge/challengeID/view'>
+                <Card
+                    style={{
+                      backgroundColor : "gray",
+                      width : "80%",
+                      height: "200px",
+                      backgroundSize : "cover",
+                      backgroundPosition : "center",
+                      padding : "10px"
+                    }}
+                  >
+                    <Card.Body className="camp-slide-bar">
+                    <Card.Title style={{padding : "20px", fontWeight : "bold", color : "white"}}>1</Card.Title>
+                    <Card.Text style={{marginBottom : "0"}}>설명</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Link>
             </div>
             <div>
-              <h3>2</h3>
+              <Card
+                  style={{
+                    backgroundColor : "gray",
+                    width : "80%",
+                    height: "200px",
+                    backgroundSize : "cover",
+                    backgroundPosition : "center",
+                    padding : "10px"
+                  }}
+                >
+                  <Card.Body className="camp-slide-bar">
+                  <Card.Title style={{padding : "20px", fontWeight : "bold", color : "white"}}>2</Card.Title>
+                  <Card.Text style={{marginBottom : "0"}}>설명</Card.Text>
+                </Card.Body>
+              </Card>
             </div>
             <div>
-              <h3>3</h3>
+              <Card
+                  style={{
+                    backgroundColor : "gray",
+                    width : "80%",
+                    height: "200px",
+                    backgroundSize : "cover",
+                    backgroundPosition : "center",
+                    padding : "10px"
+                  }}
+                >
+                  <Card.Body className="camp-slide-bar">
+                  <Card.Title style={{padding : "20px", fontWeight : "bold", color : "white"}}>3</Card.Title>
+                  <Card.Text style={{marginBottom : "0"}}>설명</Card.Text>
+                </Card.Body>
+              </Card>
             </div>
             <div>
-              <h3>4</h3>
-            </div>
-            <div>
-              <h3>5</h3>
-            </div>
-            <div>
-              <h3>6</h3>
+              <Card
+                  style={{
+                    backgroundColor : "gray",
+                    width : "80%",
+                    height: "200px",
+                    backgroundSize : "cover",
+                    backgroundPosition : "center",
+                    padding : "10px"
+                  }}
+                >
+                  <Card.Body className="camp-slide-bar">
+                  <Card.Title style={{padding : "20px", fontWeight : "bold", color : "white"}}>4</Card.Title>
+                  <Card.Text style={{marginBottom : "0"}}>설명</Card.Text>
+                </Card.Body>
+              </Card>
             </div>
           </Slider>
         </div>
