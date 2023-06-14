@@ -20,8 +20,8 @@ export default function MainNavComp() {
   const onLogout = () => {
     // console.log(sessionStorage.getItem('user'));
     dispatch(logout());
-    window.scrollTo({top:0, behavior:"smooth"})
-  }
+    window.scrollTo({top:0, behavior:"smooth"});
+  };
 
   useEffect(() => {
     window.addEventListener("scroll", onScroll);

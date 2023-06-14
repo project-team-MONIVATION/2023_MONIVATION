@@ -1,21 +1,21 @@
 // 메인페이지 
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 
 import { logout } from '../../member_PC_HS/slice/userSlice';
-import { FallingCoin } from '../components/CoinAnimationComp';
+import FallingCoinComp from '../components/FallingCoinComp';
 import AppPointerComp from '../components/AppPointerComp';
 import LogoFlowComp from '../components/LogoFlowComp';
 import MainNavComp from '../components/MainNavComp';
 
 
-export default function Home() {
+export default function Home({ handleHover }) {
   const user = useSelector((state)=>state.user.user);
-  console.log(user);
+  // console.log(user);
 
   const [footerHidden, setFooterHidden] = useState(false);
   
@@ -30,7 +30,8 @@ export default function Home() {
 
   const footerToggleBtn = () => {
     setFooterHidden(footerHidden => !footerHidden);
-  }
+  };
+
 
   return (
     <div id='mainpage'>
@@ -38,18 +39,18 @@ export default function Home() {
       <main>
         <section id='section1'>
           <div className='coin-animation-left'>
-            <FallingCoin/>
-            <FallingCoin/>
-            <FallingCoin/>
-            <FallingCoin/>
-            <FallingCoin/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
           </div>
           <div className='coin-animation-right'>
-            <FallingCoin/>
-            <FallingCoin/>
-            <FallingCoin/>
-            <FallingCoin/>
-            <FallingCoin/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
           </div>
           <div className='logobox'>
             <div className='logo'/>

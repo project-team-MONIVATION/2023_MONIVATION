@@ -57,7 +57,7 @@ export default function LogoFlowComp() {
       if (flowBox) {
         flowBox.style.opacity = '1'
         flowBox.style.transition = 'all 1s'
-      }
+      };
     }, 2000);
 
     return () => { clearTimeout(timer) }
