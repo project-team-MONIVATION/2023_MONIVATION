@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -51,13 +51,16 @@ export default function MoneyChartExpense() {
     // 끝난날짜
     const [enddayclick, setEnddayclick] = useState('');
 
-    // 일(day )열기 닫기
-    const [isCheck, setCheck] = useState(false);
+    // 클릭한 달 (현재 1개월 첫날/마지막날)
+    // 첫날
+    const [ nowmonthfirstday, setNowmonthfirstday] = useState('');
+    // 마지막날
+    const [ nowmonthlastday, setNowmonthlastday] = useState('');
 
-    // 기간 선택 열기 닫기
-    const [modal, setModal] = useState(false);
+        // 일(day )열기 닫기
+        const [isCheck, setCheck] = useState(false);
         // (기간)시작날짜 열기 닫기
-        const [ischeck2, setCheck2] = useState(true);
+        const [ischeck2, setCheck2] = useState(false);
         // (기간) 끝난 날짜 열기 닫기
         const [ischeck3, setCheck3] = useState(false);
 
@@ -65,6 +68,8 @@ export default function MoneyChartExpense() {
     const [categoryList , setCategoryList] = useState([]);
     //금액
     const [ priceList, setPriceList] = useState();
+
+    const inputRef = useRef([]);
     
 
     useEffect(() => {
@@ -90,124 +95,206 @@ export default function MoneyChartExpense() {
                         id: doc.id,
                     });
                 });
-
-                // console.log(checkday.getDate())
-                
-                // switch(checkday.getDate()){
-                //     case value.getDate() : 
-                // let expenseday = [];
-
-                // for (let i=0; i<dataArray.length; i++){
-                //     let day = dataArray[i].date.toDate();
-                //     expenseday.push(day.getDate())
-                // }
-                // setCheckday(expenseday)
-                
-                
-                        // let allcategorys = [];
-                        // let allprice = [];
-                        
-                        // for (let i=0; i<dataArray.length; i++){
-                        //     let categorys = dataArray[i].category;
-                        //     let price = dataArray[i].price;
-                        
-                        //     allcategorys.push(categorys)
-                        //     allprice.push(price);
-                        // }
-                        // setCategoryList(allcategorys);
-                        // setPriceList(allprice);
-
+            }
+        } catch (error) {
+            console.log("실패했습니다", error);
         }
-    } catch (error) {
-        console.log("실패했습니다", error);
-    }
     };
     
     // 일별
     // 누르면 그날의 카테고리와 가격이 나옴
-    const getexpenseData = async (i) => {
-        const fmCollectionRef = collection(db, "money_expense");
-        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
-        const fmQuerySnapshot = await getDocs(fmQuery);
+    // const getexpenseData = async (i) => {
+    //     const fmCollectionRef = collection(db, "money_expense");
+    //     const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+    //     const fmQuerySnapshot = await getDocs(fmQuery);
     
-        let dataArray = [];
-        let newArray = [];
+    //     let dataArray = [];
+    //     let newArray = [];
     
-        fmQuerySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const timestamp = data.date;
-            const date = timestamp.toDate();
+    //     fmQuerySnapshot.forEach((doc) => {
+    //         const data = doc.data();
+    //         const timestamp = data.date;
+    //         const date = timestamp.toDate();
         
-            // 클릭한 날짜와 데이터의 날짜를 비교
-            if (
+    //         // 클릭한 날짜와 데이터의 날짜를 비교
+    //         if (
                 
-                date.getDate() === i.getDate() &&
-                date.getMonth() === i.getMonth() &&
-                date.getFullYear() === i.getFullYear()
-            ) {
-                dataArray.push({
-                ...data,
-                id: doc.id,
-                date: date.toLocaleDateString(),
-                });
-            }
-        });
+    //             date.getDate() === i.getDate() &&
+    //             date.getMonth() === i.getMonth() &&
+    //             date.getFullYear() === i.getFullYear()
+    //         ) {
+    //             dataArray.push({
+    //             ...data,
+    //             id: doc.id,
+    //             date: date.toLocaleDateString(),
+    //             });
+    //         }
+    //     });
 
-        console.log(dataArray);
-        let allcategorys = [];
-        let allprice = [];
+    //     console.log(dataArray);
+    //     let allcategorys = [];
+    //     let allprice = [];
             
-        for (let i=0; i<dataArray.length; i++){
-            let categorys = dataArray[i].category;
-            let price = dataArray[i].price;
+    //     for (let i=0; i<dataArray.length; i++){
+    //         let categorys = dataArray[i].category;
+    //         let price = dataArray[i].price;
             
-            allcategorys.push(categorys)
-            allprice.push(price);
-        }
-            setCategoryList(allcategorys);
-            setPriceList(allprice);
-    }
+    //         allcategorys.push(categorys)
+    //         allprice.push(price);
+    //     }
+    //         setCategoryList(allcategorys);
+    //         setPriceList(allprice);
+    // }
+
 
     // 기간지정 비교 함수
     // 기간안에 데이터 들의 금액과 카테고리를 가져옴
-    const getexpensechoiseData = async (s,e) => {
-        const fmCollectionRef = collection(db, "money_expense");
-        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
-        const fmQuerySnapshot = await getDocs(fmQuery);
+    const getexpensechoiseData = async () => {
+        let s = new Date(inputRef.current[0].value);
+        let e = new Date(inputRef.current[1].value);
+        console.log(s,e)
+
+        if (e.getDate() === s.getDate() &&
+            e.getMonth() === s.getMonth() &&
+            e.getFullYear() === s.getFullYear()){
+            const fmCollectionRef = collection(db, "money_expense");
+            const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+            const fmQuerySnapshot = await getDocs(fmQuery);
     
-        let dataArray = [];
-        let newArray = [];
+            let dataArray = [];
+            console.log("s=e",dataArray)
+            
     
-        fmQuerySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const timestamp = data.date;
-            const date = timestamp.toDate();
+            fmQuerySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const timestamp = data.date;
+                const date = timestamp.toDate();
         
-            // 클릭한 날짜와 데이터의 날짜를 비교
-            if (
-                s,e &&
-                s.getDate() < date.getDate() < e.getDate() &&
-                s.getDate() < date.getMonth() < e.getMonth() &&
-                s.getDate() < date.getFullYear() < e.getFullYear()
-            ) {
-                dataArray.push({
-                ...data,
-                id: doc.id,
-                date: date.toLocaleDateString(),
-                });
+                // 클릭한 날짜와 데이터의 날짜를 비교
+                if (
+                    date.getDate() === s.getDate() &&
+                    date.getMonth() === s.getMonth() &&
+                    date.getFullYear() === s.getFullYear()
+                ) {
+                    dataArray.push({
+                    ...data,
+                    id: doc.id,
+                    date: date.toLocaleDateString(),
+                    });
+                }
+            });
+
+        
+            let allcategorys = [];
+            let allprice = [];
+            
+            for (let i=0; i<dataArray.length; i++){
+                let categorys = dataArray[i].category;
+                let price = dataArray[i].price;
+                
+                allcategorys.push(categorys)
+                allprice.push(price);
             }
-        });
+                setCategoryList(allcategorys);
+                setPriceList(allprice);
+            }
+
+        else {
+            const fmCollectionRef = collection(db, "money_expense");
+            const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+            const fmQuerySnapshot = await getDocs(fmQuery);
+        
+            let dataArray = [];
+            console.log("s / e",dataArray)
+            console.log(s,e)
+            
+        
+            fmQuerySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const timestamp = data.date;
+                const date = timestamp.toDate();
+                // 클릭한 날짜와 데이터의 날짜를 비교
+                if (
+                    s.getDate() < date.getDate() < e.getDate() &&
+                    s.getMonth() < date.getMonth() < e.getMonth() &&
+                    s.getFullYear() < date.getFullYear() < e.getFullYear()
+                ) {
+                    dataArray.push({
+                    ...data,
+                    id: doc.id,
+                    date: date.toLocaleDateString(),
+                    });
+                    
+                }
+                let allcategorys = [];
+                let allprice = [];
+                
+                for (let i=0; i<dataArray.length; i++){
+                    let categorys = dataArray[i].category;
+                    let price = dataArray[i].price;
+                    
+                    allcategorys.push(categorys)
+                    allprice.push(price);
+                }
+                    setCategoryList(allcategorys);
+                    setPriceList(allprice);
+            });
+        }
     }
+    
+    useEffect(() => {   
+        handleTest()
+    },[onedayclick])
+
+    useEffect(() => {
+        handleTest2()
+    },[startdayclick,enddayclick])
+
+    useEffect(() => {
+        handleTest3()
+    },[nowmonthfirstday,nowmonthlastday])
+
 
     const changeDate = (newDate) => {
+        if(!newDate){
+            newDate=new Date()
+        }
         const YYYY = String(newDate.getFullYear())
         const MM = String(newDate.getMonth()+1).padStart(2,"0")
         const DD = String(newDate.getDate()).padStart(2,"0")
         const valueDate = `${YYYY}-${MM}-${DD}`
         return valueDate;
     }
+    
+    // 1개월 누르면 그 현재 월 첫일 ~ 현재 월 마직막 일
+    const chageDateOneMonth = () => {
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
+        setNowmonthfirstday(firstDay);
+        setNowmonthlastday(lastDay);
+    }
 
+    // 클릭한 일 input value에 담기
+    const handleTest = () => {
+        inputRef.current[0].value = changeDate(onedayclick) 
+        inputRef.current[1].value = changeDate(onedayclick)
+        
+    }
+    // 기간으로 선택한 시작/끝 날짜 input value에 담기
+    const handleTest2 = () => {
+        inputRef.current[0].value = changeDate(startdayclick) 
+        inputRef.current[1].value = changeDate(enddayclick)
+    }
+
+    // 현재 1개월 날짜(그 달의 1일 , 마직막 일) input value에 담기
+    const handleTest3 = () => {
+        inputRef.current[0].value = changeDate(nowmonthfirstday) 
+        inputRef.current[1].value = changeDate(nowmonthlastday)
+    }
+
+    
 
     
     
@@ -239,11 +326,12 @@ export default function MoneyChartExpense() {
         ],
     };
 
+    
+    
 
     return (
         <div>
             <h1>지출</h1>
-
             <div>
                 <button>
                     <Link to="/calendar/chart/income">수입</Link>
@@ -252,7 +340,10 @@ export default function MoneyChartExpense() {
                     <Link to="/calendar/chart/expense">지출</Link>
                 </button>
             </div>
-
+                    <input ref={el => (inputRef.current[0] = el)}  type="text"/>
+                    ~  
+                    <input ref={el => (inputRef.current[1] = el)}  type="text"/>
+        <br />
             {/* 일별  */}
             <button 
                 onClick={() => {setCheck((e) => !e);}}
@@ -264,24 +355,23 @@ export default function MoneyChartExpense() {
                     <Calendar 
                         onChange={onChange} 
                         value={value}
-                        onClickDay={(value, event) => {getexpenseData(value);}}
+                        onClickDay={(value, event) => {setOnClickDay(value);}}
                     />
                 </div>
             )}
 
+        <br />
+            {/* 1개월 */}
+            <button
+                onClick={() => {chageDateOneMonth()}}
+            >
+                1개월
+            </button>
+
             {/* 선택한 기간별 */}
-            {<div>
-                    <input type="text" value={changeDate(startdayclick)}/>
-                    ~
-                    <input type="text" value={changeDate(enddayclick)}/>
-            <br />    
-                    <button
-                        onClick={() => {setModal((e) => !e);}}
-                    >
-                        {modal ? "기간선택" : "기간선택"}
-                    </button>
-                    {/* 기간선택 모달창 */}
-                    {modal && (
+            <div>
+
+        <br />    
                     <div className='saving-period'>
                         {/* 시작일 */}
                         <button
@@ -315,22 +405,26 @@ export default function MoneyChartExpense() {
                                 />
                             </div>
                         )}
-
-                        {/* x닫기 버튼 */}
-                        <button
-                            onClick={() => {setModal((e) => !e);}}
-                        >
-                        {modal ? "X" : "열림"}
-                        </button>
+                <br />
+                        
+                
+                        
                 <br />
                         <button
-                            onClick={getexpensechoiseData()}
+                            onClick={() => getexpensechoiseData()}
                         >
                             조회
                         </button>
+                        
+                        <button
+                            // onClick={() => chageDateOneMonth()}
+                        >
+                            test
+                        </button>
+
                     </div>
-                )}
-            </div>}
+                
+            </div>
 
 
             
