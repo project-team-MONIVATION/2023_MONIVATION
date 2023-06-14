@@ -32,14 +32,12 @@ export default function Display() {
           const dataArray = [];
           fmQuerySnapshot.forEach((doc) => {
             dataArray.push({
-              ...doc.data(),
-              id: doc.id,
+              ...doc.data()
             });
           });
           puQuerySnapshot.forEach((doc) => {
             dataArray.push({
-              ...doc.data(),
-              id: doc.id,
+              ...doc.data()
             });
           });
           setDatalist(dataArray);

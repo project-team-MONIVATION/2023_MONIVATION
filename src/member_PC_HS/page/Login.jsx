@@ -136,8 +136,6 @@ export default function Login() {
                 .catch((error) => {
                   console.log("실패했습니다: ", error);
                 });
-
-            
             })
             .catch((error) => {
               console.log("실패했습니다: ", error);
