@@ -38,20 +38,7 @@ export default function Home({ handleHover }) {
       <AppPointerComp/>
       <main>
         <section id='section1'>
-          <div className='coin-animation-left'>
-            <FallingCoinComp/>
-            <FallingCoinComp/>
-            <FallingCoinComp/>
-            <FallingCoinComp/>
-            <FallingCoinComp/>
-          </div>
-          <div className='coin-animation-right'>
-            <FallingCoinComp/>
-            <FallingCoinComp/>
-            <FallingCoinComp/>
-            <FallingCoinComp/>
-            <FallingCoinComp/>
-          </div>
+          <FallingCoinComp/>
           <div className='logobox'>
             <div className='logo'/>
             <LogoFlowComp/>
