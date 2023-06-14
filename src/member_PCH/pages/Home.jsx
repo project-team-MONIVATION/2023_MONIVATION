@@ -1,18 +1,24 @@
 // 메인페이지 
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+
 import { logout } from '../../member_PC_HS/slice/userSlice';
-import { FallingCoin } from '../components/CoinAnimationComp';
+import FallingCoinComp from '../components/FallingCoinComp';
+import AppPointerComp from '../components/AppPointerComp';
+import LogoFlowComp from '../components/LogoFlowComp';
+import MainNavComp from '../components/MainNavComp';
 
-export default function Home() {
-  const [footerHidden, setFooterHidden] = useState(false);
 
+export default function Home({ handleHover }) {
   const user = useSelector((state)=>state.user.user);
-  console.log(user)
+  // console.log(user);
 
+  const [footerHidden, setFooterHidden] = useState(false);
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -23,100 +29,108 @@ export default function Home() {
   }
 
   const footerToggleBtn = () => {
-    setFooterHidden(footerHidden => !footerHidden); // on,off 개념 boolean
-}
+    setFooterHidden(footerHidden => !footerHidden);
+  };
+
 
   return (
     <div id='mainpage'>
+      <AppPointerComp/>
       <main>
         <section id='section1'>
           <div className='coin-animation-left'>
-            <FallingCoin/>
-            <FallingCoin/>
-            <FallingCoin/>
-            <FallingCoin/>
-            <FallingCoin/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
           </div>
           <div className='coin-animation-right'>
-            <FallingCoin/>
-            <FallingCoin/>
-            <FallingCoin/>
-            <FallingCoin/>
-            <FallingCoin/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
+            <FallingCoinComp/>
           </div>
           <div className='logobox'>
-            <div className='logo'></div>
+            <div className='logo'/>
+            <LogoFlowComp/>
           </div>
           <div className='sloganbox'>
-            <p>MONEY + MOTIVATION</p>
-            <h3>돈관리에 동기부여를 더하자!</h3>
-            <h1>MONIVATION</h1>
+            <div>
+              <p>MONEY + MOTIVATION</p>
+              <h3>돈관리에 동기부여를 더하자!</h3>
+            </div>
           </div>
           {
             user
             ? (
               <div className='btnbox'>
-                <p>{user.nickname}님 환영합니다</p>
-                <motion.button
-                  onClick={()=>{navigate('calendar')}}
-                  whileHover={{ scale: 1.15 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  가계부
-                </motion.button>
-                <motion.button
-                  onClick={()=>{navigate('/challenge')}}
-                  whileHover={{ scale: 1.15 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  챌린지
-                </motion.button>
-                <motion.button
-                  onClick={()=>{navigate('/asset')}}
-                  whileHover={{ scale: 1.15 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  자산관리
-                </motion.button>
-                <motion.button
-                  onClick={()=>{navigate('/mypage')}}
-                  whileHover={{ scale: 1.15 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  마이페이지
-                </motion.button>
-                <motion.button
-                  onClick={onLogout}
-                  whileHover={{ scale: 1.15 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  로그아웃
-                </motion.button>
+                <p>🌟 {user.nickname}님 환영합니다 🌟</p>
+                <div className='onlogin'>
+                  <motion.button
+                    onClick={()=>{navigate('calendar')}}
+                    whileHover={{ scale: 1.15 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    가계부
+                  </motion.button>
+                  <motion.button
+                    onClick={()=>{navigate('/challenge')}}
+                    whileHover={{ scale: 1.15 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    챌린지
+                  </motion.button>
+                  <motion.button
+                    onClick={()=>{navigate('/asset')}}
+                    whileHover={{ scale: 1.15 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    자산관리
+                  </motion.button>
+                  <motion.button
+                    onClick={()=>{navigate('/mypage')}}
+                    whileHover={{ scale: 1.15 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    마이페이지
+                  </motion.button>
+                  <motion.button
+                    onClick={onLogout}
+                    whileHover={{ scale: 1.15 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    로그아웃
+                  </motion.button>
+                </div>
               </div>
-              
             )
             : (
               <div className='btnbox'>
-                <p>돈관리 도파민 생성 시작하기</p>
-                <motion.button 
-                  onClick={()=>{navigate('/account/login')}}
-                  whileHover={{ scale: 1.15 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  로그인
-                </motion.button>
-                <br />
-                <motion.button 
-                  onClick={()=>{navigate('/account/create')}}
-                  whileHover={{ scale: 1.15 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  회원가입
-                </motion.button>
+                <p>🌟 저축 도파민 생성 시작하기 🌟</p>
+                <div className='onlogout'>
+                  <motion.button 
+                    onClick={()=>{navigate('/account/login')}}
+                    whileHover={{ scale: 1.15 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    로그인
+                  </motion.button>
+                  <motion.button 
+                    onClick={()=>{navigate('/account/create')}}
+                    whileHover={{ scale: 1.15 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    회원가입
+                  </motion.button>
+                </div>
               </div>
             )
           }
         </section>
+
+        <MainNavComp/>
 
         <section id='section2'>
           <div className='box-container'>
@@ -130,6 +144,7 @@ export default function Home() {
               <p>해외로 현실도피🛫</p>
             </div>
           </div>
+          <div className='space'/>
         </section>
 
         <section id='section3'>
@@ -145,6 +160,7 @@ export default function Home() {
               <p>건강이 최고</p>
             </div>
           </div>
+          <div className='space'/>
         </section>
 
         <section id='section4'>
@@ -155,6 +171,7 @@ export default function Home() {
               이미지 슬라이드
             </div>
           </div>
+          <div className='space'/>
         </section>
 
         <section id='section5'>
@@ -165,6 +182,7 @@ export default function Home() {
               이미지 슬라이드
             </div>
           </div>
+          <div className='space'/>
         </section>
 
         <section id='section6'>

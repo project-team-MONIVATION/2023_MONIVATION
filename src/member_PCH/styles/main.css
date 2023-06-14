@@ -2,20 +2,34 @@
 #mainpage {
   width: 100%;
   height: 100vh;
+  position: relative;
 }
+
+#mainpage .pointer {
+  position: fixed;
+  background-color: #F4D750;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  z-index: 9999;
+  transform: translate((-50%,-50%));
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+
 
 /* 섹션1 */
 .coin-animation-left .coin-container {
-  left: 50px;
+  left: 2%;
 }
 
 .coin-animation-right .coin-container {
-  right: 50px;
+  right: 2%;
 }
 
 .coin-container{
   position: absolute;
-  width: 30%;
+  width: 33%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -69,26 +83,38 @@ main #section1 .logobox {
 }
 
 main #section1 .logobox .logo {
-  height: 100%;
+  position: absolute;
+  top: 8vh;
+  left: 50%;
+  width: 27vh;
+  height: 27vh;
+  background-color: white;
   background-image: url('../../assets/MONIVATION_assets/logo_onlyillust.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   margin: auto;
+  transform: translate(-50%);
+  z-index: 100;
 }
 
 main #section1 .sloganbox {
+  box-sizing: border-box;
   height: 20vh;
+  padding-bottom: 5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 main #section1 .sloganbox p {
-  font-weight: bold;
   font-size: 1.5rem;
+  font-family: 'Cafe24Ssurround';
 }
 
 main #section1 .sloganbox h3 {
   width: 600px;
-  font-size: 2rem;
+  font-size: 2.5rem;
   padding: 15px 0 10px 0;
   margin: auto;
 }
@@ -105,34 +131,117 @@ main #section1 .btnbox {
 }
 
 main #section1 .btnbox p {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: white;
 }
 
 main #section1 .btnbox button {
-  width: 200px;
-  height: 50px;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   border: 0;
-  border-radius: 15px;
-  margin-top: 30px;
+  border-radius: 20px;
+  opacity: 0.9;
+  background-color: white;
+  font-size: 1.3rem;
+  font-weight: bold;
 }
 
-main #section1 .btnbox button:last-child {
+main #section1 .btnbox .onlogin {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  margin: auto;
+  margin-top: 40px;
+}
+
+main #section1 .btnbox .onlogin button {
+  width: 18%;
+  height: 200px;
+}
+
+main #section1 .btnbox .onlogout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 20%;
+  height: 70%;
+  margin: auto;
+  margin-top: 40px;
+}
+
+main #section1 .btnbox .onlogout button {
+  width: 100%;
+  height: 45%;
+  border-radius: 50px;
+}
+
+main #section1 .btnbox.onlogout button:last-child {
   margin-top: 15px;
 }
 
 main #section1 .btnbox button:hover {
   background: linear-gradient(90deg, rgb(244, 215, 80), rgb(247, 224, 117) 50%, rgb(244, 215, 80));
+  opacity: 1;
 }
 
+
+/* main-nav */
+main .main-nav {
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  background-color: #7D21CF;
+  box-sizing: border-box;
+  padding: 0 3%;
+}
+
+main .main-nav ul {
+  height: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+main .main-nav .nav-logo {
+  background-image: url('../../assets/MONIVATION_assets/logo_onlytext_white.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: white;
+  width: 10%;
+  height: 60px;
+  cursor: pointer;
+}
+
+main .main-nav .nav-list {
+  width: 40%;
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  font-weight: bold;
+}
+
+main .main-nav .nav-list li {
+  cursor: pointer;
+}
+
+main .main-nav.onlogout .nav-logo {
+  margin: auto;
+}
+
+/* 섹션 2, 3, 4, 5 space 클래스 */
+main .space {
+  width: 100%;
+  height: 50px;
+  background-color: #ECECEC;
+}
 
 /* 섹션 2 */
 main #section2 {
   width: 100%;
   height: 750px;
-  background-color: #ECECEC;
 }
 main #section2 .box-container {
   box-sizing: border-box;
@@ -140,7 +249,6 @@ main #section2 .box-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
   padding: 0 5%;
 }
 
@@ -154,7 +262,6 @@ main #section2 .box-container .imgbox {
 main #section3 {
   width: 100%;
   height: 750px;
-  background-color: #ECECEC;
 }
 main #section3 .box-container {
   box-sizing: border-box;
@@ -162,7 +269,6 @@ main #section3 .box-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
   padding: 0 5%;
 }
 
@@ -176,12 +282,10 @@ main #section3 .box-container .imgbox {
 main #section4 {
   width: 100%;
   height: 950px;
-  background-color: #ECECEC;
 }
 main #section4 .box-container {
   box-sizing: border-box;
   height: 900px;
-  background-color: white;
   padding: 0 5%;
 }
 
@@ -190,12 +294,11 @@ main #section4 .box-container {
 main #section5 {
   width: 100%;
   height: 750px;
-  background-color: #ECECEC;
 }
+
 main #section5 .box-container {
   box-sizing: border-box;
   height: 700px;
-  background-color: white;
   padding: 0 5%;
 }
 
@@ -246,6 +349,7 @@ main #section6 {
 #mainpage footer .title-sns .sns:hover {
   text-decoration-line: underline;
   text-decoration-style: wavy;
+  text-decoration-color: #F4D750;
 }
 
 #mainpage footer .about {

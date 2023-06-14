@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 import Calendar from 'react-calendar';
 
@@ -28,33 +28,33 @@ export default function InputIncomeComp({ handleSubmit }) {
   const onClickCal = (e) => {
     e.preventDefault();
     setShowCal(true);
-  }
+  };
 
   // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
   const onClickDate = (newDate) => {
     setDate(newDate);
     setShowCal(false);
-  }
+  };
 
   // selectedCategory 값 입력
   const onClickCategory = (e) => {
     setSelectedCategory(e.target.value);
-  }
+  };
 
   // 캘린더 모달에서 입력한 값을 form에 보여주기 위한 변환 함수
   const changeDate = (newDate) => {
-    const YYYY = String(newDate.getFullYear())
-    const MM = String(newDate.getMonth()+1).padStart(2,"0")
-    const DD = String(newDate.getDate()).padStart(2,"0")
-    const valueDate = `${YYYY}-${MM}-${DD}`
+    const YYYY = String(newDate.getFullYear());
+    const MM = String(newDate.getMonth()+1).padStart(2,"0");
+    const DD = String(newDate.getDate()).padStart(2,"0");
+    const valueDate = `${YYYY}-${MM}-${DD}`;
     return valueDate;
-  }
+  };
 
   // submit 이벤트
   const inputIncome = async(e) => {
     e.preventDefault();
     // 작성된 값을 firestore의 money_income 컬렉션에 추가
-    const docRef = await addDoc(collection(db, "money_income"), {
+    await addDoc(collection(db, "money_income"), {
       uid : user.uid,
       date : date,
       price : price,
@@ -63,7 +63,7 @@ export default function InputIncomeComp({ handleSubmit }) {
     });
     // 입력 모달창을 닫기 위한 handleSubmit 함수를 호출
     handleSubmit();
-  }
+  };
 
   return (
     <div>

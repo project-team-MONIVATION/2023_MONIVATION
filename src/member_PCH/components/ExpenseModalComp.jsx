@@ -14,13 +14,13 @@ export default function ExpenseModalComp({ setModalIsOpen }) {
   const onShowExpense = () => {
     setShowExpense(true);
     setShowExpenseRepeat(false);
-  }
+  };
 
   // 반복지출 모달 on
   const onShowExpenseRepeat = () => {
     setShowExpense(false);
     setShowExpenseRepeat(true);
-  }
+  };
 
   // 일반지출 또는 반복지출 모달의 form에서 submit 후 모달을 닫기 위함
   const handleSubmit = () => {
