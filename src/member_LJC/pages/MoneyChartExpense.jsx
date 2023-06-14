@@ -42,17 +42,23 @@ export default function MoneyChartExpense() {
     //날짜배열
     const [checkday, setCheckday] = useState('');
 
-    // 클릭한 날짜
+    // 클릭한 날짜(일)
     const [onedayclick, setOnClickDay] = useState('');
+
+    // 클릭한 날짜(기간)
+    // 시작날짜
+    const [startdayclick, setStartdayclick] = useState('');
+    // 끝난날짜
+    const [enddayclick, setEnddayclick] = useState('');
 
     // 일(day )열기 닫기
     const [isCheck, setCheck] = useState(false);
 
     // 기간 선택 열기 닫기
     const [modal, setModal] = useState(false);
-        // (기간)시작날짜
+        // (기간)시작날짜 열기 닫기
         const [ischeck2, setCheck2] = useState(true);
-        // (기간) 끝난 날짜
+        // (기간) 끝난 날짜 열기 닫기
         const [ischeck3, setCheck3] = useState(false);
 
     //카테고리
@@ -162,6 +168,8 @@ export default function MoneyChartExpense() {
             setPriceList(allprice);
     }
 
+    // 기간지정 비교 함수
+    // 기간안에 데이터 들의 금액과 카테고리를 가져옴
     const getexpensechoiseData = async (s,e) => {
         const fmCollectionRef = collection(db, "money_expense");
         const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
@@ -189,10 +197,15 @@ export default function MoneyChartExpense() {
                 });
             }
         });
-
-
     }
 
+    const changeDate = (newDate) => {
+        const YYYY = String(newDate.getFullYear())
+        const MM = String(newDate.getMonth()+1).padStart(2,"0")
+        const DD = String(newDate.getDate()).padStart(2,"0")
+        const valueDate = `${YYYY}-${MM}-${DD}`
+        return valueDate;
+    }
 
 
 
@@ -255,9 +268,13 @@ export default function MoneyChartExpense() {
                     />
                 </div>
             )}
+
             {/* 선택한 기간별 */}
             {<div>
-                    
+                    <input type="text" value={changeDate(startdayclick)}/>
+                    ~
+                    <input type="text" value={changeDate(enddayclick)}/>
+            <br />    
                     <button
                         onClick={() => {setModal((e) => !e);}}
                     >
@@ -277,7 +294,7 @@ export default function MoneyChartExpense() {
                                 <Calendar 
                                     onChange={onChange}
                                     value={value}
-                                    onClickDay={(value, event) => {setCheck2(false); setCheck3(true); setMindate(value);}}
+                                    onClickDay={(value, event) => {setStartdayclick(value); setCheck2(false); setCheck3(true); setMindate(value);}}
                                 />
                             </div>
                         )}
@@ -293,7 +310,7 @@ export default function MoneyChartExpense() {
                                 <Calendar 
                                     onChange={onChange} 
                                     value={value}
-                                    onClickDay={(value, event) => {setCheck3(false);}}
+                                    onClickDay={(value, event) => {setEnddayclick(value); setCheck3(false);}}
                                     minDate={mindate}
                                 />
                             </div>
@@ -301,9 +318,15 @@ export default function MoneyChartExpense() {
 
                         {/* x닫기 버튼 */}
                         <button
-                        onClick={() => {setModal((e) => !e);}}
+                            onClick={() => {setModal((e) => !e);}}
                         >
                         {modal ? "X" : "열림"}
+                        </button>
+                <br />
+                        <button
+                            onClick={getexpensechoiseData()}
+                        >
+                            조회
                         </button>
                     </div>
                 )}
