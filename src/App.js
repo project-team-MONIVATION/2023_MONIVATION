@@ -30,8 +30,8 @@ import Display from './member_PC_HS/page/Display';
 
 
 // css
-import './styles/reset.css'
-import './styles/style.css'
+import './styles/reset.css';
+import './styles/style.css';
 import './App.css';
 import './member_PCH/styles/main.css'
 import MoneyChartIncome from './member_LJC/pages/MoneyChartIncome';

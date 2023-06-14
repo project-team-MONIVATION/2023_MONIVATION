@@ -1,9 +1,13 @@
 // 개인회원 마이페이지
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Mypage() {
+  useEffect(()=>{
+    window.scrollTo({top: 0})
+  },[])
+
   return (
     <div>
       <h1>마이페이지</h1>

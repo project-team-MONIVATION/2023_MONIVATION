@@ -29,40 +29,43 @@ export default function InputExpenseComp({ handleSubmit }) {
   const onClickCal = (e) => {
     e.preventDefault();
     setShowCal(true);
-  }
+  };
 
   // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
   const onClickDate = (newDate) => {
     setDate(newDate);
     // console.log(newDate)
     setShowCal(false);
-  }
+  };
 
   // installment 값 입력
   const onInputInstallment = (e) => {
     if(payment === "카드") {
-      setInstallment(e.target.value)
+      return setInstallment(e.target.value);
     } else {
       return setInstallment(1);
-    }
-  }
+    };
+  };
 
   // selectedCategory 값 입력
   const onClickCategory = (e) => {
     setSelectedCategory(e.target.value);
-  }
+  };
 
   // 캘린더 모달에서 입력한 값을 form에 보여주기 위한 변환 함수
-  const YYYY = String(date.getFullYear())
-  const MM = String(date.getMonth()+1).padStart(2,"0")
-  const DD = String(date.getDate()).padStart(2,"0")
-  const valueDate = `${YYYY}-${MM}-${DD}`
+  const changeDate = (newDate) => {
+    const YYYY = String(newDate.getFullYear());
+    const MM = String(newDate.getMonth()+1).padStart(2,"0");
+    const DD = String(newDate.getDate()).padStart(2,"0");
+    const valueDate = `${YYYY}-${MM}-${DD}`;
+    return valueDate;
+  };
 
   // submit 이벤트
   const inputExpense = async(e) => {
     e.preventDefault();
     // 작성된 값을 firestore의 money_expense 컬렉션에 추가
-    const docRef = await addDoc(collection(db, "money_expense"), {
+    await addDoc(collection(db, "money_expense"), {
       uid : user.uid,
       date : date,
       price : price,
@@ -73,7 +76,7 @@ export default function InputExpenseComp({ handleSubmit }) {
     });
     // 입력 모달창을 닫기 위한 handleSubmit 함수를 호출
     handleSubmit();
-  }
+  };
 
   return (
     <div>
@@ -81,7 +84,7 @@ export default function InputExpenseComp({ handleSubmit }) {
 
         <label>날짜</label>
         <div>
-          <span>{date && valueDate}</span>
+          <span>{date && changeDate(date)}</span>
           <button onClick={ onClickCal }>아이콘</button>
         </div>
         {
