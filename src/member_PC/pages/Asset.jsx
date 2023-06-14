@@ -1,8 +1,9 @@
 // 자산관리(메인) 페이지
 import { db } from '../../database/firebase';
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { doc, updateDoc, query, getDocs, collection, orderBy, limit } from 'firebase/firestore';
+import { doc, updateDoc, query, getDoc, getDocs, collection, orderBy, where, limit } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -10,6 +11,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+// 화살표 컴퍼넌트
 const NextArrow = ({ onClick, style }) => { 
   return (
     <FontAwesomeIcon
@@ -17,8 +19,7 @@ const NextArrow = ({ onClick, style }) => {
       onClick={onClick}
       type='button'
       style={{ ...style, position: "absolute", display: "inline-block", color: "darkgray", zIndex: "10", cursor: "pointer", width:"40px", height:"40px", top: "180", right:"0%"}}
-    >
-    </FontAwesomeIcon>
+    />
   );
 };
 
@@ -29,12 +30,14 @@ const PrevArrow = ({ onClick, style }) => {
       onClick={onClick}
       type='button'
       style={{ ...style, position: "absolute", display: "inline-block", color: "darkgray", zIndex: "10", cursor: "pointer", width:"40px", height:"40px", top: "180", left:"0%"}}
-    >
-    </FontAwesomeIcon>
+    />
   );
 };
 
 export default function Asset() {
+  const [liked, setLiked] = useState(false);
+  const user = useSelector((state) => state.user.user);
+
   const [bestFmList, setBestFmList] = useState([]);
 
   const settings = {
@@ -49,6 +52,52 @@ export default function Asset() {
     prevArrow: <PrevArrow />
   };
 
+  const handleLike = async (fmId) => {
+    // 클릭 상태 변경
+    setLiked(!liked);
+  
+    // Firestore에서 해당 문서의 likeNum 업데이트
+    const fmDocRef = doc(db, "financial_managers", fmId);
+    const fmDocSnap = await getDoc(fmDocRef);
+    
+    if (fmDocSnap.exists()) {
+      const currentLikeNum = fmDocSnap.data().likeNum || 0;
+      const newLikeNum = liked ? currentLikeNum - 1 : currentLikeNum + 1;
+      await updateDoc(fmDocRef, { likeNum: newLikeNum });
+    }
+
+    // personal_users의 배열에 추가
+    const q = query(collection(db, "personal_users"), where('uid', '==', user.uid));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const userDocRef = querySnapshot.docs[0].ref;
+      const userDocSnapshot = await getDoc(userDocRef);
+
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+        const fmArray = userData.likeFm || [];
+
+        const fmIndex = fmArray.findIndex(fm => fm.fmUid === fmId); // fmUid가 현재 프로필의 id와 일치하는 인덱스 찾기
+
+        if (fmIndex !== -1) {
+          // 이미 좋아요한 자산관리사인 경우, 배열에서 해당 인덱스를 삭제
+          fmArray.splice(fmIndex, 1);
+        } else {
+          // 좋아요하지 않은 자산관리사인 경우, 배열에 새로운 자산관리사 추가
+          const newFm = {
+            fmUid: fmId,
+          };
+          fmArray.push(newFm);
+        }
+
+        await updateDoc(userDocRef, {
+          likeFm: [...fmArray] // 변경된 부분
+        });
+      }
+    }
+  };
+
   useEffect(()=>{
     const getList = async () => {
         const q = query(collection(db, "financial_managers"), orderBy("likeNum", "desc"), limit(8));
@@ -60,7 +109,8 @@ export default function Asset() {
                 id : doc.id,
                 name : doc.data().name,
                 likeNum : doc.data().likeNum,
-                field : doc.data().field
+                field : doc.data().field,
+                photo : doc.data().photo,
             }
             dataArray.push(data)
         });
@@ -69,7 +119,39 @@ export default function Asset() {
     getList();
   },[])
   
-  console.log(bestFmList);
+  const checkLiked = useCallback(async (bestFmList) => {
+    if (user && user.uid) {
+      // personal_users에서 현재 사용자의 좋아요 상태 확인
+      const q = query(collection(db, "personal_users"), where('uid', '==', user.uid));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userDocRef = querySnapshot.docs[0].ref;
+        const userDocSnapshot = await getDoc(userDocRef);
+
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          const fmArray = userData.likeFm || [];
+
+          bestFmList.forEach((fm) => {
+            const fmIndex = fmArray.findIndex((item) => item.fmUid === fm.id); // fmUid가 현재 프로필의 id와 일치하는 인덱스 찾기
+
+            if (fmIndex !== -1) {
+              fm.liked = true;
+            } else {
+              fm.liked = false;
+            }
+          });
+
+          setBestFmList([...bestFmList]);
+        }
+      }
+    }
+  }, [user]);
+
+  useEffect(()=>{  
+    checkLiked(bestFmList);
+  }, [bestFmList])
 
   return (
     <div>
@@ -85,20 +167,23 @@ export default function Asset() {
         bestFmList && bestFmList.map((fm)=>(
           <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
             <div style={{backgroundColor: "gray", width: "250px", height: "300px", margin: "10px 40px", display: "inline-block", borderRadius: "10px"}}>
-              <div style={{ position: "absolute", cursor: "pointer"}}>
+              <div style={{backgroundColor: "white", width: "200px", height: "200px", margin: "auto", borderRadius: "10px", backgroundImage: `url(${fm.photo})`, backgroundSize: "cover" }}></div>
+              <div>      
                 <FontAwesomeIcon 
                   icon={faHeart}
                   fontSize={20}
-                  style={{color: "white"}}
+                  style={{ color: fm.liked ? "red" : "black" }}
+                  onClick={()=>{handleLike(fm.id)}}
                 />
               </div>
-              <div style={{backgroundColor: "white", width: "200px", height: "200px", margin: "auto", borderRadius: "10px"}}></div>
               <h3>{fm.name}</h3>
               <div style={{display: "flex"}}> 
                 <p>{fm.field && fm.field[0]}</p>
                 <p>{fm.field && fm.field[1]}</p>
                 <p>{fm.field && fm.field[2]}</p>
-                <p>🤍:{fm.likeNum}</p>
+                <p>
+                  👩‍❤️‍💋‍👩:{fm.likeNum}
+                </p>
               </div>
             </div>
           </Link>

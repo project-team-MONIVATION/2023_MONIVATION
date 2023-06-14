@@ -1,4 +1,3 @@
-import './App.css';
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -29,6 +28,12 @@ import SignupPU from './member_PC_HS/components/SignupPU';
 // 실험용
 import Display from './member_PC_HS/page/Display';
 
+
+// css
+import './styles/reset.css'
+import './styles/style.css'
+import './App.css';
+import './member_PCH/styles/main.css'
 
 function App() {
 
@@ -67,7 +72,7 @@ function App() {
           <Route path='/asset' element={<Asset/>}/>
           <Route path='/asset/managerlist' element={<AssetManagerList/>}/>
           <Route path='/asset/managerlist/:id' element={<AssetManagerProfile/>}/>
-          <Route path='/asset/managerID/profile/reservation' element={<AssetReservation/>}/>
+          <Route path='/asset/managerID/profile/reservation/:id' element={<AssetReservation/>}/>
 
           <Route path='/mypage' element={<Mypage/>}/>
           <Route path='/mypage/edit' element={<MypageEdit/>}/>
