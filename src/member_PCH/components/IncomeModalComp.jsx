@@ -13,13 +13,13 @@ export default function IncomeModalComp({ setModalIsOpen }) {
   const onShowIncome = () => {
     setShowIncome(true); 
     setShowIncomeRepeat(false);
-  }
+  };
 
   // 반복수입 모달 on
   const onShowRepeatIncome = () => {
     setShowIncome(false);
     setShowIncomeRepeat(true);
-  }
+  };
 
   // 일반수입 또는 반복수입 모달의 form에서 submit 후 모달을 닫기 위함
   const handleSubmit = () => {

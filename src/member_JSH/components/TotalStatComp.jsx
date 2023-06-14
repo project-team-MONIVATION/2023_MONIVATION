@@ -62,6 +62,7 @@ export default function TotalStatComp() {
                   id: doc.id,
               });
               });
+              
               let total = 0;
 
               for (let i = 0; i < dataArray.length; i++) {
