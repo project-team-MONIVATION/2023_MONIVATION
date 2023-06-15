@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled, {keyframes} from 'styled-components';
+import styled, { css, keyframes} from 'styled-components';
 
 const fall = (moveHeight) => keyframes`
   0% {
@@ -13,7 +13,7 @@ const fall = (moveHeight) => keyframes`
     opacity: 1;
     transform: translateY(52vh);
   }
-  85% {
+  88% {
     opacity: 1;
     transform: translateY(48vh);
   }
@@ -23,14 +23,22 @@ const fall = (moveHeight) => keyframes`
   }
 `;
 
+
 const pop = (moveHeight) => keyframes`
+  0% {
+    opacity: 1;
+    transform: translateY(${moveHeight}vh);
+  }
   50%{
-    transform: translateY(${moveHeight - 2}vh);
+    opacity: 1;
+    transform: translateY(${moveHeight - 15}vh);
   }
   100% {
+    opacity: 1;
     transform: translateY(${moveHeight}vh);
   }
 `;
+
 
 const LeftContainer = styled.div`
   position: absolute;
@@ -54,39 +62,52 @@ const CoinImg = styled.div`
   background-position: bottom;
   background-size: contain;
   background-repeat: no-repeat;
-  animation: ${(props) => fall(props.moveHeight)} 2s ease-in 1 forwards,
-    ${(props) => (props.isHovered ? pop(props.moveHeight) : 'none')};
-  opacity: 0;
+  opacity: 1;
   top: -180px;
-  transform: translateY(${(props) => props.moveHeight}vh);
+  transform: translateY(${props => props.moveHeight}vh);
+
+  &.start {
+    opacity: 0;
+    animation: ${props => fall(props.moveHeight)} 1.5s ease-in 1 forwards;
+    animation-delay: ${props => (Math.random() * 1).toFixed(2)}s;
+  }
+
+  ${props => props.onlyPop && css`
+    animation: ${pop(props.moveHeight)} 0.5s ease-in 1 forwards;
+    animation-delay: 0;
+  `};
 `;
 
-
 const Coin = ({ style, moveHeight }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [startFall, setStartFall] = useState(true);
+  const [isMouseEnter, setIsMouseEnter] = useState(false);
+  const [onlyPop, setOnlyPop] = useState(false);
 
   const handleMouseEnter = () => {
-    setIsHovered(true);
+    setStartFall(false);
+    setIsMouseEnter(true);
+    setOnlyPop(true);
   };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
+  
+  const handleAnimationEnd = () => {
+    setOnlyPop(false);
   };
 
   return (
     <CoinImg
       style={style}
-      isHovered={isHovered}
+      className={startFall && "start"}
       moveHeight={moveHeight}
       onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onAnimationEnd={handleAnimationEnd}
+      onlyPop={onlyPop}
     ></CoinImg>
   );
 };
 
+
 export default function FallingCoinComp(style = { style }) {
   const makeCoinAnimation = (mh=52) => {
-    let animationDelay = "0s";
     let width = "128px";
     let height = "128px";
     let backgroundImage = `url(${require('../../assets/img/coin.png')})`;
@@ -94,12 +115,10 @@ export default function FallingCoinComp(style = { style }) {
 
   
     return arr.map((coin, i) => {
-      animationDelay = `${(Math.random() * 1).toFixed(2)}s`;
       width = `${Math.floor(Math.random() * 50) + 50}px`;
       height = `${Math.floor(Math.random() * 50) + 50}px`;
 
       const style = {
-        animationDelay,
         width,
         height,
         backgroundImage
