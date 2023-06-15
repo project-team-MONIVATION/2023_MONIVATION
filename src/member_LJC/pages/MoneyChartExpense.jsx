@@ -1,24 +1,41 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState, MouseEvent} from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Link } from 'react-router-dom'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'react-chartjs-2'; // 원하는 차트 종류를 가져오세요.
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale,PointElement,LineElement, 
+        Title, Filler,    } from 'chart.js';
 
-import Calendar from 'react-calendar';
+
+import { Line, Pie, getElementAtEvent } from 'react-chartjs-2'; // 원하는 차트 종류를 가져오세요.
+
+import Calendar from 'react-calendar'
 
 import { collection, deleteDoc, doc, getDocs, query, where, } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
 
-ChartJS.register(ArcElement, Tooltip, Legend);
 
+
+ChartJS.register(
+    ArcElement,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Filler,
+    Legend
+);
 
 
 
 export const options = {
     responsive : false,
+    legend: {
+        align: 'bottom'  //  or 'left', 'bottom', 'right'(default)
+    },
     scale: {
         yAxes: [
             {
@@ -27,20 +44,24 @@ export const options = {
                 }
             }
         ]
-    }
+    },
 }
+
+
+    
 
 export default function MoneyChartExpense() {
     const navigate = useNavigate();
     const [value, onChange] = useState(new Date());
     const user = useSelector((state) => state.user.user);
 
+    
+
     // 오늘 날짜
     const  today = new Date
     // 최솟값 날짜
     const [mindate, setMindate] = useState('');
-    //날짜배열
-    const [checkday, setCheckday] = useState('');
+    
 
     // 클릭한 날짜(일)
     const [onedayclick, setOnClickDay] = useState('');
@@ -101,80 +122,95 @@ export default function MoneyChartExpense() {
         }
     };
     
-    // 일별
-    // 누르면 그날의 카테고리와 가격이 나옴
-    // const getexpenseData = async (i) => {
-    //     const fmCollectionRef = collection(db, "money_expense");
-    //     const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
-    //     const fmQuerySnapshot = await getDocs(fmQuery);
-    
-    //     let dataArray = [];
-    //     let newArray = [];
-    
-    //     fmQuerySnapshot.forEach((doc) => {
-    //         const data = doc.data();
-    //         const timestamp = data.date;
-    //         const date = timestamp.toDate();
-        
-    //         // 클릭한 날짜와 데이터의 날짜를 비교
-    //         if (
-                
-    //             date.getDate() === i.getDate() &&
-    //             date.getMonth() === i.getMonth() &&
-    //             date.getFullYear() === i.getFullYear()
-    //         ) {
-    //             dataArray.push({
-    //             ...data,
-    //             id: doc.id,
-    //             date: date.toLocaleDateString(),
-    //             });
-    //         }
-    //     });
-
-    //     console.log(dataArray);
-    //     let allcategorys = [];
-    //     let allprice = [];
-            
-    //     for (let i=0; i<dataArray.length; i++){
-    //         let categorys = dataArray[i].category;
-    //         let price = dataArray[i].price;
-            
-    //         allcategorys.push(categorys)
-    //         allprice.push(price);
-    //     }
-    //         setCategoryList(allcategorys);
-    //         setPriceList(allprice);
-    // }
-
     
 
-    // function samecategory (i) {
-    //     i.map((tmp) => )
+    
+    // 데이터들 카테고리,가격 나열
+    function samecategory (d) {
+        const dataList = d.map(({ category, price, date }) => ({
+            category,
+            price,
+            date
+        }));
+        return dataList
+    }
 
-    // }
+    // 중복제거,각 가격합침
+    function deduplication (d) {
+        const result = d.reduce((acc, item) => {
+            const { category, price } = item;
+            if(acc[category]){
+                acc[category] += price;
+            } else {
+                acc[category] = price;
+            }
+            return acc;
+        },{});
+        return result
+    }
 
-    // 기간지정 비교 함수
-    // 기간안에 데이터 들의 금액과 카테고리를 가져옴
+
+    // 객체를 { category: "카테고리명", total: 금액 } 형태의 배열로 변환
+    function transform (d) {
+        const transformedArray = Object.entries(d).map(([category, total]) => ({
+            category,
+            total,
+        }));
+        return transformedArray
+    }
+
+
+    // 조회 누르면 각 조건에 맞는 데이터 들을 db에서 꺼내옴
     const getexpensechoiseData = async () => {
         let s = new Date(inputRef.current[0].value);
         let e = new Date(inputRef.current[1].value);
-    
+
+        // 12시 0분 0초를 못 담아서 하루 를 빼줘야 그 날에 대입이됨
+        let startday = new Date(inputRef.current[0].value);
+        startday.setDate(s.getDate() - 1);
+        console.log(startday)
+
         const fmCollectionRef = collection(db, "money_expense");
-        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid), where('date', '>=', s), where('date', '<=', e)) 
+        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid), where('date', '>=', startday), where('date', '<=', e)) 
         
-        let dayFilterDateList = [];
     
+        let dayFilterDateList = [];
+        
+        
         try {
+            // 전부 뽑아옴
             const fmQuerySnapshot = await getDocs(fmQuery);
-            console.log(fmQuerySnapshot)
+            
             fmQuerySnapshot.forEach((doc) => {
                 dayFilterDateList.push(doc.data())
             });
-            console.log(dayFilterDateList[0].category)
+
+
+            
+        
+            // 배열 객체들을 카테고리 금액 만 남김
+            // 중복된 카테고리 합치고 금액도 합침
+            const ctgpic = transform(deduplication(samecategory(dayFilterDateList)))
+            console.log(deduplication(samecategory(dayFilterDateList)))
+
+            let allcategorys = [];
+            let allprice = [];
+                
+            for (let i=0; i<ctgpic.length; i++){
+                let categorys = ctgpic[i].category;
+                let price = ctgpic[i].total;
+                
+                
+                allcategorys.push(categorys)
+                allprice.push(price);
+            }
+                setCategoryList(allcategorys);
+                setPriceList(allprice);
+                console.log(priceList)
+                
+                
         } 
         
-
-
         catch (error) {
             console.log('Error fetching data:', error);
         }
@@ -183,26 +219,6 @@ export default function MoneyChartExpense() {
     }
 
 
-    const getexpensechoiseData2 = async () => {
-        let s = new Date(inputRef.current[0].value);
-        let e = new Date(inputRef.current[1].value);
-        console.log(s, e);
-    
-        const fmCollectionRef = collection(db, "money_expense");
-        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid && 'date', '>=', s && 'date', '<=', e)) 
-        //   .where('date', '>=', s)
-        //   .where('date', '<=', e);
-      
-        try {
-          const fmQuerySnapshot = await getDocs(fmQuery);
-          console.log(fmQuerySnapshot)
-        //   fmQuerySnapshot.forEach((doc) => {
-        //     console.log(doc.id, doc.data());
-        //   });
-        } catch (error) {
-          console.log('Error fetching data:', error);
-        }
-      };
     
     useEffect(() => {   
         handleTest()
@@ -238,6 +254,26 @@ export default function MoneyChartExpense() {
         setNowmonthlastday(lastDay);
     }
 
+    // 2개월 누르면 그 2개월 전 첫일 ~ 현재 월 마지막 일
+    const chageDateTwoMonth = () => {
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+        setNowmonthfirstday(firstDay);
+        setNowmonthlastday(lastDay);
+    }
+
+    // 3개월 누르면 그 3개월 전 첫일 ~ 현재 월 마지막 일
+    const chageDateTreeMonth = () => {
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth() - 2, 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+        setNowmonthfirstday(firstDay);
+        setNowmonthlastday(lastDay);
+    }
+
     // 클릭한 일 input value에 담기
     const handleTest = () => {
         inputRef.current[0].value = changeDate(onedayclick) 
@@ -258,7 +294,32 @@ export default function MoneyChartExpense() {
 
     
 
-    
+    const [Lineoptions] = useState({
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Chart.js Line Chart',
+            },
+            },
+    });
+
+    const Linedata = {
+        labels: categoryList,
+        datasets: [
+            {
+                fill: true,
+                label: 'Dataset 1',
+                data: priceList,
+                // .map((data) => data*100),
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            },
+        ],
+    };
     
     const data = {
         labels: categoryList,
@@ -273,23 +334,39 @@ export default function MoneyChartExpense() {
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(153, 102, 255, 0.2)',
                 'rgba(255, 159, 64, 0.2)',
+                'rgba(233, 333, 333, 0.2)',
+                '#55BABF',
+                '#00ff80',
+                '#931a1a',
+
                 ],
                 borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
+                '#fff',
+                
                 ],
-                borderWidth: 1,
+                borderWidth: 2,
                 // hoverOffset: 4,
             },
         ],
     };
 
     
-    
+
+    // const Linedata = {
+    //     labels,
+    //     datasets: [
+    //         {
+    //             fill: true,
+    //             label: 'Dataset 2',
+    //             data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+    //             borderColor: 'rgb(53, 162, 235)',
+    //             backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    //         },
+    //         ],
+    // };
+
+
+
 
     return (
         <div>
@@ -302,9 +379,13 @@ export default function MoneyChartExpense() {
                     <Link to="/calendar/chart/expense">지출</Link>
                 </button>
             </div>
-                    <input ref={el => (inputRef.current[0] = el)}  type="text"/>
+                    <input ref={el => (inputRef.current[0] = el)}  type="text"
+                        disabled
+                    />
                     ~  
-                    <input ref={el => (inputRef.current[1] = el)}  type="text"/>
+                    <input ref={el => (inputRef.current[1] = el)}  type="text"
+                        disabled
+                    />
         <br />
             {/* 일별  */}
             <button 
@@ -317,7 +398,7 @@ export default function MoneyChartExpense() {
                     <Calendar 
                         onChange={onChange} 
                         value={value}
-                        onClickDay={(value, event) => {setOnClickDay(value);}}
+                        onClickDay={(value, event) => {setOnClickDay(value); setCheck(false);}}
                     />
                 </div>
             )}
@@ -329,6 +410,21 @@ export default function MoneyChartExpense() {
             >
                 1개월
             </button>
+        <br />
+            {/* 2개월 */}
+            <button
+                onClick={() => {chageDateTwoMonth()}}
+            >
+                2개월
+            </button>
+        <br />
+            {/* 3개월 */}
+            <button
+                onClick={() => {chageDateTreeMonth()}}
+            >
+                3개월
+            </button>
+            
 
             {/* 선택한 기간별 */}
             <div>
@@ -377,9 +473,9 @@ export default function MoneyChartExpense() {
                         >
                             조회
                         </button>
-                        
+                <br />
                         <button
-                            // onClick={() => chageDateOneMonth()}
+                            // onClick={() => test()}
                         >
                             test
                         </button>
@@ -399,6 +495,12 @@ export default function MoneyChartExpense() {
                 data={data} 
                 options={options} 
                 width="800px" height="800px" 
+            />
+
+            <Line
+                data={Linedata} 
+                options={Lineoptions} 
+                
             />
         </div>
     )
