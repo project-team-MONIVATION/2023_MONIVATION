@@ -85,10 +85,21 @@ export default function MoneyChartExpense() {
         // (기간) 끝난 날짜 열기 닫기
         const [ischeck3, setCheck3] = useState(false);
 
-    //카테고리
-    const [categoryList , setCategoryList] = useState([]);
-    //금액
+    //pie 그래프 카테고리
+    const [categoryList , setCategoryList] = useState();
+    //pie 그래프 금액
     const [ priceList, setPriceList] = useState();
+
+    // line 그래프 카테고리
+    const [linecategoryList, setLinecategoryList] = useState();
+    // line 그래프 금액
+    const [linepriceList, setLinepriceList] = useState();
+    // line 그래프 날짜
+    const [linedateList, setLinedateList] = useState();
+
+
+
+
 
     const inputRef = useRef([]);
     
@@ -188,27 +199,54 @@ export default function MoneyChartExpense() {
 
             
         
-            // 배열 객체들을 카테고리 금액 만 남김
+            // 배열 객체들을 카테고리,금액 만 남김
             // 중복된 카테고리 합치고 금액도 합침
             const ctgpic = transform(deduplication(samecategory(dayFilterDateList)))
-            console.log(deduplication(samecategory(dayFilterDateList)))
 
+            // 모든 카테고리, 금액, 날짜 만 남김
+            const ctpicdt = samecategory(dayFilterDateList)
+            console.log("확인",ctpicdt)
+            
+
+
+            // console.log('카테고리,가격,날짜',samecategory(dayFilterDateList))
+            // console.log('중복제거',deduplication(samecategory(dayFilterDateList)))
+            // console.log('배열로 변경',ctgpic)
+            
+
+            
+            // 받은 배열을 pie그래프 state로 뿌려주기
             let allcategorys = [];
             let allprice = [];
-                
+        
             for (let i=0; i<ctgpic.length; i++){
                 let categorys = ctgpic[i].category;
                 let price = ctgpic[i].total;
                 
-                
-                allcategorys.push(categorys)
+                allcategorys.push(categorys);
                 allprice.push(price);
             }
-                setCategoryList(allcategorys);
-                setPriceList(allprice);
-                console.log(priceList)
+            setCategoryList(allcategorys);
+            setPriceList(allprice);
+            
+
+            // 받은 배열을 line그래프 state로 뿌려주기
+            let lineallcategorys = [];
+            let lineallprice = [];
+            let dates= [];
+
+            for(let i=0; i<ctpicdt.length; i++){
+                let categorys = ctpicdt[i].category;
+                let price = ctpicdt[i].total;
+                let date = ctpicdt[i].date;
                 
-                
+                lineallcategorys.push(categorys);
+                lineallprice.push(price);
+                dates.push(date);
+            }
+            setLinecategoryList(lineallcategorys);
+            setLinepriceList(lineallprice);
+            setLinedateList(dates);
         } 
         
         catch (error) {
@@ -218,8 +256,13 @@ export default function MoneyChartExpense() {
         
     }
 
+    console.log("잘담겼나?",linedateList)
+    console.log('2021-12-31'=='2021-12-31')
+    // 1 . dayFilterDateList date형식으로 변환
+    // 2 .reduce를 써서 날짜 중복이면 가격 합침
+    // 3 .객체를 { date: "날짜", total: 금액 } 형태의 배열로 변환
 
-    
+
     useEffect(() => {   
         handleTest()
     },[onedayclick])
@@ -232,6 +275,20 @@ export default function MoneyChartExpense() {
         handleTest3()
     },[nowmonthfirstday,nowmonthlastday])
 
+
+    
+    const changelinedate = (d) => {
+        const date = new Date(d);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        const formattedDate = `${year}/${month}/${day}`;
+        return formattedDate
+    }
+    
+    console.log(changelinedate(1686754800))
+    
 
     const changeDate = (newDate) => {
         if(!newDate){
@@ -307,8 +364,10 @@ export default function MoneyChartExpense() {
             },
     });
 
+    
+    // 라인 그래프
     const Linedata = {
-        labels: categoryList,
+        labels: linedateList,
         datasets: [
             {
                 fill: true,
@@ -321,6 +380,7 @@ export default function MoneyChartExpense() {
         ],
     };
     
+    // 파이 그래프
     const data = {
         labels: categoryList,
         datasets: [
