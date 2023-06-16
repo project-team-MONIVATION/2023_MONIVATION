@@ -35,11 +35,11 @@ export default function DateDetail({ closeModal2, selectedDate }) {
   // 저금 수정중 
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
-  const [clickday, setClickday] = useState('');
-  const [endday, setEndday] = useState('');
 
-
+  // ???????????????
   const [startDate, setStartDate] = useState(new Date());
+  const [endday, setEndday] = useState(new Date());
+  const [clickday, setClickday] = useState(new Date());
 
   /* 모달에다가 값을 넘겨주기위해 저장하는 함수들 */
 
@@ -80,11 +80,11 @@ export default function DateDetail({ closeModal2, selectedDate }) {
   }
 
   // 저금 수정 모달창
-  const openEditSavingModal = (title, amount, memo, id) => {
+  const openEditSavingModal = (title, amount, memo, user) => {
     setTitle(title);
     setAmount(amount);
     setSelectedMemo(memo);
-    setSelectedId(id);
+    setSelectedId(user);
     setEditSavingOpen(true);
   }
 
@@ -103,18 +103,18 @@ const fetchData = async (collectionName, stateSetter) => {
   const q = query(
     collection(db, collectionName),
     where('uid', '==', user.uid),
-  );
-  try {
-    const querySnapshot = await getDocs(q);
-    let dataArray = [];
-
-    querySnapshot.forEach((doc) => {
-      let data = {
-        id: doc.id,
-        ...doc.data()
-      };
-      dataArray.push(data);
-    });
+    );
+    try {
+      const querySnapshot = await getDocs(q);
+      let dataArray = [];
+      
+      querySnapshot.forEach((doc) => {
+        let data = {
+          id: doc.id,
+          ...doc.data()
+        };
+        dataArray.push(data);
+      });
 
     stateSetter(dataArray);
   } catch (error) {
@@ -143,8 +143,22 @@ const getExpenseRepeat = () => {
 };
 
 // 저금 데이터 가져오기
-const getSaving = () => {
-  fetchData("money_saving", setSaving);
+const getSaving = async() => {
+  //fetchData("money_saving", setSaving);
+  const q = query(
+    collection(db, "money_saving"),
+    where('user', '==', user.uid),
+    );
+    try {
+      const querySnapshot = await getDocs(q);
+      let dataArray = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+    setSaving(dataArray);
+  } catch (error) {
+    console.log(`Error getting documents: `, error);
+  }
 };
 
 useEffect(() => {
@@ -273,25 +287,31 @@ const filteredExpenseRepeat = expenseRepeat.filter((item) => {
   return formattedDate === itemDateString;
 });
 
-console.log(saving.filter.clickday)
+
 // 선택된 날짜와 동일한 저금 데이터 필터링
 const filteredSaving = saving.filter((item) => {
   // 선택된 날짜를 YYYY-MM-DD 형식으로 변환
-  const formattedDate = `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`;
-
+  //const formattedDate = `${selectedDate.getFullYear()}-${selectedDate.getMonth().padStart(2,"0") + 1}-${selectedDate.getDate().padStart(2,"0")}`;
+  const formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(2, "0")}`;
   console.log(formattedDate)
-  
-  // 수입 데이터의 날짜를 Date 객체로 변환
+
+  // 저금 데이터의 날짜를 Date 객체로 변환
   const itemDate = item.clickday;
   console.log(itemDate)
 
-  // Date 객체를 YYYY년 MM월 DD일로 변환
-  const itemDateString = `${itemDate.getFullYear()}-${itemDate.getMonth() + 1}-${itemDate.getDate()}일`;
+  // // Date 객체를 YYYY년 MM월 DD일로 변환
+  // const itemDateString = `${itemDate.getFullYear()}-${String(itemDate.getMonth() + 1)}-${String(itemDate.getDate())}일`;
 
-  console.log(itemDateString)
+  // console.log(itemDateString)
 
-  return formattedDate === itemDateString;
+  return formattedDate === itemDate;
 });
+
+// 금액 ,표시 ex1,000,000
+const handleHyphen = (value) => {
+  const formattedValue = new Intl.NumberFormat().format(value); // 숫자 형식으로 변환
+  return formattedValue;
+};
 
   return (
     <div>
@@ -313,12 +333,12 @@ const filteredSaving = saving.filter((item) => {
           {/* 수입 */}
           <div>
               <h3>이 날의 수입은?</h3>
-              <h3>{filteredIncome.reduce((total, item) => total + item.price, 0) + filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)}</h3>
+              <h3>{handleHyphen(filteredIncome.reduce((total, item) => total + item.price, 0) + filteredIncomeRepeat.reduce((total, item) => total + item.price, 0))}&#8361;</h3>
           </div>
           <br />
           <div>
             <h4>수입</h4>
-            <h4>{filteredIncome.reduce((total, item) => total + item.price, 0)}</h4>
+            <h4>{handleHyphen(filteredIncome.reduce((total, item) => total + item.price, 0))}&#8361;</h4>
           </div>
           <br />
           
@@ -330,7 +350,7 @@ const filteredSaving = saving.filter((item) => {
                   openEditIncomeModal(item.category, item.price, item.memo, item.id)}
               >
                 <span>{item.category}</span>
-                <span>{item.price}&#8361;</span>
+                <span>{handleHyphen(item.price)}&#8361;</span>
                 <span>{item.memo}</span>
                 <hr />
               </div>
@@ -340,7 +360,7 @@ const filteredSaving = saving.filter((item) => {
 
           <div>
               <h4>반복수입</h4>
-              <h4>{filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)}</h4>
+              <h4>{handleHyphen(filteredIncomeRepeat.reduce((total, item) => total + item.price, 0))}&#8361;</h4>
           </div>
           <br />
           <div>
@@ -350,7 +370,7 @@ const filteredSaving = saving.filter((item) => {
                   openEditIncomeRepeatModal(item.category, item.price, item.memo, item.id)}
               >
                 <span>{item.category}</span>
-                <span>{item.price}&#8361;</span>
+                <span>{handleHyphen(item.price)}&#8361;</span>
                 <span>{item.memo}</span>
                 <hr />
               </div>
@@ -362,12 +382,12 @@ const filteredSaving = saving.filter((item) => {
           {/* 지출 */}
           <div>
               <h3>이 날의 지출은?</h3>
-              <h3>{filteredExpense.reduce((total, item) => total + item.price, 0) + filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)}</h3>
+              <h3>{handleHyphen(filteredExpense.reduce((total, item) => total + item.price, 0) + filteredExpenseRepeat.reduce((total, item) => total + item.price, 0))}&#8361;</h3>
           </div>
           <br />
           <div>
               <h4>지출</h4>
-              <h4>{filteredExpense.reduce((total, item) => total + item.price, 0)}</h4>
+              <h4>{handleHyphen(filteredExpense.reduce((total, item) => total + item.price, 0))}&#8361;</h4>
           </div>
           <br />
           <div>
@@ -377,7 +397,7 @@ const filteredSaving = saving.filter((item) => {
                   openEditExpenseModal(item.category, item.price, item.memo, item.id)}
               >
                 <span>{item.category}</span>
-                <span>{item.price}&#8361;</span>
+                <span>{handleHyphen(item.price)}&#8361;</span>
                 <span>{item.memo}</span>
                 <hr />
               </div>
@@ -386,7 +406,7 @@ const filteredSaving = saving.filter((item) => {
           <br />
           <div>
               <h4>반복지출</h4>
-              <h4>{filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)}</h4>
+              <h4>{handleHyphen(filteredExpenseRepeat.reduce((total, item) => total + item.price, 0))}&#8361;</h4>
           </div>
           <br />
           
@@ -397,7 +417,7 @@ const filteredSaving = saving.filter((item) => {
                   openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id, )}
               >
                 <span>{item.category}</span>
-                <span>{item.price}&#8361;</span>
+                <span>{handleHyphen(item.price)}&#8361;</span>
                 <span>{item.memo}</span>
                 <hr />
               </div>
@@ -409,7 +429,7 @@ const filteredSaving = saving.filter((item) => {
           {/* 저금 */}
           <div>
               <h3>이 날의 저금은?</h3>
-              <h3>{filteredSaving.reduce((total, item) => total + item.price, 0)}</h3>
+              <h3>{handleHyphen(filteredSaving.reduce((total, item) => total + parseInt(item.amount.replace(/,/g, '')), 0))}&#8361;</h3>
           </div>
           
           <div>
