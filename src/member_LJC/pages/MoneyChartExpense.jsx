@@ -11,7 +11,7 @@ import { Line, Pie, getElementAtEvent } from 'react-chartjs-2'; // 원하는 차
 
 import Calendar from 'react-calendar'
 
-import { collection, deleteDoc, doc, getDocs, query, where, } from 'firebase/firestore';
+import { Timestamp, collection, deleteDoc, doc, getDocs, query, where, } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
 
@@ -97,6 +97,18 @@ export default function MoneyChartExpense() {
     // line 그래프 날짜
     const [linedateList, setLinedateList] = useState();
 
+    // 기간에 맞는 들어있는
+        // 총 금액
+        const [ptotal, setPtotal]=  useState();
+
+        // 날짜
+        const [pdate, setPdate] = useState();
+
+        // 카테고리
+        const [pcategory, setPcategory] =useState();
+
+        // 각 카테고리의 금액
+        const [pamount, setPamount] = useState();
 
 
 
@@ -137,16 +149,136 @@ export default function MoneyChartExpense() {
 
     
     // 데이터들 카테고리,가격 나열
-    function samecategory (d) {
-        const dataList = d.map(({ category, price, date }) => ({
-            category,
-            price,
-            date
-        }));
-        return dataList
+    function samecategory(d) {
+        const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+            };
+        
+            const dataList = d.map(({ category, price, date }) => {
+            const formattedDate = date
+                .toDate()
+                .toLocaleString('en-US', options)
+                .split('/')
+                .join('-');
+            const [month, day, year] = formattedDate.split('-');
+            return {
+                category,
+                price,
+                date: `${year}-${month}-${day}`
+            };
+            });
+        
+            return dataList;
     }
 
-    // 중복제거,각 가격합침
+
+    // 라인그래프
+    //날짜 중복제거, 각 가격합침
+    function linededuplication (d) {
+        let checkdifferntdate = "date"
+
+        
+        for(let i=0; i<d.length-1; i++ ){
+            if(d[i].date.slice(5,7) !== d[i+1].date.slice(5,7)){
+                checkdifferntdate = "month"
+                break
+            }
+        }
+        for(let i=0; i<d.length-1; i++ ){
+            if(d[i].date.slice(0,4) !== d[i+1].date.slice(0,4)){
+                checkdifferntdate = "year"
+                break
+            }
+        }
+        
+        console.log("dif",checkdifferntdate)
+        
+        
+        if(checkdifferntdate == "date"){
+            const result = {};
+            d.forEach(obj => {
+                const date = obj.date.slice(0,15); // 날짜 부분만 추출하여 비교
+    
+                console.log(date)
+    
+                if(result[date]){
+                    result[date].price += obj.price;
+                } else{
+                    result[date] = {
+                        price: obj.price,
+                        date: obj.date
+                    };
+                }
+            });
+    
+            const finalResult = Object.values(result).map(obj => {
+                return {
+                    price: obj.price,
+                    date: obj.date
+                };
+            });
+    
+            return finalResult
+
+        }else if (checkdifferntdate == "month"){
+
+            const result = {};
+            d.forEach(obj => {
+                const date = obj.date.slice(5,7); // 달 부분만 추출하여 비교
+    
+                console.log("달",date)
+    
+                if(result[date]){
+                    result[date].price += obj.price;
+                } else{
+                    result[date] = {
+                        price: obj.price,
+                        date: obj.date.slice(0,7)
+                    };
+                }
+            });
+    
+            const finalResult = Object.values(result).map(obj => {
+                return {
+                    price: obj.price,
+                    date: obj.date
+                };
+            });
+            return finalResult
+
+        }else if (checkdifferntdate == "year"){
+            const result = {};
+            d.forEach(obj => {
+                const date = obj.date.slice(0,4); // 달 부분만 추출하여 비교
+    
+                console.log("년",date)
+    
+                if(result[date]){
+                    result[date].price += obj.price;
+                } else{
+                    result[date] = {
+                        price: obj.price,
+                        date: obj.date.slice(0,4)
+                    };
+                }
+            });
+    
+            const finalResult = Object.values(result).map(obj => {
+                return {
+                    price: obj.price,
+                    date: obj.date
+                };
+            });
+            return finalResult
+        }
+    }
+
+
+
+    // 파이 그래프에 필요한
+    // 카테고리 중복제거,각 가격합침
     function deduplication (d) {
         const result = d.reduce((acc, item) => {
             const { category, price } = item;
@@ -159,8 +291,17 @@ export default function MoneyChartExpense() {
         },{});
         return result
     }
+    
+    // 총합
+    function alltotal (d) {
+        let totalAmount = 0;
+        for(let i = 0; i< d.length; i++) {
+            totalAmount += d[i].total;
+        }
+        return totalAmount
+    }
 
-
+    // 파이 그래프에 필요한
     // 객체를 { category: "카테고리명", total: 금액 } 형태의 배열로 변환
     function transform (d) {
         const transformedArray = Object.entries(d).map(([category, total]) => ({
@@ -170,7 +311,7 @@ export default function MoneyChartExpense() {
         return transformedArray
     }
 
-
+    // 조회 버튼
     // 조회 누르면 각 조건에 맞는 데이터 들을 db에서 꺼내옴
     const getexpensechoiseData = async () => {
         let s = new Date(inputRef.current[0].value);
@@ -179,7 +320,10 @@ export default function MoneyChartExpense() {
         // 12시 0분 0초를 못 담아서 하루 를 빼줘야 그 날에 대입이됨
         let startday = new Date(inputRef.current[0].value);
         startday.setDate(s.getDate() - 1);
-        console.log(startday)
+
+        // console.log("이거뭐임",inputRef.current[0].value)
+        // console.log("이거뭐임",s)
+
 
         const fmCollectionRef = collection(db, "money_expense");
         const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid), where('date', '>=', startday), where('date', '<=', e)) 
@@ -196,23 +340,32 @@ export default function MoneyChartExpense() {
                 dayFilterDateList.push(doc.data())
             });
 
-
-            
-        
-            // 배열 객체들을 카테고리,금액 만 남김
-            // 중복된 카테고리 합치고 금액도 합침
+            // 파이 그래프
+            // 중복된 카테고리 합침 
+            // 중복된 카테고리의 금액도 합침
             const ctgpic = transform(deduplication(samecategory(dayFilterDateList)))
+            console.log(ctgpic)
 
-            // 모든 카테고리, 금액, 날짜 만 남김
-            const ctpicdt = samecategory(dayFilterDateList)
-            console.log("확인",ctpicdt)
+            // 선 그래프
+            // 중복된 날짜 합침
+            // 중복된 날짜의 금액 합침
+            const ctpicdt = linededuplication(samecategory(dayFilterDateList))
+            console.log("라인 중복제거전",samecategory(dayFilterDateList))
+            console.log("라인 중복제거후",ctpicdt)
+
+            const ctpicdtList = samecategory(dayFilterDateList)
+
+            // console.log("완전초반 데이트덜",dayFilterDateList)
+            // console.log("라인 카테고리,가격,날짜",ctpicdt)
+
             
-
-
-            // console.log('카테고리,가격,날짜',samecategory(dayFilterDateList))
+            // console.log('라인그래프 가격,날짜 가격합산된',linededuplication(samecategory(dayFilterDateList)))
             // console.log('중복제거',deduplication(samecategory(dayFilterDateList)))
             // console.log('배열로 변경',ctgpic)
-            
+
+            // 총 합금액
+            const alltotall = alltotal(ctgpic)
+            setPtotal(alltotall)
 
             
             // 받은 배열을 pie그래프 state로 뿌려주기
@@ -231,23 +384,52 @@ export default function MoneyChartExpense() {
             
 
             // 받은 배열을 line그래프 state로 뿌려주기
-            let lineallcategorys = [];
             let lineallprice = [];
             let dates= [];
 
             for(let i=0; i<ctpicdt.length; i++){
-                let categorys = ctpicdt[i].category;
-                let price = ctpicdt[i].total;
+                
+                let price = ctpicdt[i].price;
                 let date = ctpicdt[i].date;
                 
-                lineallcategorys.push(categorys);
+                
                 lineallprice.push(price);
                 dates.push(date);
             }
-            setLinecategoryList(lineallcategorys);
+            
             setLinepriceList(lineallprice);
             setLinedateList(dates);
+
+            // 달이 다른게 있으면 월 라인으로 넣기
+
+
+
+
+            // 년이 다른게 있으면 년 라인으로 넣기
+
+            // 날짜 카테고리 가격 넣기
+            let Pprice = [];
+            let Pdates= [];
+            let Pcategory= [];
+
+            for(let i=0; i<ctpicdtList.length; i++){
+                
+                let price = ctpicdtList[i].price;
+                let date = ctpicdtList[i].date;
+                let category = ctpicdtList[i].category;
+                
+                
+                Pprice.push(price);
+                Pdates.push(date);
+                Pcategory.push(category)
+            }
+            
+            setPdate(Pdates);
+            setPcategory(Pcategory);
+            setPamount(Pprice);
         } 
+
+            
         
         catch (error) {
             console.log('Error fetching data:', error);
@@ -256,8 +438,9 @@ export default function MoneyChartExpense() {
         
     }
 
-    console.log("잘담겼나?",linedateList)
-    console.log('2021-12-31'=='2021-12-31')
+    // console.log("잘담겼나?",linedateList)
+    // console.log('2021-12-31'=='2021-12-31')
+
     // 1 . dayFilterDateList date형식으로 변환
     // 2 .reduce를 써서 날짜 중복이면 가격 합침
     // 3 .객체를 { date: "날짜", total: 금액 } 형태의 배열로 변환
@@ -277,17 +460,6 @@ export default function MoneyChartExpense() {
 
 
     
-    const changelinedate = (d) => {
-        const date = new Date(d);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-
-        const formattedDate = `${year}/${month}/${day}`;
-        return formattedDate
-    }
-    
-    console.log(changelinedate(1686754800))
     
 
     const changeDate = (newDate) => {
@@ -372,7 +544,7 @@ export default function MoneyChartExpense() {
             {
                 fill: true,
                 label: 'Dataset 1',
-                data: priceList,
+                data: linepriceList,
                 // .map((data) => data*100),
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -383,6 +555,7 @@ export default function MoneyChartExpense() {
     // 파이 그래프
     const data = {
         labels: categoryList,
+        
         datasets: [
             {
                 label: '# of Votes',
@@ -543,7 +716,11 @@ export default function MoneyChartExpense() {
                     </div>
                 
             </div>
-
+            <h2>선택 기간의 지출 총금액</h2>
+            {ptotal}
+            <h2>가격{pamount}</h2>
+            <h2>날짜{pdate}</h2>
+            <h2>카테고리명{pcategory}</h2>
 
             
 

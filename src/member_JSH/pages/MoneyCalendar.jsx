@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import TotalStatComp from '../components/TotalStatComp'
 import CalendarComp from '../components/CalendarComp'
 import DateDetail from '../../member_HHS/components/DateDetail';
+import StatisticsComp from '../../member_LJC/components/StatisticsComp';
 
 
 export default function MoneyCalendar() {
@@ -31,7 +32,13 @@ export default function MoneyCalendar() {
       <h1>가계부 캘린더</h1>
       <TotalStatComp />
       <CalendarComp />
-      <Link to='/calendar/chart'>통계</Link>
+      <div>
+        <Link to='/calendar/chart'>통계</Link>
+        <StatisticsComp/>
+      </div>
+      <div>할부금</div>
+      <div>챌린지</div>
+      <div>목표금액</div>
 
       {/* HHS 추가 부분 모달 컴포넌트 */}
       <hr />

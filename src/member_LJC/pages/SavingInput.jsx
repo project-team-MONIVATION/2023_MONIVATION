@@ -108,7 +108,7 @@ export default function Saving({setModalIsOpen}) {
             // 서버에 연결해서 사용하는 것은 비동기 함수로 작성
             const docRef = await addDoc(collection(db, "money_saving"), {
             done : false, // 고정
-            user: user.uid,
+            uid: user.uid,
             clickday,
             startday,
             endday,
