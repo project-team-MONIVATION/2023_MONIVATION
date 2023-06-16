@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { db } from '../../database/firebase';
 import Calendar from 'react-calendar';
 import { useSelector } from 'react-redux';
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
 import { updateDoc, getDoc, doc } from 'firebase/firestore';
 
-export default function EditIncome({ category, price, memo, closeSubModal, id, modaltype }) {
+export default function EditIncome({ category, price, memo, closeSubModal, id }) {
   const user = useSelector((state) => state.user.user);
 
   const [showCal, setShowCal] = useState(false);
@@ -14,11 +14,13 @@ export default function EditIncome({ category, price, memo, closeSubModal, id, m
   const [editedPrice, setEditedPrice] = useState(price);
   const [editedMemo, setEditedMemo] = useState(memo);
 
+  // 날짜 입력하는 캘린더 모달 on
   const onClickCal = (e) => {
     e.preventDefault();
     setShowCal(true);
   };
 
+  // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
   const onClickDate = (newDate) => {
     setDate(newDate);
     setShowCal(false);
@@ -32,7 +34,7 @@ export default function EditIncome({ category, price, memo, closeSubModal, id, m
     return valueDate;
   };
 
-  // 업데이트
+  // 파이어스토어에 업데이트
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -50,18 +52,37 @@ export default function EditIncome({ category, price, memo, closeSubModal, id, m
     closeSubModal();
   };
 
+  // 수입 저장 목록 클릭 시 마다 모달 변함
+  useEffect(() => {
+    const fetchData = async () => {
+    const incomeRef = doc(db, "money_income", id);
+    const incomeSnap = await getDoc(incomeRef);
+    if (incomeSnap.exists()) {
+      const incomeData = incomeSnap.data();
+        setSelectedCategory(incomeData.category);
+        setDate(incomeData.date.toDate()); // date 변수의 초기값 설정
+        setEditedMemo(incomeData.memo);
+        setEditedPrice(incomeData.price);
+        console.log(setDate);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
   return (
     <div
       style={{
         position: 'fixed',
-        top: '0',
+        top: '100px',
         right: '90px',
         display: 'flex',
-        width: '400px',
+        width: '600px',
         height: '700px',
         backgroundColor: 'white',
         padding: '20px',
         borderRadius: '5px',
+        border: 'solid 2px black '
       }}
     >
       <form action="" onSubmit={ handleSubmit }>

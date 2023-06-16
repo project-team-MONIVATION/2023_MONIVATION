@@ -6,7 +6,6 @@ import TotalStatComp from '../components/TotalStatComp'
 import CalendarComp from '../components/CalendarComp'
 import DateDetail from '../../member_HHS/components/DateDetail';
 
-
 export default function MoneyCalendar() {
 
   // HHS
@@ -59,6 +58,7 @@ export default function MoneyCalendar() {
           </div>
         </div>
       )}
+
     </div>
   )
 }

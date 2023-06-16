@@ -10,9 +10,9 @@ import EditExpenseRepeat from './EditExpenseRepeat'
 import EditSaving from './EditSaving';
 
 
-export default function DateDetail({ closeModal }) {
+export default function DateDetail({ closeModal2, selectedDate }) {
   const user = useSelector((state)=>state.user.user);
-  
+
   const [income, setIncome] = useState([]);
   const [incomeRepeat, setIncomeRepeat] = useState([]);
   const [expense, setExpense] = useState([]);
@@ -32,9 +32,16 @@ export default function DateDetail({ closeModal }) {
   const [selectedMemo, setSelectedMemo] = useState('');
   const [selectedId, setSelectedId] = useState('');
 
+  // 저금 수정중 
+  const [title, setTitle] = useState('');
+  const [amount, setAmount] = useState('');
+  const [clickday, setClickday] = useState('');
+  const [endday, setEndday] = useState('');
+
 
   const [startDate, setStartDate] = useState(new Date());
 
+  /* 모달에다가 값을 넘겨주기위해 저장하는 함수들 */
 
   // 수입 수정 모달창
   const openEditIncomeModal = (category, price, memo, id) => {
@@ -73,13 +80,14 @@ export default function DateDetail({ closeModal }) {
   }
 
   // 저금 수정 모달창
-  // const openEditSavingModal = (category, price, memo, id) => {
-  //   setSelectedCategory(category);
-  //   setSelectedPrice(price);
-  //   setSelectedMemo(memo);
-  //   setSelectedId(id);
-  //   setEditSavingOpen(true);
-  // }
+  const openEditSavingModal = (title, amount, memo, id) => {
+    setTitle(title);
+    setAmount(amount);
+    setSelectedMemo(memo);
+    setSelectedId(id);
+    setEditSavingOpen(true);
+  }
+
 
   // 모달을 닫기 위한 이벤트 핸들러 함수
   const closeSubModal = () => {
@@ -90,146 +98,65 @@ export default function DateDetail({ closeModal }) {
     setEditSavingOpen(false);
   };
 
-  // 수입
-  const getIncome = async () => {
-    const q = query(
-      collection(db, "money_income"),
-      where('uid', '==', user.uid),
-    );
-    try {
-      const querySnapshot = await getDocs(q);
-      let dataArray = [];
+// 데이터를 가져오는 공통 함수
+const fetchData = async (collectionName, stateSetter) => {
+  const q = query(
+    collection(db, collectionName),
+    where('uid', '==', user.uid),
+  );
+  try {
+    const querySnapshot = await getDocs(q);
+    let dataArray = [];
 
-      querySnapshot.forEach((doc) => {
-        let data = {
-          id : doc.id,
-          category: doc.data().category,
-          price: doc.data().price,
-          date: doc.data().date,
-          memo: doc.data().memo
-        };
-        dataArray.push(data);
-      });
-      setIncome(dataArray);
-    } catch (error) {
-      console.log("Error getting documents: ", error);
-    }
-  };
+    querySnapshot.forEach((doc) => {
+      let data = {
+        id: doc.id,
+        ...doc.data()
+      };
+      dataArray.push(data);
+    });
 
-  // 반복수입
-  const getIncomeRepeat = async () => {
-    const q = query(
-      collection(db, "money_income_repeat"),
-      where('uid', '==', user.uid),
-    );
-    try {
-      const querySnapshot = await getDocs(q);
-      let dataArray = [];
-      querySnapshot.forEach((doc) => {
-        let data = {
-          id: doc.id,
-          category: doc.data().category,
-          price: doc.data().price,
-          date: doc.data().date,
-          memo: doc.data().memo
-        };
-        dataArray.push(data);
-      });
+    stateSetter(dataArray);
+  } catch (error) {
+    console.log(`Error getting ${collectionName} documents: `, error);
+  }
+};
 
-      setIncomeRepeat(dataArray);
-    } catch (error) {
-      console.log("Error getting documents: ", error);
-    }
-  };
+// 수입 데이터 가져오기
+const getIncome = () => {
+  fetchData("money_income", setIncome);
+};
 
-  // 지출
-  const getExpense = async () => {
-    const q = query(
-      collection(db, "money_expense"),
-      where('uid', '==', user.uid),
-    );
-    try {
-      const querySnapshot = await getDocs(q);
-      let dataArray = [];
+// 반복수입 데이터 가져오기
+const getIncomeRepeat = () => {
+  fetchData("money_income_repeat", setIncomeRepeat);
+};
 
-      querySnapshot.forEach((doc) => {
-        let data = {
-          id: doc.id,
-          category: doc.data().category,
-          price: doc.data().price,
-          date: doc.data().date,
-          memo: doc.data().memo
-        };
-        dataArray.push(data);
-      });
-      setExpense(dataArray);
-    } catch (error) {
-      console.log("Error getting documents: ", error);
-    }
-  };
-  
-  // 반복지출
-  const getExpenseRepeat = async () => {
-    const q = query(
-      collection(db, "money_expense_repeat"),
-      where('uid', '==', user.uid),
-    );
-    try {
-      const querySnapshot = await getDocs(q);
-      let dataArray = [];
+// 지출 데이터 가져오기
+const getExpense = () => {
+  fetchData("money_expense", setExpense);
+};
 
-      querySnapshot.forEach((doc) => {
-        let data = {
-          id: doc.id,
-          category: doc.data().category,
-          price: doc.data().price,
-          date: doc.data().date,
-          memo: doc.data().memo
-        };
-        dataArray.push(data);
-      });
-      setExpenseRepeat(dataArray);
-    } catch (error) {
-      console.log("Error getting documents: ", error);
-    }
-  };
-  
-  // 저금
-  const getSaving = async () => {
-    const q = query(
-      collection(db, "money_saving"),
-      where('uid', '==', user.uid),
-    );
-    try {
-      const querySnapshot = await getDocs(q);
-      let dataArray = [];
+// 반복지출 데이터 가져오기
+const getExpenseRepeat = () => {
+  fetchData("money_expense_repeat", setExpenseRepeat);
+};
 
-      querySnapshot.forEach((doc) => {
-        let data = {
-          id: doc.id,
-          title: doc.data().title,
-          price: doc.data().price,
-          date: doc.data().date,
-          memo: doc.data().memo
-        };
-        dataArray.push(data);
-      });
-        setSaving(dataArray);
-    } catch (error) {
-      console.log("Error getting documents: ", error);
-    }
-  };
-  
-  useEffect(() => {
-      getIncome();
-      getIncomeRepeat();
-      getExpense();
-      getExpenseRepeat();
-      getSaving();
-  }, []);
+// 저금 데이터 가져오기
+const getSaving = () => {
+  fetchData("money_saving", setSaving);
+};
+
+useEffect(() => {
+  getIncome();
+  getIncomeRepeat();
+  getExpense();
+  getExpenseRepeat();
+  getSaving();
+}, []);
 
   
-   // 캘린더
+    /** 날짜검색하는 캘린더 모달 from.PCH */
     // form의 입력 값 state  
     const [date, setDate] = useState(new Date());
     // 날짜 입력하는 캘린더 모달 state
@@ -250,20 +177,128 @@ export default function DateDetail({ closeModal }) {
       const YYYY = String(newDate.getFullYear())
       const MM = String(newDate.getMonth()+1).padStart(2,"0")
       const DD = String(newDate.getDate()).padStart(2,"0")
-      const valueDate = `${YYYY}-${MM}-${DD}`
+      const valueDate = `${YYYY}년 ${MM}월 ${DD}일`
       return valueDate;
     }
 
 
     const [endDate, setEndDate] = useState(null);
     
+    // const formattedDate = `${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월 ${selectedDate.getDate()}일`;
+
+
+// 선택된 날짜와 동일한 수입 데이터 필터링
+const filteredIncome = income.filter((item) => {
+  // 선택된 날짜를 YYYY-MM-DD 형식으로 변환
+  const formattedDate = `${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월 ${selectedDate.getDate()}일`;
+
+  // console.log(formattedDate)
+  
+  // 수입 데이터의 날짜를 Date 객체로 변환
+  const itemDate = item.date.toDate();
+  // console.log(itemDate)
+
+  // Date 객체를 YYYY년 MM월 DD일로 변환
+  const itemDateString = `${itemDate.getFullYear()}년 ${itemDate.getMonth() + 1}월 ${itemDate.getDate()}일`;
+
+  // console.log(itemDateString)
+
+  return formattedDate === itemDateString;
+});
+
+// // 필터링된 수입 데이터 출력
+// filteredIncome.map((item) => {
+//   console.log(item);
+//   // 수입 데이터 출력
+//   return null;
+// });
+
+//   // 필터링된 수입 데이터 출력
+//   // console.log(filteredIncome);
+
+// 선택된 날짜와 동일한 반복수입 데이터 필터링
+const filteredIncomeRepeat = incomeRepeat.filter((item) => {
+  // 선택된 날짜를 YYYY-MM-DD 형식으로 변환
+  const formattedDate = `${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월 ${selectedDate.getDate()}일`;
+
+  // console.log(formattedDate)
+  
+  // 수입 데이터의 날짜를 Date 객체로 변환
+  const itemDate = item.date.toDate();
+  // console.log(itemDate)
+
+  // Date 객체를 YYYY년 MM월 DD일로 변환
+  const itemDateString = `${itemDate.getFullYear()}년 ${itemDate.getMonth() + 1}월 ${itemDate.getDate()}일`;
+
+  // console.log(itemDateString)
+
+  return formattedDate === itemDateString;
+});
+
+// 선택된 날짜와 동일한 지출 데이터 필터링
+const filteredExpense = expense.filter((item) => {
+  // 선택된 날짜를 YYYY-MM-DD 형식으로 변환
+  const formattedDate = `${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월 ${selectedDate.getDate()}일`;
+
+  // console.log(formattedDate)
+  
+  // 수입 데이터의 날짜를 Date 객체로 변환
+  const itemDate = item.date.toDate();
+  // console.log(itemDate)
+
+  // Date 객체를 YYYY년 MM월 DD일로 변환
+  const itemDateString = `${itemDate.getFullYear()}년 ${itemDate.getMonth() + 1}월 ${itemDate.getDate()}일`;
+
+  // console.log(itemDateString)
+
+  return formattedDate === itemDateString;
+});
+
+// 선택된 날짜와 동일한 반복지출 데이터 필터링
+const filteredExpenseRepeat = expenseRepeat.filter((item) => {
+  // 선택된 날짜를 YYYY-MM-DD 형식으로 변환
+  const formattedDate = `${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월 ${selectedDate.getDate()}일`;
+
+  // console.log(formattedDate)
+  
+  // 수입 데이터의 날짜를 Date 객체로 변환
+  const itemDate = item.date.toDate();
+  // console.log(itemDate)
+
+  // Date 객체를 YYYY년 MM월 DD일로 변환
+  const itemDateString = `${itemDate.getFullYear()}년 ${itemDate.getMonth() + 1}월 ${itemDate.getDate()}일`;
+
+  // console.log(itemDateString)
+
+  return formattedDate === itemDateString;
+});
+
+console.log(saving.filter.clickday)
+// 선택된 날짜와 동일한 저금 데이터 필터링
+const filteredSaving = saving.filter((item) => {
+  // 선택된 날짜를 YYYY-MM-DD 형식으로 변환
+  const formattedDate = `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`;
+
+  console.log(formattedDate)
+  
+  // 수입 데이터의 날짜를 Date 객체로 변환
+  const itemDate = item.clickday;
+  console.log(itemDate)
+
+  // Date 객체를 YYYY년 MM월 DD일로 변환
+  const itemDateString = `${itemDate.getFullYear()}-${itemDate.getMonth() + 1}-${itemDate.getDate()}일`;
+
+  console.log(itemDateString)
+
+  return formattedDate === itemDateString;
+});
 
   return (
     <div>
       <div>
           <div>
               <button onClick={ onClickCal }>날짜 검색</button>
-              <h2>{date && changeDate(date)}</h2>
+              <h2>{selectedDate && changeDate(selectedDate)}</h2>
               {
                   showCal && (
                     <div>
@@ -273,43 +308,50 @@ export default function DateDetail({ closeModal }) {
                   )
                 }
           </div>
+          <br />
+
           {/* 수입 */}
           <div>
               <h3>이 날의 수입은?</h3>
-              <h3>{income.reduce((total, item) => total + item.price, 0) + incomeRepeat.reduce((total, item) => total + item.price, 0)}</h3>
+              <h3>{filteredIncome.reduce((total, item) => total + item.price, 0) + filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)}</h3>
           </div>
+          <br />
           <div>
             <h4>수입</h4>
-            <h4>{income.reduce((total, item) => total + item.price, 0)}</h4>
+            <h4>{filteredIncome.reduce((total, item) => total + item.price, 0)}</h4>
           </div>
+          <br />
           
           <div>
-            {income.map((item, i) => ( 
+            {filteredIncome.map((item, i) => ( 
               // selectedDate와 date가 일치하는 경우에만 출력
               <div key={i}
                 onClick = {() =>
                   openEditIncomeModal(item.category, item.price, item.memo, item.id)}
               >
-                <p>{item.category}</p>
-                <p>{item.price}</p>
-                <p>{item.memo}</p>
+                <span>{item.category}</span>
+                <span>{item.price}&#8361;</span>
+                <span>{item.memo}</span>
                 <hr />
               </div>
             ))}
           </div>
+          <br />
+
           <div>
               <h4>반복수입</h4>
-              <h4>{incomeRepeat.reduce((total, item) => total + item.price, 0)}</h4>
+              <h4>{filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)}</h4>
           </div>
+          <br />
           <div>
-            {incomeRepeat.map((item, i) => (
+            {filteredIncomeRepeat.map((item, i) => (
               <div key={i}
                 onClick = {() =>
                   openEditIncomeRepeatModal(item.category, item.price, item.memo, item.id)}
               >
-                <p>{item.category}</p>
-                <p>{item.price}</p>
-                <p>{item.memo}</p>
+                <span>{item.category}</span>
+                <span>{item.price}&#8361;</span>
+                <span>{item.memo}</span>
                 <hr />
               </div>
             ))}
@@ -320,39 +362,43 @@ export default function DateDetail({ closeModal }) {
           {/* 지출 */}
           <div>
               <h3>이 날의 지출은?</h3>
-              <h3>{expense.reduce((total, item) => total + item.price, 0) + expenseRepeat.reduce((total, item) => total + item.price, 0)}</h3>
+              <h3>{filteredExpense.reduce((total, item) => total + item.price, 0) + filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)}</h3>
           </div>
+          <br />
           <div>
               <h4>지출</h4>
-              <h4>{expense.reduce((total, item) => total + item.price, 0)}</h4>
+              <h4>{filteredExpense.reduce((total, item) => total + item.price, 0)}</h4>
           </div>
+          <br />
           <div>
-            {expense.map((item, i) => (
+            {filteredExpense.map((item, i) => (
               <div key={i}
                 onClick = {() => 
                   openEditExpenseModal(item.category, item.price, item.memo, item.id)}
               >
-                <p>{item.category}</p>
-                <p>{item.price}</p>
-                <p>{item.memo}</p>
+                <span>{item.category}</span>
+                <span>{item.price}&#8361;</span>
+                <span>{item.memo}</span>
                 <hr />
               </div>
             ))}
           </div>
+          <br />
           <div>
               <h4>반복지출</h4>
-              <h4>{expenseRepeat.reduce((total, item) => total + item.price, 0)}</h4>
+              <h4>{filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)}</h4>
           </div>
+          <br />
           
           <div>
-            {expenseRepeat.map((item, i) => (
+            {filteredExpenseRepeat.map((item, i) => (
               <div key={i}
                 onClick = {() =>
-                  openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id)}
+                  openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id, )}
               >
-                <p>{item.category}</p>
-                <p>{item.price}</p>
-                <p>{item.memo}</p>
+                <span>{item.category}</span>
+                <span>{item.price}&#8361;</span>
+                <span>{item.memo}</span>
                 <hr />
               </div>
             ))}
@@ -363,16 +409,26 @@ export default function DateDetail({ closeModal }) {
           {/* 저금 */}
           <div>
               <h3>이 날의 저금은?</h3>
-              <h3>{saving.reduce((total, item) => total + item.price, 0)}</h3>
+              <h3>{filteredSaving.reduce((total, item) => total + item.price, 0)}</h3>
           </div>
+          
           <div>
-              <p>저금액</p>
-              <p>금액</p>
+            {filteredSaving.map((item, i) => (
+              <div key={i}
+                onClick = {() =>
+                  openEditSavingModal( item.title, item.amount, item.memo, item.id, )}
+              >
+                <span>{item.title}</span>
+                <span>{item.amount}&#8361;</span>
+                <span>{item.memo}</span>
+                <hr />
+              </div>
+            ))}
           </div>
-      
+
       </div>
 
-      <button onClick={closeModal}>닫기</button>
+      <button onClick={closeModal2}>닫기</button>
       {/* 서브 모달 컴포넌트 */}
       {EditIncomeOpen && (
         <EditIncome
@@ -381,6 +437,7 @@ export default function DateDetail({ closeModal }) {
           price={selectedPrice}
           memo={selectedMemo}
           closeSubModal={closeSubModal}
+          date={date}
         />
       )}
 
@@ -406,6 +463,8 @@ export default function DateDetail({ closeModal }) {
           price={selectedPrice}
           memo={selectedMemo}
           closeSubModal={closeSubModal}
+          date={date}
+
         />
       )}
       
@@ -416,20 +475,30 @@ export default function DateDetail({ closeModal }) {
           price={selectedPrice}
           memo={selectedMemo}
           closeSubModal={closeSubModal}
+          showCal={showCal}
+          startDate={startDate}
+          endDate={endDate}
+          date={date}
         />
       )}
 
+
+{/* 정찬이 필드명이 다 다르다 ㅜㅜㅜㅜ */}
       {EditSavingOpen && (
         <EditSaving
           id={selectedId}
-          category={selectedCategory}
-          price={selectedPrice}
+          title={title}
+          amount={amount}
           memo={selectedMemo}
+          clickday={clickday}
           closeSubModal={closeSubModal}
+          endday={endday}
+          startDate={startDate}
+
         />
       )}
 
 
     </div>
   )
-}
+} 
