@@ -1,6 +1,6 @@
 // 메인페이지 
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,8 @@ import FallingCoinComp from '../components/FallingCoinComp';
 import AppPointerComp from '../components/AppPointerComp';
 import LogoFlowComp from '../components/LogoFlowComp';
 import MainNavComp from '../components/MainNavComp';
+import ChallengeSlideComp from '../components/ChallengeSlideComp';
+import AssetMotionComp from '../components/AssetMotionComp';
 
 
 export default function Home({ handleHover }) {
@@ -152,10 +154,12 @@ export default function Home({ handleHover }) {
 
         <section id='section4'>
           <div className='box-container'>
-            <h3>Challenge Together</h3>
-            <p>다른 유저들과 함께 도전하세요</p>
+            <div className='textbox'>
+              <h3>Challenge Together</h3>
+              <p>다른 유저들과 함께 도전하세요</p>
+            </div>
             <div className='slidebox'>
-              이미지 슬라이드
+              <ChallengeSlideComp/>
             </div>
           </div>
           <div className='space'/>
@@ -163,16 +167,28 @@ export default function Home({ handleHover }) {
 
         <section id='section5'>
           <div className='box-container'>
-            <h3>Wealth Management Consultation</h3>
-            <p>자산관리사에게 궁금한 것을 물어보세요</p>
+            <div className='textbox'>
+              <h3>Tips Board</h3>
+              <p>자산관리에 관련한 영상과 책을 추천받아 보세요</p>
+            </div>
             <div className='slidebox'>
-              이미지 슬라이드
+              <AssetMotionComp/>
             </div>
           </div>
           <div className='space'/>
         </section>
 
         <section id='section6'>
+          <div className='box-container'>
+            <h3>Wealth Management Consultation</h3>
+            <p>자산관리사에게 궁금한 것을 물어보세요</p>
+            <div className='slidebox'>
+            </div>
+          </div>
+          <div className='space'/>
+        </section>
+
+        <section id='section7'>
           <div className='btnbox'>
             <p>🌟돈관리 도파민 생성🌟</p>
             <button onClick={()=>{window.scrollTo({top:0, behavior:"smooth"})}}>우리와 함께 하세요</button>
