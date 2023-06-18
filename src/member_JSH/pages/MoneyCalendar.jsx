@@ -5,13 +5,17 @@ import { Link } from 'react-router-dom'
 import TotalStatComp from '../components/TotalStatComp'
 import CalendarComp from '../components/CalendarComp'
 import DateDetail from '../../member_HHS/components/DateDetail';
-import StatisticsComp from '../../member_LJC/components/StatisticsComp';
-
+import SEcomp from '../../member_LJC/components/SEcomp';
+import SIComp from '../../member_LJC/components/SIComt'
 
 export default function MoneyCalendar() {
 
   // HHS
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달의 열림/닫힘 상태를 관리하는 상태 변수
+  
+  // 수입 지출 컴프 바꾸기위한 버튼
+  const [open, setOpen] = useState(false);
+
 
   // 모달을 열기 위한 이벤트 핸들러 함수
   const openModal = () => {
@@ -23,6 +27,9 @@ export default function MoneyCalendar() {
     setIsModalOpen(false);
   };
 
+
+
+
   useEffect(()=>{
     window.scrollTo({top: 0})
   },[])
@@ -32,13 +39,54 @@ export default function MoneyCalendar() {
       <h1>가계부 캘린더</h1>
       <TotalStatComp />
       <CalendarComp />
-      <div>
-        <Link to='/calendar/chart'>통계</Link>
-        <StatisticsComp/>
-      </div>
-      <div>할부금</div>
+      {/* 통계컴프 */}
+        <div style={{border: "1px solid brown"}}>
+          <Link to='/calendar/chart'>통계</Link>
+          <br />
+          <button
+            onClick={() => {setOpen((e) => !e);}}
+          >지출
+          </button>
+
+          <button
+            onClick={() => {setOpen((e) => !e);}}
+          >수입
+          </button>
+            {open && (
+            <div>
+              <SEcomp/>
+            </div>
+            )}
+            {! open && (
+            <div>
+              <SIComp/>
+            </div>
+            )}
+        </div>
+
+      <br />
+      {/* 할부금 컴프 */}
+        <div style={{border: "1px solid red"}}>
+          할부금
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <div>챌린지</div>
       <div>목표금액</div>
+      
 
       {/* HHS 추가 부분 모달 컴포넌트 */}
       <hr />

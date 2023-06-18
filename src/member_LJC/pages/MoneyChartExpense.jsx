@@ -320,9 +320,12 @@ export default function MoneyChartExpense() {
         // 12시 0분 0초를 못 담아서 하루 를 빼줘야 그 날에 대입이됨
         let startday = new Date(inputRef.current[0].value);
         startday.setDate(s.getDate() - 1);
-
-        // console.log("이거뭐임",inputRef.current[0].value)
-        // console.log("이거뭐임",s)
+        // strartday date형식
+        // s date형식
+        // inputRef.current[0].value string  형식
+        console.log("이거뭐임",inputRef.current[0].value)
+        console.log("이거뭐임2",s)
+        console.log("이거뭐임2",startday)
 
 
         const fmCollectionRef = collection(db, "money_expense");
