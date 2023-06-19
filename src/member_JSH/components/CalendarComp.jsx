@@ -78,6 +78,15 @@ export default function CalendarComp() {
       setIsModalOpen2(false);
     };
 
+    // 수정 확인 작업 중  
+    const handleDataReceived = (data) => {
+      // 데이터를 처리하고 원하는 위치에 넣어줍니다.
+      // 예시로 inputImp 상태를 업데이트하는 코드를 작성했습니다.
+      setInputImp(data);
+    
+      // 필요한 경우 다른 상태를 업데이트하거나 원하는 작업을 수행할 수 있습니다.
+    };
+
   return (
     <div>
       <Calendar onChange={setValue} value={value}
@@ -141,7 +150,8 @@ export default function CalendarComp() {
               borderRadius: '5px',
             }}
           >
-            <DateDetail closeModal2={closeModal2} selectedDate={value} />
+            {/* onDataReceived 추가해줌 */}
+            <DateDetail closeModal2={closeModal2} selectedDate={value} onDataReceived={handleDataReceived}/>
           </div>
         </div>
         )}
