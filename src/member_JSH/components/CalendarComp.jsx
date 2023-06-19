@@ -15,11 +15,16 @@ import ExpenseModalComp from '../../member_PCH/components/ExpenseModalComp';
 // 저금 모달
 import SavingInput from '../../member_LJC/pages/SavingInput';
 
+// import { userDate } from '../../member_PC_HS/slice/userSlice';
+import DateDetail from '../../member_HHS/components/DateDetail';
 
-export default function CalendarComp() {
+
+export default function CalendarComp() {  
     // 현재 날짜
     const curDate = new Date();
-    const [value, setValue] = useState(new Date(curDate));
+    // const [value, setValue] = useState(new Date(curDate));
+    const [value, setValue] = useState(new Date());
+
 
     // 일반 수입 리덕스
     const implist = useSelector((state)=>(state.imp));
@@ -28,8 +33,6 @@ export default function CalendarComp() {
     const exlist = useSelector((state)=>(state.ex));
     // 저금 리덕스
     const savelist = useSelector((state)=>(state.save));
-
-
 
     const dispatch = useDispatch();
 
@@ -59,6 +62,22 @@ export default function CalendarComp() {
     // 카드 선택
     // 할부 선택
 
+
+    // DateDetail컴포넌트를 모달창으로 연결 HHS 
+    const [isModalOpen2, setIsModalOpen2] = useState(false);
+
+    const openModal2 = (value) => {
+      setIsModalOpen2(true);
+      // 날짜 변환해서 넘겨줌
+      const formattedDate = `${value.getFullYear()}년 ${value.getMonth() + 1}월 ${value.getDate()}일`;
+      //dispatch(userDate({ date: formattedDate }));
+      console.log(formattedDate)
+    };
+  
+    const closeModal2 = () => {
+      setIsModalOpen2(false);
+    };
+
   return (
     <div>
       <Calendar onChange={setValue} value={value}
@@ -69,6 +88,9 @@ export default function CalendarComp() {
         prev2Label={null}
         navigationAriaLive={null}
         locale="en"
+
+        // 날짜 눌러서 상세 모달창 나오게 함
+        onClickDay={(value, event)=> {openModal2(value)}}
 
         tileContent={({date, view})=>{
           let imp, ex;
@@ -96,6 +118,35 @@ export default function CalendarComp() {
           </div>
         }}
       />
+
+        {isModalOpen2 && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: '600px',
+              backgroundColor: 'white',
+              padding: '20px',
+              borderRadius: '5px',
+            }}
+          >
+            <DateDetail closeModal2={closeModal2} selectedDate={value} />
+          </div>
+        </div>
+        )}
+
+      {/* 수입, 지출, 저금 모달 버튼 */}
       <button onClick={() => {
         setModalIsOpen(true);
         openModal(1);

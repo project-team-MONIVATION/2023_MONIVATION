@@ -16,6 +16,11 @@ export const userSlice = createSlice({
         userLogout: (state, action) => {
             state.user = null;
         }
+        // 새로 입력한 창
+        ,
+        userDate: (state, action) => {
+            state.user.user = action.payload
+        }
     }
 })
 
@@ -34,5 +39,6 @@ export const logout = () => (dispatch) => {
         });
 }
 
-export const { userLogin, userLogout } = userSlice.actions
+// userDate넣어줌
+export const { userLogin, userLogout, userDate } = userSlice.actions
 export default userSlice.reducer
