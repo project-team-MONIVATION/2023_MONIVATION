@@ -6,6 +6,10 @@ import { db } from '../../database/firebase';
 import { doc , getDoc, getDocs, query, updateDoc, collection, where } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 
+// 캘린더 css
+import 'react-calendar/dist/Calendar.css'
+import './css/calendarMini.css'
+
 export default function AssetReservation() {
   const user = useSelector((state) => state.user.user);
   const params = useParams();

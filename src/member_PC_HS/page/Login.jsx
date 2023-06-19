@@ -64,7 +64,8 @@ export default function Login() {
             const userData = userDocSnapshot.data();  
             dispatch(userLogin({
               uid: userData.uid,
-              nickname: userData.nickname
+              nickname: userData.nickname,
+              photo: userData.photo,
             }));
             navigate('/calendar');
           })
@@ -129,7 +130,8 @@ export default function Login() {
                   const userData = userDocSnapshot.data();  
                   dispatch(userLogin({
                     uid: userData.uid,
-                    nickname: userData.nickname
+                    nickname: userData.nickname,
+                    photo: userData.photo,
                   }));
                   navigate('/calendar');
                 })
@@ -193,7 +195,8 @@ export default function Login() {
                   const userData = userDocSnapshot.data();  
                   dispatch(userLogin({
                     uid: userData.uid,
-                    nickname: userData.nickname
+                    nickname: userData.nickname,
+                    photo: userData.photo,
                   }));
                   navigate('/calendar');
                 })

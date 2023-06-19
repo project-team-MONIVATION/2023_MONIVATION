@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import { doc , getDoc, getDocs, updateDoc, collection, query, where } from 'firebase/firestore';
-import Calendar from 'react-calendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from "@fortawesome/free-solid-svg-icons"; 
 
+import Calendar from 'react-calendar';
+import './css/calendarMini.css'
 
 export default function AssetManagerProfile() {
   const [liked, setLiked] = useState(false);
@@ -118,22 +119,23 @@ export default function AssetManagerProfile() {
       {
         profile &&
         <div style={{float: "left"}}>
-          <div style={{width: "250px", height: "300px", backgroundColor: "gray", margin: "auto", backgroundImage: `url(${profile.photo})`, backgroundSize: "cover"}}>
+          <div style={{width: "350px", height: "300px", backgroundColor: "gray", margin: "auto", backgroundImage: `url(${profile.photo})`, backgroundSize: "cover", backgroundPosition: "center"}}>
           </div>
-          <div style={{display: "flex", alignItems: "center"}}>
+          <div style={{display: "flex", alignItems: "center", marginTop: "10px"}}>
             <div>
               <p>{profile.name}</p>
               {profile.intro.map((intro, i)=>(
                 <p key={i}>{intro}</p>
               ))}
             </div>
-            <div>
+            <div style={{border: "1px solid black", padding: "10px 5px"}}>
               <FontAwesomeIcon
                 icon={faHeart}
                 fontSize={20}
                 style={{ color: liked ? "red" : "black" }}
                 onClick={() => handleLike()}
               />
+              <p style={{paddingTop: "5px"}}>좋아요</p>
             </div>
           </div>
         </div> 
@@ -144,15 +146,12 @@ export default function AssetManagerProfile() {
         </div>
 
         <div>
-          <Calendar onChange={ onClickDate } value={date}/>
+          <Calendar className={"react-calendar1 react-calendar__navigation1 react-calendar__tile--now1"} onChange={ onClickDate } value={date}/>
         </div>
 
       <Link to={`/asset/managerID/profile/reservation/${params.id}`}>상담예약</Link>
-      <FontAwesomeIcon
-        icon={faHeart}
-        fontSize={20}
-        style={{ color: "red" }}
-      />
+      <h3>자문사 평가</h3>
+      <hr />
     </div>
   )
 }

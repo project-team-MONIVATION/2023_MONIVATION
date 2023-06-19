@@ -45,7 +45,6 @@ function SamplePrevArrow(props) {
       };
       return (
         <div>
-          <Link to='/challenge/challengeID/view'>챌린지1(useParams 설정)</Link>
         <h2>도전 챌린지</h2>
         <Slider {...settings}>
             <div>

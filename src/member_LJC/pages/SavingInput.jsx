@@ -20,6 +20,8 @@ export default function Saving({setModalIsOpen}) {
 
     // 최솟값 날짜
     const [mindate, setMindate] = useState('');
+    // 최대값 날짜
+    const [maxdate, setMaxdate] = useState('');
 
     // (저금예정일 선택)달력 클릭하면 true 값으로 바뀌며 달력 뜸
     // 열기 닫기
@@ -76,6 +78,8 @@ export default function Saving({setModalIsOpen}) {
     
         setStartday(when)
         setCheck2(false)
+        setCheck(false)
+        
     }
 
     // (기간)끝 날짜
@@ -108,7 +112,7 @@ export default function Saving({setModalIsOpen}) {
             // 서버에 연결해서 사용하는 것은 비동기 함수로 작성
             const docRef = await addDoc(collection(db, "money_saving"), {
             done : false, // 고정
-            user: user.uid,
+            uid: user.uid,
             clickday,
             startday,
             endday,
@@ -142,9 +146,10 @@ export default function Saving({setModalIsOpen}) {
                 onSubmit={addDocData}
             >
             <h2>저금예정일</h2>
-                <div>{clickday}
+                <div>{startday}
                     <button
                         onClick={() => {setCheck((e) => !e); setModal(false);}}
+                        type='button'
                     >
                     {isCheck ? "닫힘" : "열림"}
                     </button>
@@ -153,7 +158,7 @@ export default function Saving({setModalIsOpen}) {
                             <Calendar 
                                 onChange={onChange} 
                                 value={value}
-                                onClickDay={(value, event) => gu(value)}
+                                onClickDay={(value, event) => {startperiod(value); setMaxdate(value);}}
                             />
                         </div>
                         
@@ -170,6 +175,7 @@ export default function Saving({setModalIsOpen}) {
                     {startday}~{endday}
                     <button
                         onClick={() => {setModal((e) => !e);}}
+                        type='button'
                     >
                         {modal ? "닫힘" : "열림"}
                     </button>
@@ -179,6 +185,7 @@ export default function Saving({setModalIsOpen}) {
                         {/* 시작일 */}
                         <button
                             onClick={() => {setCheck2((e) => !e); setCheck(false); }}
+                            type='button'
                         >
                         <p style={{ color: ischeck2 ? "#BB363F" : "#000" }}>시작일</p>
                         </button>
@@ -188,6 +195,7 @@ export default function Saving({setModalIsOpen}) {
                                     onChange={onChange}
                                     value={value}
                                     onClickDay={(value, event) => {startperiod(value); setCheck2(false); setCheck3(true); setMindate(value);}}
+                                    maxDate={maxdate}
                                 />
                             </div>
                         )}
@@ -195,6 +203,7 @@ export default function Saving({setModalIsOpen}) {
                         {/* 종료일 */}
                         <button
                             onClick={() => {setCheck3((e) => !e); setCheck(false); } }
+                            type='button'
                         >
                         <p style={{ color: ischeck3 ? "#BB363F" : "#000" }}>종료일</p>
                         </button>
@@ -212,6 +221,7 @@ export default function Saving({setModalIsOpen}) {
                         {/* x닫기 버튼 */}
                         <button
                         onClick={() => {setModal((e) => !e);}}
+                        type='button'
                         >
                         {modal ? "X" : "열림"}
                         </button>
@@ -235,6 +245,7 @@ export default function Saving({setModalIsOpen}) {
                         </div>
                         <button
                         onClick={() => {setModal((e) => !e);}}
+                        type='button'
                         >
                         {modal ? "입력" : "열림"}
                         </button>
@@ -278,7 +289,6 @@ export default function Saving({setModalIsOpen}) {
                 <div>
                     <textarea
                         type='text'
-                        
                         value={memo}
                         onChange={e => setMemo(e.target.value)}
                     />

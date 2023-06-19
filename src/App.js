@@ -33,7 +33,7 @@ import Display from './member_PC_HS/page/Display';
 import './styles/reset.css';
 import './styles/style.css';
 import './App.css';
-import './member_PCH/styles/main.css'
+import './member_PCH/styles/home.css'
 import MoneyChartIncome from './member_LJC/pages/MoneyChartIncome';
 import MoneyChartExpense from './member_LJC/pages/MoneyChartExpense';
 
@@ -73,7 +73,7 @@ function App() {
           
           <Route path='/challenge' element={<ChallengeList/>}/>
           <Route path='/challenge/create' element={<ChallengeCreate/>}/>
-          <Route path='/challenge/challengeID/view' element={<ChallengeView/>}/>
+          <Route path='/challenge/:id/view' element={<ChallengeView/>}/>
 
           <Route path='/asset' element={<Asset/>}/>
           <Route path='/asset/managerlist' element={<AssetManagerList/>}/>
