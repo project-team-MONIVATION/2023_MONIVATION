@@ -21,9 +21,12 @@ export default function InputExpenseComp({ handleSubmit }) {
   const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState("");
   const [payment, setPayment] =useState("현금");
-  const [installment, setInstallment] = useState("");
+  const [installment, setInstallment] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [memo, setMemo] = useState("");
+
+  const num = Array(58).fill().map((v,i)=> i+2);
+  console.log(num)
 
   // 날짜 입력하는 캘린더 모달 on
   const onClickCal = (e) => {
@@ -38,6 +41,7 @@ export default function InputExpenseComp({ handleSubmit }) {
     setShowCal(false);
   };
 
+  /*
   // installment 값 입력
   const onInputInstallment = (e) => {
     if(payment === "카드") {
@@ -46,6 +50,7 @@ export default function InputExpenseComp({ handleSubmit }) {
       return setInstallment(1);
     };
   };
+  */
 
   // selectedCategory 값 입력
   const onClickCategory = (e) => {
@@ -70,7 +75,7 @@ export default function InputExpenseComp({ handleSubmit }) {
       date : date,
       price : price,
       payment : payment,
-      installment : payment==="카드" ? installment : null,
+      installment : (payment === "카드") && installment ? installment : null,
       category : selectedCategory,
       memo : memo
     });
@@ -116,10 +121,25 @@ export default function InputExpenseComp({ handleSubmit }) {
           </select>
           {
             payment && payment === "카드" && (
+              /*
               <div>
                 <label>할부</label>
-                <input type="number" min="1" onChange={ onInputInstallment }/>
+                <input type="number" min="1" max="60" onChange={ onInputInstallment }/>
                 <span>개월</span>
+              </div>
+              */
+              <div>
+                <label>할부</label>
+                <select name="" id="" onChange={(e)=>setInstallment(e.target.value)}>
+                  <option value={null} selected>
+                    일시불
+                  </option>
+                  {
+                    num.map((i)=>(
+                      <option value={i} key={i}>{i}</option>
+                    ))
+                  }
+                </select>
               </div>
             )
           }
@@ -225,7 +245,7 @@ export default function InputExpenseComp({ handleSubmit }) {
         <input 
           type="submit" 
           value="입력" 
-          disabled={!date || !price || !selectedCategory}
+          disabled={!date || !price || !payment || !selectedCategory || (installment > 60) }
         />
       </form>
     </div>
