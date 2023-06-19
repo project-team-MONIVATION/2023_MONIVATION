@@ -1,14 +1,14 @@
 import React, { useEffect, useState, } from 'react';
 import Calendar from 'react-calendar';
 
-import { updateDoc, getDoc, doc } from 'firebase/firestore';
+import { updateDoc, getDoc, doc, deleteDoc } from 'firebase/firestore';
 
 
 import {db} from '../../database/firebase'
 
 import '../../member_LJC/css/saving.css'
 
-export default function EditSaving({title, amount, memo, closeSubModal, id}) {
+export default function EditSaving({title, amount, memo, closeSubModal, id, handleDataUpdate}) {
     const [value, setValue] = useState(new Date());
     const [mindate, setMindate] = useState('');
     const [isCheck, setCheck] = useState(false);
@@ -22,7 +22,8 @@ export default function EditSaving({title, amount, memo, closeSubModal, id}) {
     const [periodunit, setPeriodunit] = useState('');
     const [editTitle, setEditTitle] = useState(title);
     const [editMemo, setEditMemo] = useState(memo);
-  
+
+    // 저금 저장 목록 클릭 시 마다 모달 변함
     useEffect(() => {
       const fetchData = async () => {
         const savingRef = doc(db, 'money_saving', id);
@@ -78,10 +79,12 @@ export default function EditSaving({title, amount, memo, closeSubModal, id}) {
       const formattedValue = new Intl.NumberFormat().format(value);
       event.target.value = formattedValue;
     };
-  
+
+    // 파이어스토어에 업데이트
     const handleSubmit = async (e) => {
       e.preventDefault();
-  
+
+      // 파이어스토어에서 해당 문서를 가져옴
       const savingRef = doc(db, 'money_saving', id);
       const savingSnap = await getDoc(savingRef);
       if (savingSnap.exists()) {
@@ -97,11 +100,21 @@ export default function EditSaving({title, amount, memo, closeSubModal, id}) {
       }
   
       closeSubModal();
+
+      // 데이터 업데이트 후 상위 컴포넌트의 fetchData 함수 호출
+      handleDataUpdate();
     };
   
     const onChange = (date) => {
       setValue(date);
     };
+
+    const deleteMoney = async() => {
+      await deleteDoc(doc(db, "money_saving", id));
+      handleDataUpdate();
+      closeSubModal();
+    }
+
     return (
         <div
         style={{
@@ -273,6 +286,7 @@ export default function EditSaving({title, amount, memo, closeSubModal, id}) {
 
             <br />
             <button type='sumbit' >입력</button><br />
+            <button type='button' onClick={deleteMoney}>삭제</button>
             </form>
 <hr />
 

@@ -144,8 +144,9 @@ const getExpenseRepeat = () => {
 
 // 저금 데이터 가져오기
 const getSaving = async() => {
-  //fetchData("money_saving", setSaving);
-  const q = query(
+  // 정찬이가 uid로 바꾸면 모든게 해결임 
+  fetchData("money_saving", setSaving);
+  /*const q = query(
     collection(db, "money_saving"),
     where('user', '==', user.uid),
     );
@@ -158,7 +159,7 @@ const getSaving = async() => {
     setSaving(dataArray);
   } catch (error) {
     console.log(`Error getting documents: `, error);
-  }
+  }*/
 };
 
 useEffect(() => {
@@ -168,6 +169,31 @@ useEffect(() => {
   getExpenseRepeat();
   getSaving();
 }, []);
+
+// 업데이트된 데이터를 가져오는 함수
+const updateData = () => {
+  getIncome();
+  getIncomeRepeat();
+  getExpense();
+  getExpenseRepeat();
+  getSaving();
+};
+
+useEffect(() => {
+  updateData();
+}, []);
+
+// const handleDataUpdate = () => {
+//   updateData();
+// };
+// 콜백 함수 정의
+const handleDataUpdate = () => {
+  fetchData("money_income", setIncome);
+  fetchData("money_income_repeat", setIncomeRepeat);
+  fetchData("money_expense", setExpense);
+  fetchData("money_expense_repeat", setExpenseRepeat);
+  fetchData("money_saving", setSaving);
+};
 
   
     /** 날짜검색하는 캘린더 모달 from.PCH */
@@ -458,6 +484,7 @@ const handleHyphen = (value) => {
           memo={selectedMemo}
           closeSubModal={closeSubModal}
           date={date}
+          handleDataUpdate={handleDataUpdate}
         />
       )}
 
@@ -472,6 +499,8 @@ const handleHyphen = (value) => {
           startDate={startDate}
           endDate={endDate}
           date={date}
+          handleDataUpdate={handleDataUpdate}
+
 
         />
       )}
@@ -484,6 +513,7 @@ const handleHyphen = (value) => {
           memo={selectedMemo}
           closeSubModal={closeSubModal}
           date={date}
+          handleDataUpdate={handleDataUpdate}
 
         />
       )}
@@ -499,6 +529,8 @@ const handleHyphen = (value) => {
           startDate={startDate}
           endDate={endDate}
           date={date}
+          handleDataUpdate={handleDataUpdate}
+
         />
       )}
 
@@ -514,6 +546,8 @@ const handleHyphen = (value) => {
           closeSubModal={closeSubModal}
           endday={endday}
           startDate={startDate}
+          handleDataUpdate={handleDataUpdate}
+
 
         />
       )}

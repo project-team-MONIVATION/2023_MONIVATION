@@ -3,9 +3,9 @@ import { db } from '../../database/firebase';
 import Calendar from 'react-calendar';
 import { useSelector } from 'react-redux';
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
-import { updateDoc, getDoc, doc } from 'firebase/firestore';
+import { updateDoc, getDoc, doc, deleteDoc } from 'firebase/firestore';
 
-export default function EditIncomeRepeat({ category, price, memo, closeSubModal, id })  {
+export default function EditIncomeRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate })  {
   // uid 불러오기
   const user = useSelector((state) => state.user.user);
 
@@ -100,6 +100,8 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     }
 
     closeSubModal();
+    // 데이터 업데이트 후 상위 컴포넌트의 fetchData 함수 호출
+    handleDataUpdate();
   };
 
 
@@ -124,6 +126,11 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     fetchData();
   }, [id]);
 
+  const deleteMoney = async() => {
+    await deleteDoc(doc(db, "money_income_repeat", id));
+    handleDataUpdate();
+    closeSubModal();
+  }
 
   return (
     <div
@@ -248,6 +255,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
           value="입력"
           disabled={!date || !startDate || !cycle || !editPrice || !selectedCategory}
         />
+        <button type='button' onClick={deleteMoney}>삭제</button>
       </form>
     </div>
   );

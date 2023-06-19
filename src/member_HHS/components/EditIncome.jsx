@@ -3,9 +3,9 @@ import { db } from '../../database/firebase';
 import Calendar from 'react-calendar';
 import { useSelector } from 'react-redux';
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
-import { updateDoc, getDoc, doc } from 'firebase/firestore';
+import { updateDoc, getDoc, doc, deleteDoc } from 'firebase/firestore';
 
-export default function EditIncome({ category, price, memo, closeSubModal, id }) {
+export default function EditIncome({ category, price, memo, closeSubModal, id, handleDataUpdate }) {
   const user = useSelector((state) => state.user.user);
 
   const [showCal, setShowCal] = useState(false);
@@ -13,6 +13,10 @@ export default function EditIncome({ category, price, memo, closeSubModal, id })
   const [selectedCategory, setSelectedCategory] = useState(category);
   const [editedPrice, setEditedPrice] = useState(price);
   const [editedMemo, setEditedMemo] = useState(memo);
+
+//
+
+
 
   // 날짜 입력하는 캘린더 모달 on
   const onClickCal = (e) => {
@@ -50,6 +54,9 @@ export default function EditIncome({ category, price, memo, closeSubModal, id })
     }
 
     closeSubModal();
+    
+    // 데이터 업데이트 후 상위 컴포넌트의 fetchData 함수 호출
+    handleDataUpdate();
   };
 
   // 수입 저장 목록 클릭 시 마다 모달 변함
@@ -69,6 +76,12 @@ export default function EditIncome({ category, price, memo, closeSubModal, id })
 
     fetchData();
   }, [id]);
+
+  const deleteMoney = async() => {
+    await deleteDoc(doc(db, "money_income", id));
+    handleDataUpdate();
+    closeSubModal();
+  }
 
   return (
     <div
@@ -156,6 +169,7 @@ export default function EditIncome({ category, price, memo, closeSubModal, id })
         </div>
 
         <input type="submit" value="입력" disabled={!date || !editedPrice || !selectedCategory} />
+        <button type='button' onClick={deleteMoney}>삭제</button>
       </form>
     </div>
   );

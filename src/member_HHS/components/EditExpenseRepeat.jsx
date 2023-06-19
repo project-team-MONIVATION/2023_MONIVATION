@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 import { db } from '../../database/firebase';
-import { updateDoc, getDoc, doc } from 'firebase/firestore';
+import { updateDoc, getDoc, doc, deleteDoc } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 
 import Calendar from 'react-calendar';
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
 
-export default function EditExpenseRepeat({ category, price, memo, closeSubModal, id }) {
+export default function EditExpenseRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate }) {
 
   // uid 불러오기
   const user = useSelector((state) => state.user.user);
@@ -126,6 +126,9 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
   }
 
   closeSubModal();
+
+  // 데이터 업데이트 후 상위 컴포넌트의 fetchData 함수 호출
+  handleDataUpdate();
 };
 
 
@@ -157,7 +160,11 @@ useEffect(() => {
   fetchData();
 }, [id]);
 
-
+  const deleteMoney = async() => {
+    await deleteDoc(doc(db, "money_expense_repeat", id));
+    handleDataUpdate();
+    closeSubModal();
+  }
 
   return (
     <div
@@ -326,6 +333,8 @@ useEffect(() => {
           value="입력" 
           disabled={!date || !startDate || !cycle || !editPrice || !selectedCategory}
         />
+        <button type='button' onClick={deleteMoney}>삭제</button>
+
       </form>
     </div>
   )
