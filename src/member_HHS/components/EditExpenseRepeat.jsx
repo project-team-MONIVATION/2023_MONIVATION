@@ -121,7 +121,7 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
       cycle: cycle,
       date: date,
       payment: payment,
-      installment: installment,
+      installment: payment === "카드" ? installment : null, // 결제 방법이 "카드"가 아닌 다른 방법으로 변경되면 installment값을 null로 초기화
     });
   }
 
@@ -165,6 +165,17 @@ useEffect(() => {
     handleDataUpdate();
     closeSubModal();
   }
+
+  // installment 값 입력
+  // const onInputInstallment = (e) => {
+  //   if (payment === "카드") {
+  //     setInstallment(e.target.value);
+  //   } else {
+  //     setInstallment(null);
+  //   }
+  // };
+  
+
 
   return (
     <div

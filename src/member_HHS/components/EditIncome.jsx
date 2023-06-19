@@ -16,6 +16,11 @@ export default function EditIncome({ category, price, memo, closeSubModal, id, h
 
 //
 
+// 금액 ,표시 ex1,000,000
+const handleHyphen = (value) => {
+  const formattedValue = new Intl.NumberFormat().format(value); // 숫자 형식으로 변환
+  return formattedValue;
+};
 
 
   // 날짜 입력하는 캘린더 모달 on
@@ -118,10 +123,9 @@ export default function EditIncome({ category, price, memo, closeSubModal, id, h
         <label>금액</label>
         <div>
           <input
-            type="number"
-            min="0"
-            value={editedPrice}
-            onChange={(e) => setEditedPrice(Number(e.target.value))}
+            type="text"
+            value={handleHyphen(editedPrice)} // handleHyphen 함수를 적용하여 값을 형식화합니다.
+            onChange={(e) => setEditedPrice(Number(e.target.value.replace(/[^0-9]/g, '')))} // 숫자 이외의 문자 제거
             required
           />
           <span>₩</span>
