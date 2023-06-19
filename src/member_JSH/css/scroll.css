@@ -1,0 +1,6 @@
+.scrollable-container {
+    overflow-y: scroll;
+    overflow: hidden;
+    scrollbar-width: thin; /* 스크롤바 두께 설정 */
+    scrollbar-color: gray lightgray; /* 스크롤바 색상 설정 */
+  }

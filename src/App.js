@@ -73,7 +73,7 @@ function App() {
           
           <Route path='/challenge' element={<ChallengeList/>}/>
           <Route path='/challenge/create' element={<ChallengeCreate/>}/>
-          <Route path='/challenge/challengeID/view' element={<ChallengeView/>}/>
+          <Route path='/challenge/:id/view' element={<ChallengeView/>}/>
 
           <Route path='/asset' element={<Asset/>}/>
           <Route path='/asset/managerlist' element={<AssetManagerList/>}/>
