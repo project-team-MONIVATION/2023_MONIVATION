@@ -38,6 +38,9 @@ export default function SignupFM() {
   const [textareaValue, setTextareaValue] = useState([]);
   const [selectedButtons, setSelectedButtons] = useState([]);
   
+  const [checkPhone, setCheckPhone] = useState(false);
+  const [checkNick, setCheckNick] = useState(false);
+  
   /* 이메일 인증링크 전송 */
   const sendVerificationEmail = () => {
     const actionCodeSettings = {
@@ -69,7 +72,6 @@ export default function SignupFM() {
       // 입력한 특수문자 한자리 지움
     }
   }
-  /* 비밀번호가 일치하지않으면 form이 제출안되게 하기 */
 
   /* 휴대폰 인증 */
   auth.languageCode = 'ko';
@@ -84,10 +86,15 @@ export default function SignupFM() {
   
   const onSignInSubmit = () => {
     onCaptchVerify()
-    const formatPh = '+' + phoneNum;
+    let formattedPhoneNum = phoneNum;
+
+    if (phoneNum.startsWith('010') && phoneNum.length === 11) {
+      formattedPhoneNum = '+82' + phoneNum.slice(1);
+    }
+
     const appVerifier = window.recaptchaVerifier;
     
-    signInWithPhoneNumber(auth, formatPh, appVerifier)
+    signInWithPhoneNumber(auth, formattedPhoneNum, appVerifier)
     .then((confirmationResult) => {
       window.confirmationResult = confirmationResult;
       alert("메세지가 전송됐습니다")
@@ -110,7 +117,7 @@ export default function SignupFM() {
       console.log(res)
       console.log(res.user)
       alert("인증이 완료되었습니다.")
-      /*인증이 완료되면 input값 disabled해주기? */
+      setCheckPhone(!checkPhone);
     }).catch((error)=>{
       console.log(error)
       setOtp("");
@@ -130,6 +137,7 @@ export default function SignupFM() {
       setNick("");
     } else {
       alert("사용가능한 값입니다!")
+      setCheckNick(!checkNick);
     }
   }
 
@@ -184,7 +192,6 @@ export default function SignupFM() {
   };
   
   /* 전문분야 버튼 3개 입력 */
-  /* 입력이 하나도 안됐을때 제출안되게 하기 */
   const handleButtonClick = (buttonName) => {
     const isButtonSelected = selectedButtons.includes(buttonName);
 
@@ -210,6 +217,17 @@ export default function SignupFM() {
   const updateFirestoreDocument = async () => {
   if(uid) {
     try {
+      if(password1 !== password2) {
+        alert("비밀번호를 다시 입력해주세요")
+      } else if(checkNick === false) {
+        alert("닉네임 중복확인을 해주세요")
+      } else if(checkPhone === false) {
+        alert("핸드폰 인증을 완료해주세요")
+      } else if(selectedButtons.length === 0) {
+        alert("전문분야를 선택해주세요")
+      } else if(textareaValue.length === 0) {
+        alert("자기소개를 입력해주세요")
+      } else {
       const fmCollectionRef = collection(db, 'financial_managers');
       const fmQuery = query(fmCollectionRef, where('uid', '==', uid));
       const querySnapshot = await getDocs(fmQuery);
@@ -238,13 +256,7 @@ export default function SignupFM() {
         console.log("Document successfully updated!(소셜로그인 예상)");
         alert("회원가입에 성공했습니다!");
         navigate('/account/login')
-      }
-      /* 소셜로그인해서 uid값을 못 찾아왔을때 */ 
-      /* 그리고 기존에 add했던 uid가 포함된 값을 삭제해야함 */
-      /*else {
-        alert("홈페이지로 가서 다시 회원가입을 진행해주세요")
-        navigate('/')
-      }*/
+      } }
     } catch (error) {
       console.error("Error updating document: ", error);
     }
@@ -254,8 +266,17 @@ export default function SignupFM() {
     // 이메일 인증버튼을 안눌러서 gotEmail을 못받아온 상태
     if(!gotEmail) {
       alert("이메일 인증이 필요합니다")
-    } 
-    else(
+    } else if(password1 !== password2){
+      alert("비밀번호를 다시 입력해주세요")
+    } else if(checkNick === false) {
+      alert("닉네임 중복확인을 해주세요")
+    } else if(checkPhone === false) { 
+      alert("핸드폰 인증을 완료해주세요")
+    } else if(selectedButtons.length === 0) {
+      alert("전문분야를 선택해주세요")
+    } else if(textareaValue.length === 0) {
+      alert("자기소개를 입력해주세요")
+    } else(
     createUserWithEmailAndPassword(auth, gotEmail, password1)
     .then((userCredential) => {
         // 회원가입에 성공했을때
@@ -420,6 +441,7 @@ export default function SignupFM() {
 
         {/* 휴대전화 입력칸 */}
         <label htmlFor="">Phone</label>
+        <div style={{display: "flex", alignItems: "center"}}>
         <br />
         <InputSmall 
           type="number" 
@@ -428,6 +450,7 @@ export default function SignupFM() {
           required 
         />
         <InputBtn id="sign-in-button" type='button' onClick={onSignInSubmit}>인증번호 발송</InputBtn>
+        </div>
         <br />
 
         {/* 휴대전화 인증번호 입력칸 */}

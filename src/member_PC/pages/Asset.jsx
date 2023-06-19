@@ -87,20 +87,17 @@ export default function Asset() {
           <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
             <div style={{backgroundColor: "gray", width: "250px", height: "300px", margin: "10px 40px", display: "inline-block", borderRadius: "10px"}}>
               <div style={{backgroundColor: "white", width: "200px", height: "200px", margin: "auto", borderRadius: "10px", backgroundImage: `url(${fm.photo})`, backgroundSize: "cover" }}></div>
-              <div>      
-                <FontAwesomeIcon 
-                  icon={faHeart}
-                  fontSize={20}
-                  style={{ color: "red" }}
-                />
-              </div>
               <h3>{fm.name}</h3>
               <div style={{display: "flex"}}> 
                 <p>{fm.field && fm.field[0]}</p>
                 <p>{fm.field && fm.field[1]}</p>
                 <p>{fm.field && fm.field[2]}</p>
                 <p>
-                  👩‍❤️‍💋‍👩:{fm.likeNum}
+                  <FontAwesomeIcon 
+                  icon={faHeart}
+                  fontSize={20}
+                  style={{ color: "red" }}
+                  />:{fm.likeNum}
                 </p>
               </div>
             </div>
