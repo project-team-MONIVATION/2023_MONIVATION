@@ -173,7 +173,7 @@ export default function Home({ handleHover }) {
             </div>
             <div className='slidebox'>
               <AssetMotionComp/>
-            </div>
+            </div>S
           </div>
           <div className='space'/>
         </section>
