@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import TotalStatComp from '../components/TotalStatComp'
 import CalendarComp from '../components/CalendarComp'
-import DateDetail from '../../member_HHS/components/DateDetail';
+//import DateDetail from '../../member_HHS/components/DateDetail';
 import SEcomp from '../../member_LJC/components/SEcomp';
 import SIComp from '../../member_LJC/components/SIComt'
 
@@ -18,14 +18,14 @@ export default function MoneyCalendar() {
 
 
   // 모달을 열기 위한 이벤트 핸들러 함수
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  // const openModal = () => {
+  //   setIsModalOpen(true);
+  // };
 
   // 모달을 닫기 위한 이벤트 핸들러 함수
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
 
 
@@ -39,8 +39,19 @@ export default function MoneyCalendar() {
       <h1>가계부 캘린더</h1>
       <TotalStatComp />
       <CalendarComp />
-      {/* 통계컴프 */}
-        <div style={{border: "1px solid brown"}}>
+
+      <hr />
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "85%"
+        }}
+      >
+        {/* LJC 통계 컴포넌트 */}
+        <div style={{border: "1px solid brown", width: "25%"}}>
           <Link to='/calendar/chart'>통계</Link>
           <br />
           <button
@@ -64,35 +75,33 @@ export default function MoneyCalendar() {
             )}
         </div>
 
-      <br />
-      {/* 할부금 컴프 */}
-        <div style={{border: "1px solid red"}}>
+        {/* LJC 할부금 컴포넌트 */}
+        <div style={{border: "1px solid red", width: "25%"}}>
           할부금
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      <div>챌린지</div>
-      <div>목표금액</div>
+        {/* LJC 챌린지 컴포넌트 */}
+        <div style={{border: "1px solid red", width: "25%"}}>챌린지</div>
+        
+        {/* LJC 목표금액 컴포넌트 */}
+        <div style={{border: "1px solid red", width: "25%"}}>
+          <div>
+            <h3>목표금액</h3>
+            <div>
+              <button>추가</button>
+              <button>수정</button>
+              <button>삭제</button>
+            </div>
+          </div>
+        </div>
+      </div>
       
 
       {/* HHS 추가 부분 모달 컴포넌트 */}
       <hr />
-      <button onClick={openModal}>모달 열기</button>
+      {/* <button onClick={openModal}>모달 열기</button> */}
 
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <div style={{
           position: "fixed",
           top: "0",
@@ -111,9 +120,9 @@ export default function MoneyCalendar() {
               borderRadius: "5px"
           }}>
             <DateDetail closeModal={closeModal} />
-          </div>
-        </div>
-      )}
+          </div> */}
+        {/* </div> */}
+      {/* )} */}
 
     </div>
   )
