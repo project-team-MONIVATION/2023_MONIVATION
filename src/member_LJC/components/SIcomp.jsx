@@ -28,7 +28,7 @@ export const options = {
 
 
 
-export default function SIComt() {
+export default function SIcomp() {
     const navigate = useNavigate();
     const user = useSelector((state) => state.user.user);
     const inputRef = useRef([]);

@@ -6,7 +6,7 @@ import TotalStatComp from '../components/TotalStatComp'
 import CalendarComp from '../components/CalendarComp'
 //import DateDetail from '../../member_HHS/components/DateDetail';
 import SEcomp from '../../member_LJC/components/SEcomp';
-import SIComt from '../../member_LJC/components/SIComt';
+import SIcomp from '../../member_LJC/components/SIcomp';
 
 export default function MoneyCalendar() {
 
@@ -59,7 +59,7 @@ export default function MoneyCalendar() {
             )}
             {! open && (
             <div>
-              <SIComt/>
+              <SIcomp/>
             </div>
             )}
         </div>
