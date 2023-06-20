@@ -50,12 +50,8 @@ export default function MypageReservationFm() {
         }
         return r;
       });
-
-      const docId = doc.id; // Get the document ID
-      const userDocRef = doc(db, 'personal_users', docId); // Get the document reference
-
       console.log(updatedReservations)
-      updateDoc(userDocRef, { reservation: updatedReservations });
+      updateDoc(userRef, { reservation: updatedReservations });
     });
 
     // Close the modal after updating
