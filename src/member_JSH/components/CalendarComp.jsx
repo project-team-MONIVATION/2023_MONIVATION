@@ -278,36 +278,38 @@ const handleHyphen = (value) => {
             moment(value).format("YYYY-MM-DD")
           }
         </div>*/}
-        {/**수입 입력 창 */}
-        {
-          activeModal === 1 && (
-            <Modal isOpen={modalIsOpen}>
-              <button onClick={()=>setModalIsOpen(false)}>X</button>
-              <IncomeModalComp setModalIsOpen={setModalIsOpen}/>
-            </Modal>
-          )
-        }
-        {/**지출 입력 창 */}
-        {
-          activeModal === 2 && (
-            <Modal isOpen={modalIsOpen}>
-              <button onClick={()=>setModalIsOpen(false)}>X</button>
-              <ExpenseModalComp setModalIsOpen={setModalIsOpen}/>
-            </Modal>
-          )
-        }
-        {/**저금 입력 창 */}
-        {
-          activeModal === 3 && (
-            <Modal isOpen={modalIsOpen}>
-              <div>
-                <h3>저금 모달 창</h3>
-                <button onClick={()=>setModalIsOpen(false)}>취소</button>
-                <SavingInput setModalIsOpen={setModalIsOpen}/>
-              </div>
-            </Modal>
-          )
-        }
+        <div id='calendar_modal'>
+          {/**수입 입력 창 */}
+          {
+            activeModal === 1 && (
+              <Modal isOpen={modalIsOpen} id='calendar_modal'>
+                <button onClick={()=>setModalIsOpen(false)}>X</button>
+                <IncomeModalComp setModalIsOpen={setModalIsOpen}/>
+              </Modal>
+            )
+          }
+          {/**지출 입력 창 */}
+          {
+            activeModal === 2 && (
+              <Modal isOpen={modalIsOpen} id='calendar_modal'>
+                <button onClick={()=>setModalIsOpen(false)}>X</button>
+                <ExpenseModalComp setModalIsOpen={setModalIsOpen}/>
+              </Modal>
+            )
+          }
+          {/**저금 입력 창 */}
+          {
+            activeModal === 3 && (
+              <Modal isOpen={modalIsOpen} id='calendar_modal'>
+                <div>
+                  <h3>저금 모달 창</h3>
+                  <button onClick={()=>setModalIsOpen(false)}>취소</button>
+                  <SavingInput setModalIsOpen={setModalIsOpen}/>
+                </div>
+              </Modal>
+            )
+          }
+        </div>
     </div>
   )
 }
