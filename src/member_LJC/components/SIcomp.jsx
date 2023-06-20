@@ -34,8 +34,11 @@ export default function SIcomp() {
     const inputRef = useRef([]);
 
     useEffect(() => {
-        getSavingData(); 
-    }, [user]); // [user] 가바뀔떄마다 돈다
+        if(user){
+            getSavingData(); 
+        }
+    }, [user]); 
+    // [user] 가바뀔떄마다 돈다
 
     
     // 총 금액
@@ -145,12 +148,12 @@ export default function SIcomp() {
 
 
         
+        console.log(user);
         console.log("달첫 ",firstDay)
         console.log("달막 ",lastDay)
 
         const fmCollectionRef = collection(db, "money_income");
         const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid), where('date', '>=', firstDay), where('date', '<=', lastDay)) 
-        
     
         let dayFilterDateList = [];
         

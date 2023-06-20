@@ -144,11 +144,13 @@ const getExpenseRepeat = () => {
 };
 
 useEffect(() => {
-  getIncome();
-  getIncomeRepeat();
-  getExpense();
-  getExpenseRepeat();
-}, []);
+  if(user){
+    getIncome();
+    getIncomeRepeat();
+    getExpense();
+    getExpenseRepeat();
+  }
+}, [user]);
 
 
 
