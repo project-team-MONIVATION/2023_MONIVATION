@@ -94,7 +94,7 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
         <div className='input_content'>
           <div className='date'>
             <p>지출예정일</p>
-            <div>
+            <div className='input_box'>
               <span>{date && changeDate(date)}</span>
               <button onClick={ onClickCal }>아이콘</button>
             </div>
@@ -110,7 +110,7 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
 
           <div className='period'>
             <p>기간</p>
-            <div>
+            <div className='input_box'>
               <span>{date && changeDate(date)} ~ {endDate ? changeDate(endDate) : "0000-00-00"} {cycle}</span>
               <button onClick={ onClickPeriod }>아이콘</button>
             </div>
@@ -148,7 +148,7 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
 
           <div className='price'>
             <p>금액</p>
-            <div>
+            <div className='input_box'>
               <input 
                 type="number" 
                 min="0"
@@ -161,7 +161,7 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
 
           <div>
             <p>결제수단</p>
-            <div>
+            <div className='input_box'>
               <select 
                 name="payment" 
                 id="" 

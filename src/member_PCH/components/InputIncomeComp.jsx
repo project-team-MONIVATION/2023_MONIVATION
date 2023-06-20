@@ -72,7 +72,7 @@ export default function InputIncomeComp({ handleSubmit }) {
         <div className='input_content'>
           <div className='date'>
             <p>날짜</p>
-            <div>
+            <div className='input_box'>
               <span>{date && changeDate(date)}</span>
               <button onClick={ onClickCal }>아이콘</button>
             </div>
@@ -88,7 +88,7 @@ export default function InputIncomeComp({ handleSubmit }) {
 
           <div className='price'>
             <p>금액</p>
-            <div>
+            <div className='input_box'>
               <input 
                 type="number" 
                 min="0"
@@ -140,7 +140,7 @@ export default function InputIncomeComp({ handleSubmit }) {
           <div className='memo'>
             <p>메모</p>
             <div>
-              <textarea cols="30" rows="10" onChange={(e)=>{setMemo(e.target.value)}}/>
+              <textarea cols="30" rows="10" onChange={(e)=>{setMemo(e.target.value)}} />
             </div>
           </div>
         </div>

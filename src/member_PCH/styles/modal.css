@@ -7,12 +7,25 @@
   top: 0;
   right: 0;
   border: 0;
-  cursor: pointer;
 }
 
 #calendar_modal .content_container .content {
   text-align: center;
   padding: 50px 0;
+}
+
+#calendar_modal .content_container .content .saving {
+  /* 저금 모달창 타이틀 */
+  box-sizing: border-box;
+  width: 150px;
+  height: 40px;
+  margin: auto;
+  padding-top: 10px;
+  border-radius: 50px;
+  background-color: #735BF3;
+  color: #FFFFFF;
+  font-family: 'Cafe24Ssurround';
+  font-size: 23px;
 }
 
 #calendar_modal .content_container .content .btn_container {
@@ -24,34 +37,21 @@
 }
 
 #calendar_modal .content_container .content .btn_container .content_btn {
+  box-sizing: border-box;
   width: 50%;
-  height: inherit;
+  height: 40px;
+  padding-top: 5px;
   background-color: #8E8E8E;
   border: 0;
   border-radius: 50px;
-  cursor: pointer;
   color: #FFFFFF;
   font-family: 'Cafe24Ssurround';
-  font-size: 1.2rem;
+  font-size: 23px;
 }
 
 #calendar_modal .content_container .content .btn_container .content_btn.active {
   background-color: #735BF3;
 }
-
-#calendar_modal .content_container .content .saving {
-  box-sizing: border-box;
-  width: 150px;
-  height: 40px;
-  margin: auto;
-  padding-top: 12px;
-  border-radius: 50px;
-  background-color: #735BF3;
-  color: #FFFFFF;
-  font-family: 'Cafe24Ssurround';
-  font-size: 1.2rem;
-}
-
 
 #calendar_modal #input_form .input_content {
   width: 350px;
@@ -64,8 +64,32 @@
 }
 
 #calendar_modal #input_form .input_content p {
+  box-sizing: border-box;
   width: 350px;
   text-align: left;
+  margin-bottom: 10px;
+  padding-left: 15px;
+  font-family: 'Cafe24Ssurround';
+  font-size: 20px;
+}
+
+#calendar_modal #input_form .input_content .input_box {
+  box-sizing: border-box;
+  width: 350px;
+  height: 45px;
+  background-color: #D9D9D9;
+  border-radius: 15px;
+}
+
+#calendar_modal #input_form .input_content textarea {
+  box-sizing: border-box;
+  width: 350px;
+  height: 110px;
+  border: 0;
+  resize: none;
+  background-color: #D9D9D9;
+  border-radius: 15px;
+  padding: 15px;
 }
 
 #calendar_modal #input_form .submit_btn {
@@ -76,5 +100,5 @@
   border-radius: 50px;
   color: #FFFFFF;
   font-family: 'Cafe24Ssurround';
-  font-size: 1.4rem;
+  font-size: 23px;
 }

@@ -62,3 +62,11 @@ time, mark, audio, video,
 .react-calendar {
   font-family: 'Cafe24SsurroundAir';
 }
+
+button, input[type = submit] {
+  cursor: pointer;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+}
