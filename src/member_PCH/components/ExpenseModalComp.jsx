@@ -30,7 +30,7 @@ export default function ExpenseModalComp({ setModalIsOpen }) {
   return (
     <div>
       <button onClick={ onShowExpense }>일반지출</button>
-      <button onClick={ onShowExpenseRepeat }>반복지출</button>
+      <button onClick={ onShowExpenseRepeat }>고정지출</button>
 
       { // 일반지출 입력 form
         showExpense && <InputExpenseComp handleSubmit={handleSubmit}/>
