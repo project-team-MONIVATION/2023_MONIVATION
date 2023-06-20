@@ -1,25 +1,105 @@
 // 개인회원 마이페이지
 
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux';
+import { db } from '../../database/firebase';
+import { getDocs, where, query, collection } from 'firebase/firestore';
 
 export default function Mypage() {
+  const user = useSelector((state) => state.user.user);
+  const [datalist, setDatalist] = useState([]);
+  const navigate = useNavigate();
+  const [fmQuerySnapshot, setFmQuerySnapshot] = useState(null);
+  const [puQuerySnapshot, setPuQuerySnapshot] = useState(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const fmCollectionRef = collection(db, 'financial_managers');
+        const puCollectionRef = collection(db, 'personal_users');
+        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+        const puQuery = query(puCollectionRef, where('uid', '==', user.uid));
+
+        const [fmSnapshot, puSnapshot] = await Promise.all([
+          getDocs(fmQuery),
+          getDocs(puQuery),
+        ]);
+        
+        setFmQuerySnapshot(fmSnapshot);
+        setPuQuerySnapshot(puSnapshot);
+
+        const dataArray = [];
+        
+        
+        if (!fmSnapshot.empty) {
+          fmSnapshot.forEach((doc) => {
+            dataArray.push({
+              id: doc.id,
+              ...doc.data(),
+            });
+          });
+        } else if (!puSnapshot.empty) {
+          puSnapshot.forEach((doc) => {
+            dataArray.push({
+              id: doc.id,
+              ...doc.data(),
+            });
+          });
+        } else {
+          // uid값을 찾을 수 없음
+          navigate('/');
+        }
+
+        setDatalist(dataArray);
+      } catch (error) {
+        console.log("실패했습니다: ", error);
+      }
+    };
+
+    getData();
+  }, [user]);
+
   useEffect(()=>{
     window.scrollTo({top: 0})
   },[])
+  
+  if (fmQuerySnapshot === null || puQuerySnapshot === null) {
+    // 데이터 로딩 중인 상태를 표시할 수 있습니다.
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
       <h1>마이페이지</h1>
       
+      {/* 개인정보수정 */}
       <div>
-        <img src="" alt="프로필" />
-        <p>닉네임</p>
-        <p>abc123@gmail.com</p>
-        <Link to ='/mypage/edit'>수정</Link>
-        <div>
-          <Link to='/mypage/reservation'>상담예약 내역</Link>
-        </div>
+        {datalist.map((data)=>(
+          <div key={data.id}>
+            <img src={data.photo} width={100} height={100} alt="프로필" />
+            <br />
+            {/* 개인유저 */}
+            {puQuerySnapshot.empty ? null : (
+              <div>
+                <Link to={`/mypage/editpu/${data.id}`}>수정</Link>
+                <br />
+                <Link to={`/mypage/reservationpu/${data.id}`}>상담예약 내역</Link>
+              </div>
+            )}
+            {/* 자산관리사 */}
+            {fmQuerySnapshot.empty ? null : (
+              <div>
+                <Link to={`/mypage/editfm/${data.id}`}>수정</Link>
+                <br />
+                <Link to={`/mypage/reservationfm/${data.id}`}>상담예약 내역</Link>
+              </div>
+            )}
+            <p>{data.email}</p>
+            <p>{data.nickname}</p>
+            <p>{data.id}</p>
+          </div>
+        ))}
       </div>
 
       <div>
