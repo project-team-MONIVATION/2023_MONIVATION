@@ -37,7 +37,7 @@ export default function TotalStatComp() {
 
   const user = useSelector((state) => state.user.user);
 
-  const [savingList , setSavingList] = useState([]);
+  const [savingList , setSavingList] = useState('');
 
   useEffect(() => {
       getSavingData();
