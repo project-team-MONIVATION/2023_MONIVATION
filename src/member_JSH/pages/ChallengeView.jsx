@@ -77,10 +77,26 @@ export default function ChallengeView() {
   }
 
   // 만든 챌린지 삭제 함수
-  const deleteChallege = async(e)=>{
+  const deleteChallenge = async(e)=>{
     e.preventDefault();
     const docRef = doc(db, "user_challenge", params.id);
+    const query = query(collection(db, "user_comments"), where("paramId", "==", params.id));
+
+    // 삭제할 문서(댓글)들을 한번에 삭제
+    const deletePromises = [];
+    const querySnapshot = await getDocs(query);
     await deleteDoc(docRef);
+    querySnapshot.forEach((doc)=>{
+      // 삭제할 문서에 대한 참조를 배열에 추가
+      deletePromises.push(deleteDoc(doc.ref));
+    });
+    Promise.all(deletePromises)
+    .then(()=>{
+      console.log("문서들 삭제 성공");
+    })
+    .catch((error)=>{
+      console.error("오류발생", error);
+    })
     navigate('/challenge');
   }
 
@@ -139,7 +155,7 @@ export default function ChallengeView() {
           user && user.uid ? <button onClick={handleToggled}>{isToggled ? '참여하기' : '참여취소'}</button> : <button>로그인 해주세요</button>
         }
         {
-          user && challengeBoard && challengeBoard.uid === user.uid ? <button onClick={deleteChallege}>챌린지 삭제</button> : null
+          user && challengeBoard && challengeBoard.uid === user.uid ? <button onClick={deleteChallenge}>챌린지 삭제</button> : null
         }
         {
           user && challengeBoard && challengeBoard.uid === user.uid ? <button>챌린지 수정</button> : null

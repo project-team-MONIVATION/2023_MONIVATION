@@ -29,7 +29,7 @@ export default function IncomeModalComp({ setModalIsOpen }) {
   return (
     <div>
             <button onClick={ onShowIncome }>일반수입</button>
-            <button onClick={ onShowRepeatIncome }>반복수입</button>
+            <button onClick={ onShowRepeatIncome }>고정수입</button>
 
             { // 일반수입 입력 form
               showIncome && <InputIncomeComp handleSubmit={handleSubmit}/>
