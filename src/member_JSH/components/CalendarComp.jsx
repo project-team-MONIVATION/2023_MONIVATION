@@ -213,7 +213,7 @@ const handleHyphen = (value) => {
         
           // 선택한 날짜에 대한 총 수입 계산
           const totalIncome = filteredIncome.reduce((total, item) => total + item.price, 0) + filteredIncomeRepeat.reduce((total, item) => total + item.price, 0);
-          console.log(totalIncome)
+          // console.log(totalIncome)
 
           // 선택한 날짜에 대한 총 지출 계산
           const totalExpense = filteredExpense.reduce((total, item) => total + item.price, 0) + filteredExpenseRepeat.reduce((total, item) => total + item.price, 0);

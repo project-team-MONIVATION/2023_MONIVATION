@@ -10,7 +10,8 @@ import SEcomp from '../../member_LJC/components/SEcomp';
 import SIcomp from '../../member_LJC/components/SIcomp';
 // 할부금
 import InstallmentsComp from '../../member_LJC/components/InstallmentsComp';
-
+// 목표금액
+import TargetAmountComp from '../../member_LJC/components/TargetAmountComp';
 
 export default function MoneyCalendar() {
 
@@ -90,13 +91,9 @@ export default function MoneyCalendar() {
         {/* LJC 목표금액 컴포넌트 */}
         <div style={{border: "1px solid red", width: "25%"}}>
           <div>
-            <h3>목표금액</h3>
-            <div>
-              <button>추가</button>
-              <button>수정</button>
-              <button>삭제</button>
-            </div>
+            <TargetAmountComp/>
           </div>
+          
         </div>
       </div>
       
