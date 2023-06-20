@@ -7,7 +7,7 @@ import { doc, getDoc, getDocs, updateDoc, where, query, collection } from 'fireb
 export default function MypageReservationFm() {
   const user = useSelector((state) => state.user.user);
 
-  const [reserv, setReserv] = useState();
+  const [reserv, setReserv] = useState(null);
   const params = useParams();
   const [modalData, setModalData] = useState(null);
 
@@ -32,31 +32,45 @@ export default function MypageReservationFm() {
   };
 
   const handleData = async () => {
-    // Get the user UID
-    const userUid = modalData.userUid;
+    /* 자산관리사 값 바꾸기 */
+    if (reserv && reserv.reservation) {
+      const updatedReservation = reserv.reservation.map((r) => {
+        if (r.userUid === modalData.userUid) {
+          return { ...r, done: true };
+        }
+        return r;
+      });
+  
+      await updateDoc(doc(db, "financial_managers", params.id), {
+        reservation: updatedReservation,
+      });
+  
+      const docSnap = await getDoc(doc(db, "financial_managers", params.id));
+      setReserv({
+        ...docSnap.data()
+      });
+    }
 
-    // Access the 'personal_users' collection and query for the user with the matching UID
-    const q = query(collection(db, 'personal_users'), where('uid', '==', userUid));
+    /* 개인유저 값 바꾸기 */
+    const q = query(collection(db, 'personal_users'), where('uid', '==', modalData.userUid));
     const querySnapshot = await getDocs(q);
 
-    // Update the 'done' value in the reservation array for the matching user
     querySnapshot.forEach((doc) => {
       const userRef = doc.ref;
       const reservations = doc.data().reservation;
 
       const updatedReservations = reservations.map((r) => {
-        if (r.fmUid === user.uid) {
+        if (r.fmUid === params.id) {
           return { ...r, done: true };
         }
         return r;
       });
-      console.log(updatedReservations)
-      updateDoc(userRef, { reservation: updatedReservations });
-    });
 
-    // Close the modal after updating
+      updateDoc(userRef, { reservation: updatedReservations });
+    }); 
+
     closeModal();
-  }
+  };
 
   return (
     <div>
@@ -73,7 +87,7 @@ export default function MypageReservationFm() {
             <td>상담일자</td>
             <td>처리상태</td>
           </tr>
-          {reserv == null ? 
+          {!reserv || !reserv.reservation ? 
           (
             <tr>
               <td></td>
@@ -84,7 +98,8 @@ export default function MypageReservationFm() {
             </tr>
           )
           : 
-          (reserv.reservation.map((r, i)=> {
+          (
+            reserv.reservation.map((r, i)=> {
             const reserveDate = new Date(r.reservedate.toDate());
 
             // 원하는 형식으로 날짜를 출력
@@ -101,8 +116,7 @@ export default function MypageReservationFm() {
                 <td>
                   {r.done === false ? "예약중" : 
                     (<div>
-                      <p>상담완료</p> 
-                      <button>리뷰작성</button>
+                      <p>상담완료</p>
                     </div>)
                   }
                 </td>
