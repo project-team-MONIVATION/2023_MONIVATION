@@ -19,18 +19,13 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
 
   // 기간 입력하는 모달 state
   const [showPeriod, setShowPeriod] = useState(false);
-  // 기간 입력하는 모달의 캘린더 모달 state
-  const [showStartCal, setShowStartCal] = useState(true);
-  const [showEndCal, setShowEndCal] = useState(false);
 
   // form의 입력 값 state
   const [date, setDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
-  const [cycle, setCycle] = useState("매일");
+  const [cycle, setCycle] = useState();
   const [price, setPrice] = useState("");
   const [payment, setPayment] = useState("현금");
-  const [installment, setInstallment] = useState();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [memo, setMemo] = useState("");
 
@@ -43,7 +38,6 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
   // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
   const onClickDate = (newDate) => {
     setDate(newDate);
-    // console.log(newDate)
     setShowCal(false);
   };
 
@@ -53,40 +47,9 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
     setShowPeriod(true);
   };
 
-  // 기간 입력하는 모달의 startDate 입력하는 캘린더 모달 on 
-  const onClickStartBtn = (e) => {
-    setShowStartCal(true);
-    setShowEndCal(false);
-  };
-
-  // startDate 값 입력
-  const onClickStartDate = (newDate) => {
-    setStartDate(newDate);
-    onClickEndBtn()
-  };
-
-  // 기간 입력하는 모달의 endDate 입력하는 캘린더 모달 on
-  const onClickEndBtn = (e) => {
-    setShowEndCal(true);
-    setShowStartCal(false);
-  };
-
   // endDate 값 입력
   const onClickEndDate = (newDate) => {
-    if (startDate >= newDate) {
-      return alert('종료일은 시작일보다 작거나 같을 수 없습니다');
-    } else {
-      return setEndDate(newDate);
-    };
-  };
-
-  // installment 값 입력
-  const onInputInstallment = (e) => {
-    if(payment === "카드") {
-      return setInstallment(e.target.value);
-    } else {
-      return setInstallment(1);
-    };
+    setEndDate(newDate);
   };
 
   // selectedCategory 값 입력
@@ -111,12 +74,11 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
     await addDoc(collection(db, "money_expense_repeat"), {
       uid : user.uid,
       date : date,
-      startDate : startDate,
+      startDate : date,
       endDate : endDate,
       cycle : cycle,
       price : price,
       payment : payment,
-      installment : payment==="카드" ? installment : null,
       category : selectedCategory,
       memo : memo
     });
@@ -145,7 +107,7 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
 
         <label>기간</label>
         <div>
-          <span>{startDate && changeDate(startDate)} ~ {endDate ? changeDate(endDate) : "0000-00-00"} {cycle}</span>
+          <span>{date && changeDate(date)} ~ {endDate ? changeDate(endDate) : "0000-00-00"} {cycle}</span>
           <button onClick={ onClickPeriod }>아이콘</button>
         </div>
         {
@@ -153,25 +115,26 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
             <div>
               <button type='button' onClick={()=>{setShowPeriod(false)}}>X</button>
               <div>
-                <button type='button' onClick={ onClickStartBtn }>시작일</button>
-                <button type='button' onClick={ onClickEndBtn }>종료일</button>
-                {
-                  showStartCal && (<Calendar onChange={ onClickStartDate } value={startDate} required/>)
-                }
-                {
-                  showEndCal && (<Calendar onChange={ onClickEndDate } value={endDate}/>)
-                }
+                <label>종료일</label>
+                <Calendar onChange={ onClickEndDate } value={endDate} minDate={date}/>
               </div>
               <div>
                 <label>반복주기</label><br />
                 <select name="cycle" id="" onChange={(e)=>{setCycle(e.target.value)}}>
+                  <option value="value" selected disabled>
+                  필수선택
+                  </option>
                   <option value="매일">매일</option>
                   <option value="매주">매주</option>
                   <option value="매월">매월</option>
                   <option value="매년">매년</option>
                 </select>
               </div>
-              <button type='button' onClick={()=>{setShowPeriod(false)}}>
+              <button
+                type='button' 
+                onClick={()=>{setShowPeriod(false)}}
+                disabled={!endDate || !cycle}
+              >
                 입력
               </button>
             </div>
@@ -201,15 +164,6 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
             <option value="카드">카드</option>
             <option value="이체">이체</option>
           </select>
-          {
-            payment && payment === "카드" && (
-              <div>
-                <label>할부</label>
-                <input type="number" min="1" onChange={ onInputInstallment }/>
-                <span>개월</span>
-              </div>
-            )
-          }
         </div>
 
         <label>카테고리</label>
@@ -272,7 +226,7 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
         <input 
           type="submit" 
           value="입력" 
-          disabled={!date || !startDate || !cycle || !price || !selectedCategory}
+          disabled={!date || !endDate || !cycle || !price || !selectedCategory}
         />
       </form>
     </div>

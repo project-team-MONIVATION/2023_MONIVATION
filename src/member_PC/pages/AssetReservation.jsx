@@ -99,7 +99,7 @@ export default function AssetReservation() {
       });
   
       alert("예약이 접수됐습니다");
-      navigate('/mypage/reservation');
+      navigate('/mypage');
     }
   }  
 
