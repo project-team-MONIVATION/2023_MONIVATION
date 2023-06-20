@@ -142,158 +142,174 @@ export default function InputExpenseComp({ handleSubmit }) {
   };
 
   return (
-    <div>
+    <div id='input_form'>
       <form action="" onSubmit={inputExpense}>
 
-        <label>날짜</label>
-        <div>
-          <span>{date && changeDate(date)}</span>
-          <button onClick={ onClickCal }>아이콘</button>
-        </div>
-        {
-          showCal && (<Calendar onChange={ onClickDate } value={date}/>)
-        }
+        <div className='input_content'>
+          <div className='date'>
+            <p>날짜</p>
+            <div>
+              <span>{date && changeDate(date)}</span>
+              <button onClick={ onClickCal }>아이콘</button>
+            </div>
+            {
+              showCal && (<Calendar onChange={ onClickDate } value={date}/>)
+            }
+          </div>
 
-        <label>금액</label>
-        <div>
-          <input 
-            type="number" 
-            min= "0"
-            onChange={(e)=>{setPrice(Number(e.target.value))}}
-            required
-          />
-          <span>₩</span>
-        </div>
+          <div className='price'>
+            <p>금액</p>
+            <div>
+              <input 
+                type="number" 
+                min= "0"
+                onChange={(e)=>{setPrice(Number(e.target.value))}}
+                required
+              />
+              <span>₩</span>
+            </div>
+          </div>
 
-        <label htmlFor="">결제수단</label>
-        <div>
-          <select 
-            name="payment" 
-            id="" 
-            value={payment}
-            onChange={(e)=>{setPayment(e.target.value)}}
-          >
-            <option value="현금">현금</option>
-            <option value="카드">카드</option>
-            <option value="이체">이체</option>
-          </select>
-          {
-            payment && payment === "카드" && (
-              <div>
-                <label>할부</label>
-                <select name="" id="" onChange={(e)=>setInstallment(e.target.value)}>
-                  <option value="일시불" selected>
-                    일시불
-                  </option>
-                  {
-                    num.map((i)=>(
-                      <option value={i} key={i}>{i}</option>
-                    ))
-                  }
-                </select>
-              </div>
-            )
-          }
-        </div>
+          <div className='payment'>
+            <p>결제수단</p>
+            <div>
+              <select 
+                name="payment" 
+                id="" 
+                value={payment}
+                onChange={(e)=>{setPayment(e.target.value)}}
+              >
+                <option value="현금">현금</option>
+                <option value="카드">카드</option>
+                <option value="이체">이체</option>
+              </select>
+            </div>
+          </div>
 
-        <label>카테고리</label>
-        <div>
-          <CategoryBtn
-            name="일반지출"
-            value="카페"
-            checked={selectedCategory === "카페"}
-            onChange={onClickCategory}
-          >
-            카페
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반지출"
-            value="외식"
-            checked={selectedCategory === "외식"} 
-            onChange={onClickCategory}
-          >
-            외식
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반지출"
-            value="음주"
-            checked={selectedCategory === "음주"} 
-            onChange={onClickCategory}
-          >
-            음주
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반지출"
-            value="식료/잡화"
-            checked={selectedCategory === "식료/잡화"} 
-            onChange={onClickCategory}
-          >
-            식료/잡화
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반지출"
-            value="교통"
-            checked={selectedCategory === "교통"} 
-            onChange={onClickCategory}
-          >
-            교통
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반지출"
-            value="차량"
-            checked={selectedCategory === "차량"} 
-            onChange={onClickCategory}
-          >
-            차량
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반지출"
-            value="쇼핑"
-            checked={selectedCategory === "쇼핑"} 
-            onChange={onClickCategory}
-          >
-            쇼핑
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반지출"
-            value="문화생활"
-            checked={selectedCategory === "문화생활"} 
-            onChange={onClickCategory}
-          >
-            문화생활
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반지출"
-            value="경조사"
-            checked={selectedCategory === "경조사"} 
-            onChange={onClickCategory}
-          >
-            경조사
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반지출"
-            value="의료"
-            checked={selectedCategory === "의료"} 
-            onChange={onClickCategory}
-          >
-            의료
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반지출"
-            value="기타"
-            checked={selectedCategory === "기타"} 
-            onChange={onClickCategory}
-          >
-            기타
-          </CategoryBtn>
-        </div>
+          <div className='installment'>
+            {
+              payment && payment === "카드" && (
+                <div>
+                  <p>할부</p>
+                  <select name="" id="" onChange={(e)=>setInstallment(e.target.value)}>
+                    <option value="일시불" selected>
+                      일시불
+                    </option>
+                    {
+                      num.map((i)=>(
+                        <option value={i} key={i}>{i}</option>
+                      ))
+                    }
+                  </select>
+                </div>
+              )
+            }
+          </div>
 
-        <label>메모</label>
-        <div>
-          <textarea cols="30" rows="10" onChange={(e)=>setMemo(e.target.value)}/>
+          <div className='category'>
+            <p>카테고리</p>
+            <div>
+              <CategoryBtn
+                name="일반지출"
+                value="카페"
+                checked={selectedCategory === "카페"}
+                onChange={onClickCategory}
+              >
+                카페
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반지출"
+                value="외식"
+                checked={selectedCategory === "외식"} 
+                onChange={onClickCategory}
+              >
+                외식
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반지출"
+                value="음주"
+                checked={selectedCategory === "음주"} 
+                onChange={onClickCategory}
+              >
+                음주
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반지출"
+                value="식료/잡화"
+                checked={selectedCategory === "식료/잡화"} 
+                onChange={onClickCategory}
+              >
+                식료/잡화
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반지출"
+                value="교통"
+                checked={selectedCategory === "교통"} 
+                onChange={onClickCategory}
+              >
+                교통
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반지출"
+                value="차량"
+                checked={selectedCategory === "차량"} 
+                onChange={onClickCategory}
+              >
+                차량
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반지출"
+                value="쇼핑"
+                checked={selectedCategory === "쇼핑"} 
+                onChange={onClickCategory}
+              >
+                쇼핑
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반지출"
+                value="문화생활"
+                checked={selectedCategory === "문화생활"} 
+                onChange={onClickCategory}
+              >
+                문화생활
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반지출"
+                value="경조사"
+                checked={selectedCategory === "경조사"} 
+                onChange={onClickCategory}
+              >
+                경조사
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반지출"
+                value="의료"
+                checked={selectedCategory === "의료"} 
+                onChange={onClickCategory}
+              >
+                의료
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반지출"
+                value="기타"
+                checked={selectedCategory === "기타"} 
+                onChange={onClickCategory}
+              >
+                기타
+              </CategoryBtn>
+            </div>
+          </div>
+
+          <div className='memo'>
+            <p>메모</p>
+            <div>
+              <textarea cols="30" rows="10" onChange={(e)=>setMemo(e.target.value)}/>
+            </div>
+          </div>
         </div>
 
         <input 
+          className='submit_btn'
           type="submit" 
           value="입력" 
           disabled={!date || !price || !payment || !selectedCategory || (installment > 60) }

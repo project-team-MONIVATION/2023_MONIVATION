@@ -66,76 +66,87 @@ export default function InputIncomeComp({ handleSubmit }) {
   };
 
   return (
-    <div>
+    <div id='input_form'>
       <form action="" onSubmit={ inputIncome }>
 
-        <label>날짜</label>
-        <div>
-          <span>{date && changeDate(date)}</span>
-          <button onClick={ onClickCal }>아이콘</button>
-        </div>
-        {
-          showCal && (
+        <div className='input_content'>
+          <div className='date'>
+            <p>날짜</p>
             <div>
-              <button type='button' onClick={()=>{setShowCal(false)}}>X</button>
-              <Calendar onChange={ onClickDate } value={date}/>
+              <span>{date && changeDate(date)}</span>
+              <button onClick={ onClickCal }>아이콘</button>
             </div>
-          )
-        }
+            {
+              showCal && (
+                <div>
+                  <button type='button' onClick={()=>{setShowCal(false)}}>X</button>
+                  <Calendar onChange={ onClickDate } value={date}/>
+                </div>
+              )
+            }
+          </div>
 
-        <label>금액</label>
-        <div>
-          <input 
-            type="number" 
-            min="0"
-            onChange={(e)=>{setPrice(Number(e.target.value))}}
-            required
-          />
-          <span>₩</span>
-        </div>
+          <div className='price'>
+            <p>금액</p>
+            <div>
+              <input 
+                type="number" 
+                min="0"
+                onChange={(e)=>{setPrice(Number(e.target.value))}}
+                required
+              />
+              <span>₩</span>
+            </div>
+          </div>
 
-        <label>카테고리</label>
-        <div>
-          <CategoryBtn
-            name="일반수입"
-            value="보너스"
-            checked={selectedCategory === "보너스"}
-            onChange={onClickCategory}
-          >
-            보너스
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반수입"
-            value="용돈"
-            checked={selectedCategory === "용돈"} 
-            onChange={onClickCategory}
-          >
-            용돈
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반수입"
-            value="재테크"
-            checked={selectedCategory === "재테크"} 
-            onChange={onClickCategory}
-          >
-            재테크
-          </CategoryBtn>
-          <CategoryBtn
-            name="일반수입"
-            value="기타"
-            checked={selectedCategory === "기타"} 
-            onChange={onClickCategory}
-          >
-            기타
-          </CategoryBtn>
-        </div>
+          <div className='category'>
+            <p>카테고리</p>
+            <div>
+              <CategoryBtn
+                name="일반수입"
+                value="보너스"
+                checked={selectedCategory === "보너스"}
+                onChange={onClickCategory}
+              >
+                보너스
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반수입"
+                value="용돈"
+                checked={selectedCategory === "용돈"} 
+                onChange={onClickCategory}
+              >
+                용돈
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반수입"
+                value="재테크"
+                checked={selectedCategory === "재테크"} 
+                onChange={onClickCategory}
+              >
+                재테크
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반수입"
+                value="기타"
+                checked={selectedCategory === "기타"} 
+                onChange={onClickCategory}
+              >
+                기타
+              </CategoryBtn>
+            </div>
+          </div>
 
-        <label>메모</label>
-        <div>
-          <textarea cols="30" rows="10" onChange={(e)=>{setMemo(e.target.value)}}/>
+          <div className='memo'>
+            <p>메모</p>
+            <div>
+              <textarea cols="30" rows="10" onChange={(e)=>{setMemo(e.target.value)}}/>
+            </div>
+          </div>
         </div>
 
         <input 
+          className='submit_btn'
           type="submit" 
           value="입력" 
           disabled={!date || !price || !selectedCategory}
