@@ -234,7 +234,7 @@ export default function Saving({setModalIsOpen}) {
                                     onChange={(e) => {setPeriodunit(e.target.value)}}
                                 >
                                     <option value="value" selected disabled>
-                                        기간을 선택해주세요.
+                                        주기를 선택해주세요.
                                     </option>
                                     <option value="day">day</option>
                                     <option value="week">week</option>

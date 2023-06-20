@@ -3,15 +3,23 @@ import { db } from '../../database/firebase';
 import Calendar from 'react-calendar';
 import { useSelector } from 'react-redux';
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
-import { updateDoc, getDoc, doc } from 'firebase/firestore';
+import { updateDoc, getDoc, doc, deleteDoc } from 'firebase/firestore';
 
-export default function EditIncomeRepeat({ category, price, memo, closeSubModal, id })  {
+export default function EditIncomeRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate })  {
+  // uid 불러오기
   const user = useSelector((state) => state.user.user);
 
+  // 날짜 입력하는 캘린더 모달 state
   const [showCal, setShowCal] = useState(false);
+
+  // 기간 입력하는 모달 state
   const [showPeriod, setShowPeriod] = useState(false);
+  
+  // 기간 입력하는 모달의 캘린더 모달 state
   const [showStartCal, setShowStartCal] = useState(true);
   const [showEndCal, setShowEndCal] = useState(false);
+  
+  // form의 입력 값 state
   const [date, setDate] = useState(new Date());
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -20,16 +28,19 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
   const [editMemo, setEditMemo] = useState(memo);
   const [selectedCategory, setSelectedCategory] = useState(category);
 
+  // 날짜 입력하는 캘린더 모달 on
   const onClickCal = (e) => {
     e.preventDefault();
     setShowCal(true);
   };
 
+  // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
   const onClickDate = (newDate) => {
     setDate(newDate);
     setShowCal(false);
   };
 
+  // 기간 입력하는 모달 on
   const onClickPeriod = (e) => {
     e.preventDefault();
     setShowPeriod(true);
@@ -41,6 +52,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     onClickEndBtn();
   };
 
+  // 기간 입력하는 모달의 endDate 입력하는 캘린더 모달 on
   const onClickEndBtn = (e) => {
     setShowEndCal(true);
     setShowStartCal(false);
@@ -61,6 +73,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     setSelectedCategory(e.target.value);
   };
 
+  // 캘린더 모달에서 입력한 값을 form에 보여주기 위한 변환 함수
   const changeDate = (newDate) => {
     const YYYY = String(newDate.getFullYear());
     const MM = String(newDate.getMonth() + 1).padStart(2, '0');
@@ -69,6 +82,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     return valueDate;
   };
 
+  // 업데이트 넘겨주는 버튼
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -79,22 +93,32 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
         category: selectedCategory,
         price: editPrice,
         memo: editMemo,
+        startDate: startDate,
+        endDate: endDate,
+        cycle: cycle,
       });
     }
 
     closeSubModal();
+    // 데이터 업데이트 후 상위 컴포넌트의 fetchData 함수 호출
+    handleDataUpdate();
   };
 
+
+  // 
   useEffect(() => {
     const fetchData = async () => {
-      const incomeRef = doc(db, "money_income_repeat", id);
-      const incomeSnap = await getDoc(incomeRef);
-      if (incomeSnap.exists()) {
-        const incomeData = incomeSnap.data();
+    const incomeRef = doc(db, "money_income_repeat", id);
+    const incomeSnap = await getDoc(incomeRef);
+    if (incomeSnap.exists()) {
+      const incomeData = incomeSnap.data();
+        setSelectedCategory(incomeData.category);
+        setCycle(incomeData.cycle);
+        setDate(incomeData.date.toDate()); // date 변수의 초기값 설정
         setStartDate(incomeData.startDate.toDate());
         setEndDate(incomeData.endDate.toDate());
-        setCycle(incomeData.cycle);
-        setDate(new Date(incomeData.date)); // date 변수의 초기값 설정
+        setEditMemo(incomeData.memo);
+        setEditPrice(incomeData.price);
         console.log(setDate);
       }
     };
@@ -102,19 +126,25 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     fetchData();
   }, [id]);
 
+  const deleteMoney = async() => {
+    await deleteDoc(doc(db, "money_income_repeat", id));
+    handleDataUpdate();
+    closeSubModal();
+  }
 
   return (
     <div
       style={{
         position: 'fixed',
-        top: '0',
+        top: '100px',
         right: '90px',
         display: 'flex',
-        width: '400px',
+        width: '600px',
         height: '700px',
         backgroundColor: 'white',
         padding: '20px',
         borderRadius: '5px',
+        border: 'solid 2px black '
       }}
     >
       <form action="" onSubmit={handleSubmit}>
@@ -225,6 +255,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
           value="입력"
           disabled={!date || !startDate || !cycle || !editPrice || !selectedCategory}
         />
+        <button type='button' onClick={deleteMoney}>삭제</button>
       </form>
     </div>
   );

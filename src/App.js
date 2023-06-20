@@ -15,8 +15,10 @@ import AssetManagerList from './member_PC/pages/AssetManagerList';
 import AssetManagerProfile from './member_PC/pages/AssetManagerProfile';
 import AssetReservation from './member_PC/pages/AssetReservation';
 import Mypage from './member_HHS/pages/Mypage';
-import MypageEdit from './member_HHS/pages/MypageEdit';
-import MypageReservation from './member_HHS/pages/MypageReservation';
+import MypageEditPu from './member_HHS/pages/MypageEditPu';
+import MypageEditFm from './member_HHS/pages/MypageEditFm';
+import MypageReservationPu from './member_HHS/pages/MypageReservationPu';
+import MypageReservationFm from './member_HHS/pages/MypageReservationFm';
 import SavingInput from './member_LJC/pages/SavingInput';
 import SavingList from './member_LJC/pages/SavingList';
 
@@ -33,7 +35,7 @@ import Display from './member_PC_HS/page/Display';
 import './styles/reset.css';
 import './styles/style.css';
 import './App.css';
-import './member_PCH/styles/main.css'
+import './member_PCH/styles/home.css'
 import MoneyChartIncome from './member_LJC/pages/MoneyChartIncome';
 import MoneyChartExpense from './member_LJC/pages/MoneyChartExpense';
 
@@ -73,7 +75,7 @@ function App() {
           
           <Route path='/challenge' element={<ChallengeList/>}/>
           <Route path='/challenge/create' element={<ChallengeCreate/>}/>
-          <Route path='/challenge/challengeID/view' element={<ChallengeView/>}/>
+          <Route path='/challenge/:id/view' element={<ChallengeView/>}/>
 
           <Route path='/asset' element={<Asset/>}/>
           <Route path='/asset/managerlist' element={<AssetManagerList/>}/>
@@ -81,8 +83,10 @@ function App() {
           <Route path='/asset/managerID/profile/reservation/:id' element={<AssetReservation/>}/>
 
           <Route path='/mypage' element={<Mypage/>}/>
-          <Route path='/mypage/edit' element={<MypageEdit/>}/>
-          <Route path='/mypage/reservation' element={<MypageReservation/>}/>
+          <Route path='/mypage/editpu/:id' element={<MypageEditPu/>}/>
+          <Route path='/mypage/editfm/:id' element={<MypageEditFm/>} />
+          <Route path='/mypage/reservationpu/:id' element={<MypageReservationPu/>} />
+          <Route path='/mypage/reservationfm/:id' element={<MypageReservationFm/>}/>
 
           {/* 저금 페이지 */}
           <Route path='/savinginput' element={<SavingInput/>}/>

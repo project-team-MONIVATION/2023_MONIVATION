@@ -21,9 +21,12 @@ export default function InputExpenseComp({ handleSubmit }) {
   const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState("");
   const [payment, setPayment] =useState("현금");
-  const [installment, setInstallment] = useState("");
+  const [installment, setInstallment] = useState("일시불");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [memo, setMemo] = useState("");
+
+  // 할부 개월 수 select에서 사용할 배열
+  const num = Array(58).fill().map((v,i)=> i+2);
 
   // 날짜 입력하는 캘린더 모달 on
   const onClickCal = (e) => {
@@ -38,6 +41,7 @@ export default function InputExpenseComp({ handleSubmit }) {
     setShowCal(false);
   };
 
+  /*
   // installment 값 입력
   const onInputInstallment = (e) => {
     if(payment === "카드") {
@@ -46,6 +50,7 @@ export default function InputExpenseComp({ handleSubmit }) {
       return setInstallment(1);
     };
   };
+  */
 
   // selectedCategory 값 입력
   const onClickCategory = (e) => {
@@ -64,16 +69,75 @@ export default function InputExpenseComp({ handleSubmit }) {
   // submit 이벤트
   const inputExpense = async(e) => {
     e.preventDefault();
-    // 작성된 값을 firestore의 money_expense 컬렉션에 추가
-    await addDoc(collection(db, "money_expense"), {
-      uid : user.uid,
-      date : date,
-      price : price,
-      payment : payment,
-      installment : payment==="카드" ? installment : null,
-      category : selectedCategory,
-      memo : memo
-    });
+
+    /** 결제수단이 "현금" 또는 "이체"이거나, 할부가 "일시불"일 때 
+     * : 작성된 값을 firestore의 money_expense 컬렉션에 문서로 추가
+    */
+    if ( (payment !== "카드") || (installment === "일시불") ) {
+      // console.log(payment, installment)
+      await addDoc(collection(db, "money_expense"), {
+        uid : user.uid,
+        date : date,
+        price : price,
+        payment : payment,
+        installment : installment,
+        category : selectedCategory,
+        memo : memo
+      });
+    } 
+
+    /** 결제수단이 "카드"이면서 할부가 "일시불"이 아닐 때 
+     * 1. form에 입력된 값을 그대로 money_installments 컬렉션에 문서로 추가
+     * 2. price를 price/installment로 저장 후 installment 값 만큼 date의 month가 증가하는 새로운 문서를 여러개 만들고 그 문서들을 money_expense컬렉션에 추가
+    */
+    else if( (payment === "카드") && (installment !== "일시불") ) {
+      // console.log ("할부 설정됨", installment);
+      // 1단계
+      const installmentData = {
+        uid : user.uid,
+        date : date,
+        price : price,
+        payment : payment,
+        installment : installment,
+        category: selectedCategory,
+        memo: memo
+      }
+      await addDoc(collection(db, "money_installments"), installmentData)
+        .then((docRef) => {
+          // 2단계
+          // 할부 개월 수에 따라 money_expense 컬렉션에 문서 생성
+          const installmentDocId = docRef.id;
+          const divisionInstallment = async () => {
+            for( let i=0; i<installmentData.installment; i++ ) {
+              const installmentDate = installmentData.date
+              // 할부 개월 수만큼 date 의 month 값 증가
+              const expenseDate = () => {
+                const YYYY = String(installmentDate.getFullYear());
+                const MM = String(installmentDate.getMonth()+1+i).padStart(2,"0");
+                const DD = String(installmentDate.getDate()).padStart(2,"0");
+                return `${YYYY}-${MM}-${DD}`
+              }
+              // console.log(installmentDocId, expenseDate())
+              await addDoc(collection(db, "money_test"), {
+                docid : installmentDocId,
+                uid : installmentData.uid,
+                date : new Date(expenseDate()),
+                price : Math.round(installmentData.price / installmentData.installment),
+                payment : installmentData.payment,
+                installment : `할부 ${i+1}/${installmentData.installment}`,
+                category : installmentData.category,
+                memo : installmentData.memo
+              })
+            }
+          }
+          divisionInstallment()
+        })
+        .catch((error) => {
+          console.error('2단계 수행 중 오류 발생', error);
+        })
+
+    }
+    
     // 입력 모달창을 닫기 위한 handleSubmit 함수를 호출
     handleSubmit();
   };
@@ -116,10 +180,25 @@ export default function InputExpenseComp({ handleSubmit }) {
           </select>
           {
             payment && payment === "카드" && (
+              /*
               <div>
                 <label>할부</label>
-                <input type="number" min="1" onChange={ onInputInstallment }/>
+                <input type="number" min="1" max="60" onChange={ onInputInstallment }/>
                 <span>개월</span>
+              </div>
+              */
+              <div>
+                <label>할부</label>
+                <select name="" id="" onChange={(e)=>setInstallment(e.target.value)}>
+                  <option value="일시불" selected>
+                    일시불
+                  </option>
+                  {
+                    num.map((i)=>(
+                      <option value={i} key={i}>{i}</option>
+                    ))
+                  }
+                </select>
               </div>
             )
           }
@@ -225,7 +304,7 @@ export default function InputExpenseComp({ handleSubmit }) {
         <input 
           type="submit" 
           value="입력" 
-          disabled={!date || !price || !selectedCategory}
+          disabled={!date || !price || !payment || !selectedCategory || (installment > 60) }
         />
       </form>
     </div>
