@@ -28,14 +28,14 @@ export const options = {
 
 
 
-export default function StatisticsComp() {
+export default function SEcomp() {
     const navigate = useNavigate();
     const user = useSelector((state) => state.user.user);
     const inputRef = useRef([]);
 
     useEffect(() => {
         getSavingData(); 
-    }, [user,]); // [user] 가바뀔떄마다 돈다
+    }, [user]); // [user] 가바뀔떄마다 돈다
 
     
     // 총 금액
@@ -145,8 +145,8 @@ export default function StatisticsComp() {
 
 
         
-        console.log("달첫 ",firstDay)
-        console.log("달막 ",lastDay)
+        // console.log("달첫 ",firstDay)
+        // console.log("달막 ",lastDay)
 
         const fmCollectionRef = collection(db, "money_expense");
         const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid), where('date', '>=', firstDay), where('date', '<=', lastDay)) 
@@ -154,7 +154,7 @@ export default function StatisticsComp() {
     
         let dayFilterDateList = [];
         
-        console.log("값이 나왔냐?",dayFilterDateList)
+        console.log("UID 나옴??",fmQuery)
         
         try {
             // 전부 뽑아옴

@@ -5,8 +5,12 @@ import { Link } from 'react-router-dom'
 import TotalStatComp from '../components/TotalStatComp'
 import CalendarComp from '../components/CalendarComp'
 //import DateDetail from '../../member_HHS/components/DateDetail';
+// 통계
 import SEcomp from '../../member_LJC/components/SEcomp';
-import SIComp from '../../member_LJC/components/SIComt'
+import SIcomp from '../../member_LJC/components/SIcomp';
+// 할부금
+import InstallmentsComp from '../../member_LJC/components/InstallmentsComp';
+
 
 export default function MoneyCalendar() {
 
@@ -36,9 +40,12 @@ export default function MoneyCalendar() {
   
   return (
     <div>
-      <h1>가계부 캘린더</h1>
-      <TotalStatComp />
-      <CalendarComp />
+      <div
+        style={{display: "flex", justifyContent: "center", alignItems:"center"}}
+      >
+        <TotalStatComp />
+        <CalendarComp />
+      </div>
 
       <hr />
 
@@ -70,14 +77,14 @@ export default function MoneyCalendar() {
             )}
             {! open && (
             <div>
-              <SIComp/>
+              <SIcomp/>
             </div>
             )}
         </div>
 
         {/* LJC 할부금 컴포넌트 */}
         <div style={{border: "1px solid red", width: "25%"}}>
-          할부금
+          <InstallmentsComp/>
         </div>
 
         {/* LJC 챌린지 컴포넌트 */}

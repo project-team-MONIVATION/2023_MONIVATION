@@ -1,0 +1,80 @@
+#calendar_modal .content_container {
+  position: relative;
+}
+
+#calendar_modal .content_container .close_btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+  cursor: pointer;
+}
+
+#calendar_modal .content_container .content {
+  text-align: center;
+  padding: 50px 0;
+}
+
+#calendar_modal .content_container .content .btn_container {
+  width: 300px;
+  height: 40px;
+  margin: auto;
+  background-color: #8E8E8E;
+  border-radius: 50px;
+}
+
+#calendar_modal .content_container .content .btn_container .content_btn {
+  width: 50%;
+  height: inherit;
+  background-color: #8E8E8E;
+  border: 0;
+  border-radius: 50px;
+  cursor: pointer;
+  color: #FFFFFF;
+  font-family: 'Cafe24Ssurround';
+  font-size: 1.2rem;
+}
+
+#calendar_modal .content_container .content .btn_container .content_btn.active {
+  background-color: #735BF3;
+}
+
+#calendar_modal .content_container .content .saving {
+  box-sizing: border-box;
+  width: 150px;
+  height: 40px;
+  margin: auto;
+  padding-top: 12px;
+  border-radius: 50px;
+  background-color: #735BF3;
+  color: #FFFFFF;
+  font-family: 'Cafe24Ssurround';
+  font-size: 1.2rem;
+}
+
+
+#calendar_modal #input_form .input_content {
+  width: 350px;
+  height: 560px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#calendar_modal #input_form .input_content p {
+  width: 350px;
+  text-align: left;
+}
+
+#calendar_modal #input_form .submit_btn {
+  width: 150px;
+  height: 50px;
+  background-color: #735BF3;
+  border: 0;
+  border-radius: 50px;
+  color: #FFFFFF;
+  font-family: 'Cafe24Ssurround';
+  font-size: 1.4rem;
+}
