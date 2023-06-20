@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import TotalStatComp from '../components/TotalStatComp'
 import CalendarComp from '../components/CalendarComp'
-import DateDetail from '../../member_HHS/components/DateDetail';
+//import DateDetail from '../../member_HHS/components/DateDetail';
 import SEcomp from '../../member_LJC/components/SEcomp';
 import SIComp from '../../member_LJC/components/SIComt'
 import GoalComp from '../../member_PCH/components/GoalComp';
@@ -19,14 +19,14 @@ export default function MoneyCalendar() {
 
 
   // 모달을 열기 위한 이벤트 핸들러 함수
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  // const openModal = () => {
+  //   setIsModalOpen(true);
+  // };
 
   // 모달을 닫기 위한 이벤트 핸들러 함수
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
 
 
@@ -91,9 +91,9 @@ export default function MoneyCalendar() {
 
       {/* HHS 추가 부분 모달 컴포넌트 */}
       <hr />
-      <button onClick={openModal}>모달 열기</button>
+      {/* <button onClick={openModal}>모달 열기</button> */}
 
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <div style={{
           position: "fixed",
           top: "0",
@@ -112,9 +112,9 @@ export default function MoneyCalendar() {
               borderRadius: "5px"
           }}>
             <DateDetail closeModal={closeModal} />
-          </div>
-        </div>
-      )}
+          </div> */}
+        {/* </div> */}
+      {/* )} */}
 
     </div>
   )
