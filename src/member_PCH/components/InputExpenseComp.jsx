@@ -105,7 +105,7 @@ export default function InputExpenseComp({ handleSubmit }) {
       await addDoc(collection(db, "money_installments"), installmentData)
         .then((docRef) => {
           // 2단계
-          // 할부 개월 수에 따라 money_expense 컬렉션에 문서 생성
+          // 할부 개월 수만큼 date 값을 바꾸고 money_expense 컬렉션에 문서 반복 생성
           const installmentDocId = docRef.id;
           const divisionInstallment = async () => {
             for( let i=0; i<installmentData.installment; i++ ) {
@@ -118,7 +118,7 @@ export default function InputExpenseComp({ handleSubmit }) {
                 return `${YYYY}-${MM}-${DD}`
               }
               // console.log(installmentDocId, expenseDate())
-              await addDoc(collection(db, "money_test"), {
+              await addDoc(collection(db, "money_expense"), {
                 docid : installmentDocId,
                 uid : installmentData.uid,
                 date : new Date(expenseDate()),
@@ -135,7 +135,6 @@ export default function InputExpenseComp({ handleSubmit }) {
         .catch((error) => {
           console.error('2단계 수행 중 오류 발생', error);
         })
-
     }
     
     // 입력 모달창을 닫기 위한 handleSubmit 함수를 호출
@@ -180,13 +179,6 @@ export default function InputExpenseComp({ handleSubmit }) {
           </select>
           {
             payment && payment === "카드" && (
-              /*
-              <div>
-                <label>할부</label>
-                <input type="number" min="1" max="60" onChange={ onInputInstallment }/>
-                <span>개월</span>
-              </div>
-              */
               <div>
                 <label>할부</label>
                 <select name="" id="" onChange={(e)=>setInstallment(e.target.value)}>
