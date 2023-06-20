@@ -7,7 +7,6 @@ import CalendarComp from '../components/CalendarComp'
 //import DateDetail from '../../member_HHS/components/DateDetail';
 import SEcomp from '../../member_LJC/components/SEcomp';
 import SIComp from '../../member_LJC/components/SIComt'
-import GoalComp from '../../member_PCH/components/GoalComp';
 
 export default function MoneyCalendar() {
 
@@ -84,8 +83,17 @@ export default function MoneyCalendar() {
         {/* LJC 챌린지 컴포넌트 */}
         <div style={{border: "1px solid red", width: "25%"}}>챌린지</div>
         
-        {/* PCH 목표금액 컴포넌트 */}
-        <GoalComp/>
+        {/* LJC 목표금액 컴포넌트 */}
+        <div style={{border: "1px solid red", width: "25%"}}>
+          <div>
+            <h3>목표금액</h3>
+            <div>
+              <button>추가</button>
+              <button>수정</button>
+              <button>삭제</button>
+            </div>
+          </div>
+        </div>
       </div>
       
 
