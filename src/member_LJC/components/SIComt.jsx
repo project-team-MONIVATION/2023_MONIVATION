@@ -28,14 +28,14 @@ export const options = {
 
 
 
-export default function StatisticsComp() {
+export default function SIComt() {
     const navigate = useNavigate();
     const user = useSelector((state) => state.user.user);
     const inputRef = useRef([]);
 
     useEffect(() => {
         getSavingData(); 
-    }, [user,]); // [user] 가바뀔떄마다 돈다
+    }, [user]); // [user] 가바뀔떄마다 돈다
 
     
     // 총 금액

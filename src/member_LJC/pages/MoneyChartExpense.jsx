@@ -347,14 +347,14 @@ export default function MoneyChartExpense() {
             // 중복된 카테고리 합침 
             // 중복된 카테고리의 금액도 합침
             const ctgpic = transform(deduplication(samecategory(dayFilterDateList)))
-            console.log(ctgpic)
+            // console.log(ctgpic)
 
             // 선 그래프
             // 중복된 날짜 합침
             // 중복된 날짜의 금액 합침
             const ctpicdt = linededuplication(samecategory(dayFilterDateList))
-            console.log("라인 중복제거전",samecategory(dayFilterDateList))
-            console.log("라인 중복제거후",ctpicdt)
+            // console.log("라인 중복제거전",samecategory(dayFilterDateList))
+            // console.log("라인 중복제거후",ctpicdt)
 
             const ctpicdtList = samecategory(dayFilterDateList)
 

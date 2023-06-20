@@ -195,7 +195,7 @@ export default function Saving({setModalIsOpen}) {
                                     onChange={onChange}
                                     value={value}
                                     onClickDay={(value, event) => {startperiod(value); setCheck2(false); setCheck3(true); setMindate(value);}}
-                                    maxDate={maxdate}
+                                    
                                 />
                             </div>
                         )}
