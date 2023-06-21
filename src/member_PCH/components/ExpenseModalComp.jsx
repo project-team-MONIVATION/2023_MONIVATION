@@ -28,9 +28,27 @@ export default function ExpenseModalComp({ setModalIsOpen }) {
   };
 
   return (
-    <div>
-      <button onClick={ onShowExpense }>일반지출</button>
-      <button onClick={ onShowExpenseRepeat }>고정지출</button>
+    <div className='content'>
+      <div className='btn_container'>
+        <button 
+          className={
+            'content_btn ' +
+            (showExpense ? 'active' : '')
+          }
+          onClick={ onShowExpense }
+        >
+          일반지출
+        </button>
+        <button 
+          className={
+            'content_btn ' +
+            (showExpenseRepeat ? 'active' : '')
+          }
+          onClick={ onShowExpenseRepeat }
+        >
+          고정지출
+        </button>
+      </div>
 
       { // 일반지출 입력 form
         showExpense && <InputExpenseComp handleSubmit={handleSubmit}/>

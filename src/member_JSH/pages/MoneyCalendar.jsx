@@ -40,9 +40,12 @@ export default function MoneyCalendar() {
   
   return (
     <div>
-      <h1>가계부 캘린더</h1>
-      <TotalStatComp />
-      <CalendarComp />
+      <div
+        style={{display: "flex", justifyContent: "center", alignItems:"center"}}
+      >
+        <TotalStatComp />
+        <CalendarComp />
+      </div>
 
       <hr />
 

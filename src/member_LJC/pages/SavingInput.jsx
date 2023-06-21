@@ -141,167 +141,166 @@ export default function Saving({setModalIsOpen}) {
     
 
     return (
-        <div>
+        <div className='content'>
+            <h1 className='saving'>저금</h1>
             <form
+                id='input_form'
                 onSubmit={addDocData}
             >
-            <h2>저금예정일</h2>
-                <div>{startday}
-                    <button
-                        onClick={() => {setCheck((e) => !e); setModal(false);}}
-                        type='button'
-                    >
-                    {isCheck ? "닫힘" : "열림"}
-                    </button>
-                    {isCheck && (
-                        <div className='modal-cal modal-cal2'>
-                            <Calendar 
-                                onChange={onChange} 
-                                value={value}
-                                onClickDay={(value, event) => {startperiod(value); setMaxdate(value);}}
+                <div className='input_content'>
+                    <div className='date'>
+                        <p>저금예정일</p>
+                        <div>{startday}
+                            <button
+                                onClick={() => {setCheck((e) => !e); setModal(false);}}
+                                type='button'
+                            >
+                            {isCheck ? "닫힘" : "열림"}
+                            </button>
+                            {isCheck && (
+                                <div className='modal-cal modal-cal2'>
+                                    <Calendar 
+                                        onChange={onChange} 
+                                        value={value}
+                                        onClickDay={(value, event) => {startperiod(value); setMaxdate(value);}}
+                                    />
+                                </div>
+                                
+                            )}
+                        </div>
+                    </div>
+
+                    <div className='period'>
+                        <p>기간</p>
+
+                        {/* test 라이브러리로 기간선택 */}
+                        {<div>
+                            {startday}~{endday}
+                            <button
+                                onClick={() => {setModal((e) => !e);}}
+                                type='button'
+                            >
+                                {modal ? "닫힘" : "열림"}
+                            </button>
+                            {/* 기간선택 모달창 */}
+                            {modal && (
+                            <div className='saving-period'>
+                                {/* 시작일 */}
+                                <button
+                                    onClick={() => {setCheck2((e) => !e); setCheck(false); }}
+                                    type='button'
+                                >
+                                <p style={{ color: ischeck2 ? "#BB363F" : "#000" }}>시작일</p>
+                                </button>
+                                {ischeck2 && (
+                                    <div className='modal-cal'>
+                                        <Calendar 
+                                            onChange={onChange}
+                                            value={value}
+                                            onClickDay={(value, event) => {startperiod(value); setCheck2(false); setCheck3(true); setMindate(value);}}
+                                            
+                                        />
+                                    </div>
+                                )}
+
+                                {/* 종료일 */}
+                                <button
+                                    onClick={() => {setCheck3((e) => !e); setCheck(false); } }
+                                    type='button'
+                                >
+                                <p style={{ color: ischeck3 ? "#BB363F" : "#000" }}>종료일</p>
+                                </button>
+                                {ischeck3 && (
+                                    <div className='modal-cal'>
+                                        <Calendar 
+                                            onChange={onChange} 
+                                            value={value}
+                                            onClickDay={(value, event) => {endperiod(value); setCheck3(false);}}
+                                            minDate={mindate}
+                                        />
+                                    </div>
+                                )}
+
+                                {/* x닫기 버튼 */}
+                                <button
+                                onClick={() => {setModal((e) => !e);}}
+                                type='button'
+                                >
+                                {modal ? "X" : "열림"}
+                                </button>
+                                
+                                {/* 반복주기 select창 */}
+                                <p>반복주기</p>
+                                <div>
+                                    <form action="">
+                                        <select 
+                                            onChange={(e) => {setPeriodunit(e.target.value)}}
+                                        >
+                                            <option value="value" selected disabled>
+                                                주기를 선택해주세요.
+                                            </option>
+                                            <option value="day">day</option>
+                                            <option value="week">week</option>
+                                            <option value="month">month</option>
+                                            <option value="year">year</option>
+                                        </select>
+                                    </form>
+                                </div>
+                                <button
+                                onClick={() => {setModal((e) => !e);}}
+                                type='button'
+                                >
+                                {modal ? "입력" : "열림"}
+                                </button>
+                                
+                            </div>
+                            
+                            )}
+                        </div>}
+
+                        {periodunit}
+                    </div>
+
+                    <div className='price'>
+                        <p>금액</p>
+                        <div>
+                            <input 
+                                required
+                                onInput={handleHyphen} 
+                                type="text"
+                                onChange={e => setAmount(e.target.value)}
                             />
                         </div>
-                        
-                    )}
-                </div>
-            
-            <br />
-<hr />
+                    </div>
 
-            <h2>기간</h2>
-
-                {/* test 라이브러리로 기간선택 */}
-                {<div>
-                    {startday}~{endday}
-                    <button
-                        onClick={() => {setModal((e) => !e);}}
-                        type='button'
-                    >
-                        {modal ? "닫힘" : "열림"}
-                    </button>
-                    {/* 기간선택 모달창 */}
-                    {modal && (
-                    <div className='saving-period'>
-                        {/* 시작일 */}
-                        <button
-                            onClick={() => {setCheck2((e) => !e); setCheck(false); }}
-                            type='button'
-                        >
-                        <p style={{ color: ischeck2 ? "#BB363F" : "#000" }}>시작일</p>
-                        </button>
-                        {ischeck2 && (
-                            <div className='modal-cal'>
-                                <Calendar 
-                                    onChange={onChange}
-                                    value={value}
-                                    onClickDay={(value, event) => {startperiod(value); setCheck2(false); setCheck3(true); setMindate(value);}}
-                                    
-                                />
-                            </div>
-                        )}
-
-                        {/* 종료일 */}
-                        <button
-                            onClick={() => {setCheck3((e) => !e); setCheck(false); } }
-                            type='button'
-                        >
-                        <p style={{ color: ischeck3 ? "#BB363F" : "#000" }}>종료일</p>
-                        </button>
-                        {ischeck3 && (
-                            <div className='modal-cal'>
-                                <Calendar 
-                                    onChange={onChange} 
-                                    value={value}
-                                    onClickDay={(value, event) => {endperiod(value); setCheck3(false);}}
-                                    minDate={mindate}
-                                />
-                            </div>
-                        )}
-
-                        {/* x닫기 버튼 */}
-                        <button
-                        onClick={() => {setModal((e) => !e);}}
-                        type='button'
-                        >
-                        {modal ? "X" : "열림"}
-                        </button>
-                        
-                        {/* 반복주기 select창 */}
-                        <h4>반복주기</h4>
+                    <div className='title'>
+                        <p>제목</p>
                         <div>
-                            <form action="">
-                                <select 
-                                    onChange={(e) => {setPeriodunit(e.target.value)}}
-                                >
-                                    <option value="value" selected disabled>
-                                        주기를 선택해주세요.
-                                    </option>
-                                    <option value="day">day</option>
-                                    <option value="week">week</option>
-                                    <option value="month">month</option>
-                                    <option value="year">year</option>
-                                </select>
-                            </form>
+                            <input
+                                type='text'
+                                required
+                                value={title}
+                                onChange={e => setTitle(e.target.value)}
+                            />
                         </div>
-                        <button
-                        onClick={() => {setModal((e) => !e);}}
-                        type='button'
-                        >
-                        {modal ? "입력" : "열림"}
-                        </button>
-                        
                     </div>
                     
-                    )}
-                </div>}
-<hr />
-                
-            {periodunit}
-            <br />            
-            <h2>금액</h2>
-                <div>
-                    <input 
-                        required
-                        onInput={handleHyphen} 
-                        type="text"
-                        onChange={e => setAmount(e.target.value)}
-                    
-                    />
-                    
-                    
-                    
-                </div>
+                    <div className='memo'>
+                        <p>메모</p>
+                        <div>
+                            <textarea
+                                type='text'
+                                value={memo}
+                                onChange={e => setMemo(e.target.value)}
+                            />
 
-            <br />
-            <h2>제목</h2>
-                <div>
-                    <input
-                        type='text'
-                        required
-                        value={title}
-                        onChange={e => setTitle(e.target.value)}
-                    />
-                </div>
-                
-
-            <br />
-            <h2>메모</h2>
-                <div>
-                    <textarea
-                        type='text'
-                        value={memo}
-                        onChange={e => setMemo(e.target.value)}
-                    />
-
-                    
+                            
+                        </div>
+                    </div>
                 </div>
             
-
-            <br />
-            <button type='sumbit' >입력</button><br />
+                <button className='submit_btn' type='sumbit'>입력</button>
             </form>
-<hr />
-
         </div>
     )
 }
