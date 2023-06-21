@@ -185,6 +185,8 @@ export default function CalendarComp() {
 
           return (
             <div>
+              {/* 값이 0이 아닐때만 출력 */}
+              {totalIncome !== 0 && (
               <p
                 style = {{
                   color:"blue",
@@ -192,6 +194,8 @@ export default function CalendarComp() {
               >
                 { handleHyphen(totalIncome) }&#8361;
               </p>
+              )}
+              {totalExpense !== 0 && (
               <p
                 style = {{
                   color:"red",
@@ -199,6 +203,7 @@ export default function CalendarComp() {
               >
                 { handleHyphen(totalExpense) }&#8361;
               </p>
+              )}
             </div>
           );
         }}

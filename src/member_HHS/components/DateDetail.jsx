@@ -34,12 +34,12 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     const [selectedPrice, setSelectedPrice] = useState('');
     const [selectedMemo, setSelectedMemo] = useState('');
     const [selectedId, setSelectedId] = useState('');
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(null);
     const [title, setTitle] = useState(''); // 저금
     const [amount, setAmount] = useState(''); // 저금
-
-    const [startDate, setStartDate] = useState(new Date());
-    const [endday, setEndday] = useState(new Date());
-    const [clickday, setClickday] = useState(new Date());
+    const [endday, setEndday] = useState(new Date()); // 저금
+    const [clickday, setClickday] = useState(new Date()); // 저금
 
 
     /* 모달에다가 값을 넘겨주기위해 저장하는 함수들 */
@@ -203,9 +203,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       return valueDate;
     }
 
-    const [endDate, setEndDate] = useState(null);
     
-
     /** 선택된 날짜와 동일한 데이터 필터링 */
     const formatDate = (date) => {
        // 선택된 날짜를 YYYY년 MM월 DD일 형식으로 변환
@@ -232,6 +230,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     
     // 선택된 날짜와 동일한 저금 데이터 필터링
     const filteredSaving = saving.filter((item) => {
+       // 선택된 날짜를 YYYY-MM-DD 형식으로 변환
       const formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(2, "0")}`;
 
       // 저금 데이터의 날짜를 Date 객체로 변환
@@ -296,10 +295,9 @@ export default function DateDetail({ closeModal2, selectedDate }) {
           <div>
             { filteredIncome.map((item, i) => ( 
               // selectedDate와 date가 일치하는 경우에만 출력
-              <div
-                key={i}
+              <div key = {i}
                 onClick = { () =>
-                  openEditIncomeModal(item.category, item.price, item.memo, item.id)}
+                  openEditIncomeModal(item.category, item.price, item.memo, item.id) }
               >
                 <span>{ item.category }</span>
                 <span>{ handleHyphen(item.price) }&#8361;</span>
@@ -322,10 +320,9 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 <br />
           <div>
             { filteredIncomeRepeat.map((item, i) => (
-              <div
-                key={i}
+              <div key = {i}
                 onClick = { () =>
-                  openEditIncomeRepeatModal(item.category, item.price, item.memo, item.id)}
+                  openEditIncomeRepeatModal(item.category, item.price, item.memo, item.id) }
               >
                 <span>{ item.category }</span>
                 <span>{ handleHyphen(item.price) }&#8361;</span>
@@ -344,7 +341,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
                 { handleHyphen(
                   filteredExpense.reduce((total, item) => total + item.price, 0) +
                   filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
-                )}
+                ) }
                 &#8361;
               </h3>
           </div>
@@ -356,10 +353,9 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 <br />
           <div>
             { filteredExpense.map((item, i) => (
-              <div
-                key={i}
+              <div key = {i}
                 onClick = {() => 
-                  openEditExpenseModal(item.category, item.price, item.memo, item.id)}
+                  openEditExpenseModal(item.category, item.price, item.memo, item.id) }
               >
                 <span>{ item.category }</span>
                 <span>{ handleHyphen(item.price) }&#8361;</span>
@@ -373,13 +369,12 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               <h4>반복지출</h4>
               <h4>{ handleHyphen(filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)) }&#8361;</h4>
           </div>
-          <br />
-          
+<br />
           <div>
             { filteredExpenseRepeat.map((item, i) => (
-              <div key={i}
+              <div key = {i}
                 onClick = {() =>
-                  openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id, )}
+                  openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id, ) }
               >
                 <span>{ item.category }</span>
                 <span>{ handleHyphen(item.price) }&#8361;</span>
@@ -392,15 +387,15 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 <br />
           {/* 저금 */}
           <div>
-              <h3>이 날의 저금은?</h3>
-              <h3>
-                { handleHyphen(
-                  filteredSaving.reduce((total, item) => total + parseInt(item.amount.replace(/,/g, '')), 0)
-                )}
-                &#8361;
+            <h3>이 날의 저금은?</h3>
+            <h3>
+              { handleHyphen(
+                filteredSaving.reduce((total, item) =>
+                total + parseInt(item.amount.replace(/,/g, '')), 0)
+              ) }
+              &#8361;
               </h3>
           </div>
-          
           <div>
             { filteredSaving.map((item, i) => (
               <div key = {i}
@@ -414,89 +409,83 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               </div>
             ))}
           </div>
-
         </div>
 
-        <button onClick={closeModal2}>닫기</button>
+        <button onClick = { closeModal2 }>닫기</button>
 
-        {/* 서브 모달 컴포넌트 */}
-        {EditIncomeOpen && (
+        {/** 서브 모달 컴포넌트 */}
+        {/* EditIncome컴포넌트로 전달 */}
+        { EditIncomeOpen && (
           <EditIncome
-            id={selectedId}
-            category={selectedCategory}
-            price={selectedPrice}
-            memo={selectedMemo}
-            closeSubModal={closeSubModal}
-            date={date}
-            handleDataUpdate={handleDataUpdate}
+            id = { selectedId }
+            category = { selectedCategory }
+            price = { selectedPrice }
+            memo = { selectedMemo }
+            closeSubModal = { closeSubModal }
+            date = { date }
+            handleDataUpdate = { handleDataUpdate }
           />
-        )}
+        ) }
 
-        {EditIncomeRepeatOpen && (
+        {/* EditIncomeRepeat컴포넌트로 전달 */}
+        { EditIncomeRepeatOpen && (
           <EditIncomeRepeat
-            id={selectedId}
-            category={selectedCategory}
-            price={selectedPrice}
-            memo={selectedMemo}
-            closeSubModal={closeSubModal}
-            showCal={showCal}
-            startDate={startDate}
-            endDate={endDate}
-            date={date}
-            handleDataUpdate={handleDataUpdate}
-
-
+            id = { selectedId }
+            category = { selectedCategory }
+            price = { selectedPrice }
+            memo = { selectedMemo }
+            closeSubModal = { closeSubModal }
+            showCal = { showCal }
+            startDate = { startDate }
+            endDate = { endDate }
+            date = { date }
+            handleDataUpdate = { handleDataUpdate }
           />
         )}
 
-        {EditExpenseOpen && (
+        {/* EditExpense컴포넌트로 전달 */}
+        { EditExpenseOpen && (
           <EditExpense
-            id={selectedId}
-            category={selectedCategory}
-            price={selectedPrice}
-            memo={selectedMemo}
-            closeSubModal={closeSubModal}
-            date={date}
-            handleDataUpdate={handleDataUpdate}
-
+            id = { selectedId }
+            category = { selectedCategory }
+            price = { selectedPrice }
+            memo = { selectedMemo }
+            closeSubModal = { closeSubModal }
+            date = { date }
+            handleDataUpdate = { handleDataUpdate }
           />
         )}
         
+        {/* EditExpenseRepeat컴포넌트로 전달 */}
         {EditExpenseRepeatOpen && (
           <EditExpenseRepeat
-            id={selectedId}
-            category={selectedCategory}
-            price={selectedPrice}
-            memo={selectedMemo}
-            closeSubModal={closeSubModal}
-            showCal={showCal}
-            startDate={startDate}
-            endDate={endDate}
-            date={date}
-            handleDataUpdate={handleDataUpdate}
-
+            id = { selectedId }
+            category = { selectedCategory }
+            price = { selectedPrice }
+            memo = { selectedMemo }
+            closeSubModal = { closeSubModal }
+            showCal = { showCal }
+            startDate = { startDate }
+            endDate = { endDate }
+            date = { date }
+            handleDataUpdate = { handleDataUpdate }
           />
         )}
 
-
-  {/* 정찬이 필드명이 다 다르다 ㅜㅜㅜㅜ */}
+        {/* EditSaving컴포넌트로 전달 */}
         {EditSavingOpen && (
           <EditSaving
-            id={selectedId}
-            title={title}
-            amount={amount}
-            memo={selectedMemo}
-            clickday={clickday}
-            closeSubModal={closeSubModal}
-            endday={endday}
-            startDate={startDate}
-            handleDataUpdate={handleDataUpdate}
-
-
+            id = { selectedId }
+            title = { title }
+            amount = { amount }
+            memo = { selectedMemo }
+            clickday = { clickday }
+            closeSubModal = { closeSubModal }
+            endday = { endday }
+            startDate = { startDate }
+            handleDataUpdate = { handleDataUpdate }
           />
         )}
-
-
     </div>
   )
 } 
