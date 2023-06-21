@@ -168,6 +168,7 @@ const handleHyphen = (value) => {
   return (
     <div>
       <Calendar onChange={setValue} value={value}
+        className='main_calendar'
         formatDay={(locale, date) => moment(date).format('D')}
         showNeighboringMonth={false}
         //년 단위 이동 버튼 없앰

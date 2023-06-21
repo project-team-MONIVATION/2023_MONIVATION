@@ -1,6 +1,9 @@
+// 고정수입 입력 모달
+
 import React, { useState } from 'react';
 
 import Calendar from 'react-calendar';
+import moment, { locale } from 'moment';
 
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../../database/firebase';
@@ -8,6 +11,7 @@ import { db } from '../../database/firebase';
 import { useSelector } from 'react-redux';
 
 import CategoryBtn from '../features/CategoryBtn';
+import { SelectDate } from '../features/IconInModal';
 
 
 export default function InputIncomeRepeatComp({ handleSubmit }) {
@@ -52,9 +56,17 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
     setEndDate(newDate);
   };
 
+  // 금액 ,표시 ex1,000,000
+  const handleHyphen = (event) => {
+    const value = event.target.value.replace(/[^\d]/g, ''); // 숫자 이외의 문자 제거
+    const formattedValue = new Intl.NumberFormat().format(value); // 숫자 형식으로 변환
+    event.target.value = formattedValue;
+  };
+
   // selectedCategory 값 입력
   const onClickCategory = (e) => {
-    setSelectedCategory(e.target.value);
+    const curChecked = e.target.value;
+    setSelectedCategory(curChecked);
   };
 
   // 캘린더 모달에서 입력한 값을 form에 보여주기 위한 변환 함수
@@ -93,16 +105,31 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
             <p>수입예정일</p>
             <div className='input_box'>
               <span>{date && changeDate(date)}</span>
-              <button onClick={ onClickCal }>아이콘</button>
+              <button onClick={ onClickCal }>
+                <SelectDate showCal={showCal}/>
+              </button>
             </div>
-            {
-              showCal && (
-                <div>
-                  <button type='button' onClick={()=>{setShowCal(false)}}>X</button>
-                  <Calendar onChange={ onClickDate } value={date}/>
-                </div>
-              )
-            }
+            <div className='date_modal'>
+              {
+                showCal && (
+                  <div className='input_date'>
+                    <button 
+                      type='button' 
+                      onClick={()=>{setShowCal(false)}}
+                      className='close_btn'
+                    >
+                      X
+                    </button>
+                    <Calendar 
+                        formatDay={(locale, date) => moment(date).format('D')}
+                        onChange={ onClickDate } 
+                        value={date} 
+                        className='modal_calendar'
+                      />
+                  </div>
+                )
+              }
+            </div>
           </div>
 
           <div className='period'>
@@ -117,7 +144,13 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
                   <button type='button' onClick={()=>{setShowPeriod(false)}}>X</button>
                   <div>
                     <p>종료일</p>
-                    <Calendar onChange={ onClickEndDate } value={endDate} minDate={date}/>
+                    <Calendar 
+                      formatDay={(locale, date) => moment(date).format('D')}
+                      onChange={ onClickEndDate } 
+                      value={endDate} 
+                      minDate={date}
+                      className='modal_calendar'
+                    />
                   </div>
                   <div>
                     <p>반복주기</p><br />
@@ -147,22 +180,25 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
             <p>금액</p>
             <div className='input_box'>
               <input 
-                type="number" 
+                className='input_price'
+                type="text" 
+                onInput={handleHyphen}
                 onChange={(e)=>{setPrice(Number(e.target.value))}}
                 required
               />
-              <span>₩</span>
+              <span className='won'>₩</span>
             </div>
           </div>
 
           <div className='category'>
             <p>카테고리</p>
-            <div>
+            <div className='category_box'>
               <CategoryBtn
                 name="반복수입"
                 value="월급"
                 checked={selectedCategory === "월급"} 
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 월급
               </CategoryBtn>
@@ -171,6 +207,7 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
                 value="용돈"
                 checked={selectedCategory === "용돈"} 
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 용돈
               </CategoryBtn>
@@ -179,6 +216,7 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
                 value="지원금"
                 checked={selectedCategory === "지원금"} 
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 지원금
               </CategoryBtn>
@@ -187,6 +225,7 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
                 value="기타"
                 checked={selectedCategory === "기타"} 
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 기타
               </CategoryBtn>
