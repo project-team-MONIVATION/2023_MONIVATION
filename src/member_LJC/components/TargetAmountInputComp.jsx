@@ -75,9 +75,9 @@ export default function TargetAmountInputComp({setModalIsOpen}) {
 
         try {
             // 서버에 연결해서 사용하는 것은 비동기 함수로 작성
-            const docRef = await addDoc(collection(db, "money_target amount"), {
+            const docRef = await addDoc(collection(db, "money_target_amount"), {
             done : false, // 고정
-            uid: user.uid,
+            user: user.uid,
             
             title,
             startday,
