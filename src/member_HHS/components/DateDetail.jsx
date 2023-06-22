@@ -40,6 +40,10 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     const [amount, setAmount] = useState(''); // 저금
     const [endday, setEndday] = useState(new Date()); // 저금
     const [clickday, setClickday] = useState(new Date()); // 저금
+    
+    // 캘린더 모달
+    const [date, setDate] = useState(new Date()); // form의 입력 값 state  
+    const [showCal, setShowCal] = useState(false); // 날짜 입력하는 캘린더 모달 state
 
 
     /* 모달에다가 값을 넘겨주기위해 저장하는 함수들 */
@@ -179,16 +183,13 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 
 
     /** 날짜검색하는 캘린더 모달 from.PCH */
-    const [date, setDate] = useState(new Date()); // form의 입력 값 state  
-    const [showCal, setShowCal] = useState(false); // 날짜 입력하는 캘린더 모달 state
-
-    // 날짜 입력하는 캘린더 모달 on
+    // 날짜 검색 버튼 클릭 시 캘린더 모달 표시
     const onClickCal = (e) => {
       e.preventDefault();
       setShowCal(true);
     }
   
-    // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
+    // 캘린더 모달에서 날짜를 선택했을 때 해당 날짜로 업데이트
     const onClickDate = (newDate) => {
       setDate(newDate);
       setShowCal(false);
@@ -285,6 +286,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
           <div>
             <h4>수입</h4>
             <h4>
+              {/* 선택한 날짜와 동일한 수입 값의 합 계산 */}
               { handleHyphen ( 
                 filteredIncome.reduce((total, item) => total + item.price, 0)
               ) }
@@ -293,10 +295,10 @@ export default function DateDetail({ closeModal2, selectedDate }) {
           </div>
 <br />
           <div>
+            {/* 선택한 날짜와 동일한 수입 값들 출력 */}
             { filteredIncome.map((item, i) => ( 
-              // selectedDate와 date가 일치하는 경우에만 출력
               <div key = {i}
-                onClick = { () =>
+                onClick = { () => 
                   openEditIncomeModal(item.category, item.price, item.memo, item.id) }
               >
                 <span>{ item.category }</span>
