@@ -13,6 +13,8 @@ import InstallmentsComp from '../../member_LJC/components/InstallmentsComp';
 // 목표금액
 import TargetAmountComp from '../../member_LJC/components/TargetAmountComp';
 
+import MyChallengeSlideComp from '../components/MyChallengeSlideComp';
+
 export default function MoneyCalendar() {
 
   // HHS
@@ -41,9 +43,12 @@ export default function MoneyCalendar() {
   
   return (
     <div>
-      <h1>가계부 캘린더</h1>
-      <TotalStatComp />
-      <CalendarComp />
+      <div
+        style={{display: "flex", justifyContent: "center", alignItems:"center"}}
+      >
+        <TotalStatComp />
+        <CalendarComp />
+      </div>
 
       <hr />
 
@@ -85,8 +90,10 @@ export default function MoneyCalendar() {
           <InstallmentsComp/>
         </div>
 
-        {/* LJC 챌린지 컴포넌트 */}
-        <div style={{border: "1px solid red", width: "25%"}}>챌린지</div>
+        {/* JSH 챌린지 컴포넌트 */}
+        <div style={{border: "1px solid red", width: "25%"}}>
+          <MyChallengeSlideComp />
+        </div>
         
         {/* LJC 목표금액 컴포넌트 */}
         <div style={{border: "1px solid red", width: "25%"}}>

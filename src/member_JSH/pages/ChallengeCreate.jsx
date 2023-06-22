@@ -90,6 +90,7 @@ export default function ChallengeCreate() {
           <label htmlFor="">기간</label>
           <select name="" id="" onChange={(e)=>setChallengeTime(e.target.value)}>
             <option value="" selected>기간을 선택하세요</option>
+            <option value="one-minutes">1분</option>
             <option value="week">일주일</option>
             <option value="one-month">1개월</option>
             <option value="three-month">3개월</option>

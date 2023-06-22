@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { db,auth } from '../../database/firebase'
 import { useSelector, useDispatch } from 'react-redux'
-import { doc, getDoc, addDoc, collection, getDocs, query, deleteDoc, where } from 'firebase/firestore'
+import { doc, getDoc, addDoc, collection, getDocs, query, deleteDoc, where, updateDoc } from 'firebase/firestore'
 import { useNavigate, useParams } from 'react-router'
 import CommentComp from '../components/CommentComp'
 
@@ -17,9 +17,48 @@ export default function ChallengeView() {
   // 챌린지 문서 id
   const [challengeId, setChallengeId] = useState();
   // 토글 버튼 boolean값
-  const [isToggled, setIsToggled] = useState(false);
+  //const [involve, setInvolve] = useState();
+  const [isToggled, setIsToggled] = useState();
+  // 완료된 챌린지 상태 반영 값 (완료 : true, 미완료 : false)
+  const [done, setDone] = useState();
 
   const navigate = useNavigate();
+
+  // myChallenge로 등록한 것들 중에서 endDate가 지난, 즉 완료한 챌린지의
+  // 필드 done을 true로 변경
+  useEffect(()=>{
+    const updateDocFieldDone = async()=>{
+      // query를 변수명으로 쓰면안됨
+      const q = query(collection(db, "my_challenge"), where("challengeId", "==", params.id));
+      const querySnapshot = await getDocs(q);
+      const now = new Date()
+      querySnapshot.forEach((doc) => {
+        const documentRef = doc.ref;
+        const endDate = doc.data().endDate;
+        const timeDifference = endDate.toDate() - now;
+
+        if(timeDifference <= 0){
+          setTimeout(()=>{
+            updateDoc(documentRef, {done : true})
+            .then(() => {
+              console.log('완료된 챌린지입니다.');
+              setDone(true);
+              //console.log(done);
+            })
+            .catch((error) => {
+              console.error('Error updating field:', error);
+            });
+          }, timeDifference);
+        } else {
+          console.log('지정된 시간이 아직 남았습니다.');
+          setDone(false);
+          //console.log(done);
+        }
+      });
+    };
+    updateDocFieldDone();
+  },[params.id]);
+
   // params.id가 바뀔때마다(챌린지 뷰 페이지 종류에 따라) 실행
   // 해당 챌린지를 challengeBoard에 push
   useEffect (()=>{
@@ -33,6 +72,44 @@ export default function ChallengeView() {
     }
     getChallenge();
   },[params.id]);
+
+  useEffect(()=>{
+    const getInvolve = async()=>{
+      // 참여상태를 갱신과 동시에 버튼 상태를 변경하는 involve도 갱신
+    const docSnap = await getDoc(doc(db, "user_challenge", params.id));
+    if(docSnap.exists()){
+      const challengeData = docSnap.id;
+      console.log(challengeData);
+      if(challengeData){
+        const challengeId = challengeData;
+        const q = query(collection(db, "my_challenge"), where("challengeId", "==", challengeId));
+        getDocs(q)
+        .then((querySnapshot) => {
+        if (querySnapshot.empty) {
+          console.log("아직 참여하지 않았습니다.");
+          // 애초에 involve는 필요가 없었다...
+          //setInvolve(true);
+          setIsToggled(true);
+        } else {
+          console.log("참여중입니다.");
+          //setInvolve(false);
+          setIsToggled(false);
+        }
+      })
+      .catch((error) => {
+        console.error('쿼리 실행 중 에러 발생:', error);
+      });
+    } else {
+      console.log("challengeId 값이 유효하지 않습니다.");
+      // 유효하지 않은 경우에 대한 처리  
+    } 
+  } else {
+    console.log("문서가 존재하지 않습니다.");
+    // 문서가 존재하지 않는 경우에 대한 처리
+  }
+    }
+    getInvolve();
+  }, [params.id])
 
 
   // 현재 날짜 생성. 이 변수는 addChallenge에만 쓰여야한다! 반드시!
@@ -56,7 +133,12 @@ export default function ChallengeView() {
     } else if (challengeBoard.time == "six-month"){
       time = "6개월"
       futureDate.setMonth(currentDate.getMonth() + 6);
-    } else {
+    } else if(challengeBoard.time == "one-minutes") {
+      // 확인용
+      time = "1분"
+      futureDate.setMinutes(currentDate.getMinutes() + 1);
+    }
+    else {
       time = "미정"
     }
   }
@@ -64,7 +146,6 @@ export default function ChallengeView() {
   // 참여하기 활성화 함수
   // 해당 챌린지의 정보를 my_challenge에 업로드한다.
   const addChallenge = async() =>{
-    
     await addDoc(collection(db, "my_challenge"), {
       challengeId : challengeId,
       startDate : currentDate,
@@ -73,18 +154,19 @@ export default function ChallengeView() {
       endDate : futureDate,
       challengeName : challengeBoard.name,
       involve : true
-    })
-  }
+    });
+    
+  };
 
   // 만든 챌린지 삭제 함수
   const deleteChallenge = async(e)=>{
     e.preventDefault();
     const docRef = doc(db, "user_challenge", params.id);
-    const query = query(collection(db, "user_comments"), where("paramId", "==", params.id));
+    const q = query(collection(db, "user_comments"), where("paramId", "==", params.id));
 
     // 삭제할 문서(댓글)들을 한번에 삭제
     const deletePromises = [];
-    const querySnapshot = await getDocs(query);
+    const querySnapshot = await getDocs(q);
     await deleteDoc(docRef);
     querySnapshot.forEach((doc)=>{
       // 삭제할 문서에 대한 참조를 배열에 추가
@@ -152,7 +234,12 @@ export default function ChallengeView() {
         {/** 뱃지는 디폴트 챌린지만 할당 */}
         <p>등록자명 : {challengeBoard && challengeBoard.uid}</p>
         {
-          user && user.uid ? <button onClick={handleToggled}>{isToggled ? '참여하기' : '참여취소'}</button> : <button>로그인 해주세요</button>
+          user && user.uid ? <button onClick={handleToggled}
+          disabled={done === true}
+          >
+            {isToggled ? '참여하기' : '참여중'}
+            </button> 
+            : <button>로그인 해주세요</button>
         }
         {
           user && challengeBoard && challengeBoard.uid === user.uid ? <button onClick={deleteChallenge}>챌린지 삭제</button> : null

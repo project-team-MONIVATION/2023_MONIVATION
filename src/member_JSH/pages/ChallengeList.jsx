@@ -9,6 +9,7 @@ import { getDoc, doc, query, collection, getDocs } from 'firebase/firestore';
 import { async } from 'q'
 import { useSelector } from 'react-redux'
 import ActiveChallengeComp from '../components/ActiveChallengeComp'
+import MyChallengeSlideComp from '../components/MyChallengeSlideComp'
 
 
 export default function ChallengeList() {

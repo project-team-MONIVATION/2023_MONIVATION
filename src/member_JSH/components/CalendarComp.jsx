@@ -168,6 +168,7 @@ const handleHyphen = (value) => {
   return (
     <div>
       <Calendar onChange={setValue} value={value}
+        className='main_calendar'
         formatDay={(locale, date) => moment(date).format('D')}
         showNeighboringMonth={false}
         //년 단위 이동 버튼 없앰
@@ -280,31 +281,119 @@ const handleHyphen = (value) => {
             moment(value).format("YYYY-MM-DD")
           }
         </div>*/}
+
         {/**수입 입력 창 */}
         {
           activeModal === 1 && (
-            <Modal isOpen={modalIsOpen}>
-              <button onClick={()=>setModalIsOpen(false)}>X</button>
-              <IncomeModalComp setModalIsOpen={setModalIsOpen}/>
+            <Modal 
+              id='calendar_modal'
+              isOpen={modalIsOpen} 
+              style={{
+                overlay: {
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: 'rgba(0, 0, 0, 0.75)'
+                },
+                content: {
+                  boxSizing: 'border-box',
+                  width: '580px',
+                  height: '790px',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  borderRadius: '50px',
+                  border: 0
+                }
+              }}
+            >
+              <div className='content_container'>
+                <button 
+                  className='close_btn'
+                  onClick={()=>setModalIsOpen(false)}
+                >
+                  X
+                </button>
+                <IncomeModalComp setModalIsOpen={setModalIsOpen}/>
+              </div>
             </Modal>
           )
         }
         {/**지출 입력 창 */}
         {
           activeModal === 2 && (
-            <Modal isOpen={modalIsOpen}>
-              <button onClick={()=>setModalIsOpen(false)}>X</button>
-              <ExpenseModalComp setModalIsOpen={setModalIsOpen}/>
+            <Modal 
+              id='calendar_modal'
+              isOpen={modalIsOpen}
+              style={{
+                overlay: {
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: 'rgba(0, 0, 0, 0.75)'
+                },
+                content: {
+                  boxSizing: 'border-box',
+                  width: '580px',
+                  height: '790px',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  borderRadius: '50px',
+                  border: 0
+                }
+              }}
+            >
+              <div className='content_container'>
+                <button 
+                  className='close_btn'
+                  onClick={()=>setModalIsOpen(false)}
+                >
+                  X
+                </button>
+                <ExpenseModalComp setModalIsOpen={setModalIsOpen}/>
+              </div>
             </Modal>
           )
         }
         {/**저금 입력 창 */}
         {
           activeModal === 3 && (
-            <Modal isOpen={modalIsOpen}>
-              <div>
-                <h3>저금 모달 창</h3>
-                <button onClick={()=>setModalIsOpen(false)}>취소</button>
+            <Modal
+              id='calendar_modal'
+              isOpen={modalIsOpen}
+              style={{
+                overlay: {
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: 'rgba(0, 0, 0, 0.75)'
+                },
+                content: {
+                  boxSizing: 'border-box',
+                  width: '580px',
+                  height: '790px',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  borderRadius: '50px',
+                  border: 0
+                }
+              }}
+            >
+              <div className='content_container'>
+                <button 
+                  className='close_btn'
+                  onClick={()=>setModalIsOpen(false)}
+                >
+                  X
+                </button>
                 <SavingInput setModalIsOpen={setModalIsOpen}/>
               </div>
             </Modal>
