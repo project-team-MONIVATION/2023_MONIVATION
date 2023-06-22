@@ -1,6 +1,9 @@
+// 일반지출 입력 모달
+
 import React, { useState } from 'react';
 
 import Calendar from 'react-calendar';
+import moment, { locale } from 'moment';
 
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../../database/firebase';
@@ -8,6 +11,7 @@ import { db } from '../../database/firebase';
 import { useSelector } from 'react-redux';
 
 import CategoryBtn from '../features/CategoryBtn';
+import { SelectDate } from '../features/IconInModal';
 
 export default function InputExpenseComp({ handleSubmit }) {
 
@@ -41,20 +45,17 @@ export default function InputExpenseComp({ handleSubmit }) {
     setShowCal(false);
   };
 
-  /*
-  // installment 값 입력
-  const onInputInstallment = (e) => {
-    if(payment === "카드") {
-      return setInstallment(e.target.value);
-    } else {
-      return setInstallment(1);
-    };
+  // 금액 ,표시 ex1,000,000
+  const handleHyphen = (event) => {
+    const value = event.target.value.replace(/[^\d]/g, ''); // 숫자 이외의 문자 제거
+    const formattedValue = new Intl.NumberFormat().format(value); // 숫자 형식으로 변환
+    event.target.value = formattedValue;
   };
-  */
 
   // selectedCategory 값 입력
   const onClickCategory = (e) => {
-    setSelectedCategory(e.target.value);
+    const curChecked = e.target.value;
+    setSelectedCategory(curChecked);
   };
 
   // 캘린더 모달에서 입력한 값을 form에 보여주기 위한 변환 함수
@@ -148,31 +149,52 @@ export default function InputExpenseComp({ handleSubmit }) {
         <div className='input_content'>
           <div className='date'>
             <p>날짜</p>
-            <div>
+            <div className='input_box'>
               <span>{date && changeDate(date)}</span>
-              <button onClick={ onClickCal }>아이콘</button>
+              <button onClick={ onClickCal }>
+                <SelectDate showCal={showCal}/>
+              </button>
             </div>
-            {
-              showCal && (<Calendar onChange={ onClickDate } value={date}/>)
-            }
+            <div className='date_modal'>
+              {
+                showCal && (
+                  <div className='input_date'>
+                    <button 
+                        type='button' 
+                        onClick={()=>{setShowCal(false)}}
+                        className='close_btn'
+                      >
+                        X
+                      </button>
+                    <Calendar 
+                      formatDay={(locale, date) => moment(date).format('D')}
+                      onChange={ onClickDate } 
+                      value={date} 
+                      className='modal_calendar'
+                    />
+                  </div>
+                )
+              }
+            </div>
           </div>
 
           <div className='price'>
             <p>금액</p>
-            <div>
+            <div className='input_box'>
               <input 
-                type="number" 
-                min= "0"
+                className='input_price'
+                type="text" 
+                onInput={handleHyphen}
                 onChange={(e)=>{setPrice(Number(e.target.value))}}
                 required
               />
-              <span>₩</span>
+              <span className='won'>₩</span>
             </div>
           </div>
 
           <div className='payment'>
             <p>결제수단</p>
-            <div>
+            <div className='input_box'>
               <select 
                 name="payment" 
                 id="" 
@@ -183,14 +205,9 @@ export default function InputExpenseComp({ handleSubmit }) {
                 <option value="카드">카드</option>
                 <option value="이체">이체</option>
               </select>
-            </div>
-          </div>
-
-          <div className='installment'>
-            {
+              {
               payment && payment === "카드" && (
                 <div>
-                  <p>할부</p>
                   <select name="" id="" onChange={(e)=>setInstallment(e.target.value)}>
                     <option value="일시불" selected>
                       일시불
@@ -204,16 +221,18 @@ export default function InputExpenseComp({ handleSubmit }) {
                 </div>
               )
             }
+            </div>
           </div>
 
           <div className='category'>
             <p>카테고리</p>
-            <div>
+            <div className='category_box'>
               <CategoryBtn
                 name="일반지출"
                 value="카페"
                 checked={selectedCategory === "카페"}
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 카페
               </CategoryBtn>
@@ -222,6 +241,7 @@ export default function InputExpenseComp({ handleSubmit }) {
                 value="외식"
                 checked={selectedCategory === "외식"} 
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 외식
               </CategoryBtn>
@@ -230,22 +250,16 @@ export default function InputExpenseComp({ handleSubmit }) {
                 value="음주"
                 checked={selectedCategory === "음주"} 
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 음주
-              </CategoryBtn>
-              <CategoryBtn
-                name="일반지출"
-                value="식료/잡화"
-                checked={selectedCategory === "식료/잡화"} 
-                onChange={onClickCategory}
-              >
-                식료/잡화
               </CategoryBtn>
               <CategoryBtn
                 name="일반지출"
                 value="교통"
                 checked={selectedCategory === "교통"} 
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 교통
               </CategoryBtn>
@@ -254,6 +268,7 @@ export default function InputExpenseComp({ handleSubmit }) {
                 value="차량"
                 checked={selectedCategory === "차량"} 
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 차량
               </CategoryBtn>
@@ -262,22 +277,16 @@ export default function InputExpenseComp({ handleSubmit }) {
                 value="쇼핑"
                 checked={selectedCategory === "쇼핑"} 
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 쇼핑
-              </CategoryBtn>
-              <CategoryBtn
-                name="일반지출"
-                value="문화생활"
-                checked={selectedCategory === "문화생활"} 
-                onChange={onClickCategory}
-              >
-                문화생활
               </CategoryBtn>
               <CategoryBtn
                 name="일반지출"
                 value="경조사"
                 checked={selectedCategory === "경조사"} 
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 경조사
               </CategoryBtn>
@@ -286,14 +295,34 @@ export default function InputExpenseComp({ handleSubmit }) {
                 value="의료"
                 checked={selectedCategory === "의료"} 
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 의료
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반지출"
+                value="문화생활"
+                checked={selectedCategory === "문화생활"} 
+                onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
+              >
+                문화생활
+              </CategoryBtn>
+              <CategoryBtn
+                name="일반지출"
+                value="식료/잡화"
+                checked={selectedCategory === "식료/잡화"} 
+                onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
+              >
+                식료/잡화
               </CategoryBtn>
               <CategoryBtn
                 name="일반지출"
                 value="기타"
                 checked={selectedCategory === "기타"} 
                 onChange={onClickCategory}
+                selectedCategory ={selectedCategory}
               >
                 기타
               </CategoryBtn>

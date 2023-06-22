@@ -100,7 +100,7 @@ export default function SIcomp() {
                 date: `${year}-${month}-${day}`
             };
             });
-            console.log("date도 나옴>?",dataList)
+            // console.log("date도 나옴>?",dataList)
             return dataList;
     }
 
@@ -148,16 +148,16 @@ export default function SIcomp() {
 
 
         
-        console.log(user);
-        console.log("달첫 ",firstDay)
-        console.log("달막 ",lastDay)
+        // console.log(user);
+        // console.log("달첫 ",firstDay)
+        // console.log("달막 ",lastDay)
 
         const fmCollectionRef = collection(db, "money_income");
         const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid), where('date', '>=', firstDay), where('date', '<=', lastDay)) 
     
         let dayFilterDateList = [];
         
-        console.log("값이 나왔냐?",dayFilterDateList)
+        // console.log("값이 나왔냐?",dayFilterDateList)
         
         try {
             // 전부 뽑아옴

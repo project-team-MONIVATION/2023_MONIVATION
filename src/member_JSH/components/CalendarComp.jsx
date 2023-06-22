@@ -151,6 +151,7 @@ export default function CalendarComp() {
   return (
     <div>
       <Calendar onChange={setValue} value={value}
+        className='main_calendar'
         formatDay={(locale, date) => moment(date).format('D')}
         showNeighboringMonth={false}
         //년 단위 이동 버튼 없앰
@@ -181,6 +182,9 @@ export default function CalendarComp() {
 
           // 총 수입 및 총 지출 계산
           const totalIncome = filteredIncome.reduce((total, item) => total + item.price, 0) + filteredIncomeRepeat.reduce((total, item) => total + item.price, 0);
+          // console.log(totalIncome)
+
+          // 선택한 날짜에 대한 총 지출 계산
           const totalExpense = filteredExpense.reduce((total, item) => total + item.price, 0) + filteredExpenseRepeat.reduce((total, item) => total + item.price, 0);
 
           return (
