@@ -140,6 +140,11 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       fetchData("money_expense", setExpense);
     };
 
+    const [installments, setInstallments] = useState();
+    const getInstallments = () => {
+      fetchData("money_installments", setInstallments)
+    }
+
     // 반복지출 데이터 가져오기
     const getExpenseRepeat = () => {
       fetchData("money_expense_repeat", setExpenseRepeat);
@@ -155,6 +160,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       getIncome();
       getIncomeRepeat();
       getExpense();
+      getInstallments();
       getExpenseRepeat();
       getSaving();
     }, []);
@@ -164,6 +170,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       getIncome();
       getIncomeRepeat();
       getExpense();
+      getInstallments();
       getExpenseRepeat();
       getSaving();
     };
@@ -250,6 +257,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     return (
       <div>
         <div>
+          <button onClick = { closeModal2 }>닫기</button>
           <div> {/* 날짜검색 캘린더 모달 */}
             <button onClick = { onClickCal }>날짜 검색</button>
             <h2>{ selectedDate && changeDate(selectedDate) }</h2>
@@ -412,8 +420,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
             ))}
           </div>
         </div>
-
-        <button onClick = { closeModal2 }>닫기</button>
+        
 
         {/** 서브 모달 컴포넌트 */}
         {/* EditIncome컴포넌트로 전달 */}

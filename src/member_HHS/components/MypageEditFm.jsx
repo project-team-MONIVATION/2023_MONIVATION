@@ -118,6 +118,20 @@ export default function MypageEditFm() {
           ))}
         </div>
 
+        {/* 자산관리사 자기소개 */}
+        <div>
+          <p>Self - introduction</p>
+          <textarea
+            style={{backgroundColor: "#E6E6E6", borderRadius: "20px", border: "none"}}
+            name="" 
+            id="" 
+            cols="48" 
+            rows="5"
+            placeholder='자산관리 페이지에서 보여지는 내용입니다'
+            ></textarea>
+          <br />
+        </div>
+
         <input type="submit" />
       </form>
     </div>

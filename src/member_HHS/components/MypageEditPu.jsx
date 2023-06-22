@@ -9,6 +9,10 @@ export default function MypageEditPu() {
   const [profile, setProfile] = useState();
   const params = useParams();
 
+
+  const [nickname, setNickname] = useState(''); // 닉네임 상태변수 설정
+
+
   useEffect(()=>{
     const getProfile = async() => {
       const docSnap = await getDoc( doc(db, "personal_users", params.id) );
@@ -18,6 +22,8 @@ export default function MypageEditPu() {
     }
     getProfile();
   }, [])
+
+console.log(nickname)
 
   return (
     <div>
@@ -36,7 +42,7 @@ export default function MypageEditPu() {
         <h2>회원정보 수정</h2>
         <div>
           <label>닉네임</label>
-          <input type="text" />
+          <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)}/>
         </div>
         <div>
           <label>출생</label>
