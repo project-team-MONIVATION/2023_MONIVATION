@@ -10,6 +10,7 @@ import SEcomp from '../../member_LJC/components/SEcomp';
 import SIcomp from '../../member_LJC/components/SIcomp';
 // 할부금
 import InstallmentsComp from '../../member_LJC/components/InstallmentsComp';
+import MyChallengeSlideComp from '../components/MyChallengeSlideComp';
 
 
 export default function MoneyCalendar() {
@@ -87,8 +88,10 @@ export default function MoneyCalendar() {
           <InstallmentsComp/>
         </div>
 
-        {/* LJC 챌린지 컴포넌트 */}
-        <div style={{border: "1px solid red", width: "25%"}}>챌린지</div>
+        {/* JSH 챌린지 컴포넌트 */}
+        <div style={{border: "1px solid red", width: "25%"}}>
+          <MyChallengeSlideComp />
+        </div>
         
         {/* LJC 목표금액 컴포넌트 */}
         <div style={{border: "1px solid red", width: "25%"}}>

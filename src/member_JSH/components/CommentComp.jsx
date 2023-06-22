@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { db,auth } from '../../database/firebase'
 import { useSelector, useDispatch } from 'react-redux'
-import { doc, addDoc, query, getDocs, where, updateDoc, collection, Timestamp,whereField, getDoc } from 'firebase/firestore'
+import { doc, addDoc, getDocs, where, updateDoc, collection, Timestamp,whereField, getDoc, query } from 'firebase/firestore'
 import { signInWithEmailAndPassword, getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useNavigate, useParams } from 'react-router'
 import '../css/scroll.css'
