@@ -1,12 +1,18 @@
 import React, {useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { db } from '../../database/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, addDoc, collection } from 'firebase/firestore';
 
-export default function MypageReservationFm() {
-  const [reserv, setReserv] = useState();
+export default function MypageReservationPu() {
+  const user = useSelector((state) => state.user.user);
   const params = useParams();
-  const [selectedReservation, setSelectedReservation] = useState(null);
+  const [text, setText] = useState();
+  const [fm, setFm] = useState();
+
+  const [reserv, setReserv] = useState(null);
+  const [modalData, setModalData] = useState(null);
+  const [reviewModal, setReviewModal] = useState(false);
 
   useEffect(()=>{
     const getReserv = async() => {
@@ -19,14 +25,35 @@ export default function MypageReservationFm() {
   }, [])
 
   // 모달 창 열기
-  const openModal = (reservation) => {
-    setSelectedReservation(reservation);
+  const openModal = (r) => {
+    setModalData(r);
   };
 
   // 모달 창 닫기
   const closeModal = () => {
-    setSelectedReservation(null);
+    setModalData(null);
   };
+
+  const openModalReview = (e, id) => {
+    e.stopPropagation();
+    setFm(id);
+    setReviewModal(true);
+  }
+  const closeModalReview = () => {
+    setReviewModal(false);
+  }
+
+  const writeReview = () => {
+    addDoc(collection(db, "financial_review"), {
+      uid : user.uid,
+      fmDocid : fm,
+      nickname : user.nickname,
+      photo : user.photo,
+      text : text,
+      date : new Date(),
+    });
+    setReviewModal(false);
+  }
 
   return (
     <div>
@@ -43,18 +70,19 @@ export default function MypageReservationFm() {
             <td>상담일자</td>
             <td>처리상태</td>
           </tr>
-          {reserv == null ? 
+          {!reserv || !reserv.reservation ? 
           (
             <tr>
               <td></td>
               <td></td>
-              <td>접수된 내역이 없습니다</td>
+              <td>접수된 예약이 없습니다</td>
               <td></td>
               <td></td>
             </tr>
           )
           : 
-          (reserv.reservation.map((r, i)=> {
+          (
+            reserv.reservation.map((r, i)=> {
             const reserveDate = new Date(r.submitdate.toDate());
 
             // 원하는 형식으로 날짜를 출력
@@ -63,7 +91,7 @@ export default function MypageReservationFm() {
             const day = reserveDate.getDate();
             
             return (
-              <tr key={i} onClick={() => openModal(r)}>
+              <tr key={i} onClick={() => {openModal(r);}}>
                 <td>{r.name}</td>
                 <td>{r.phone}</td>
                 <td>{r.title}</td>
@@ -72,9 +100,10 @@ export default function MypageReservationFm() {
                   {r.done === false ? "예약중" : 
                     (<div>
                       <p>상담완료</p> 
-                      <button>리뷰작성</button>
+                      <button onClick={(e)=>{openModalReview(e, r.fmUid)}}>리뷰작성</button>
                     </div>)
                   }
+                  
                 </td>
               </tr>
             )
@@ -82,8 +111,7 @@ export default function MypageReservationFm() {
           }
         </tbody>
       </table>
-
-      {selectedReservation && (
+      {modalData && (
         <div style={{
           position: "fixed",
           top: 0,
@@ -99,18 +127,47 @@ export default function MypageReservationFm() {
             backgroundColor: "white"
           }}>
             <div>
-              <input type='text' value={selectedReservation.name}></input>
+              <label htmlFor="">이름</label>
+              <input type='text' defaultValue={modalData.name} disabled/>
             </div>
             <div>
-              <input type='text' value={selectedReservation.content}></input>
+              <label htmlFor="">상담제목</label>
+              <input type='text' defaultValue={modalData.title} disabled/>
             </div>
             <div>
-              <textarea value={selectedReservation.content} cols="30" rows="10"></textarea>
+              <label htmlFor="">상담내용</label>
+              <textarea defaultValue={modalData.content} cols="30" rows="10" disabled></textarea>
             </div>
             <button onClick={closeModal}>닫기</button>
           </div>
         </div>
       )}
+      { reviewModal && 
+        (
+          <div 
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div style={{backgroundColor: "white"}}>
+              <h2>리뷰 작성</h2>
+
+              <textarea cols="30" rows="10" placeholder='리뷰를 남겨주세요' onChange={(e)=>{setText(e.target.value)}}></textarea>
+              <br />
+              <button onClick={writeReview}>작성완료</button>
+              <button onClick={closeModalReview}>닫기</button>
+            </div>
+          </div>
+        )
+      }
     </div>
   )
 }
