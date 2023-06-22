@@ -165,7 +165,7 @@ export default function InputExpenseComp({ handleSubmit }) {
                         className='close_btn'
                       >
                         X
-                      </button>
+                    </button>
                     <Calendar 
                       formatDay={(locale, date) => moment(date).format('D')}
                       onChange={ onClickDate } 
@@ -216,13 +216,13 @@ export default function InputExpenseComp({ handleSubmit }) {
               {
               payment && payment === "카드" && (
                 <div className='input_installment'>
-                  <select name="" id="" onChange={(e)=>setInstallment(e.target.value)}>
+                  <select className='installment' name="installment" onChange={(e)=>setInstallment(e.target.value)}>
                     <option value="일시불" selected>
                       일시불
                     </option>
                     {
                       num.map((i)=>(
-                        <option value={i} key={i}>{i}</option>
+                        <option value={i} key={i}>{i}개월</option>
                       ))
                     }
                   </select>
