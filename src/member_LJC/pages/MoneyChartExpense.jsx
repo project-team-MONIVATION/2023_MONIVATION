@@ -605,8 +605,9 @@ export default function MoneyChartExpense() {
 
     return (
         <div>
+        <div className='container_warp'>
             <h1>지출</h1>
-            <div>
+            <div className='income_expenditure_btn'>
                 <button>
                     <Link to="/calendar/chart/income">수입</Link>
                 </button>
@@ -614,16 +615,18 @@ export default function MoneyChartExpense() {
                     <Link to="/calendar/chart/expense">지출</Link>
                 </button>
             </div>
-                    <input ref={el => (inputRef.current[0] = el)}  type="text"
-                        disabled
-                    />
-                    ~  
-                    <input ref={el => (inputRef.current[1] = el)}  type="text"
-                        disabled
-                    />
+
+            <input ref={el => (inputRef.current[0] = el)}  type="text"
+                disabled
+            />
+            ~  
+            <input ref={el => (inputRef.current[1] = el)}  type="text"
+                disabled
+            />
+
         <br />
             {/* 일별  */}
-            <button 
+            {/* <button 
                 onClick={() => {setCheck((e) => !e);}}
             >
                 {isCheck ? "일" : "일"}
@@ -636,7 +639,7 @@ export default function MoneyChartExpense() {
                         onClickDay={(value, event) => {setOnClickDay(value); setCheck(false);}}
                     />
                 </div>
-            )}
+            )} */}
 
         <br />
             {/* 1개월 */}
@@ -665,39 +668,38 @@ export default function MoneyChartExpense() {
             <div>
 
         <br />    
-                    <div className='saving-period'>
-                        {/* 시작일 */}
-                        <button
-                            onClick={() => {setCheck2((e) => !e); setCheck(false); }}
-                        >
-                        <p style={{ color: ischeck2 ? "#BB363F" : "#000" }}>시작일</p>
-                        </button>
-                        {ischeck2 && (
-                            <div className='modal-cal'>
-                                <Calendar 
-                                    onChange={onChange}
-                                    value={value}
-                                    onClickDay={(value, event) => {setStartdayclick(value); setCheck2(false); setCheck3(true); setMindate(value);}}
-                                />
-                            </div>
-                        )}
-
-                        {/* 종료일 */}
-                        <button
-                            onClick={() => {setCheck3((e) => !e); setCheck(false); } }
-                        >
-                        <p style={{ color: ischeck3 ? "#BB363F" : "#000" }}>종료일</p>
-                        </button>
-                        {ischeck3 && (
-                            <div className='modal-cal'>
-                                <Calendar 
-                                    onChange={onChange} 
-                                    value={value}
-                                    onClickDay={(value, event) => {setEnddayclick(value); setCheck3(false);}}
-                                    minDate={mindate}
-                                />
-                            </div>
-                        )}
+                <div>
+                    {/* 시작일 */}
+                    <button
+                        onClick={() => {setCheck2((e) => !e); setCheck(false); }}
+                    >
+                    <p style={{ color: ischeck2 ? "#BB363F" : "#000" }}>시작일</p>
+                    </button>
+                    {ischeck2 && (
+                        <div className='modal-cal'>
+                            <Calendar 
+                                onChange={onChange}
+                                value={value}
+                                onClickDay={(value, event) => {setStartdayclick(value); setCheck2(false); setCheck3(true); setMindate(value);}}
+                            />
+                        </div>
+                    )}
+                    {/* 종료일 */}
+                    <button
+                        onClick={() => {setCheck3((e) => !e); setCheck(false); } }
+                    >
+                    <p style={{ color: ischeck3 ? "#BB363F" : "#000" }}>종료일</p>
+                    </button>
+                    {ischeck3 && (
+                        <div className='modal-cal'>
+                            <Calendar 
+                                onChange={onChange} 
+                                value={value}
+                                onClickDay={(value, event) => {setEnddayclick(value); setCheck3(false);}}
+                                minDate={mindate}
+                            />
+                        </div>
+                    )}
                 <br />
                         
                 
@@ -709,43 +711,39 @@ export default function MoneyChartExpense() {
                             조회
                         </button>
                 <br />
-                        <button
-                            // onClick={() => test()}
-                        >
-                            test
-                        </button>
+                    
 
                     </div>
                 
             </div>
 
             <div className='container_charts'>
-
                 <div className='item'>
                     <Pie 
                         data={data} 
                         options={options} 
-                        width="800px" height="800px" 
+                        width="500px" height="500px" 
                         />
+                        <h2>선택 기간의 지출 총금액</h2>
+                        {ptotal}
                 </div>
                 
                 <div className='item'>
                     <Line
                         data={Linedata} 
                         options={lineoptions} 
-                        style={{ position: "relative", height: "500px", width:"500px" }}
-                        width="500vh" height="500vh"
+                        // style={{ position: "relative", height: "40vh", width:"100vh" }}
+                        width="1000vh" height="300vh"
                         />
                 </div>
 
                 <div className='item'>
-                    <h2>선택 기간의 지출 총금액</h2>
-                    {ptotal}
+                    
                     <h2>가격{pamount}</h2>
                     <h2>날짜{pdate}</h2>
                     <h2>카테고리명{pcategory}</h2>
                 </div>
-
+            </div>                        
             </div>
 
 
