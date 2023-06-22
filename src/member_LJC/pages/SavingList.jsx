@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 import {db} from '../../database/firebase'
 
-import '../css/saving.css'
 import SavingListModifyComp from '../components/SavingListModifyComp';
+import '../css/saving.css'
 
 export default function SavingList() {
     const [value, onChange] = useState(new Date());
