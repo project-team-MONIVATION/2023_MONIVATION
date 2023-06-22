@@ -14,6 +14,8 @@ import Calendar from 'react-calendar'
 import { Timestamp, collection, deleteDoc, doc, getDocs, query, where, } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
+import '../css/moneyChart.css'
+
 
 
 
@@ -46,6 +48,20 @@ export const options = {
         ]
     },
 }
+
+export const lineoptions = {
+    // responsive 속성을 false로 지정한다.
+    responsive: false,
+    scales: {
+        yAxes: [
+            {
+            ticks: {
+                beginAtZero: true,
+            },
+            },
+        ],
+        },
+    };
 
 
     
@@ -526,18 +542,18 @@ export default function MoneyChartExpense() {
 
     
 
-    const [Lineoptions] = useState({
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: true,
-                text: 'Chart.js Line Chart',
-            },
-            },
-    });
+    // const [Lineoptions] = useState({
+    //     responsive: true,
+    //     plugins: {
+    //         legend: {
+    //             position: 'top',
+    //         },
+    //         title: {
+    //             display: true,
+    //             text: 'Chart.js Line Chart',
+    //         },
+    //         },
+    // });
 
     
     // 라인 그래프
@@ -585,23 +601,6 @@ export default function MoneyChartExpense() {
             },
         ],
     };
-
-    
-
-    // const Linedata = {
-    //     labels,
-    //     datasets: [
-    //         {
-    //             fill: true,
-    //             label: 'Dataset 2',
-    //             data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-    //             borderColor: 'rgb(53, 162, 235)',
-    //             backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    //         },
-    //         ],
-    // };
-
-
 
 
     return (
@@ -719,29 +718,41 @@ export default function MoneyChartExpense() {
                     </div>
                 
             </div>
-            <h2>선택 기간의 지출 총금액</h2>
-            {ptotal}
-            <h2>가격{pamount}</h2>
-            <h2>날짜{pdate}</h2>
-            <h2>카테고리명{pcategory}</h2>
 
-            
+            <div className='container_charts'>
 
-            
-            
-            
-            
-            <Pie 
-                data={data} 
-                options={options} 
-                width="800px" height="800px" 
-            />
-
-            <Line
-                data={Linedata} 
-                options={Lineoptions} 
+                <div className='item'>
+                    <Pie 
+                        data={data} 
+                        options={options} 
+                        width="800px" height="800px" 
+                        />
+                </div>
                 
-            />
+                <div className='item'>
+                    <Line
+                        data={Linedata} 
+                        options={lineoptions} 
+                        style={{ position: "relative", height: "500px", width:"500px" }}
+                        width="500vh" height="500vh"
+                        />
+                </div>
+
+                <div className='item'>
+                    <h2>선택 기간의 지출 총금액</h2>
+                    {ptotal}
+                    <h2>가격{pamount}</h2>
+                    <h2>날짜{pdate}</h2>
+                    <h2>카테고리명{pcategory}</h2>
+                </div>
+
+            </div>
+
+
+
+
+
+
         </div>
     )
 }
