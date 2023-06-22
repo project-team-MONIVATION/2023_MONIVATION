@@ -174,7 +174,7 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
                             className={ cycle !== null ? "active" : ""}
                           >
                             <option value="value" selected disabled>
-                            필수선택
+                              필수선택
                             </option>
                             <option value="매일">매일</option>
                             <option value="매주">매주</option>
@@ -214,10 +214,9 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
 
           <div>
             <p>결제수단</p>
-            <div className='input_box'>
+            <div className='input_installment'>
               <select 
                 name="payment" 
-                id="" 
                 value={payment}
                 onChange={(e)=>{setPayment(e.target.value)}}
               >
