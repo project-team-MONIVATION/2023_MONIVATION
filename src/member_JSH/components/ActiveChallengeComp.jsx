@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 
 // 참여중인 챌린지
 export default function ActiveChallengeComp() {
-  const user = useSelector((state)=>state.user.user);
+  //const user = useSelector((state)=>state.user.user);
   // 화면에 출력하기 위한 state
   const [challengeBoard, setChallengeBoard] = useState();
 
@@ -22,6 +22,7 @@ export default function ActiveChallengeComp() {
       querySnapshot.forEach((doc)=>{
         let data = {
           id : doc.id,
+          // 생성된 챌린지의 문서id를 mychallenge에서는 챌린지Id로 할당했음.
           challengeId : doc.data().challengeId,
           done : doc.data().done,
           endDate : doc.data().endDate,
@@ -31,7 +32,7 @@ export default function ActiveChallengeComp() {
           challengeName : doc.data().challengeName,
         }
         dataArray.push(data)
-        //console.log(doc.id, " => ", doc.data());
+        console.log(doc.id, " => ", doc.data());
       });
       setChallengeBoard(dataArray)
     }
@@ -43,7 +44,7 @@ export default function ActiveChallengeComp() {
         <div>
           {
             challengeBoard && challengeBoard.map((board)=>(
-            <Link to={`/challenge/${board.id}/view`} key={challengeBoard.id}>
+            <Link to={`/challenge/${board.challengeId}/view`} key={challengeBoard.id}>
               <li>{board.challengeName}</li>
             </Link>
             ))
