@@ -29,7 +29,8 @@ export default function ChallengeView() {
   useEffect(()=>{
     const updateDocFieldDone = async()=>{
       // query를 변수명으로 쓰면안됨
-      const q = query(collection(db, "my_challenge"), where("challengeId", "==", params.id));
+      const q = query(collection(db, "my_challenge"), where("challengeId", "==", params.id), 
+      where("uid", "==", user.uid));
       const querySnapshot = await getDocs(q);
       const now = new Date()
       querySnapshot.forEach((doc) => {
@@ -82,7 +83,8 @@ export default function ChallengeView() {
       console.log(challengeData);
       if(challengeData){
         const challengeId = challengeData;
-        const q = query(collection(db, "my_challenge"), where("challengeId", "==", challengeId));
+        const q = query(collection(db, "my_challenge"), 
+        where("challengeId", "==", challengeId), where("uid", "==", user.uid));
         getDocs(q)
         .then((querySnapshot) => {
         if (querySnapshot.empty) {
@@ -153,7 +155,7 @@ export default function ChallengeView() {
       done : false,
       endDate : futureDate,
       challengeName : challengeBoard.name,
-      involve : true
+      uid : user.uid
     });
     
   };
@@ -185,7 +187,7 @@ export default function ChallengeView() {
   // 등록한 챌린지 취소 함수
   const cancleChallenge = async()=>{
     try{
-      const q = query(collection(db, "my_challenge"), where("challengeId", "==", params.id));
+      const q = query(collection(db, "my_challenge"), where("challengeId", "==", params.id), where("uid", "==", user.uid));
 
       // 쿼리 실행하여 문서 가져오기
       const querySnapshot = await getDocs(q);

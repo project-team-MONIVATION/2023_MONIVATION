@@ -97,7 +97,7 @@ export default function TotalStatComp() {
           <tbody>
             <th>이번 달 총액</th>
             <tr>
-              <td>반복 수입</td>
+              <td>고정 수입</td>
             </tr>
             <tr>
               <td>0,000,000원</td>
@@ -109,7 +109,7 @@ export default function TotalStatComp() {
               <td>0,000,000원</td>
             </tr>
             <tr>
-              <td>반복 지출</td>
+              <td>고정 지출</td>
             </tr>
             <tr>
               <td>- 0,000,000원</td>

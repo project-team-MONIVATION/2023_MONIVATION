@@ -39,9 +39,9 @@ function SampleNextArrow(props) {
 
 
 export default function MyChallengeSlideComp() {
-    // const user = useSelector((state)=>state.user.user);
+    const user = useSelector((state)=>state.user.user);
     // 화면에 출력하기 위한 state
-    const [challengeBoard, setChallengeBoard] = useState();
+    const [challengeBoard, setChallengeBoard] = useState([]);
 
     useEffect(()=>{
       window.scrollTo({top: 0});
@@ -61,8 +61,11 @@ export default function MyChallengeSlideComp() {
             period : doc.data().period,
             involve : doc.data().involve,
             challengeName : doc.data().challengeName,
+            uid : doc.data().uid
           }
-          dataArray.push(data)
+          if(data.uid == user.uid) {
+            dataArray.push(data);
+          }
           console.log(doc.id, " => ", doc.data());
         });
         setChallengeBoard(dataArray)
@@ -75,7 +78,7 @@ export default function MyChallengeSlideComp() {
         infinite: true,
         slidesToShow: 1,
         slidesToScroll: 1,
-        arrows : true,
+        arrows : false,
         autoplay: true,
         speed: 2000,
         autoplaySpeed: 5000,
@@ -95,11 +98,6 @@ export default function MyChallengeSlideComp() {
                         <div>
                             <p>{board.challengeName}</p>
                             <p>{board.period}</p>
-                            <ProgressBar
-                                completed={(Date.now() - board.startDate) / (board.endDate - board.startDate) * 100}
-                                width={100}
-                            >
-                            </ProgressBar>
                         </div>
                     </Link>
                 ))}
