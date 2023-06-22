@@ -1,0 +1,19 @@
+.modal_calendar .react-calendar__tile--now {
+  background: #D9D9D9;
+}
+
+.modal_calendar .react-calendar__tile--now:enabled:hover,
+.modal_calendar .react-calendar__tile--now:enabled:focus {
+  background: #F4E8AE;
+}
+
+.modal_calendar .react-calendar__tile--active {
+  background: #F4E8AE;
+  color: #303030;
+}
+
+.modal_calendar .react-calendar__tile--active:enabled:hover,
+.modal_calendar .react-calendar__tile--active:enabled:focus {
+  background: #735BF3;
+  color: #FFFFFF;
+}

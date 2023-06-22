@@ -150,7 +150,8 @@ export default function Saving({setModalIsOpen}) {
                 <div className='input_content'>
                     <div className='date'>
                         <p>저금예정일</p>
-                        <div>{startday}
+                        <div className='input_box'>
+                            {startday}
                             <button
                                 onClick={() => {setCheck((e) => !e); setModal(false);}}
                                 type='button'
@@ -174,7 +175,7 @@ export default function Saving({setModalIsOpen}) {
                         <p>기간</p>
 
                         {/* test 라이브러리로 기간선택 */}
-                        {<div>
+                        {<div className='input_box'>
                             {startday}~{endday}
                             <button
                                 onClick={() => {setModal((e) => !e);}}
@@ -263,7 +264,7 @@ export default function Saving({setModalIsOpen}) {
 
                     <div className='price'>
                         <p>금액</p>
-                        <div>
+                        <div className='input_box'>
                             <input 
                                 required
                                 onInput={handleHyphen} 
@@ -275,7 +276,7 @@ export default function Saving({setModalIsOpen}) {
 
                     <div className='title'>
                         <p>제목</p>
-                        <div>
+                        <div className='input_box'>
                             <input
                                 type='text'
                                 required
