@@ -11,7 +11,7 @@ import { db } from '../../database/firebase';
 import { useSelector } from 'react-redux';
 
 import CategoryBtn from '../features/CategoryBtn';
-import { SelectDate } from '../features/IconInModal';
+import { SelectDate, SelectPeriod } from '../features/IconInModal';
 
 
 export default function InputIncomeRepeatComp({ handleSubmit }) {
@@ -28,7 +28,7 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
   // form의 입력 값 state
   const [date, setDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
-  const [cycle, setCycle] = useState();
+  const [cycle, setCycle] = useState(null);
   const [price, setPrice] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [memo, setMemo] = useState("");
@@ -135,45 +135,65 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
           <div className='period'>
             <p>기간</p>
             <div className='input_box'>
-              <span>{date && changeDate(date)} ~ {endDate ? changeDate(endDate) : "0000-00-00"} {cycle}</span>
-              <button onClick={ onClickPeriod }>아이콘</button>
+              <span>{date && changeDate(date)} ~ {endDate ? changeDate(endDate) : "0000-00-00"} {cycle ? `/ ${cycle}` : null}</span>
+              <button onClick={ onClickPeriod }>
+                <SelectPeriod showPeriod={showPeriod}/>
+              </button>
             </div>
-            {
-              showPeriod && (
-                <div>
-                  <button type='button' onClick={()=>{setShowPeriod(false)}}>X</button>
-                  <div>
-                    <p>종료일</p>
-                    <Calendar 
-                      formatDay={(locale, date) => moment(date).format('D')}
-                      onChange={ onClickEndDate } 
-                      value={endDate} 
-                      minDate={date}
-                      className='modal_calendar'
-                    />
+            <div className='period_modal'>
+              {
+                showPeriod && (
+                  <div className='input_period'>
+                    <button 
+                      type='button' 
+                      onClick={()=>{setShowPeriod(false)}}
+                      className='close_btn'
+                    >
+                      X
+                    </button>
+                    <div className='flex'>
+                      <div className='input_endDate'>
+                        <p>종료일</p>
+                        <Calendar 
+                          formatDay={(locale, date) => moment(date).format('D')}
+                          onChange={ onClickEndDate } 
+                          value={endDate} 
+                          minDate={date}
+                          className='modal_calendar period'
+                        />
+                      </div>
+                      <div className='input_cycle'>
+                        <p>반복주기</p>
+                        <div className='select'>
+                          <div className='chevron_down'/>
+                          <select 
+                            name="cycle"
+                            onChange={(e)=>{setCycle(e.target.value)}}
+                            className={ cycle !== null ? "active" : ""}
+                          >
+                            <option value="value" selected disabled>
+                              필수선택
+                            </option>
+                            <option value="매일">매일</option>
+                            <option value="매주">매주</option>
+                            <option value="매월">매월</option>
+                            <option value="매년">매년</option>
+                          </select>
+                        </div>
+                        <button 
+                          type='button' 
+                          onClick={()=>{setShowPeriod(false)}}
+                          disabled={!endDate || !cycle}
+                          className= {!endDate || !cycle ? "disabled" : ""}
+                        >
+                          입력
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <p>반복주기</p><br />
-                    <select name="cycle" id="" onChange={(e)=>{setCycle(e.target.value)}}>
-                      <option value="value" selected disabled>
-                        필수선택
-                      </option>
-                      <option value="매일">매일</option>
-                      <option value="매주">매주</option>
-                      <option value="매월">매월</option>
-                      <option value="매년">매년</option>
-                    </select>
-                  </div>
-                  <button 
-                    type='button' 
-                    onClick={()=>{setShowPeriod(false)}}
-                    disabled={!endDate || !cycle}
-                  >
-                    입력
-                  </button>
-                </div>
-              )
-            }
+                )
+              }
+            </div>
           </div>
 
           <div className='price'>
