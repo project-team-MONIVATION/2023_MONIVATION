@@ -6,6 +6,8 @@ import { addDoc, collection, Timestamp, } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
 import '../css/saving.css'
+import { SelectDate, SelectPeriod } from '../../member_PCH/features/IconInModal';
+import moment from 'moment';
 
 export default function Saving({setModalIsOpen}) {
     const [value, onChange] = useState(new Date());
@@ -25,9 +27,9 @@ export default function Saving({setModalIsOpen}) {
 
     // (저금예정일 선택)달력 클릭하면 true 값으로 바뀌며 달력 뜸
     // 열기 닫기
-        const [isCheck, setCheck] = useState(false);
+        const [showCal, setShowCal] = useState(false);
 
-        const [modal, setModal] = useState(false);
+        const [showPeriod, setShowPeriod] = useState(false);
 
         // (기간)시작날짜
         const [ischeck2, setCheck2] = useState(true);
@@ -44,7 +46,7 @@ export default function Saving({setModalIsOpen}) {
     // 금액
     const [amount, setAmount] = useState('');
     // 기간 종류
-    const [periodunit, setPeriodunit] = useState('');
+    const [periodunit, setPeriodunit] = useState(null);
 
 
     // 제목
@@ -64,7 +66,7 @@ export default function Saving({setModalIsOpen}) {
         let when = `${year}-${month}-${day}`
 
         setClickday(when)
-        setCheck(false)
+        setShowCal(false)
     }
 
     // (기간)시작날짜 
@@ -78,7 +80,7 @@ export default function Saving({setModalIsOpen}) {
     
         setStartday(when)
         setCheck2(false)
-        setCheck(false)
+        setShowCal(false)
         
     }
 
@@ -151,19 +153,30 @@ export default function Saving({setModalIsOpen}) {
                     <div className='date'>
                         <p>저금예정일</p>
                         <div className='input_box'>
-                            {startday}
+                            <span>{startday}</span>
                             <button
-                                onClick={() => {setCheck((e) => !e); setModal(false);}}
+                                onClick={() => {setShowCal((e) => !e); setShowPeriod(false);}}
                                 type='button'
                             >
-                            {isCheck ? "닫힘" : "열림"}
+                                <SelectDate showCal={showCal}/>
                             </button>
-                            {isCheck && (
-                                <div className='modal-cal modal-cal2'>
+                        </div>
+                        <div className='date_modal'>
+                            {showCal && (
+                                <div className='input_date'>
+                                    <button 
+                                        type='button' 
+                                        onClick={()=>{setShowCal(false)}}
+                                        className='close_btn'
+                                    >
+                                        X
+                                    </button>
                                     <Calendar 
+                                        formatDay={(locale, date) => moment(date).format('D')}
                                         onChange={onChange} 
                                         value={value}
                                         onClickDay={(value, event) => {startperiod(value); setMaxdate(value);}}
+                                        className='modal_calendar'
                                     />
                                 </div>
                                 
@@ -175,102 +188,84 @@ export default function Saving({setModalIsOpen}) {
                         <p>기간</p>
 
                         {/* test 라이브러리로 기간선택 */}
-                        {<div className='input_box'>
-                            {startday}~{endday}
+                        <div className='input_box'>
+                            <span>{startday} ~ {endday} {periodunit ? `/ ${periodunit}` : null}</span>
                             <button
-                                onClick={() => {setModal((e) => !e);}}
+                                onClick={() => {setShowPeriod((e) => !e);}}
                                 type='button'
                             >
-                                {modal ? "닫힘" : "열림"}
+                                <SelectPeriod showPeriod={showPeriod}/>
                             </button>
+                        </div>
+                        <div className='period_modal'>
                             {/* 기간선택 모달창 */}
-                            {modal && (
-                            <div className='saving-period'>
-                                {/* 시작일 */}
-                                <button
-                                    onClick={() => {setCheck2((e) => !e); setCheck(false); }}
-                                    type='button'
-                                >
-                                <p style={{ color: ischeck2 ? "#BB363F" : "#000" }}>시작일</p>
-                                </button>
-                                {ischeck2 && (
-                                    <div className='modal-cal'>
-                                        <Calendar 
-                                            onChange={onChange}
-                                            value={value}
-                                            onClickDay={(value, event) => {startperiod(value); setCheck2(false); setCheck3(true); setMindate(value);}}
-                                            
-                                        />
-                                    </div>
-                                )}
-
-                                {/* 종료일 */}
-                                <button
-                                    onClick={() => {setCheck3((e) => !e); setCheck(false); } }
-                                    type='button'
-                                >
-                                <p style={{ color: ischeck3 ? "#BB363F" : "#000" }}>종료일</p>
-                                </button>
-                                {ischeck3 && (
-                                    <div className='modal-cal'>
-                                        <Calendar 
-                                            onChange={onChange} 
-                                            value={value}
-                                            onClickDay={(value, event) => {endperiod(value); setCheck3(false);}}
-                                            minDate={mindate}
-                                        />
-                                    </div>
-                                )}
-
-                                {/* x닫기 버튼 */}
-                                <button
-                                onClick={() => {setModal((e) => !e);}}
-                                type='button'
-                                >
-                                {modal ? "X" : "열림"}
-                                </button>
-                                
-                                {/* 반복주기 select창 */}
-                                <p>반복주기</p>
-                                <div>
-                                    <form action="">
-                                        <select 
-                                            onChange={(e) => {setPeriodunit(e.target.value)}}
+                            {
+                                showPeriod && (
+                                    <div className='input_period'>
+                                        {/* 종료일 */}
+                                        <button 
+                                        type='button' 
+                                        onClick={()=>{setShowPeriod(false)}}
+                                        className='close_btn'
                                         >
-                                            <option value="value" selected disabled>
-                                                주기를 선택해주세요.
-                                            </option>
-                                            <option value="day">day</option>
-                                            <option value="week">week</option>
-                                            <option value="month">month</option>
-                                            <option value="year">year</option>
-                                        </select>
-                                    </form>
-                                </div>
-                                <button
-                                onClick={() => {setModal((e) => !e);}}
-                                type='button'
-                                >
-                                {modal ? "입력" : "열림"}
-                                </button>
-                                
-                            </div>
-                            
-                            )}
-                        </div>}
-
-                        {periodunit}
+                                            X
+                                        </button>
+                                        <div className='flex'>
+                                            <div className='input_endDate'>
+                                                <p>종료일</p>
+                                                <Calendar 
+                                                    formatDay={(locale, date) => moment(date).format('D')}
+                                                    onChange={onChange} 
+                                                    value={value}
+                                                    onClickDay={(value, event) => {endperiod(value); setCheck3(false);}}
+                                                    minDate={mindate}
+                                                    className='modal_calendar period'
+                                                />
+                                            </div>
+                                            <div className='input_cycle'>
+                                                <p>반복주기</p>
+                                                <div className='select'>
+                                                    <select 
+                                                        name='cycle'
+                                                        onChange={(e) => {setPeriodunit(e.target.value)}}
+                                                        className={ periodunit !== null ? "active" : ""}
+                                                    >
+                                                        <option value="value" selected disabled>
+                                                            필수선택
+                                                        </option>
+                                                        <option value="매일">매일</option>
+                                                        <option value="매주">매주</option>
+                                                        <option value="매월">매월</option>
+                                                        <option value="매년">매년</option>
+                                                    </select>
+                                                </div>
+                                                <button
+                                                    type='button' 
+                                                    onClick={()=>{setShowPeriod(false)}}
+                                                    disabled={!endday || !periodunit}
+                                                    className= {!endday || !periodunit ? "disabled" : ""}
+                                                >
+                                                    입력
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        </div>
                     </div>
 
                     <div className='price'>
                         <p>금액</p>
                         <div className='input_box'>
                             <input 
+                                className='input_price'
                                 required
                                 onInput={handleHyphen} 
                                 type="text"
                                 onChange={e => setAmount(e.target.value)}
                             />
+                            <span className='won'>₩</span>
                         </div>
                     </div>
 
@@ -278,6 +273,7 @@ export default function Saving({setModalIsOpen}) {
                         <p>제목</p>
                         <div className='input_box'>
                             <input
+                                className='input_price'
                                 type='text'
                                 required
                                 value={title}
