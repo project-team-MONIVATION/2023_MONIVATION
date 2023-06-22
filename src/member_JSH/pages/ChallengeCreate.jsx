@@ -43,6 +43,7 @@ export default function ChallengeCreate() {
       img : challengeImg,
       writeTime : new Date(),
     })
+    // 해당 유저 문서의 챌린지 리스트 필드에 챌린지 값 넣기
     navigate('/challenge');
   }
  
