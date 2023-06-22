@@ -10,6 +10,7 @@ import { faHeart, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import './css/none.css'
 
 // 화살표 컴퍼넌트
 const NextArrow = ({ onClick, style }) => { 
@@ -85,20 +86,22 @@ export default function Asset() {
       {
         bestFmList && bestFmList.map((fm)=>(
           <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
-            <div style={{backgroundColor: "gray", width: "250px", height: "300px", margin: "10px 40px", display: "inline-block", borderRadius: "10px"}}>
-              <div style={{backgroundColor: "white", width: "200px", height: "200px", margin: "auto", borderRadius: "10px", backgroundImage: `url(${fm.photo})`, backgroundSize: "cover" }}></div>
-              <h3>{fm.name}</h3>
-              <div style={{display: "flex"}}> 
-                <p>{fm.field && fm.field[0]}</p>
-                <p>{fm.field && fm.field[1]}</p>
-                <p>{fm.field && fm.field[2]}</p>
-                <p>
+            <div style={{backgroundColor: "#735BF3", width: "250px", height: "300px", margin: "10px 40px", display: "inline-block", borderRadius: "20px"}}>
+              <div style={{backgroundColor: "white", width: "200px", height: "200px", margin: "auto", marginTop: "20px", borderRadius: "40px", backgroundImage: `url(${fm.photo})`, backgroundSize: "cover" }}></div>
+              <h3 style={{marginTop: "10px"}}>{fm.name}</h3>
+              <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}> 
+                <div>
+                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[0]}</span>
+                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[1]}</span>
+                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[2]}</span>
+                </div>
+                <div>
                   <FontAwesomeIcon 
-                  icon={faHeart}
-                  fontSize={20}
-                  style={{ color: "red" }}
+                    icon={faHeart}
+                    fontSize={20}
+                    style={{ color: "red" }}
                   />:{fm.likeNum}
-                </p>
+                </div>
               </div>
             </div>
           </Link>
