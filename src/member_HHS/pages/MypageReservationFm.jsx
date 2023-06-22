@@ -143,13 +143,24 @@ export default function MypageReservationFm() {
             backgroundColor: "white"
           }}>
             <div>
-              <input type='text' value={modalData.name}></input>
+              <label htmlFor="">이름</label>
+              <input type='text' defaultValue={modalData.name} disabled/>
             </div>
             <div>
-              <input type='text' value={modalData.title}></input>
+              <label htmlFor="">이메일</label>
+              <input type="email" defaultValue={modalData.email} disabled/>
             </div>
             <div>
-              <textarea value={modalData.content} cols="30" rows="10"></textarea>
+              <label htmlFor="">연락처</label>
+              <input type="text" defaultValue={modalData.phone} disabled/>
+            </div>
+            <div>
+              <label htmlFor="">상담제목</label>
+              <input type='text' defaultValue={modalData.title} disabled/>
+            </div>
+            <div>
+              <label htmlFor="">상담내용</label>
+              <textarea defaultValue={modalData.content} cols="30" rows="10" disabled></textarea>
             </div>
             <button onClick={closeModal}>닫기</button>
             <button onClick={handleData}>상담완료</button>

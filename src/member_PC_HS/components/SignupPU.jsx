@@ -13,6 +13,9 @@ import BirthInput from '../styleComponent/Signup/BirthInput';
 import InputSubmit from '../styleComponent/InputSubmit';
 import BackGround from '../styleComponent/BackGround';
 import Email from '../styleComponent/Signup/Email';
+import Content1 from './Content1';
+import Content2 from './Content2';
+import Content3 from './Content3';
 
 export default function SignupPU() {
   const location = useLocation();
@@ -313,6 +316,14 @@ export default function SignupPU() {
     }
   };
 
+  const [modal, setModal] = useState(false);
+  const openModal = () => {
+    setModal(true);
+  }
+  const closeModal = () => {
+    setModal(false);
+  }
+
   return (
     <BackGround>
       <InnerDiv>
@@ -461,10 +472,24 @@ export default function SignupPU() {
         <InputBtn type='button' onClick={onOTPVerify}>인증코드 입력</InputBtn>
         <br />
         <br />
-
-        <p>(필수)서비스 이용동의</p>
-        <p>(필수)개인정보 수집 및 이용동의</p>
-        <p>(선택)이벤트 및 프로모션 알림 동의</p>
+        <div>
+          <input type='checkbox'/>
+          <label htmlFor="">(필수)서비스 이용동의</label>
+          <button onClick={openModal}>보기</button>
+          {modal && <Content1 onClose={closeModal}/>}
+        </div>
+        <div>
+          <input type="checkbox"/>
+          <label htmlFor="">(필수)개인정보 수집 및 이용동의</label>
+          <button onClick={openModal}>보기</button>
+          {modal && <Content2 onClose={closeModal}/>}
+        </div>
+        <div>
+          <input type="checkbox" />
+          <label htmlFor="">(선택)이벤트 및 프로모션 알림 동의</label>
+          <button onClick={openModal}>보기</button>
+          {modal && <Content3 onClose={closeModal}/>}
+        </div>
         
         <InputSubmit type="submit" value="회원가입 완료"></InputSubmit>
       </Form>

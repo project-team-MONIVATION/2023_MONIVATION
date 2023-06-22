@@ -2,15 +2,17 @@ import React, {useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { db } from '../../database/firebase';
-import { doc, getDoc, getDocs, updateDoc, where, query, collection } from 'firebase/firestore';
+import { doc, getDoc, addDoc, collection } from 'firebase/firestore';
 
 export default function MypageReservationPu() {
   const user = useSelector((state) => state.user.user);
+  const params = useParams();
   const [text, setText] = useState();
+  const [fm, setFm] = useState();
 
   const [reserv, setReserv] = useState(null);
-  const params = useParams();
   const [modalData, setModalData] = useState(null);
+  const [reviewModal, setReviewModal] = useState(false);
 
   useEffect(()=>{
     const getReserv = async() => {
@@ -32,8 +34,25 @@ export default function MypageReservationPu() {
     setModalData(null);
   };
 
-  const writeReview = () => {
+  const openModalReview = (e, id) => {
+    e.stopPropagation();
+    setFm(id);
+    setReviewModal(true);
+  }
+  const closeModalReview = () => {
+    setReviewModal(false);
+  }
 
+  const writeReview = () => {
+    addDoc(collection(db, "financial_review"), {
+      uid : user.uid,
+      fmDocid : fm,
+      nickname : user.nickname,
+      photo : user.photo,
+      text : text,
+      date : new Date(),
+    });
+    setReviewModal(false);
   }
 
   return (
@@ -72,7 +91,7 @@ export default function MypageReservationPu() {
             const day = reserveDate.getDate();
             
             return (
-              <tr key={i} onClick={() => openModal(r)}>
+              <tr key={i} onClick={() => {openModal(r);}}>
                 <td>{r.name}</td>
                 <td>{r.phone}</td>
                 <td>{r.title}</td>
@@ -81,28 +100,10 @@ export default function MypageReservationPu() {
                   {r.done === false ? "예약중" : 
                     (<div>
                       <p>상담완료</p> 
-                      <button onCLick={writeReview}>리뷰작성</button>
+                      <button onClick={(e)=>{openModalReview(e, r.fmUid)}}>리뷰작성</button>
                     </div>)
                   }
-                  <div 
-                    style={{
-                      position: "fixed",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      backgroundColor: "rgba(0, 0, 0, 0.8)",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div style={{backgroundColor: "white"}}>
-                      <textarea cols="30" rows="10" placeholder='리뷰를 남겨주세요' onChange={(e)=>{setText(e.target.value)}}></textarea>
-                      <br />
-                      <button onClick={writeReview}>작성완료</button>
-                    </div>
-                  </div>
+                  
                 </td>
               </tr>
             )
@@ -110,7 +111,6 @@ export default function MypageReservationPu() {
           }
         </tbody>
       </table>
-
       {modalData && (
         <div style={{
           position: "fixed",
@@ -127,18 +127,47 @@ export default function MypageReservationPu() {
             backgroundColor: "white"
           }}>
             <div>
-              <input type='text' value={modalData.name}></input>
+              <label htmlFor="">이름</label>
+              <input type='text' defaultValue={modalData.name} disabled/>
             </div>
             <div>
-              <input type='text' value={modalData.title}></input>
+              <label htmlFor="">상담제목</label>
+              <input type='text' defaultValue={modalData.title} disabled/>
             </div>
             <div>
-              <textarea value={modalData.content} cols="30" rows="10"></textarea>
+              <label htmlFor="">상담내용</label>
+              <textarea defaultValue={modalData.content} cols="30" rows="10" disabled></textarea>
             </div>
             <button onClick={closeModal}>닫기</button>
           </div>
         </div>
       )}
+      { reviewModal && 
+        (
+          <div 
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div style={{backgroundColor: "white"}}>
+              <h2>리뷰 작성</h2>
+
+              <textarea cols="30" rows="10" placeholder='리뷰를 남겨주세요' onChange={(e)=>{setText(e.target.value)}}></textarea>
+              <br />
+              <button onClick={writeReview}>작성완료</button>
+              <button onClick={closeModalReview}>닫기</button>
+            </div>
+          </div>
+        )
+      }
     </div>
   )
 }

@@ -22,16 +22,18 @@ export default function MypageEditPu() {
   return (
     <div>
       {profile && 
-      <div>
-        <img src={profile.photo} width={100} height={100} alt="프로필" />
-        <p>이메일 {profile.email}</p>
-        <p>회원구분 <span>개인회원</span></p>
-        <p>가입일은 타임스탬프라 위의 함수에서 변형시켜서 써야함</p>
+      <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+        <img src={profile.photo} width={100} height={100} alt="프로필" style={{borderRadius: "50%"}} />
+        <div>
+          <p>이메일 {profile.email}</p>
+          <p>회원구분 <span>개인회원</span></p>
+          <p>가입일은 타임스탬프라 위의 함수에서 변형시켜서 써야함</p>
+        </div>
       </div>
       }
 
       <form>
-        <h3>회원정보 수정</h3>
+        <h2>회원정보 수정</h2>
         <div>
           <label>닉네임</label>
           <input type="text" />
@@ -56,8 +58,9 @@ export default function MypageEditPu() {
         <div>
           <label>인증코드</label>
           <input type="number" />
+          <button type='button'>인증번호 확인</button>
         </div>
-
+        
         <input type="submit" />
       </form>
     </div>
