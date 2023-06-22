@@ -103,7 +103,7 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
     <div id='input_form'>
       <form action="" onSubmit={inputExpenseRepeat}>
 
-        <div className='input_content'>
+        <div className='input_content expense'>
           <div className='date'>
             <p>지출예정일</p>
             <div className='input_box'>
@@ -203,9 +203,9 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
             <div className='input_box'>
               <input 
                 className='input_price'
-                type="text" 
+                type="text"
                 onInput={handleHyphen}
-                onChange={(e)=>{setPrice(Number(e.target.value))}}
+                onChange={(e) => {setPrice(Number(e.target.value.replace(/[^0-9]/g, '')))}}
                 required
               />
               <span className='won'>₩</span>

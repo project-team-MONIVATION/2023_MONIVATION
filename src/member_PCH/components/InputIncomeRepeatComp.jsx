@@ -201,9 +201,9 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
             <div className='input_box'>
               <input 
                 className='input_price'
-                type="text" 
+                type="text"
                 onInput={handleHyphen}
-                onChange={(e)=>{setPrice(Number(e.target.value))}}
+                onChange={(e) => {setPrice(Number(e.target.value.replace(/[^0-9]/g, '')))}}
                 required
               />
               <span className='won'>₩</span>
