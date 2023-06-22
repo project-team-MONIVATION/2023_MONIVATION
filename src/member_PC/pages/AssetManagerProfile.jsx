@@ -3,7 +3,7 @@ import { db } from '../../database/firebase';
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux';
-import { doc , getDoc, getDocs, updateDoc, collection, query, where } from 'firebase/firestore';
+import { doc , getDoc, getDocs, updateDoc, collection, query, where, QuerySnapshot } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from "@fortawesome/free-solid-svg-icons"; 
 
@@ -14,6 +14,7 @@ export default function AssetManagerProfile() {
   const [liked, setLiked] = useState(false);
   const user = useSelector((state) => state.user.user);
 
+  const [comment, setComment] = useState();
   const [profile, setProfile] = useState('');
   const params = useParams();
 
@@ -113,6 +114,18 @@ export default function AssetManagerProfile() {
   checkLiked();
   }, [params.id, user])
 
+  useEffect(()=>{
+    const getComments = async () => {
+      const q = query(collection(db, "financial_review"), where('fmDocid', '==', params.id));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const dataArray = querySnapshot.docs.map((doc) => doc.data());
+        setComment(dataArray);
+      }
+    }
+    getComments();
+  }, [])
+
   return (
     <div>
       <h1>자산관리사 프로필</h1>
@@ -152,6 +165,15 @@ export default function AssetManagerProfile() {
       <Link to={`/asset/managerID/profile/reservation/${params.id}`}>상담예약</Link>
       <h3>자문사 평가</h3>
       <hr />
+      {
+        comment && comment.map((c)=>(
+          <div>
+            <img src={c.photo} alt="프로필사진" width={80} height={80} />
+            <p>{c.nickname}</p>
+            <p>{c.text}</p>
+          </div>
+        ))
+      }
     </div>
   )
 }

@@ -27,17 +27,35 @@ export default function IncomeModalComp({ setModalIsOpen }) {
   };
 
   return (
-    <div>
-            <button onClick={ onShowIncome }>일반수입</button>
-            <button onClick={ onShowRepeatIncome }>고정수입</button>
+    <div className='content'>
+      <div className='btn_container'>
+        <button 
+          className={
+            'content_btn ' +
+            (showIncome ? 'active' : '')
+          }
+          onClick={ onShowIncome }
+        >
+          일반수입
+        </button>
+        <button 
+          className={
+            'content_btn ' +
+            (showIncomeRepeat ? 'active' : '')
+          }
+          onClick={ onShowRepeatIncome }
+        >
+          고정수입
+        </button>
+      </div>
 
-            { // 일반수입 입력 form
-              showIncome && <InputIncomeComp handleSubmit={handleSubmit}/>
-            }
+      { // 일반수입 입력 form
+        showIncome && <InputIncomeComp handleSubmit={handleSubmit}/>
+      }
 
-            { // 반복수입 입력 form
-              showIncomeRepeat && <InputIncomeRepeatComp handleSubmit={handleSubmit}/>
-            }
+      { // 반복수입 입력 form
+        showIncomeRepeat && <InputIncomeRepeatComp handleSubmit={handleSubmit}/>
+      }
     </div>
   )
 }
