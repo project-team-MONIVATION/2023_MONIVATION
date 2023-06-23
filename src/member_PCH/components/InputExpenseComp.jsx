@@ -70,7 +70,7 @@ export default function InputExpenseComp({ handleSubmit }) {
   // submit 이벤트
   const inputExpense = async(e) => {
     e.preventDefault();
-
+    console.log("입력버튼")
     /** 결제수단이 "현금" 또는 "이체"이거나, 할부가 "일시불"일 때 
      * : 작성된 값을 firestore의 money_expense 컬렉션에 문서로 추가
     */
@@ -146,7 +146,7 @@ export default function InputExpenseComp({ handleSubmit }) {
     <div id='input_form'>
       <form action="" onSubmit={inputExpense}>
 
-        <div className='input_content'>
+        <div className='input_content expense'>
           <div className='date'>
             <p>날짜</p>
             <div className='input_box'>
@@ -165,7 +165,7 @@ export default function InputExpenseComp({ handleSubmit }) {
                         className='close_btn'
                       >
                         X
-                      </button>
+                    </button>
                     <Calendar 
                       formatDay={(locale, date) => moment(date).format('D')}
                       onChange={ onClickDate } 
@@ -183,9 +183,9 @@ export default function InputExpenseComp({ handleSubmit }) {
             <div className='input_box'>
               <input 
                 className='input_price'
-                type="text" 
+                type="text"
                 onInput={handleHyphen}
-                onChange={(e)=>{setPrice(Number(e.target.value))}}
+                onChange={(e) => {setPrice(Number(e.target.value.replace(/[^0-9]/g, '')))}}
                 required
               />
               <span className='won'>₩</span>
@@ -194,27 +194,35 @@ export default function InputExpenseComp({ handleSubmit }) {
 
           <div className='payment'>
             <p>결제수단</p>
-            <div className='input_box'>
-              <select 
-                name="payment" 
-                id="" 
-                value={payment}
-                onChange={(e)=>{setPayment(e.target.value)}}
+            <div
+              style={{display: "flex", width: "350px", overflow: "hidden"}}
+            >
+              <div 
+                className={
+                  ((payment === "카드") ? "card" : "")
+                  + " input_payment"
+                }
               >
-                <option value="현금">현금</option>
-                <option value="카드">카드</option>
-                <option value="이체">이체</option>
-              </select>
+                <select 
+                  name="payment" 
+                  value={payment}
+                  onChange={(e)=>{setPayment(e.target.value)}}
+                >
+                  <option value="현금">현금</option>
+                  <option value="카드">카드</option>
+                  <option value="이체">이체</option>
+                </select>
+              </div>
               {
               payment && payment === "카드" && (
-                <div>
-                  <select name="" id="" onChange={(e)=>setInstallment(e.target.value)}>
+                <div className='input_installment'>
+                  <select className='installment' name="installment" onChange={(e)=>setInstallment(e.target.value)}>
                     <option value="일시불" selected>
                       일시불
                     </option>
                     {
                       num.map((i)=>(
-                        <option value={i} key={i}>{i}</option>
+                        <option value={i} key={i}>{i}개월</option>
                       ))
                     }
                   </select>

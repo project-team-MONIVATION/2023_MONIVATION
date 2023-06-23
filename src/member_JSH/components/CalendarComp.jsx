@@ -324,7 +324,7 @@ export default function CalendarComp() {
                 content: {
                   boxSizing: 'border-box',
                   width: '580px',
-                  height: '790px',
+                  height: '850px',
                   top: '50%',
                   left: '50%',
                   transform: 'translate(-50%, -50%)',

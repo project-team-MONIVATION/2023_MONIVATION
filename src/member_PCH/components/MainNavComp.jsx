@@ -37,7 +37,7 @@ export default function MainNavComp() {
   return (
     <div>
       {
-        position > 1100 && 
+        position > 900 && 
           (user
             ? (
               <nav className='main-nav onlongin'>

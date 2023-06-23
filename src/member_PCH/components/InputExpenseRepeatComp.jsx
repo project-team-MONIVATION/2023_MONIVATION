@@ -103,7 +103,7 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
     <div id='input_form'>
       <form action="" onSubmit={inputExpenseRepeat}>
 
-        <div className='input_content'>
+        <div className='input_content expense'>
           <div className='date'>
             <p>지출예정일</p>
             <div className='input_box'>
@@ -174,7 +174,7 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
                             className={ cycle !== null ? "active" : ""}
                           >
                             <option value="value" selected disabled>
-                            필수선택
+                              필수선택
                             </option>
                             <option value="매일">매일</option>
                             <option value="매주">매주</option>
@@ -203,9 +203,9 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
             <div className='input_box'>
               <input 
                 className='input_price'
-                type="text" 
+                type="text"
                 onInput={handleHyphen}
-                onChange={(e)=>{setPrice(Number(e.target.value))}}
+                onChange={(e) => {setPrice(Number(e.target.value.replace(/[^0-9]/g, '')))}}
                 required
               />
               <span className='won'>₩</span>
@@ -214,10 +214,9 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
 
           <div>
             <p>결제수단</p>
-            <div className='input_box'>
+            <div className='input_installment'>
               <select 
                 name="payment" 
-                id="" 
                 value={payment}
                 onChange={(e)=>{setPayment(e.target.value)}}
               >

@@ -50,7 +50,7 @@ main #section1 .logobox .logo {
 
 main #section1 .sloganbox {
   box-sizing: border-box;
-  height: 20vh;
+  height: 15vh;
   padding-bottom: 5vh;
   display: flex;
   justify-content: center;
@@ -75,7 +75,7 @@ main #section1 .sloganbox h1 {
 
 main #section1 .btnbox {
   box-sizing: border-box;
-  height: 40vh;
+  height: 45vh;
   background: linear-gradient(rgb(71, 140, 205), rgb(125, 33, 207));
   padding: 8vh 0;
 }

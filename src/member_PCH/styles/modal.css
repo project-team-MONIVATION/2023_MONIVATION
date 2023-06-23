@@ -43,7 +43,7 @@
   box-sizing: border-box;
   width: 50%;
   height: 40px;
-  padding-top: 5px;
+  padding-top: 3.5px;
   background-color: #8E8E8E;
   border: 0;
   border-radius: 50px;
@@ -59,6 +59,16 @@
 #calendar_modal #input_form .input_content {
   width: 350px;
   height: 560px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#calendar_modal #input_form .input_content.expense {
+  width: 350px;
+  height: 610px;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -83,6 +93,19 @@
   background-color: #D9D9D9;
   border-radius: 15px;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+}
+
+#calendar_modal #input_form .input_content.expense .input_box {
+  box-sizing: border-box;
+  width: 350px;
+  height: 45px;
+  background-color: #D9D9D9;
+  border-radius: 15px;
+  margin-bottom: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -119,6 +142,58 @@
   height: 20px;
   padding-top: 8px;
   font-size: 18px;
+}
+
+#calendar_modal #input_form .input_content .input_payment select {
+  box-sizing: border-box;
+  width: 350px;
+  height: 45px;
+  border: 0;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  padding: 0 15px;
+  transition: all 0.5s;
+  background-color: #D9D9D9;
+  display: inline-block;
+  font-family: 'Cafe24SsurroundAir';
+  font-size: 16px;
+}
+
+#calendar_modal #input_form .input_content .input_payment.card select {
+  width: 170px;
+  transition: all 0.5s;
+}
+
+#calendar_modal #input_form .input_content .input_installment select {
+  box-sizing: border-box;
+  width: 350px;
+  height: 45px;
+  border: 0;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  padding: 0 15px;
+  transition: all 0.5s;
+  background-color: #D9D9D9;
+  display: inline-block;
+  font-family: 'Cafe24SsurroundAir';
+  font-size: 16px;
+}
+
+#calendar_modal #input_form .input_content .input_installment .installment {
+  height: 45px;
+  transition: all 0.5s;
+  margin-left: 10px;
+  animation: showSelect ease-in 0.5s 1 forwards;
+  font-family: 'Cafe24SsurroundAir';
+}
+
+@keyframes showSelect {
+  0% {
+    width: 170px;
+  }
+  100% {
+    width: 170px;
+  }
 }
 
 #calendar_modal #input_form .input_content .date_modal {
