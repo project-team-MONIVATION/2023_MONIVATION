@@ -48,14 +48,16 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
     };
 
 
+
   // installment 값 입력
-  const onInputInstallment = (e) => {
-    if(payment === "카드") {
-      return setInstallment(e.target.value);
-    } else {
-      return setInstallment(1);
-    };
-  };
+const onInputInstallment = (e) => {
+  if (payment === "카드") {
+    return setInstallment(e.target.value);
+  } else {
+    return setInstallment(1);
+  }
+};
+
 
   // selectedCategory 값 입력
   const onClickCategory = (e) => {
@@ -107,102 +109,6 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
   
       fetchData();
     }, [id]);
-
-
-    // 첫번째 시도 이건 되는데ㅜㅜ
-    // const deleteMoney = async () => {
-    //   // "money_expense" 컬렉션에서 문서 삭제
-    //   await deleteDoc(doc(db, "money_expense", id));
-  
-    //   // "money_installments" 컬렉션에서 문서 삭제
-    //   await deleteDoc(doc(db, "money_installments", installmentId));
-  
-    //   handleDataUpdate();
-    //   closeSubModal();
-    // }
-
-
-    // 두번째 시도 
-    // const deleteMoney = async () => {
-    //   //"money_installments" 컬렉션에서 문서 삭제
-    //   await deleteDoc(doc(db, "money_installments", installmentId));
-    
-    //   // "money_expense" 컬렉션에서 해당 문서의 ID와 동일한 모든 문서를 삭제
-    //   const expenseQuerySnapshot = await getDocs(
-    //     collection(db, "money_expense").where("docid", "==", installmentId)
-    //   );
-    //   const deletePromises = expenseQuerySnapshot.docs.map((doc) =>
-    //     deleteDoc(doc.ref)
-    //   );
-    //   await Promise.all(deletePromises);
-    
-    //   handleDataUpdate();
-    //   closeSubModal();
-    // };
-
-
-    // 세번째 시도 
-    // const deleteMoney = async () => {
-    //   try {
-    //     // "money_installments" 컬렉션에서 문서 삭제
-    //     const installmentRef = doc(db, "money_installments", installmentId);
-    //     await deleteDoc(installmentRef);
-    
-    //     // "money_expense" 컬렉션에서 해당 문서의 ID와 동일한 모든 문서를 삭제
-    //     const expenseQuerySnapshot = await getDocs(
-    //       collection(db, "money_expense").where("docid", "==", installmentId)
-    //     );
-    
-    //     const deletePromises = expenseQuerySnapshot.docs.map((doc) =>
-    //       deleteDoc(doc.ref)
-    //     );
-    //     await Promise.all(deletePromises);
-    
-    //     handleDataUpdate();
-    //     closeSubModal();
-    //   } catch (error) {
-    //     console.log("삭제 중 오류가 발생했습니다:", error);
-    //   }
-    // };
-    
-    // //네번째 시도
-    // const deleteMoney = async () => {
-    //   // "money_installments" 컬렉션에서 문서 삭제
-    //   await deleteDoc(doc(db, "money_installments", installmentId));
-    
-    //   // "money_expense" 컬렉션에서 해당 문서의 ID와 동일한 모든 문서를 삭제
-    //   const expenseQuerySnapshot = await getDocs(
-    //     collection(db, "money_expense").where("docid", "==", installmentId)
-    //   );
-    //   const deletePromises = expenseQuerySnapshot.docs.map((doc) =>
-    //     deleteDoc(doc.ref)
-    //   );
-    //   await Promise.all(deletePromises);
-    
-    //   handleDataUpdate();
-    //   closeSubModal();
-    // };
-
-
-
-    // const deleteMoney = async () => {
-    //   // "money_expense" 컬렉션에서 "docid" 필드가 "installmentId"와 일치하는 문서를 찾기 위한 쿼리 생성
-    //   const querySnapshot = await getDocs(query(collection(db, "money_expense"), where("docid", "==", installmentId)));
-    
-    //   // 찾은 문서들을 순회하며 삭제
-    //   querySnapshot.forEach(async (doc) => {
-    //     // 문서 삭제
-    //     await deleteDoc(doc.ref);
-    //   });
-
-    //   // "money_installments" 컬렉션에서 "installmentId"와 일치하는 문서 삭제
-    //   await deleteDoc(doc(db, "money_installments", installmentId));
-
-    
-    //   handleDataUpdate();
-    //   closeSubModal();
-    // };
-    
     
     const deleteMoney = async () => {
       if(installmentId != null) {
@@ -220,16 +126,16 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
       } else{
         await deleteDoc(doc(db, "money_expense", id));
       }
-
-
     
       handleDataUpdate();
       closeSubModal();
     };
-    
-    
 
 
+
+  // 수정 가능 여부 판단
+  const isEditable = !!installmentId; // installmentId 값이 존재하면 수정 불가능, 존재하지 않으면 수정 가능
+    
   return (
     <div
       style={{
@@ -284,15 +190,13 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
             {
               payment && payment === "카드" && (
                 <div className='input_installment'>
-                  <select className='installment' name="installment" onChange={(e)=>setInstallment(e.target.value)}>
-                    <option value="일시불" selected>
-                      일시불
-                    </option>
-                    {
-                      num.map((i)=>(
-                        <option value={i} key={i}>{i}개월</option>
-                      ))
-                    }
+                  <select className='installment' name="installment" onChange={onInputInstallment} value={installment}>
+                    <option value="일시불">일시불</option>
+                    {num.map((i) => (
+                      <option value={i} key={i}>
+                        {i}개월
+                      </option>
+                    ))}
                   </select>
                 </div>
               )

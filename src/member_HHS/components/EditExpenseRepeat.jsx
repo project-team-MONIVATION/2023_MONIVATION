@@ -4,6 +4,9 @@ import { db } from '../../database/firebase';
 import { updateDoc, getDoc, doc, deleteDoc } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 
+import moment, { locale } from 'moment';
+
+
 import Calendar from 'react-calendar';
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
 
@@ -216,20 +219,30 @@ useEffect(() => {
         {
           showPeriod && (
             <div>
-              <button type='button' onClick={()=>{setShowPeriod(false)}}>X</button>
-              <div>
-                <button type='button' onClick={ onClickStartBtn }>시작일</button>
-                <button type='button' onClick={ onClickEndBtn }>종료일</button>
-                {
-                  showStartCal && (<Calendar onChange={ onClickStartDate } value={startDate} required/>)
-                }
-                {
-                  showEndCal && (<Calendar onChange={ onClickEndDate } value={endDate}/>)
-                }
-              </div>
+              <button
+              type='button'
+              onClick={()=>{setShowPeriod(false)}}
+              >
+                X
+              </button>
+              
+                  <div>
+                        <p>종료일</p>
+                        <Calendar 
+                          formatDay={(locale, date) => moment(date).format('D')}
+                          onChange={ onClickEndDate } 
+                          value={endDate} 
+                          minDate={date}
+                          className='modal_calendar period'
+                        />
+                </div>
+
               <div>
                 <label>반복주기</label><br />
                 <select name="cycle" id="" onChange={(e)=>{setCycle(e.target.value)}}>
+                <option value="value" selected disabled>
+                              필수선택
+                            </option>
                   <option value="매일">매일</option>
                   <option value="매주">매주</option>
                   <option value="매월">매월</option>
@@ -267,19 +280,6 @@ useEffect(() => {
             <option value="카드">카드</option>
             <option value="이체">이체</option>
           </select>
-          {
-            payment && payment === "카드" && (
-              <div>
-                <label>할부</label>
-                <input 
-                  type="number"
-                  min="1"
-                  value={ installment }
-                  onChange={ onInputInstallment }/>
-                <span>개월</span>
-              </div>
-            )
-          }
         </div>
 
         <label>카테고리</label>
