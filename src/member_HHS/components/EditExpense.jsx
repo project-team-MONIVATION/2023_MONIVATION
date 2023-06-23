@@ -133,8 +133,7 @@ const onInputInstallment = (e) => {
 
 
 
-  // 수정 가능 여부 판단
-  const isEditable = !!installmentId; // installmentId 값이 존재하면 수정 불가능, 존재하지 않으면 수정 가능
+
     
   return (
     <div
