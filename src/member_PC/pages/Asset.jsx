@@ -10,7 +10,7 @@ import { faHeart, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import './css/none.css'
+import './css/asset.css'
 
 // 화살표 컴퍼넌트
 const NextArrow = ({ onClick, style }) => { 
@@ -76,8 +76,8 @@ export default function Asset() {
   return (
     <div>
       {/* 탭 바 */}
-      <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", width: "800px", margin: "auto"}}>
-        <h2>Best 자산관리사</h2>
+      <div style={{display: "flex", justifyContent: "space-between", width: "1500px", margin: "auto", alignItems: "center"}}>
+        <h1 style={{fontSize: "1.8rem"}}>Best 자산관리사</h1>
         <Link to='/asset/managerlist'>더보기</Link>
       </div>
 
@@ -86,48 +86,44 @@ export default function Asset() {
       {
         bestFmList && bestFmList.map((fm)=>(
           <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
-            <div style={{backgroundColor: "#735BF3", width: "250px", height: "300px", margin: "10px 40px", display: "inline-block", borderRadius: "20px"}}>
+            <div style={{backgroundColor: "#735BF3", width: "250px", height: "300px", margin: "50px", display: "inline-block", borderRadius: "20px"}}>
               <div style={{backgroundColor: "white", width: "200px", height: "200px", margin: "auto", marginTop: "20px", borderRadius: "40px", backgroundImage: `url(${fm.photo})`, backgroundSize: "cover" }}></div>
-              <h3 style={{marginTop: "10px"}}>{fm.name}</h3>
+              <h1 style={{margin: "10px 0"}}>{fm.name}</h1>
               <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}> 
                 <div>
                   <span style={{padding: "0 5px"}}>{fm.field && fm.field[0]}</span>
                   <span style={{padding: "0 5px"}}>{fm.field && fm.field[1]}</span>
                   <span style={{padding: "0 5px"}}>{fm.field && fm.field[2]}</span>
                 </div>
-                <div>
-                  <FontAwesomeIcon 
-                    icon={faHeart}
-                    fontSize={20}
-                    style={{ color: "red" }}
-                  />:{fm.likeNum}
-                </div>
+              </div>
+              <div>
+                <FontAwesomeIcon 
+                  icon={faHeart}
+                  fontSize={20}
+                  style={{ color: "red" }}
+                />:{fm.likeNum}
               </div>
             </div>
           </Link>
         ))
       }
       </Slider>
-
+      
       {/* 관련 정보 */}
-      <h2>관련정보</h2>
-      <div>
-        {/* 관련서적 */}
-        
-      </div>
-      <div style={{width: "100%", margin: "0"}}>
+      <div className='asset'>
+      <h1 style={{textAlign: "left", margin: "30px 0 20px 30px", fontSize: "1.8rem"}}>관련정보</h1>
         <table>
           <tbody>
           <tr>
-            <td>
-              <p>관련서적</p>
+            <td style={{verticalAlign: "top"}}>
+              <h1>관련서적</h1>
             </td>
-            <td><img src="/img/coin.jpg" width={300} height={180} alt="사진" /></td>
-            <td><img src="/img/chart.jpg" width={300} height={180} alt="사진" /></td>
-            <td><img src="/img/money.jpg" width={300} height={180} alt="사진" /></td>
-            <td><img src="/img/man.jpg" width={300} height={180} alt="사진" /></td>
+            <td><img src="/img/coin.jpg" alt="사진" /></td>
+            <td><img src="/img/chart.jpg" alt="사진" /></td>
+            <td><img src="/img/money.jpg" alt="사진" /></td>
+            <td><img src="/img/man.jpg" alt="사진" /></td>
           </tr>
-          <tr>
+          <tr className='btm'>
             <td></td>
             <td>
               <p>부자되고싶나</p>
@@ -143,23 +139,23 @@ export default function Asset() {
             </td>
           </tr>
           <tr>
-              <td>
-                <p>꿀팁영상</p>
+              <td style={{verticalAlign: "top"}}>
+                <h1>꿀팁영상</h1>
               </td>
               <td>
-                <iframe width="300" height="180" src="https://www.youtube.com/embed/hikmv2mSVxo" title="3분30초만에 알아보는 자산관리방법 PICK 6" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                <iframe src="https://www.youtube.com/embed/hikmv2mSVxo" title="3분30초만에 알아보는 자산관리방법 PICK 6" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
               </td>
               <td>
-                <iframe width="300" height="180" src="https://www.youtube.com/embed/EnZpz8SgM4U" title="평범한 직장인으로 20억 자산까지 딱 10년!!! 누구의 도움없이도 가능한 돈에 대한 예의를 갖추자! (자산관리 1편)" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                <iframe src="https://www.youtube.com/embed/EnZpz8SgM4U" title="평범한 직장인으로 20억 자산까지 딱 10년!!! 누구의 도움없이도 가능한 돈에 대한 예의를 갖추자! (자산관리 1편)" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
               </td>
               <td>
-                <iframe width="300" height="180" src="https://www.youtube.com/embed/kQZSeJXq7lE" title="월급의 몇%를 저축하고 있나요? 사회 초년생 월급관리 10분 정리!" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                <iframe src="https://www.youtube.com/embed/kQZSeJXq7lE" title="월급의 몇%를 저축하고 있나요? 사회 초년생 월급관리 10분 정리!" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
               </td>
               <td>
-                <iframe width="300" height="180" src="https://www.youtube.com/embed/GJorguPKRTk" title="삼성전자 말고 &#39;이 주식&#39;을 사모으세요. 정말 유일합니다 (이종우)" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                <iframe src="https://www.youtube.com/embed/GJorguPKRTk" title="삼성전자 말고 &#39;이 주식&#39;을 사모으세요. 정말 유일합니다 (이종우)" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
               </td>
           </tr>
-          <tr>
+          <tr className='btm'>
               <td></td>
               <td>"3분30초만에 알아보는 자산관리방법 PICK 6"</td>
               <td>"평범한 직장인으로 20억 자산까지 딱 10년!!!"</td>
@@ -168,7 +164,7 @@ export default function Asset() {
           </tr>
           </tbody>
         </table>
-      </div>
+        </div>
     </div>
   )
 }

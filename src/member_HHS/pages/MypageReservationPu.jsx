@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { db } from '../../database/firebase';
 import { doc, getDoc, addDoc, collection } from 'firebase/firestore';
+import "../../member_PC/pages/css/mypageRes.css"
 
 export default function MypageReservationPu() {
   const user = useSelector((state) => state.user.user);
@@ -58,7 +59,7 @@ export default function MypageReservationPu() {
   return (
     <div>
       <h1>나의 예약 내역</h1>
-      <table style={{width: "500px", minHeight: "300px", margin: "auto"}}>
+      <table className='mypage-table'>
         <tbody>
           <tr>
             <td>접수된 예약</td>
