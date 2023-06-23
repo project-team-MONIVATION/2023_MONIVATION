@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../../database/firebase';
-import { updateDoc, getDoc, doc, deleteDoc, getDocs, collection, query, where } from 'firebase/firestore';
-import { useSelector } from 'react-redux';
+import { updateDoc, getDoc, doc, deleteDoc, getDocs, collection, where, query } from 'firebase/firestore';
+// import { useSelector } from 'react-redux';
 import Calendar from 'react-calendar';
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
 
 
-export default function EditExpense({ category, price, memo, closeSubModal, id, handleDataUpdate }) {
-
-  
-  // 할부 개월 수 select에서 사용할 배열
-  const num = Array(58).fill().map((v,i)=> i+2);
-
+export default function EditExpense({ category, price, memo, closeSubModal, installmentId, id, handleDataUpdate }) {
   // uid 불러오기
-  const user = useSelector((state) => state.user.user);
+  // const user = useSelector((state) => state.user.user);
 
   // 날짜 입력하는 캘린더 모달 state
   const [showCal, setShowCal] = useState(false);
@@ -26,6 +21,10 @@ export default function EditExpense({ category, price, memo, closeSubModal, id, 
   const [selectedCategory, setSelectedCategory] = useState(category);
   const [editPrice, setEditPrice] = useState(price);
   const [editMemo, setEditMemo] = useState(memo);
+
+  
+  // 할부 개월 수 select에서 사용할 배열
+  const num = Array(58).fill().map((v,i)=> i+2);
 
   // 날짜 입력하는 캘린더 모달 on
   const onClickCal = (e) => {
@@ -65,85 +64,29 @@ export default function EditExpense({ category, price, memo, closeSubModal, id, 
   //////////////////////////////////////
   
 
-
-
-  const [installments, setInstallments] = useState([]);
-
-    /**  데이터를 가져오는 공통 함수 */
-    const fetchData = async () => {
-      const q = query(
-        collection("money_expense", id),
-        where('uid', '==', user.uid),
-        );
-        try {
-          const querySnapshot = await getDocs(q);
-          let dataArray = [];
-          
-          querySnapshot.forEach((doc) => {
-            let data = {
-              id: doc.id,
-              ...doc.data()
-            };
-            dataArray.push(data);
-          });
-
-          setInstallments(dataArray)
-      } catch (error) {
-        console.log(`Error getting documents: `, error);
-      }
-    };
-
-    // 수입 데이터 가져오기
-
-       // 처음 화면에 보여줌
-       useEffect(() => {
-        getInstallments();
-      }, []);
-
     // 파이어스토어에 업데이트
     const handleSubmit = async (e) => {
       e.preventDefault();
-    
+  
       // 파이어스토어에서 해당 문서를 가져옴
       const expenseRef = doc(db, "money_expense", id);
       const expenseSnap = await getDoc(expenseRef);
-
       if (expenseSnap.exists()) {
-        const docType = expenseSnap.ref.parent.id === 'money_installments' ? 'money_installments' : 'money_expense';
-        
-        // 들고온 값이 money_expense 컬렉션 문서에서 가져온 값인 경우
-
-        if (docType === 'money_expense') {
-          // 들고온 값이 카드 일시불인 경우 현금이나 이체로 변경하여 업데이트할 때 installment를 null로 설정
-          if (payment === '카드' && installment === '일시불') {
-            setInstallment(null);
-          }
-          // 해당하는 money_expense 컬렉션 문서에 그대로 수정 및 업데이트
-          await updateDoc(expenseRef, {
-            category: selectedCategory,
-            price: editPrice,
-            memo: editMemo,
-            date: date,
-            payment: payment,
-            installment: installment,
-          });
-        }
-    
-    // 들고온 값이 money_installments 컬렉션 문서에서 가져온 값인 경우
-    if (docType === 'money_installments') {
-      // money_installments 컬렉션 문서 값을 가져와서 출력
-      const expenseData = expenseSnap.data();
-      console.log(expenseData);
-    }
-  }
-    
+        await updateDoc(expenseRef, {
+          category: selectedCategory,
+          price: editPrice,
+          memo: editMemo,
+          date: date,
+          payment: payment,
+          installment: installment,
+        });
+      }
+  
       closeSubModal();
       
       // 데이터 업데이트 후 상위 컴포넌트의 fetchData 함수 호출
       handleDataUpdate();
     };
-
-
   
     // 지출 저장 목록 클릭 시 마다 모달 변함
     useEffect(() => {
@@ -165,88 +108,127 @@ export default function EditExpense({ category, price, memo, closeSubModal, id, 
       fetchData();
     }, [id]);
 
+
+    // 첫번째 시도 이건 되는데ㅜㅜ
+    // const deleteMoney = async () => {
+    //   // "money_expense" 컬렉션에서 문서 삭제
+    //   await deleteDoc(doc(db, "money_expense", id));
+  
+    //   // "money_installments" 컬렉션에서 문서 삭제
+    //   await deleteDoc(doc(db, "money_installments", installmentId));
+  
+    //   handleDataUpdate();
+    //   closeSubModal();
+    // }
+
+
+    // 두번째 시도 
+    // const deleteMoney = async () => {
+    //   //"money_installments" 컬렉션에서 문서 삭제
+    //   await deleteDoc(doc(db, "money_installments", installmentId));
+    
+    //   // "money_expense" 컬렉션에서 해당 문서의 ID와 동일한 모든 문서를 삭제
+    //   const expenseQuerySnapshot = await getDocs(
+    //     collection(db, "money_expense").where("docid", "==", installmentId)
+    //   );
+    //   const deletePromises = expenseQuerySnapshot.docs.map((doc) =>
+    //     deleteDoc(doc.ref)
+    //   );
+    //   await Promise.all(deletePromises);
+    
+    //   handleDataUpdate();
+    //   closeSubModal();
+    // };
+
+
+    // 세번째 시도 
+    // const deleteMoney = async () => {
+    //   try {
+    //     // "money_installments" 컬렉션에서 문서 삭제
+    //     const installmentRef = doc(db, "money_installments", installmentId);
+    //     await deleteDoc(installmentRef);
+    
+    //     // "money_expense" 컬렉션에서 해당 문서의 ID와 동일한 모든 문서를 삭제
+    //     const expenseQuerySnapshot = await getDocs(
+    //       collection(db, "money_expense").where("docid", "==", installmentId)
+    //     );
+    
+    //     const deletePromises = expenseQuerySnapshot.docs.map((doc) =>
+    //       deleteDoc(doc.ref)
+    //     );
+    //     await Promise.all(deletePromises);
+    
+    //     handleDataUpdate();
+    //     closeSubModal();
+    //   } catch (error) {
+    //     console.log("삭제 중 오류가 발생했습니다:", error);
+    //   }
+    // };
+    
+    // //네번째 시도
+    // const deleteMoney = async () => {
+    //   // "money_installments" 컬렉션에서 문서 삭제
+    //   await deleteDoc(doc(db, "money_installments", installmentId));
+    
+    //   // "money_expense" 컬렉션에서 해당 문서의 ID와 동일한 모든 문서를 삭제
+    //   const expenseQuerySnapshot = await getDocs(
+    //     collection(db, "money_expense").where("docid", "==", installmentId)
+    //   );
+    //   const deletePromises = expenseQuerySnapshot.docs.map((doc) =>
+    //     deleteDoc(doc.ref)
+    //   );
+    //   await Promise.all(deletePromises);
+    
+    //   handleDataUpdate();
+    //   closeSubModal();
+    // };
+
+
+
+    // const deleteMoney = async () => {
+    //   // "money_expense" 컬렉션에서 "docid" 필드가 "installmentId"와 일치하는 문서를 찾기 위한 쿼리 생성
+    //   const querySnapshot = await getDocs(query(collection(db, "money_expense"), where("docid", "==", installmentId)));
+    
+    //   // 찾은 문서들을 순회하며 삭제
+    //   querySnapshot.forEach(async (doc) => {
+    //     // 문서 삭제
+    //     await deleteDoc(doc.ref);
+    //   });
+
+    //   // "money_installments" 컬렉션에서 "installmentId"와 일치하는 문서 삭제
+    //   await deleteDoc(doc(db, "money_installments", installmentId));
+
+    
+    //   handleDataUpdate();
+    //   closeSubModal();
+    // };
+    
+    
     const deleteMoney = async () => {
-      const expenseRef = doc(db, 'money_expense', id);
-      const expenseSnap = await getDoc(expenseRef);
-      const docType = expenseSnap.ref.parent.id === 'money_installments' ? 'money_installments' : 'money_expense';
-    
-      if (docType === 'money_installments') {
-        // money_installments 컬렉션에서 해당 문서 삭제
-        const installmentsQuerySnapshot = await getDocs(collection(db, 'money_installments'));
-        const deletePromises = installmentsQuerySnapshot.docs
-          .filter((doc) => doc.data().docid === id)
-          .map((doc) => deleteDoc(doc.ref));
-        await Promise.all(deletePromises);
-    
-        // money_expense 컬렉션에서 해당 문서 삭제
-        await deleteDoc(expenseRef);
-      } else {
-        // money_expense 컬렉션에서 해당 문서 삭제
-        await deleteDoc(expenseRef);
-    
-        // money_installments 컬렉션에서 해당 문서 삭제
-        const installmentsQuerySnapshot = await getDocs(collection(db, 'money_installments'));
-        const deletePromises = installmentsQuerySnapshot.docs
-          .filter((doc) => doc.data().docid === id)
-          .map((doc) => deleteDoc(doc.ref));
-        await Promise.all(deletePromises);
+      if(installmentId != null) {
+
+        // "money_expense" 컬렉션에서 "docid" 필드가 "installmentId"와 일치하는 문서를 찾기 위한 쿼리 생성
+        const querySnapshot = await getDocs(query(collection(db, "money_expense"), where("docid", "==", installmentId)));
+        
+        // 찾은 문서들을 순회하며 삭제
+        querySnapshot.forEach(async (doc) => {
+          // 문서 삭제
+          await deleteDoc(doc.ref);
+        });
+        // "money_installments" 컬렉션에서 "installmentId"와 일치하는 문서 삭제
+          await deleteDoc(doc(db, "money_installments", installmentId));
+      } else{
+        await deleteDoc(doc(db, "money_expense", id));
       }
+
+
     
       handleDataUpdate();
       closeSubModal();
     };
     
     
-    
 
-    // const deleteMoney = async () => {
-    //   const expenseRef = doc(db, 'money_expense', id);
-    //   const expenseSnap = await getDoc(expenseRef);
-    //   const docType = expenseSnap.ref.parent.id === 'money_installments' ? 'money_installments' : 'money_expense';
-    // 
-    //   if (docType === 'money_installments') {
-    //     await deleteDoc(doc(db, 'money_installments', id));
-    //     await deleteDoc(expenseRef);
-    //   } else {
-    //     await deleteDoc(expenseRef);
-    //   }
-    //   
-    //   handleDataUpdate();
-    //   closeSubModal();
-    // };
-    
-    // 파이어스토어에 업데이트
-    // const handleSubmit = async (e) => {
-    //   e.preventDefault();
-  
-    //   // 파이어스토어에서 해당 문서를 가져옴
-    //   const expenseRef = doc(db, "money_expense", id);
-    //   const expenseSnap = await getDoc(expenseRef);
-    //   if (expenseSnap.exists()) {
-    //     await updateDoc(expenseRef, {
-    //       category: selectedCategory,
-    //       price: editPrice,
-    //       memo: editMemo,
-    //       date: date,
-    //       payment: payment,
-    //       installment: installment,
-    //     });
-    //   }
-  
-    //   closeSubModal();
-      
-    //   // 데이터 업데이트 후 상위 컴포넌트의 fetchData 함수 호출
-    //   handleDataUpdate();
-    // };
-
-
-    // const deleteMoney = async() => {
-    //   await deleteDoc(doc(db, "money_expense", id));
-    //   handleDataUpdate();
-    //   closeSubModal();
-    // }
-    
-    
 
   return (
     <div
@@ -298,16 +280,17 @@ export default function EditExpense({ category, price, memo, closeSubModal, id, 
             <option value="카드">카드</option>
             <option value="이체">이체</option>
           </select>
-          {
+
+            {
               payment && payment === "카드" && (
-                <div>
-                  <select name="" id="" onChange={(e)=>setInstallment(e.target.value)}>
+                <div className='input_installment'>
+                  <select className='installment' name="installment" onChange={(e)=>setInstallment(e.target.value)}>
                     <option value="일시불" selected>
                       일시불
                     </option>
                     {
                       num.map((i)=>(
-                        <option value={i} key={i}>{i}</option>
+                        <option value={i} key={i}>{i}개월</option>
                       ))
                     }
                   </select>
