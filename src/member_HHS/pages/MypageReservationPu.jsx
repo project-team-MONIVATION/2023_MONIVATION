@@ -58,7 +58,7 @@ export default function MypageReservationPu() {
 
   return (
     <div>
-      <h1>나의 예약 내역</h1>
+      <h1 style={{fontSize: "1.8rem", margin: "20px"}}>나의 예약 내역</h1>
       <table className='mypage-table'>
         <tbody>
           <tr>
@@ -84,7 +84,7 @@ export default function MypageReservationPu() {
           : 
           (
             reserv.reservation.map((r, i)=> {
-            const reserveDate = new Date(r.submitdate.toDate());
+            const reserveDate = new Date(r.reservedate.toDate());
 
             // 원하는 형식으로 날짜를 출력
             const year = reserveDate.getFullYear();
@@ -98,13 +98,12 @@ export default function MypageReservationPu() {
                 <td>{r.title}</td>
                 <td>{`${year}.${month}.${day}`}</td>
                 <td>
-                  {r.done === false ? "예약중" : 
+                  {r.done === false ? <span style={{color: "red"}}>예약중</span> : 
                     (<div>
-                      <p>상담완료</p> 
+                      <p style={{color: "green"}}>상담완료</p> 
                       <button onClick={(e)=>{openModalReview(e, r.fmUid)}}>리뷰작성</button>
                     </div>)
                   }
-                  
                 </td>
               </tr>
             )
@@ -119,27 +118,30 @@ export default function MypageReservationPu() {
           left: 0,
           width: "100%",
           height: "100%",
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          backgroundColor: "rgba(0, 0, 0, 0.6)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}>
-          <div style={{
-            backgroundColor: "white"
-          }}>
-            <div>
-              <label htmlFor="">이름</label>
+          <div style={{backgroundColor: "white", padding: "30px", borderRadius: "20px"}}>
+            <h1 style={{fontSize: "1.5rem", marginBottom: "30px"}}>예약내역</h1>
+            <div style={{textAlign: "left", margin: "10px"}}>
+              <label style={{display: "inline-block", textAlign: "left", width: "80px", fontWeight: "bold"}}>이름</label>
               <input type='text' defaultValue={modalData.name} disabled/>
             </div>
-            <div>
-              <label htmlFor="">상담제목</label>
+            <div style={{textAlign: "left", margin: "10px"}}>
+              <label style={{display: "inline-block", textAlign: "left", width: "80px", fontWeight: "bold"}}>이메일</label>
+              <input type="email" defaultValue={modalData.email} disabled/>
+            </div>
+            <div style={{textAlign: "left", margin: "10px"}}>
+              <label style={{display: "inline-block", textAlign: "left", width: "80px", fontWeight: "bold"}}>상담제목</label>
               <input type='text' defaultValue={modalData.title} disabled/>
             </div>
-            <div>
-              <label htmlFor="">상담내용</label>
+            <div style={{textAlign: "left", margin: "10px"}}>
+              <label style={{display: "inline-block", textAlign: "left", width: "80px", verticalAlign: "top", fontWeight: "bold"}}>상담내용</label>
               <textarea defaultValue={modalData.content} cols="30" rows="10" disabled></textarea>
             </div>
-            <button onClick={closeModal}>닫기</button>
+            <button style={{backgroundColor: "#735BF3", color: "white", borderRadius: "10px", border: "none", padding: "5px 40px", fontSize: "1.2rem"}} onClick={closeModal}>닫기</button>
           </div>
         </div>
       )}
@@ -152,19 +154,21 @@ export default function MypageReservationPu() {
               left: 0,
               width: "100%",
               height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              backgroundColor: "rgba(0, 0, 0, 0.6)",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <div style={{backgroundColor: "white"}}>
-              <h2>리뷰 작성</h2>
+            <div style={{backgroundColor: "white", padding: "30px", borderRadius: "20px"}}>
+              <h1 style={{fontSize: "1.5rem", marginBottom: "30px"}}>리뷰 작성</h1>
 
-              <textarea cols="30" rows="10" placeholder='리뷰를 남겨주세요' onChange={(e)=>{setText(e.target.value)}}></textarea>
+              <textarea cols="50" rows="13" placeholder='리뷰를 남겨주세요' onChange={(e)=>{setText(e.target.value)}}></textarea>
               <br />
-              <button onClick={writeReview}>작성완료</button>
-              <button onClick={closeModalReview}>닫기</button>
+              <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "20px"}}>
+                <button style={{backgroundColor: "#735BF3", color: "white", margin: "0 10px", borderRadius: "10px", border: "none", padding: "5px 40px", fontSize: "1.2rem"}} onClick={writeReview}>작성완료</button>
+                <button style={{backgroundColor: "#735BF3", color: "white", margin: "0 10px", borderRadius: "10px", border: "none", padding: "5px 40px", fontSize: "1.2rem"}} onClick={closeModalReview}>닫기</button>
+              </div>
             </div>
           </div>
         )

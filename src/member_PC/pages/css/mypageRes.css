@@ -8,4 +8,5 @@
 }
 .mypage-table td {
     padding: 20px 0;
+    vertical-align: middle;
 }

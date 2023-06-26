@@ -27,9 +27,8 @@ a {
 }
 
 .container-box {
-    width: 80%;
+    width: 90%;
     margin: auto;
     display: grid;
-   /* 세로로 200픽셀씩 자릅니다. */
-    grid-template-columns: 300px 300px 300px 300px;
+    grid-template-columns: repeat(4, 1fr);
 }

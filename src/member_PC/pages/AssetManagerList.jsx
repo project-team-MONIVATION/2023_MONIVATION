@@ -86,7 +86,7 @@ export default function AssetManagerList() {
       {/* 분야 필터 */}
       <div style={{width: "600px", margin: "auto"}}>
         {field.map((f, i)=>(
-          <button key={i} style={{margin: "5px 10px", backgroundColor: filter.includes(f) ? "gray" : "white"}} onClick={()=>handleFilter(f)}>{f}</button>
+          <button key={i} style={{margin: "5px 10px", border: "none", borderRadius: "20px", color: "white", backgroundColor: filter.includes(f) ? "#735BF3" : "gray" }} onClick={()=>handleFilter(f)}>{f}</button>
         ))}
       </div>
       

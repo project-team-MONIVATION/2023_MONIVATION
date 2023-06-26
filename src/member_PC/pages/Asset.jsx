@@ -126,16 +126,16 @@ export default function Asset() {
           <tr className='btm'>
             <td></td>
             <td>
-              <p>부자되고싶나</p>
+              <p>코인시장에서 하면 안될 3가지 행동</p>
             </td>
             <td>
-              <p>차트의 왕이 되고싶나</p>
+              <p>주식에서 중요한 10가지 법칙</p>
             </td>
             <td>
-              <p>돈 많이 벌고싶나</p>
+              <p>돈의 흐름</p>
             </td>
             <td>
-              <p>천리안을 갖고싶나</p>
+              <p>멀리 내다보는 시야를 가지는게 중요한 이유</p>
             </td>
           </tr>
           <tr>
