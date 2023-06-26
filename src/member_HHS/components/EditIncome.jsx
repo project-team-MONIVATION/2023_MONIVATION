@@ -1,3 +1,6 @@
+// 수입 수정 모달
+
+
 import React, { useEffect, useState } from 'react';
 import { db } from '../../database/firebase';
 import Calendar from 'react-calendar';
@@ -47,7 +50,6 @@ const handleHyphen = (value) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 파이어스토어에서 해당 문서를 가져옴
     const incomeRef = doc(db, "money_income", id);
     const incomeSnap = await getDoc(incomeRef);
     if (incomeSnap.exists()) {
@@ -55,6 +57,7 @@ const handleHyphen = (value) => {
         category: selectedCategory,
         price: editedPrice,
         memo: editedMemo,
+        date : date,
       });
     }
 

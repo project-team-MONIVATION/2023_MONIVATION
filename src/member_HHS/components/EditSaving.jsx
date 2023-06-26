@@ -1,3 +1,5 @@
+// 저금 수정 모달
+
 import React, { useEffect, useState, } from 'react';
 import Calendar from 'react-calendar';
 
@@ -8,11 +10,20 @@ import {db} from '../../database/firebase'
 
 import '../../member_LJC/css/saving.css'
 
+import moment from 'moment';
+
+
 export default function EditSaving({title, amount, memo, closeSubModal, id, handleDataUpdate}) {
     const [value, setValue] = useState(new Date());
+
+
     const [mindate, setMindate] = useState('');
+
+    // 저금 예정일 선택 달력 클릭하면 setModal 달력 모달창 열고 닫기 관리 
     const [isCheck, setCheck] = useState(false);
     const [modal, setModal] = useState(false);
+
+
     const [ischeck2, setCheck2] = useState(true);
     const [ischeck3, setCheck3] = useState(false);
     const [clickday, setClickday] = useState('');
@@ -22,6 +33,11 @@ export default function EditSaving({title, amount, memo, closeSubModal, id, hand
     const [periodunit, setPeriodunit] = useState('');
     const [editTitle, setEditTitle] = useState(title);
     const [editMemo, setEditMemo] = useState(memo);
+
+    
+    // 최솟값 날짜
+    // 최대값 날짜
+    const [maxdate, setMaxdate] = useState('');
 
     // 저금 저장 목록 클릭 시 마다 모달 변함
     useEffect(() => {
@@ -62,6 +78,9 @@ export default function EditSaving({title, amount, memo, closeSubModal, id, hand
   
       setStartday(when);
       setCheck2(false);
+
+        // 선택한 날짜 이전의 날짜를 mindate로 설정
+ // setMindate(when);
     };
   
     const endperiod = (i) => {
@@ -72,6 +91,8 @@ export default function EditSaving({title, amount, memo, closeSubModal, id, hand
   
       setEndday(when);
       setCheck3(false);
+
+      //setCheck(false); // 캘린더 모달창 닫기
     };
   
     const handleHyphen = (event) => {
@@ -89,13 +110,14 @@ export default function EditSaving({title, amount, memo, closeSubModal, id, hand
       const savingSnap = await getDoc(savingRef);
       if (savingSnap.exists()) {
         await updateDoc(savingRef, {
+            amount: editAmount,
           clickday: clickday,
-          startday: startday,
+          startday: clickday,
+          startDate : clickday,
           endday: endday,
-          periodunit: periodunit,
-          amount: editAmount,
-          title: editTitle,
           memo: editMemo,
+          periodunit: periodunit,
+          title: editTitle,
         });
       }
   
@@ -115,6 +137,13 @@ export default function EditSaving({title, amount, memo, closeSubModal, id, hand
       closeSubModal();
     }
 
+    const handleDateSelection = (date) => {
+        const formattedDate = moment(date).format('YYYY-MM-DD');
+        setClickday(formattedDate);
+        setCheck(false);
+      };
+
+
     return (
         <div
         style={{
@@ -130,6 +159,8 @@ export default function EditSaving({title, amount, memo, closeSubModal, id, hand
             border: 'solid 2px black '
           }}
           >
+            <h1>저금</h1>
+
             <form
                 onSubmit={handleSubmit}
             >
@@ -143,10 +174,13 @@ export default function EditSaving({title, amount, memo, closeSubModal, id, hand
                     </button>
                     {isCheck && (
                         <div className='modal-cal modal-cal2'>
-                            <Calendar 
+                            
+                            <Calendar
+                                formatDay={(locale, date) => moment(date).format('D')}
                                 onChange={onChange} 
                                 value={value}
-                                onClickDay={(value, event) => gu(value)}
+                                onClickDay={handleDateSelection}
+
                             />
                         </div>
                         
@@ -160,7 +194,7 @@ export default function EditSaving({title, amount, memo, closeSubModal, id, hand
 
                 {/* test 라이브러리로 기간선택 */}
                 {<div>
-                    {startday}~{endday}
+                    {clickday}~{endday} {periodunit ? `/ ${periodunit}` : null}
                     <button
                         type="button"
                         onClick={() => {setModal((e) => !e);}}
@@ -171,39 +205,27 @@ export default function EditSaving({title, amount, memo, closeSubModal, id, hand
                     {modal && (
                     <div className='saving-period'>
                         {/* 시작일 */}
-                        <button
-                            type='button'
-                            onClick={() => {setCheck2((e) => !e); setCheck(false); }}
-                        >
-                        <p style={{ color: ischeck2 ? "#BB363F" : "#000" }}>시작일</p>
-                        </button>
-                        {ischeck2 && (
-                            <div className='modal-cal'>
-                                <Calendar 
-                                    onChange={onChange}
-                                    value={value}
-                                    onClickDay={(value, event) => {startperiod(value); setCheck2(false); setCheck3(true); setMindate(value);}}
-                                />
-                            </div>
-                        )}
+                        
 
                         {/* 종료일 */}
                         <button
                             type='button'
-                            onClick={() => {setCheck3((e) => !e); setCheck(false); } }
+                            onClick={()=>{setModal(false)}}
+
                         >
-                        <p style={{ color: ischeck3 ? "#BB363F" : "#000" }}>종료일</p>
+                        <p>종료일</p>
                         </button>
-                        {ischeck3 && (
-                            <div className='modal-cal'>
-                                <Calendar 
-                                    onChange={onChange} 
-                                    value={value}
-                                    onClickDay={(value, event) => {endperiod(value); setCheck3(false);}}
-                                    minDate={mindate}
-                                />
-                            </div>
-                        )}
+                        <div className='input_endDate'>
+                                                <p>종료일</p>
+                                                <Calendar 
+                                                    formatDay={(locale, date) => moment(date).format('D')}
+                                                    onChange={onChange} 
+                                                    value={value}
+                                                    onClickDay={(value, event) => {endperiod(value); setCheck3(false);}}
+                                                    minDate={new Date(startday)} // startday를 최소 날짜로 설정
+                                                    className='modal_calendar period'
+                                                />
+                                            </div>
 
                         {/* x닫기 버튼 */}
                         <button
@@ -220,7 +242,7 @@ export default function EditSaving({title, amount, memo, closeSubModal, id, hand
                                     onChange={(e) => {setPeriodunit(e.target.value)}}
                                 >
                                     <option value="value" selected disabled>
-                                        기간을 선택해주세요.
+                                        필수선택
                                     </option>
                                     <option value="day">day</option>
                                     <option value="week">week</option>
@@ -285,7 +307,7 @@ export default function EditSaving({title, amount, memo, closeSubModal, id, hand
             
 
             <br />
-            <button type='sumbit' >입력</button><br />
+            <button type='sumbit' >수정</button><br />
             <button type='button' onClick={deleteMoney}>삭제</button>
             </form>
 <hr />

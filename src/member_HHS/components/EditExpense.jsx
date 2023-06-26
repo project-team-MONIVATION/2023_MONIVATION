@@ -1,3 +1,5 @@
+// 지출 수정 모달
+
 import React, { useEffect, useState } from 'react';
 import { db } from '../../database/firebase';
 import { updateDoc, getDoc, doc, deleteDoc, getDocs, collection, where, query } from 'firebase/firestore';
@@ -74,11 +76,11 @@ const onInputInstallment = (e) => {
       if (expenseSnap.exists()) {
         await updateDoc(expenseRef, {
           category: selectedCategory,
-          price: editPrice,
-          memo: editMemo,
           date: date,
-          payment: payment,
           installment: installment,
+          memo: editMemo,
+          payment: payment,
+          price: editPrice,
         });
       }
   
@@ -154,6 +156,47 @@ const onInputInstallment = (e) => {
       ];
     }
 
+
+    // 컴포넌트가 처음 실행될 때 실행되는 함수 또는 메서드
+
+  // 선택된 결제수단과 할부 정보를 가져옴
+//  const selectedPaymentMethod = payment;
+//  const selectedInstallment = installment;
+
+  // 결제수단 옵션 선택 상자 엘리먼트를 가져옴
+//  const paymentMethodSelectBox = document.getElementById('payment-method-select');
+
+  // 조건에 따라 옵션을 설정
+//  if (selectedPaymentMethod === '카드' && selectedInstallment !== '일시불') {
+    // "카드" 옵션만 선택 가능하도록 설정
+//    paymentMethodSelectBox.options.length = 0; // 기존 옵션 초기화
+//    paymentMethodSelectBox.options.add(new Option('카드', '카드', true, true));
+//  } else {
+    // "카드", "현금", "이체" 모두 선택 가능하도록 설정
+//    paymentMethodSelectBox.options.length = 0; // 기존 옵션 초기화
+////    paymentMethodSelectBox.options.add(new Option('카드', '카드', true, true));
+//    paymentMethodSelectBox.options.add(new Option('현금', '현금', false, false));
+//    paymentMethodSelectBox.options.add(new Option('이체', '이체', false, false));
+//  }
+
+  useEffect(() => {
+    // 컴포넌트가 처음 실행될 때 실행되는 로직
+
+    // 선택된 결제수단과 할부 정보를 가져옴
+    const selectedPaymentMethod = payment;
+    const selectedInstallment = installment;
+
+    // 조건에 따라 옵션을 설정
+    if (selectedPaymentMethod === '카드' && selectedInstallment !== '일시불') {
+      setPayment("카드");
+      setInstallment("");
+    } else {
+      setPayment("카드");
+      setInstallment("일시불");
+    }
+  }, []);
+
+
   // // 할부 옵션 생성
   // const installmentOptions = [
   //   { label: "일시불", value: "일시불" }
@@ -174,6 +217,11 @@ const onInputInstallment = (e) => {
     //   ];
 
 
+// 금액 ,표시 ex1,000,000
+const handleHyphen = (value) => {
+  const formattedValue = new Intl.NumberFormat().format(value); // 숫자 형식으로 변환
+  return formattedValue;
+};
 
     
   return (
@@ -205,10 +253,9 @@ const onInputInstallment = (e) => {
         <label>금액</label>
         <div>
           <input 
-            type = "number" 
-            min = "0"
-            value = {editPrice}
-            onChange = {(e) => setEditPrice(Number(e.target.value))}
+            type = "text" 
+            value = {handleHyphen(editPrice)}
+            onChange = {(e) => setEditPrice(Number(e.target.value.replace(/[^0-9]/g, '')))}
             required
             disabled={isDisabled}
 
@@ -218,39 +265,16 @@ const onInputInstallment = (e) => {
 
         <label htmlFor="">결제수단</label>
         <div>
-          <select 
-            name="payment" 
-            id="payment" 
+            <select
+            id="payment-method-select"
             value={payment}
             onChange={(e) => setPayment(e.target.value)}
-            
+            disabled={payment === "카드" && installment !== "일시불"}
           >
-                 {paymentOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
+            <option value="현금">현금</option>
+            <option value="카드">카드</option>
+            <option value="이체">이체</option>
           </select>
-
-        {/* 할부옵션 */}
-        {/* {
-            payment === '카드' && (
-              <div>
-                <select
-                  className='installment'
-                  name="installment"
-                  onChange={onInputInstallment}
-                  value={installment}
-                  disabled={installment !== '일시불'}
-                >
-{installmentOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}                </select>
-              </div>
-            )
-            }    */}
 
 
             {payment === "카드" && installment === "일시불" && (
@@ -261,17 +285,12 @@ const onInputInstallment = (e) => {
                 onChange={onInputInstallment}
                 value={installment}
               >
-                {/* {installmentOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))} */}
-
                 <option value="일시불">일시불</option>
-                <option value="할부">할부</option>
               </select>
             </div>
-          )}      
+          )}    
+          
+            
               </div>
 
 

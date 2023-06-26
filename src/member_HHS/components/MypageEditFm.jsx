@@ -1,4 +1,5 @@
-// 개인회원 회원정보 수정 및 탈퇴 페이지
+// 자산관리사 회원정보 수정 및 탈퇴 페이지
+
 import { db } from '../../database/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'

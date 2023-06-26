@@ -1,9 +1,14 @@
+// 고정수입 수정 모달
+
 import React, { useState, useEffect } from 'react';
 import { db } from '../../database/firebase';
 import Calendar from 'react-calendar';
 import { useSelector } from 'react-redux';
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
 import { updateDoc, getDoc, doc, deleteDoc } from 'firebase/firestore';
+
+import moment, { locale } from 'moment';
+
 
 export default function EditIncomeRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate })  {
   // uid 불러오기
@@ -20,8 +25,11 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
   const [showEndCal, setShowEndCal] = useState(false);
   
   // form의 입력 값 state
-  const [date, setDate] = useState(new Date());
+  //const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(null);
   const [startDate, setStartDate] = useState(null);
+
+
   const [endDate, setEndDate] = useState(null);
   const [cycle, setCycle] = useState("매일");
   const [editPrice, setEditPrice] = useState(price);
@@ -46,11 +54,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     setShowPeriod(true);
   };
 
-  // 시작일
-  const onClickStartDate = (newDate) => {
-    setStartDate(newDate);
-    onClickEndBtn();
-  };
+
 
   // 기간 입력하는 모달의 endDate 입력하는 캘린더 모달 on
   const onClickEndBtn = (e) => {
@@ -93,8 +97,9 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
         category: selectedCategory,
         price: editPrice,
         memo: editMemo,
-        startDate: startDate,
+        startDate: date,
         endDate: endDate,
+        date: date,
         cycle: cycle,
       });
     }
@@ -115,7 +120,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
         setSelectedCategory(incomeData.category);
         setCycle(incomeData.cycle);
         setDate(incomeData.date.toDate()); // date 변수의 초기값 설정
-        setStartDate(incomeData.startDate.toDate());
+        setStartDate(incomeData.date.toDate());
         setEndDate(incomeData.endDate.toDate());
         setEditMemo(incomeData.memo);
         setEditPrice(incomeData.price);
@@ -131,6 +136,62 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     handleDataUpdate();
     closeSubModal();
   }
+
+  // 금액 ,표시 ex1,000,000
+const handleHyphen = (value) => {
+  const formattedValue = new Intl.NumberFormat().format(value); // 숫자 형식으로 변환
+  return formattedValue;
+};
+
+
+
+// 작업중잉
+const [dates, setDates] = useState([new Date()]);
+useEffect(() => {
+  const calculateDates = () => {
+    if (cycle === '매일') {
+      const diffInDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+      const newDates = [];
+      for (let i = 0; i <= diffInDays; i++) {
+        const newDate = new Date(startDate);
+        newDate.setDate(newDate.getDate() + i);
+        newDates.push(newDate);
+      }
+      setDates(newDates);
+    } else if (cycle === '매주') {
+      const diffInWeeks = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24 * 7));
+      const newDates = [];
+      for (let i = 0; i <= diffInWeeks; i++) {
+        const newDate = new Date(startDate);
+        newDate.setDate(newDate.getDate() + i * 7);
+        newDates.push(newDate);
+      }
+      setDates(newDates);
+    } else if (cycle === '매월') {
+      const newDates = [];
+      let currentDate = new Date(startDate);
+      while (currentDate <= endDate) {
+        newDates.push(currentDate);
+        currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, startDate.getDate());
+      }
+      setDates(newDates);
+    } else if (cycle === '매년') {
+      const newDates = [];
+      let currentDate = new Date(startDate);
+      while (currentDate <= endDate) {
+        newDates.push(currentDate);
+        currentDate = new Date(currentDate.getFullYear() + 1, startDate.getMonth(), startDate.getDate());
+      }
+      setDates(newDates);
+    }
+  };
+
+  calculateDates();
+}, [cycle, startDate, endDate]);
+
+
+
+
 
   return (
     <div
@@ -148,6 +209,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
       }}
     >
       <form action="" onSubmit={handleSubmit}>
+        
         <label>수입예정일</label>
         <div>
           <span>{date && changeDate(date)}</span>
@@ -165,7 +227,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
         <label>기간</label>
         <div>
           <span>
-            {startDate && changeDate(startDate)} ~{' '}
+            {date && changeDate(date)} ~
             {endDate ? changeDate(endDate) : '0000-00-00'} {cycle}
           </span>
           <button onClick={onClickPeriod}>아이콘</button>
@@ -175,22 +237,22 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
             <button type="button" onClick={() => setShowPeriod(false)}>
               X
             </button>
-            <div>
-              <button type="button" onClick={onClickStartBtn}>
-                시작일
-              </button>
-              <button type="button" onClick={onClickEndBtn}>
-                종료일
-              </button>
-              {showStartCal && (
-                <Calendar onChange={onClickStartDate} value={startDate} required />
-              )}
-              {showEndCal && <Calendar onChange={onClickEndDate} value={endDate} />}
-            </div>
+            <div className='input_endDate'>
+                        <p>종료일</p>
+                        <Calendar 
+                          formatDay={(locale, date) => moment(date).format('D')}
+                          onChange={ onClickEndDate } 
+                          value={endDate} 
+                          minDate={date}
+                          className='modal_calendar period'
+                        />
+                      </div>
             <div>
               <label>반복주기</label>
               <br />
               <select name="cycle" id="" onChange={(e) => setCycle(e.target.value)}>
+              <option value="value" selected disabled>필수선택</option>
+                
                 <option value="매일">매일</option>
                 <option value="매주">매주</option>
                 <option value="매월">매월</option>
@@ -205,7 +267,10 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
 
         <label>금액</label>
         <div>
-          <input type="number" value={editPrice} onChange={(e) => setEditPrice(Number(e.target.value))} required />
+          <input type="text"
+          value={handleHyphen(editPrice)}
+          onChange={(e) => setEditPrice(Number(e.target.value.replace(/[^0-9]/g, '')))}
+          required />
           <span>₩</span>
         </div>
 

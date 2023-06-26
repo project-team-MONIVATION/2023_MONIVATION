@@ -1,3 +1,6 @@
+// 고정지출 수정 모달
+
+
 import React, { useEffect, useState } from 'react';
 
 import { db } from '../../database/firebase';
@@ -117,14 +120,14 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
   if (expenseRepeatSnap.exists()) {
     await updateDoc(expenseRepeatRef, {
       category: selectedCategory,
-      price: editPrice,
-      memo: editMemo,
-      startDate: startDate,
-      endDate: endDate,
       cycle: cycle,
       date: date,
-      payment: payment,
+      startDate: date,
+      endDate: endDate,
       installment: payment === "카드" ? installment : null, // 결제 방법이 "카드"가 아닌 다른 방법으로 변경되면 installment값을 null로 초기화
+      memo: editMemo,
+      payment: payment,
+      price: editPrice,
     });
   }
 
@@ -178,7 +181,11 @@ useEffect(() => {
   //   }
   // };
   
-
+  // 금액 ,표시 ex1,000,000
+  const handleHyphen = (value) => {
+    const formattedValue = new Intl.NumberFormat().format(value); // 숫자 형식으로 변환
+    return formattedValue;
+  };
 
   return (
     <div
@@ -213,7 +220,7 @@ useEffect(() => {
 
         <label>기간</label>
         <div>
-          <span>{startDate && changeDate(startDate)} ~ {endDate ? changeDate(endDate) : "0000-00-00"} {cycle}</span>
+          <span>{date && changeDate(date)} ~ {endDate ? changeDate(endDate) : "0000-00-00"} {cycle}</span>
           <button onClick={ onClickPeriod }>아이콘</button>
         </div>
         {
@@ -259,10 +266,9 @@ useEffect(() => {
         <label>금액</label>
         <div>
           <input 
-            type="number" 
-            min="0"
-            value={editPrice}
-            onChange={(e)=>{setEditPrice(Number(e.target.value))}}
+            type="text" 
+            value={handleHyphen(editPrice)}
+            onChange={(e)=>{setEditPrice(Number(e.target.value.replace(/[^0-9]/g, '')))}}
             required
           />
           <span>₩</span>
