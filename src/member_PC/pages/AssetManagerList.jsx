@@ -86,30 +86,32 @@ export default function AssetManagerList() {
       {/* 분야 필터 */}
       <div style={{width: "600px", margin: "auto"}}>
         {field.map((f, i)=>(
-          <button key={i} style={{margin: "5px 10px", backgroundColor: filter.includes(f) ? "gray" : "white"}} onClick={()=>handleFilter(f)}>{f}</button>
+          <button key={i} style={{margin: "5px 10px", border: "none", borderRadius: "20px", color: "white", backgroundColor: filter.includes(f) ? "#735BF3" : "gray" }} onClick={()=>handleFilter(f)}>{f}</button>
         ))}
       </div>
       
       {/* 모든 자산관리사 리스트 */}
-      <div>
+      <div className='container-box'>
         { 
           filteredFmList && filteredFmList.map((fm)=>(
             <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
-            <div style={{backgroundColor: "gray", width: "250px", height: "300px", margin: "20px 40px", display: "inline-block", borderRadius: "10px"}}>
-              <div style={{backgroundColor: "white", width: "200px", height: "200px", margin: "auto", borderRadius: "10px", backgroundImage: `url(${fm.photo})`, backgroundSize: "cover"}}></div>
-              <h3>{fm.name}</h3>
-              <div style={{display: "flex"}}> 
-                <p>{fm.field && fm.field[0]}</p>
-                <p>{fm.field && fm.field[1]}</p>
-                <p>{fm.field && fm.field[2]}</p>
+            <div style={{backgroundColor: "#735BF3", width: "250px", height: "300px", margin: "20px 40px", display: "inline-block", borderRadius: "20px"}}>
+              <div style={{backgroundColor: "white", width: "200px", height: "200px", margin: "auto", marginTop: "20px", borderRadius: "40px", backgroundImage: `url(${fm.photo})`, backgroundSize: "cover"}}></div>
+              <h3 style={{margin: "10px 0"}}>{fm.name}</h3>
+              <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                <div>
+                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[0]}</span>
+                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[1]}</span>
+                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[2]}</span>
+                </div> 
               </div>
-              <p style={{fontSize: "0.8rem"}}>
+              <div>
                 <FontAwesomeIcon
                   icon={faHeart}
                   fontSize={20}
                   style={{ color: "red" }}
                 />:{fm.likeNum}
-              </p>
+              </div>
             </div>
             </Link>
           ))

@@ -36,7 +36,7 @@ export default function AssetReservation() {
     const YYYY = String(newDate.getFullYear())
     const MM = String(newDate.getMonth()+1).padStart(2,"0")
     const DD = String(newDate.getDate()).padStart(2,"0")
-    const valueDate = `${YYYY}-${MM}-${DD}`
+    const valueDate = `${YYYY}년 ${MM}월 ${DD}일`
 
     return valueDate;
   }
@@ -57,6 +57,7 @@ export default function AssetReservation() {
 
         const newReservation = {
           submitdate: new Date(),
+          reservedate: confirmDate,
           name,
           email,
           phone,
@@ -106,41 +107,42 @@ export default function AssetReservation() {
   return (
     <div>
       <h1>상담예약</h1>
+      <div style={{display: "flex"}}>
+      
       {/* 캘린더 */}
-      <div style={{float: "left"}}>
+      <div>
         <div>
-          <span>{date && changeDate(date)}</span>
+          <Calendar className='main_calendar' onChange={ onClickDate } value={date}/>
         </div>
-
-        <div>
-          <Calendar onChange={ onClickDate } value={date}/>
+        <div style={{margin: "10px"}}>
+          <span>{date && changeDate(date)}</span>
         </div>
       </div>
 
-      <div style={{ display: show === true ? "block" : "none" }}>
+      <div style={{display: show === true ? "block" : "none", border: "solid 1px black", borderRadius: "20px", marginLeft: "20px"}}>
         <form onSubmit={submitForm}>
           <h2>상담신청</h2>
           <hr />
-          <div>
-            <label>이름</label>
-            <input type="text" value={name} onChange={(e)=>{setName(e.target.value)}}/>
+          <div style={{textAlign: "left", margin: "10px"}}>
+            <label style={{display: "inline-block", textAlign: "left", width: "100px", fontWeight: "bold"}}>이름</label>
+            <input type="text" value={name} size={30} onChange={(e)=>{setName(e.target.value)}}/>
           </div>
-          <div>
-            <label>이메일 주소</label>
-            <input type="email" value={email} onChange={(e)=>{setEmail(e.target.value)}}/>
+          <div style={{textAlign: "left", margin: "10px"}}>
+            <label style={{display: "inline-block", textAlign: "left", width: "100px", fontWeight: "bold"}}>이메일 주소</label>
+            <input type="email" value={email} size={30} onChange={(e)=>{setEmail(e.target.value)}}/>
           </div>
-          <div>
-            <label>휴대폰 번호</label>
-            <input type="number" value={phone} onChange={(e)=>{setPhone(e.target.value)}}/>
+          <div style={{textAlign: "left", margin: "10px"}}>
+            <label style={{display: "inline-block", textAlign: "left", width: "100px", fontWeight: "bold"}}>휴대폰 번호</label>
+            <input type="number" value={phone} size={30} onChange={(e)=>{setPhone(e.target.value)}}/>
           </div>
           <hr />
-          <div>
-            <label>상담 제목</label>
-            <input type="text" value={title} onChange={(e)=>{setTitle(e.target.value)}}/>
+          <div style={{textAlign: "left", margin: "10px"}}>
+            <label style={{display: "inline-block", textAlign: "left", width: "100px", fontWeight: "bold"}}>상담 제목</label>
+            <input type="text" value={title} size={30} onChange={(e)=>{setTitle(e.target.value)}}/>
           </div>
-          <div>
-            <label>상담 내용</label>
-            <textarea cols={20} rows={5} value={content} onChange={(e)=>{setContent(e.target.value)}}></textarea>
+          <div style={{textAlign: "left", margin: "10px"}}>
+            <label style={{display: "inline-block", textAlign: "left", width: "100px", fontWeight: "bold", verticalAlign: "top"}}>상담 내용</label>
+            <textarea cols={30} rows={7} value={content} onChange={(e)=>{setContent(e.target.value)}}></textarea>
           </div>
           <hr />
           <p>개인정보 수집 이용 동의에 대한 안내</p>
@@ -150,6 +152,7 @@ export default function AssetReservation() {
           
           <input type="submit" value= "예약확정하기" />
         </form>
+      </div>
       </div>
     </div>
   )

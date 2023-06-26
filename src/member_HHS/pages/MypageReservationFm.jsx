@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { db } from '../../database/firebase';
 import { doc, getDoc, getDocs, updateDoc, where, query, collection } from 'firebase/firestore';
+import "../../member_PC/pages/css/mypageRes.css"
 
 export default function MypageReservationFm() {
   const user = useSelector((state) => state.user.user);
@@ -10,6 +11,9 @@ export default function MypageReservationFm() {
   const [reserv, setReserv] = useState(null);
   const params = useParams();
   const [modalData, setModalData] = useState(null);
+  const [modalyear, setModalyear] = useState();
+  const [modalmonth, setModalmonth] = useState();
+  const [modalday, setModalday] = useState();
 
   useEffect(()=>{
     const getReserv = async() => {
@@ -22,8 +26,11 @@ export default function MypageReservationFm() {
   }, [])
 
   // 모달 창 열기
-  const openModal = (r) => {
+  const openModal = (r, year, month, day) => {
     setModalData(r);
+    setModalyear(year);
+    setModalmonth(month);
+    setModalday(day);
   };
 
   // 모달 창 닫기
@@ -74,8 +81,8 @@ export default function MypageReservationFm() {
 
   return (
     <div>
-      <h1>나의 예약 내역</h1>
-      <table style={{width: "500px", minHeight: "300px", margin: "auto"}}>
+      <h1 style={{fontSize: "1.8rem", margin: "20px"}}>나의 예약 내역</h1>
+      <table className='mypage-table'>
         <tbody>
           <tr>
             <td>접수된 예약</td>
@@ -108,17 +115,13 @@ export default function MypageReservationFm() {
             const day = reserveDate.getDate();
             
             return (
-              <tr key={i} onClick={() => openModal(r)}>
+              <tr key={i} onClick={() => openModal(r, year, month, day)}>
                 <td>{r.name}</td>
                 <td>{r.phone}</td>
                 <td>{r.title}</td>
                 <td>{`${year}.${month}.${day}`}</td>
                 <td>
-                  {r.done === false ? "예약중" : 
-                    (<div>
-                      <p>상담완료</p>
-                    </div>)
-                  }
+                  {r.done === false ? <span style={{color: "red"}}>예약중</span> : <span style={{color: "green"}}>상담완료</span>}
                 </td>
               </tr>
             )
@@ -134,36 +137,39 @@ export default function MypageReservationFm() {
           left: 0,
           width: "100%",
           height: "100%",
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          backgroundColor: "rgba(0, 0, 0, 0.6)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}>
-          <div style={{
-            backgroundColor: "white"
-          }}>
-            <div>
-              <label htmlFor="">이름</label>
+          <div style={{backgroundColor: "white", padding: "30px 60px", borderRadius: "20px"}}>
+            <h1 style={{fontSize: "1.5rem", marginBottom: "30px"}}>접수된 예약내역</h1>
+            <div style={{textAlign: "left", margin: "10px"}}>
+              <label style={{display: "inline-block", textAlign: "left", width: "80px", fontWeight: "bold"}}>이름</label>
               <input type='text' defaultValue={modalData.name} disabled/>
             </div>
-            <div>
-              <label htmlFor="">이메일</label>
+            <div style={{textAlign: "left", margin: "10px"}}>
+              <label style={{display: "inline-block", textAlign: "left", width: "80px", fontWeight: "bold"}}>상담일자</label>
+              <input type="text" defaultValue={modalyear+"."+modalmonth+"."+modalday} disabled/>
+            </div>
+            <div style={{textAlign: "left", margin: "10px"}}>
+              <label style={{display: "inline-block", textAlign: "left", width: "80px", fontWeight: "bold"}}>이메일</label>
               <input type="email" defaultValue={modalData.email} disabled/>
             </div>
-            <div>
-              <label htmlFor="">연락처</label>
+            <div style={{textAlign: "left", margin: "10px"}}>
+              <label style={{display: "inline-block", textAlign: "left", width: "80px", fontWeight: "bold"}}>연락처</label>
               <input type="text" defaultValue={modalData.phone} disabled/>
             </div>
-            <div>
-              <label htmlFor="">상담제목</label>
+            <div style={{textAlign: "left", margin: "10px"}}>
+              <label style={{display: "inline-block", textAlign: "left", width: "80px", fontWeight: "bold"}}>상담제목</label>
               <input type='text' defaultValue={modalData.title} disabled/>
             </div>
-            <div>
-              <label htmlFor="">상담내용</label>
+            <div style={{textAlign: "left", margin: "10px"}}>
+              <label style={{display: "inline-block", textAlign: "left", width: "80px", verticalAlign: "top", fontWeight: "bold"}}>상담내용</label>
               <textarea defaultValue={modalData.content} cols="30" rows="10" disabled></textarea>
             </div>
-            <button onClick={closeModal}>닫기</button>
-            <button onClick={handleData}>상담완료</button>
+            <button style={{backgroundColor: "#735BF3", color: "white", margin: "0 10px", borderRadius: "10px", border: "none", padding: "5px 40px", fontSize: "1.2rem"}} onClick={handleData}>상담완료</button>
+            <button style={{backgroundColor: "#735BF3", color: "white", margin: "0 10px", borderRadius: "10px", border: "none", padding: "5px 40px", fontSize: "1.2rem"}} onClick={closeModal}>닫기</button>
           </div>
         </div>
       )}

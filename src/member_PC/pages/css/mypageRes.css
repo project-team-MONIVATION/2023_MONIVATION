@@ -1,0 +1,12 @@
+.mypage-table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: auto;
+}
+.mypage-table tr {
+    border-bottom: solid 1px black;
+}
+.mypage-table td {
+    padding: 20px 0;
+    vertical-align: middle;
+}
