@@ -1,5 +1,6 @@
 #calendar_modal .content_container {
   position: relative;
+  overflow: hidden;
 }
 
 #calendar_modal .content_container .close_btn {
@@ -39,23 +40,31 @@
   border-radius: 50px;
 }
 
+#calendar_modal .content_container .content .btn_container .btns {
+  position: absolute;
+  width: inherit;
+  top: 50px;
+  display: flex;
+  justify-content: space-between;
+}
+
 #calendar_modal .content_container .content .btn_container .content_btn {
   box-sizing: border-box;
   width: 50%;
   height: 40px;
   padding-top: 3.5px;
-  background-color: #8E8E8E;
+  background-color: transparent;
   border: 0;
   border-radius: 50px;
   color: #FFFFFF;
   font-family: 'Cafe24Ssurround';
   font-size: 23px;
 }
-
+/*
 #calendar_modal .content_container .content .btn_container .content_btn.active {
   background-color: #735BF3;
 }
-
+*/
 #calendar_modal #input_form .input_content {
   width: 350px;
   height: 560px;
@@ -144,60 +153,252 @@
   font-size: 18px;
 }
 
-#calendar_modal #input_form .input_content .input_payment select {
-  box-sizing: border-box;
-  width: 350px;
-  height: 45px;
-  border: 0;
-  border-radius: 15px;
-  margin-bottom: 15px;
-  padding: 0 15px;
-  transition: all 0.5s;
-  background-color: #D9D9D9;
-  display: inline-block;
-  font-family: 'Cafe24SsurroundAir';
-  font-size: 16px;
+/* 커스텀 반복주기 select 시작 */
+#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select {
+  height: 180px;
 }
 
-#calendar_modal #input_form .input_content .input_payment.card select {
+#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box {
+  position: relative;
+  cursor: pointer;
+}
+
+#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  background-color: #FFFFFF;
+  transition: all 0.2s ease-in;
+  z-index: -10;
+}
+
+#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box button {
+  width: 130px;
+  height: 35px;
+  background-color: #D9D9D9;
+  color: #303030;
+  border: 0;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box button.active {
+  background-color: #F3DD73;
+}
+
+#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box .option_list {
+  position: absolute;
+  width: 130px;
+  height: 0;
+  top: 40px;
+  left: 0;
+  background-color: #D9D9D9;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: 0s;
+}
+
+#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box.active .option_list {
+  width: 130px;
+  height: 120px;
+  transition: all 0.2s ease-in;
+}
+
+#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box li {
+  box-sizing: border-box;
+  display: block;
+  height: 30px;
+  transition: all 0.2s ease-in;
+  cursor: pointer;
+  font-size: 13px;
+  border-bottom: 0.3px solid #FFFFFF;
+  padding-top: 8px;
+}
+
+#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box li:last-child {
+  border-bottom: 0;
+}
+
+#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box li:hover {
+  background-color: #bbbbbb;
+}
+/* 커스텀 반복주기 select 끝 */
+
+
+#calendar_modal #input_form .input_content .payment .input {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+/* 커스텀 결제수단 select 시작 */
+#calendar_modal #input_form .input_content .input_payment .select_box {
+  position: relative;
+  width: 350px;
+  height: 45px;
+  margin-bottom: 15px;
+  transition: all 0.5s;
+}
+
+#calendar_modal #input_form .input_content .input_payment .select_box.card {
   width: 170px;
   transition: all 0.5s;
 }
 
-#calendar_modal #input_form .input_content .input_installment select {
+#calendar_modal #input_form .input_content .input_payment .select_box button {
   box-sizing: border-box;
-  width: 350px;
+  width: inherit;
   height: 45px;
+  padding: 0 15px;
+  background-color: #D9D9D9;
   border: 0;
   border-radius: 15px;
-  margin-bottom: 15px;
-  padding: 0 15px;
-  transition: all 0.5s;
-  background-color: #D9D9D9;
-  display: inline-block;
-  font-family: 'Cafe24SsurroundAir';
   font-size: 16px;
 }
 
-#calendar_modal #input_form .input_content .input_installment .installment {
-  height: 45px;
-  transition: all 0.5s;
-  margin-left: 10px;
-  animation: showSelect ease-in 0.5s 1 forwards;
-  font-family: 'Cafe24SsurroundAir';
+#calendar_modal #input_form .input_content .input_payment .select_box .option_list {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  width: inherit;
+  height: 0;
+  background-color: #D9D9D9;
+  border-radius: 15px;
+  transition: all 0s;
+  overflow: hidden;
 }
 
-@keyframes showSelect {
+#calendar_modal #input_form .input_content .input_payment .select_box.active .option_list {
+  width: inherit;
+  height: 90px;
+  transition: all 0.2s ease-in;
+}
+
+#calendar_modal #input_form .input_content .input_payment .select_box.active .option_item {
+  cursor: pointer;
+  display: block;
+  box-sizing: border-box;
+  height: 30px;
+  padding-top: 9px;
+  font-size: 14px;
+  border-bottom: 0.5px solid #FFFFFF;
+}
+
+#calendar_modal #input_form .input_content .input_payment .select_box.active .option_item:last-child {
+  border-bottom: 0;
+}
+
+#calendar_modal #input_form .input_content .input_payment .select_box.active .option_item:hover{
+  background-color: #bbbbbb;
+}
+/* 커스텀 결제수단 select 끝 */
+
+
+/* 커스텀 지불방식 select 시작 */
+#calendar_modal #input_form .input_content .input_installment .select_box{
+  position: relative;
+  width: 0;
+  height: 45px;
+  margin-left: 10px;
+  animation: installment 0.5s 1 forwards;
+  opacity: 0;
+}
+
+@keyframes installment {
   0% {
-    width: 170px;
-  }
+    width: 0;
+    visibility: hidden;
+}
   100% {
+    display: block;
     width: 170px;
+    opacity: 1;
   }
 }
+
+#calendar_modal #input_form .input_content .input_installment .select_box button {
+  box-sizing: border-box;
+  width: inherit;
+  height: 45px;
+  padding: 0 15px;
+  background-color: #D9D9D9;
+  border: 0;
+  border-radius: 15px;
+  font-size: 16px;
+}
+
+#calendar_modal #input_form .input_content .input_installment .select_box button p {
+  font-family: 'Cafe24SsurroundAir';
+  font-size: 16px;
+  text-align: center;
+  width: 140px;
+  margin: 0;
+  padding: 0;
+}
+
+#calendar_modal #input_form .input_content .input_installment .select_box .option_list {
+  box-sizing: border-box;
+  position: absolute;
+  top: 48px;
+  left: 0;
+  width: inherit;
+  height: 0;
+  background-color: #D9D9D9;
+  border-radius: 15px;
+  transition: all 0s;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+#calendar_modal #input_form .input_content .input_installment .select_box .option_list::-webkit-scrollbar {
+  width: 5px;
+}
+
+#calendar_modal #input_form .input_content .input_installment .select_box .option_list::-webkit-scrollbar-track {
+  background-color: darkgrey;
+}
+
+#calendar_modal #input_form .input_content .input_installment .select_box .option_list::-webkit-scrollbar-thumb {
+  background-color: #303030;
+}
+
+#calendar_modal #input_form .input_content .input_installment .select_box.active .option_list {
+  width: inherit;
+  height: 300px;
+  transition: all 0.2s ease-in;
+}
+
+#calendar_modal #input_form .input_content .input_installment .select_box.active .option_item {
+  cursor: pointer;
+  display: block;
+  box-sizing: border-box;
+  height: 30px;
+  padding-top: 9px;
+  font-size: 14px;
+  border-bottom: 0.5px solid #FFFFFF;
+}
+
+#calendar_modal #input_form .input_content .input_installment .select_box.active .option_item:last-child {
+  border-bottom: 0;
+}
+
+#calendar_modal #input_form .input_content .input_installment .select_box.active .option_item:hover{
+  background-color: #bbbbbb;
+}
+
+/* 커스텀 지불방식 select 끝 */
+
+#calendar_modal #input_form .option_list {
+  box-shadow: 0 2px 10px 0 rgba(0,0,0,0.15);
+}
+
 
 #calendar_modal #input_form .input_content .date_modal {
   position: relative;
+  z-index: 2;
+
 }
 
 #calendar_modal #input_form .input_content .date_modal .input_date {
@@ -225,6 +426,7 @@
 
 #calendar_modal #input_form .input_content .period_modal {
   position: relative;
+  z-index: 2;
 }
 
 #calendar_modal #input_form .input_content .period_modal p {
@@ -278,43 +480,9 @@
   text-align: center;
 }
 
-#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select {
-  height: 180px;
-  position: relative;
-}
 
-#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select .chevron_down {
-  position: absolute;
-  width: 10px;
-  height: 5px;
-  background-image: url('../../assets/icon/chevron-down.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  top: 12px;
-  right: 10px;
-}
 
-#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select select {
-  width: 130px;
-  height: 30px;
-  background-color: #D9D9D9;
-  border-radius: 10px;
-  border: 0;
-  font-family: 'Cafe24SsurroundAir';
-}
-
-#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select select.active {
-  background-color: #F3DD73;
-}
-
-#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .select option {
-  height: 100px;
-  background-color: #FFFFFF;
-  font-family: 'Cafe24SsurroundAir';
-  
-}
-
-#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle button {
+#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .input_btn {
   width: 130px;
   height: 30px;
   background-color: #735BF3;
@@ -325,7 +493,7 @@
   font-size: 16px;
 }
 
-#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle button.disabled {
+#calendar_modal #input_form .input_content .period_modal .input_period .flex .input_cycle .input_btn.disabled {
   background-color: #D9D9D9;
   cursor: initial;
 }
@@ -364,4 +532,10 @@
   color: #FFFFFF;
   font-family: 'Cafe24Ssurround';
   font-size: 23px;
+}
+
+#calendar_modal #input_form .submit_btn.disabled {
+  cursor: initial;
+  background-color: #cdc7f3;
+
 }
