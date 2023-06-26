@@ -79,6 +79,11 @@ export default function EditIncome({ category, price, memo, closeSubModal, id, h
 
 
     /** form 입력 값 업데이트*/
+    // 가격 업데이트
+    const updatePrice = (e) => {
+      setEditPrice(Number(e.target.value.replace(/[^0-9]/g, ''))); // 숫자 이외의 문자 제거
+    }
+
     // 카테고리 업데이트
     const updateCategory = (e) => {
       setSelectedCategory(e.target.value);
@@ -177,7 +182,7 @@ export default function EditIncome({ category, price, memo, closeSubModal, id, h
             <input
               type = "text"
               value = { handleHyphen(editPrice) }
-              onChange = { (e) => setEditPrice(Number(e.target.value.replace(/[^0-9]/g, ''))) } // 숫자 이외의 문자 제거
+              onChange = { updatePrice }
               required
             />
             <span>₩</span>
