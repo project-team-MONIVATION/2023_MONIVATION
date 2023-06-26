@@ -16,16 +16,41 @@ export default function NavComp() {
 
   return (
     <div id='nav'>
-      <NavLink to='/'>로고</NavLink>
-      <NavLink to='/calendar'>가계부</NavLink>
-      <NavLink to='/challenge'>챌린지</NavLink>
-      <NavLink to='/asset'>자산관리</NavLink>
-      <NavLink to='/mypage'>마이페이지</NavLink>
-      <NavLink to='/'
-        onClick={ onLogout }
-      >
-        로그아웃
-      </NavLink>
+      <div 
+        className='logo'
+        onClick={()=>{navigate('/')}}
+      />
+      <div className='nav_list'>
+        <NavLink 
+          to='/calendar'
+          className={({isActive})=>(isActive? "active" : "")}
+        >
+          가계부
+        </NavLink>
+        <NavLink 
+          to='/challenge'
+          className={({isActive})=>(isActive? "active" : "")}
+        >
+          챌린지
+        </NavLink>
+        <NavLink 
+          to='/asset'
+          className={({isActive})=>(isActive? "active" : "")}
+        >
+          자산관리
+        </NavLink>
+        <NavLink 
+          to='/mypage'
+          className={({isActive})=>(isActive? "active" : "")}
+        >
+          마이페이지
+        </NavLink>
+        <NavLink to='/'
+          onClick={ onLogout }
+        >
+          로그아웃
+        </NavLink>
+      </div>
     </div>
   )
 }
