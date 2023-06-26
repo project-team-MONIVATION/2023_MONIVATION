@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+// 수정모달창
+
+import React, { useState, useEffect } from 'react'
 import { db } from '../../database/firebase';
+import { getDocs, collection, query, where } from 'firebase/firestore';
 import { useSelector } from 'react-redux'
 
 import Calendar from 'react-calendar'; // react-calendar 라이브러리
@@ -9,25 +11,23 @@ import EditIncome from './EditIncome';
 import EditIncomeRepeat from './EditIncomeRepeat'
 import EditExpense from './EditExpense';
 import EditExpenseRepeat from './EditExpenseRepeat'
-import EditSaving from './EditSaving';
+
 
 export default function DateDetail({ closeModal2, selectedDate }) {
     // state에서 user.user로 가져옴(현재 사용자 정보)
     const user = useSelector((state) => state.user.user);
 
-    // Firestore에서 가져온 데이터 저장/관리(수입, 고정수입, 지출, 고정지출, 저금)
+    // Firestore에서 가져온 데이터 저장/관리(수입, 고정수입, 지출, 고정지출)
     const [income, setIncome] = useState([]);
     const [incomeRepeat, setIncomeRepeat] = useState([]);
     const [expense, setExpense] = useState([]);
     const [expenseRepeat, setExpenseRepeat] = useState([]);
-    const [saving, setSaving] = useState([]);
     
     // 수정 모달창 관리
     const [EditIncomeOpen, setEditIncomeOpen] = useState(false);
     const [EditIncomeRepeatOpen, setEditIncomeRepeatOpen] = useState(false);
     const [EditExpenseOpen, setEditExpenseOpen] = useState(false);
     const [EditExpenseRepeatOpen, setEditExpenseRepeatOpen] = useState(false);
-    const [EditSavingOpen, setEditSavingOpen] = useState(false);
 
     // 수정 모달창으로 넘겨주기 위함
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -36,16 +36,8 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     const [selectedId, setSelectedId] = useState('');
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(null);
-    const [title, setTitle] = useState(''); // 저금
-    const [amount, setAmount] = useState(''); // 저금
-    const [endday, setEndday] = useState(new Date()); // 저금
-    const [clickday, setClickday] = useState(new Date()); // 저금
-
-
-
     const [installments, setInstallments] = useState([]);
     const [selectedInstallmentId, setSelectedInstallmentId] = useState('');
-
     const [docid, setDocid] = useState('');
     
     // 캘린더 모달
@@ -91,25 +83,15 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       setEditExpenseRepeatOpen(true);
     }
 
-    // 저금 수정 모달창
-    const openEditSavingModal = (title, amount, memo, user) => {
-      setTitle(title);
-      setAmount(amount);
-      setSelectedMemo(memo);
-      setSelectedId(user);
-      setEditSavingOpen(true);
-    }
-
     // 모달을 닫기 위한 이벤트 핸들러 함수
     const closeSubModal = () => {
       setEditIncomeOpen(false);
       setEditIncomeRepeatOpen(false);
       setEditExpenseOpen(false);
       setEditExpenseRepeatOpen(false);
-      setEditSavingOpen(false);
     };
 
-    /**  데이터를 가져오는 공통 함수 */
+    /** 데이터를 가져오는 공통 함수 */
     const fetchData = async (collectionName, stateSetter) => {
       const q = query(
         collection(db, collectionName),
@@ -138,7 +120,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       fetchData("money_income", setIncome);
     };
 
-    // 반복수입 데이터 가져오기
+    // 고정수입 데이터 가져오기
     const getIncomeRepeat = () => {
       fetchData("money_income_repeat", setIncomeRepeat);
     };
@@ -148,28 +130,22 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       fetchData("money_expense", setExpense);
     };
 
-    // const getInstallments = () => {
-    // fetchData("money_installments", setInstallments)
-    // }
-
-    // 반복지출 데이터 가져오기
+    // 고정지출 데이터 가져오기
     const getExpenseRepeat = () => {
       fetchData("money_expense_repeat", setExpenseRepeat);
     };
 
-    // 저금 데이터 가져오기
-    const getSaving = async() => { 
-      fetchData("money_saving", setSaving);
+    // 지출 할부 데이터 가져오기
+    const getInstallments = () => {
+      fetchData("money_expense_repeat", setExpenseRepeat);
     };
 
-    // 처음 화면에 보여줌
+    // 화면에 가장 먼저 출력되는 것들
     useEffect(() => {
       getIncome();
       getIncomeRepeat();
       getExpense();
-      //getInstallments();
       getExpenseRepeat();
-      getSaving();
     }, []);
 
     // 업데이트된 데이터를 가져오는 함수
@@ -177,9 +153,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       getIncome();
       getIncomeRepeat();
       getExpense();
-      //getInstallments();
       getExpenseRepeat();
-      getSaving();
     };
 
     useEffect(() => {
@@ -192,8 +166,34 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       fetchData("money_income_repeat", setIncomeRepeat);
       fetchData("money_expense", setExpense);
       fetchData("money_expense_repeat", setExpenseRepeat);
-      fetchData("money_saving", setSaving);
     };
+
+    // 지출 - 할부 관리
+    const getins = async () => {
+      const q = query(
+        collection(db, "money_installments"),
+        where('uid', '==', user.uid),
+        );
+        try {
+          const querySnapshot = await getDocs(q);
+          let dataArray = [];
+          
+          querySnapshot.forEach((doc) => {
+            let data = {
+              id: doc.id,
+              ...doc.data()
+            };
+            dataArray.push(data);
+          });
+        setInstallments(dataArray);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    useEffect(()=>{
+      getins()
+      console.log(installments);
+    }, [])
 
 
     /** 날짜검색하는 캘린더 모달 from.PCH */
@@ -221,7 +221,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     
     /** 선택된 날짜와 동일한 데이터 필터링 */
     const formatDate = (date) => {
-       // 선택된 날짜를 YYYY년 MM월 DD일 형식으로 변환
+      // 선택된 날짜를 YYYY년 MM월 DD일 형식으로 변환
       return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
     };
 
@@ -242,46 +242,9 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     const filteredIncomeRepeat = filterDataByDate(incomeRepeat, selectedDate); // 고정수입
     const filteredExpense = filterDataByDate(expense, selectedDate); // 지출
     const filteredExpenseRepeat = filterDataByDate(expenseRepeat, selectedDate); // 고정지출
-    const filteredInstallments = filterDataByDate(installments, selectedDate);
 
-    const getins = async () => {
-      const q = query(
-        collection(db, "money_installments"),
-        where('uid', '==', user.uid),
-        );
-        try {
-          const querySnapshot = await getDocs(q);
-          let dataArray = [];
-          
-          querySnapshot.forEach((doc) => {
-            let data = {
-              id: doc.id,
-              ...doc.data()
-            };
-            dataArray.push(data);
-          });
-        setInstallments(dataArray);
-      } catch (error) {
-        console.log(`Error getting documents: 왜 오류가  ㅜ`, error);
-      }
-    }
-    useEffect(()=>{
-      getins()
-      console.log(installments);
-    }, [])
 
-    // 선택된 날짜와 동일한 저금 데이터 필터링
-    const filteredSaving = saving.filter((item) => {
-       // 선택된 날짜를 YYYY-MM-DD 형식으로 변환
-      const formattedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(2, "0")}`;
-
-      // 저금 데이터의 날짜를 Date 객체로 변환
-      const itemDate = item.clickday;
-
-      return formattedDate === itemDate;
-    });
-
-    // 금액 천자리 콤마(,)
+    /** 금액 천자리 콤마(,) */
     const handleHyphen = (value) => {
       const formattedValue = new Intl.NumberFormat().format(value); // 숫자 형식으로 변환
       return formattedValue;
@@ -315,14 +278,14 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 
           {/* 수입 상세 출력 */}
           <div>
-              <h3>이 날의 수입은?</h3>
-              <h3>
-                { handleHyphen (
-                  filteredIncome.reduce((total, item) => total + item.price, 0) +
-                  filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
-                ) }
-                &#8361;
-              </h3>
+            <h3>이 날의 수입은?</h3>
+            <h3>
+              { handleHyphen (
+                filteredIncome.reduce((total, item) => total + item.price, 0) +
+                filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
+              ) }
+              &#8361;
+            </h3>
           </div>
 <br />
           <div>
@@ -350,16 +313,15 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               </div>
             ))}
           </div>
-
 <br />
           <div>
-              <h4>반복수입</h4>
-              <h4>
-                { handleHyphen(
-                  filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
-                ) }
-                &#8361;
-              </h4>
+            <h4>반복수입</h4>
+            <h4>
+              { handleHyphen(
+                filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
+              ) }
+              &#8361;
+            </h4>
           </div>
 <br />
           <div>
@@ -380,102 +342,68 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 <br />
           {/* 지출 */}
           <div>
-              <h3>이 날의 지출은?</h3>
-              <h3>
-                { handleHyphen(
-                  filteredExpense.reduce((total, item) => total + item.price, 0) +
-                  filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
-                ) }
-                &#8361;
-              </h3>
+            <h3>이 날의 지출은?</h3>
+            <h3>
+              { handleHyphen(
+                filteredExpense.reduce((total, item) => total + item.price, 0) +
+                filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
+              ) }
+              &#8361;
+            </h3>
           </div>
 <br />
           <div>
-              <h4>지출</h4>
-              <h4>{ handleHyphen(filteredExpense.reduce((total, item) => total + item.price, 0)) }&#8361;</h4>
+            <h4>지출</h4>
+            <h4>
+              { handleHyphen(
+                filteredExpense.reduce((total, item) => total + item.price, 0)
+              ) }
+              &#8361;
+            </h4>
           </div>
 <br />
-<div>
-            {/* { filteredExpense.map((item, i) => (
-              <div key = {i}
-                onClick = {() =>
-                  openEditExpenseModal( item.category, item.price, item.memo, item.id, ) }
-              >
-                <span>{ item.category }</span>
-                <span>{ handleHyphen(item.price) }&#8361;</span>
-                <span>{ item.memo }</span>
-              <hr />
-              </div>
-            ))} */}
-
-<hr />
-    {/* 기존코드 */}
-            {/* {filteredExpense.map((item, i) => {
+          <div>
+            { filteredExpense.map((item, i) => {
               // 해당 expense에 매칭되는 installments 문서 찾기
-              const matchingInstallment = installments.find((r) => r.category === item.category && r.payment === item.payment && r.memo === item.memo);
+              const matchingInstallment = installments.find(
+                (r) => r.category === item.category && r.payment === item.payment && r.memo === item.memo
+              );
+              
+              // matchingInstallment에 따라서 문서 id를 전달하거나, 해당 문서를 출력
+              const installmentId = matchingInstallment?.id;
               
               return (
-                <div key={i} onClick={() => openEditExpenseModal(item.category, item.price, item.memo, item.id, matchingInstallment.id)}> 
-                  <span>{item.category}</span>
-                  <span>{handleHyphen(item.price)}&#8361;</span>
-                  <span>{item.memo}</span>
-                  <hr />
+                <div key = {i}
+                  onClick = { () =>
+                    openEditExpenseModal( item.category, item.price, item.memo, item.id, installmentId )
+                  }
+                > 
+                  <span>{ item.category }</span>
+                  <span>{ item.price !== undefined ? handleHyphen(item.price) : '' }&#8361;</span>
+                  <span>{ item.installment }</span>
+                  <span>{ item.memo }</span>
+<hr />
                 </div>
               );
-            })}             */}
-          </div>
-
-
-{/* 이거 됐는데 왜 안되는거지 */}
-          {/* {filteredExpense.map((item, i) => {
-  // 해당 expense에 매칭되는 installments 문서 찾기
-  const matchingInstallment = installments.find((r) => r.category === item.category && r.payment === item.payment && r.memo === item.memo);
-  
-  // matchingInstallment에 따라서 문서 id를 전달하거나, 해당 문서를 출력합니다.
-  const installmentId = matchingInstallment?.id;
-  console.log(installmentId);
-  return (
-    <div key={i} onClick={() => openEditExpenseModal(item.category, item.price, item.memo, item.id, installmentId)}> 
-      <span>{item.category}</span>
-      <span>{handleHyphen(item.price)}&#8361;</span>
-      <span>{item.memo}</span>
-      <hr />
-    </div>
-  );
-})} */}
-
-{filteredExpense.map((item, i) => {
-  // 해당 expense에 매칭되는 installments 문서 찾기
-  const matchingInstallment = installments.find((r) => r.category === item.category && r.payment === item.payment && r.memo === item.memo);
-  
-  // matchingInstallment에 따라서 문서 id를 전달하거나, 해당 문서를 출력합니다.
-  const installmentId = matchingInstallment?.id;
-  
-  return (
-    <div key={i} onClick={() => openEditExpenseModal(item.category, item.price, item.memo, item.id, installmentId)}> 
-      <span>{item.category}</span>
-      <span>{item.price !== undefined ? handleHyphen(item.price) : ''}&#8361;</span>
-      <span>{item.installment}</span>
-      <span>{item.memo}</span>
-      <hr />
-    </div>
-  );
-})}
-
-
-
-
+            }) }
 <br />
+          </div>
           <div>
-              <h4>반복지출</h4>
-              <h4>{ handleHyphen(filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)) }&#8361;</h4>
+            <h4>반복지출</h4>
+            <h4>
+              { handleHyphen(
+                filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
+              ) }
+              &#8361;
+            </h4>
           </div>
 <br />
           <div>
             { filteredExpenseRepeat.map((item, i) => (
               <div key = {i}
                 onClick = {() =>
-                  openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id, ) }
+                  openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id )
+                }
               >
                 <span>{ item.category }</span>
                 <span>{ handleHyphen(item.price) }&#8361;</span>
@@ -485,109 +413,68 @@ export default function DateDetail({ closeModal2, selectedDate }) {
             ))}
           </div>
 <br />
-<br />
-          {/* 저금 */}
-          <div>
-            <h3>이 날의 저금은?</h3>
-            <h3>
-              { handleHyphen(
-                filteredSaving.reduce((total, item) =>
-                total + parseInt(item.amount.replace(/,/g, '')), 0)
-              ) }
-              &#8361;
-              </h3>
-          </div>
-          <div>
-            { filteredSaving.map((item, i) => (
-              <div key = {i}
-                onClick = {() =>
-                  openEditSavingModal( item.title, item.amount, item.memo, item.id, )}
-              >
-                <span>{ item.title }</span>
-                <span>{ item.amount }&#8361;</span>
-                <span>{ item.memo }</span>
-                <hr />
-              </div>
-            ))}
-          </div>
         </div>
-        
+          {/** 서브 모달 컴포넌트 */}
+          {/* EditIncome컴포넌트로 전달 */}
+          { EditIncomeOpen && (
+            <EditIncome
+              id = { selectedId }
+              category = { selectedCategory }
+              price = { selectedPrice }
+              memo = { selectedMemo }
+              closeSubModal = { closeSubModal }
+              date = { date }
+              handleDataUpdate = { handleDataUpdate }
+            />
+          ) }
 
-        {/** 서브 모달 컴포넌트 */}
-        {/* EditIncome컴포넌트로 전달 */}
-        { EditIncomeOpen && (
-          <EditIncome
-            id = { selectedId }
-            category = { selectedCategory }
-            price = { selectedPrice }
-            memo = { selectedMemo }
-            closeSubModal = { closeSubModal }
-            date = { date }
-            handleDataUpdate = { handleDataUpdate }
-          />
-        ) }
+          {/* EditIncomeRepeat컴포넌트로 전달 */}
+          { EditIncomeRepeatOpen && (
+            <EditIncomeRepeat
+              id = { selectedId }
+              category = { selectedCategory }
+              price = { selectedPrice }
+              memo = { selectedMemo }
+              closeSubModal = { closeSubModal }
+              showCal = { showCal }
+              startDate = { startDate }
+              endDate = { endDate }
+              date = { date }
+              handleDataUpdate = { handleDataUpdate }
+            />
+          )}
 
-        {/* EditIncomeRepeat컴포넌트로 전달 */}
-        { EditIncomeRepeatOpen && (
-          <EditIncomeRepeat
-            id = { selectedId }
-            category = { selectedCategory }
-            price = { selectedPrice }
-            memo = { selectedMemo }
-            closeSubModal = { closeSubModal }
-            showCal = { showCal }
-            startDate = { startDate }
-            endDate = { endDate }
-            date = { date }
-            handleDataUpdate = { handleDataUpdate }
-          />
-        )}
+          {/* EditExpense컴포넌트로 전달 */}
+          { EditExpenseOpen && (
+            <EditExpense
+              id = { selectedId }
+              category = { selectedCategory }
+              price = { selectedPrice }
+              memo = { selectedMemo }
+              closeSubModal = { closeSubModal }
+              date = { date }
+              handleDataUpdate = { handleDataUpdate }
+              docid = { docid }
+              installmentId = { selectedInstallmentId } // money_installments 컬렉션의 문서 ID 전달
+            />
+          )}
+          
+          {/* EditExpenseRepeat컴포넌트로 전달 */}
+          {EditExpenseRepeatOpen && (
+            <EditExpenseRepeat
+              id = { selectedId }
+              category = { selectedCategory }
+              price = { selectedPrice }
+              memo = { selectedMemo }
+              closeSubModal = { closeSubModal }
+              showCal = { showCal }
+              startDate = { startDate }
+              endDate = { endDate }
+              date = { date }
+              handleDataUpdate = { handleDataUpdate }
+            />
+          )}
 
-        {/* EditExpense컴포넌트로 전달 */}
-        { EditExpenseOpen && (
-          <EditExpense
-            id = { selectedId }
-            category = { selectedCategory }
-            price = { selectedPrice }
-            memo = { selectedMemo }
-            closeSubModal = { closeSubModal }
-            date = { date }
-            handleDataUpdate = { handleDataUpdate }
-            docid = { docid }
-            installmentId = { selectedInstallmentId } // money_installments 컬렉션의 문서 ID 전달
-          />
-        )}
-        
-        {/* EditExpenseRepeat컴포넌트로 전달 */}
-        {EditExpenseRepeatOpen && (
-          <EditExpenseRepeat
-            id = { selectedId }
-            category = { selectedCategory }
-            price = { selectedPrice }
-            memo = { selectedMemo }
-            closeSubModal = { closeSubModal }
-            showCal = { showCal }
-            startDate = { startDate }
-            endDate = { endDate }
-            date = { date }
-            handleDataUpdate = { handleDataUpdate }
-          />
-        )}
-
-        {/* EditSaving컴포넌트로 전달 */}
-        {EditSavingOpen && (
-          <EditSaving
-            id = { selectedId }
-            title = { title }
-            amount = { amount }
-            memo = { selectedMemo }
-            clickday = { clickday }
-            closeSubModal = { closeSubModal }
-            endday = { endday }
-            startDate = { startDate }
-            handleDataUpdate = { handleDataUpdate }
-          />
-        )}
     </div>
   )
 } 

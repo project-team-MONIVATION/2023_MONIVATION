@@ -1,48 +1,38 @@
 // 고정지출 수정 모달
 
-
-import React, { useEffect, useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import { db } from '../../database/firebase';
-import { updateDoc, getDoc, doc, deleteDoc } from 'firebase/firestore';
-import { useSelector } from 'react-redux';
-
-import moment, { locale } from 'moment';
-
-
+import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import Calendar from 'react-calendar';
+import moment from 'moment';
+
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
 
 export default function EditExpenseRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate }) {
+    // form의 입력 값 state
+    const [date, setDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [cycle, setCycle] = useState("매일");
+    const [editPrice, setEditPrice] = useState(price);
+    const [payment, setPayment] = useState("현금");
+    const [installment, setInstallment] = useState();
+    const [selectedCategory, setSelectedCategory] = useState(category);
+    const [editMemo, setEditMemo] = useState(memo);
+    // 캘린더 모달 state
+    const [showCal, setShowCal] = useState(false); // 날짜 입력하는 캘린더 모달 state
+    const [showPeriod, setShowPeriod] = useState(false); // 기간 입력하는 모달 state
+    // 기간 입력하는 모달의 캘린더 모달 state
+    const [showStartCal, setShowStartCal] = useState(true);
+    const [showEndCal, setShowEndCal] = useState(false);
 
-  // uid 불러오기
-  const user = useSelector((state) => state.user.user);
+    /** 파이어스토어에 업데이트 넘겨줌 */
 
-  // 날짜 입력하는 캘린더 모달 state
-  const [showCal, setShowCal] = useState(false);
-
-  // 기간 입력하는 모달 state
-  const [showPeriod, setShowPeriod] = useState(false);
-  // 기간 입력하는 모달의 캘린더 모달 state
-  const [showStartCal, setShowStartCal] = useState(true);
-  const [showEndCal, setShowEndCal] = useState(false);
-
-  // form의 입력 값 state
-  const [date, setDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [cycle, setCycle] = useState("매일");
-  const [editPrice, setEditPrice] = useState(price);
-  const [payment, setPayment] = useState("현금");
-  const [installment, setInstallment] = useState();
-  const [selectedCategory, setSelectedCategory] = useState(category);
-  const [editMemo, setEditMemo] = useState(memo);
-
-  // 날짜 입력하는 캘린더 모달 on
-  const onClickCal = (e) => {
-    e.preventDefault();
-    setShowCal(true);
-  };
+    // 날짜 입력하는 캘린더 모달 on
+    const onClickCal = (e) => {
+      e.preventDefault();
+      setShowCal(true);
+    };
 
   // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
   const onClickDate = (newDate) => {

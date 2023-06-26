@@ -1,24 +1,20 @@
 // 지출 수정 모달
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { db } from '../../database/firebase';
-import { updateDoc, getDoc, doc, deleteDoc, getDocs, collection, where, query } from 'firebase/firestore';
-// import { useSelector } from 'react-redux';
+import { doc, getDoc, getDocs, updateDoc, deleteDoc, collection, query, where } from 'firebase/firestore';
 import Calendar from 'react-calendar';
+
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
 
 
 export default function EditExpense({ category, price, memo, closeSubModal, installmentId, id, handleDataUpdate }) {
-  // uid 불러오기
-  // const user = useSelector((state) => state.user.user);
-
   // 날짜 입력하는 캘린더 모달 state
   const [showCal, setShowCal] = useState(false);
 
   // form의 입력 값 state
   const [date, setDate] = useState(new Date());
   const [payment, setPayment] = useState("현금");
-  //installment??뭐하는 애지 카드 선택하면 뜨는 할부입력
   const [installment, setInstallment] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(category);
   const [editPrice, setEditPrice] = useState(price);
@@ -112,7 +108,6 @@ const onInputInstallment = (e) => {
     
     const deleteMoney = async () => {
       if(installmentId != null) {
-
         // "money_expense" 컬렉션에서 "docid" 필드가 "installmentId"와 일치하는 문서를 찾기 위한 쿼리 생성
         const querySnapshot = await getDocs(query(collection(db, "money_expense"), where("docid", "==", installmentId)));
         
@@ -126,7 +121,7 @@ const onInputInstallment = (e) => {
       } else{
         await deleteDoc(doc(db, "money_expense", id));
       }
-    
+        
       handleDataUpdate();
       closeSubModal();
     };
@@ -135,14 +130,6 @@ const onInputInstallment = (e) => {
     const isDisabled = payment === "카드" && installment !== "일시불";
     const isEditable = payment !== "카드" || (payment === "카드" && installment === "일시불");
     
-
-
-  //     // 결제수단 옵션 생성
-  // const paymentOptions = [
-  //   { label: "현금", value: "현금" },
-  //   { label: "카드", value: "카드" },
-  //   { label: "이체", value: "이체" },
-  // ];
 
     // 결제수단 옵션 생성
     let paymentOptions = [];
