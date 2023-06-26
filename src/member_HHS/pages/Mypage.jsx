@@ -95,9 +95,10 @@ export default function Mypage() {
               ) }
               <img
                 src = { data.photo }
-                width = { 50 }
-                height = { 50 }
+                width = { 100 }
+                height = { 100 }
                 alt = "프로필"
+                style = {{ borderRadius: "50%" }}
               />
               <br />
               <p>{ data.nickname }</p>

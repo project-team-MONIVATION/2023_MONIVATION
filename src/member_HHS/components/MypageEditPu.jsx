@@ -5,15 +5,12 @@ import { useParams } from 'react-router-dom'
 import { auth, db, storage } from '../../database/firebase';
 import { collection, doc, getDoc, getDocs, query, updateDoc, where, Timestamp } from 'firebase/firestore';
 import { getAuth, sendSignInLinkToEmail, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword } from 'firebase/auth'
-// import { getStorage } from 'firebase/storage';
-// import { storage } from 'firebase/app';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-
 
 
 export default function MypageEditPu() {
     const params = useParams();
-    const storage = getStorage();
+    const [selectedImage, setSelectedImage] = useState(null); // storage 업로드 이미지 관리 
 
     const [profile, setProfile] = useState();
     const [startDate, setStartDate] = useState('');
@@ -58,6 +55,15 @@ export default function MypageEditPu() {
         setBirth(data.birth);
         setPhoneNum(data.phone);
         setStartDate(data.startDate.toDate());
+        
+        // 출생연도 값 설정
+        const birthArray = data.birth.split('년');
+        const selectedYear = birthArray[0];
+        const selectedMonth = birthArray[1].split('월')[0];
+        const selectedDay = birthArray[1].split('월')[1].split('일')[0];
+        setSelectedYear(selectedYear);
+        setSelectedMonth(selectedMonth);
+        setSelectedDay(selectedDay);
       }
       getProfile();
     }, [])
@@ -202,8 +208,10 @@ export default function MypageEditPu() {
     /** 프로필 이미지 수정 */
     const handleChangeProfile = (e) => {
       const file = e.target.files[0];
+      setSelectedImage(URL.createObjectURL(file));
+      
       const storageRef = ref(storage, file.name);
-    
+      
       uploadBytes(storageRef, file)
         .then((snapshot) => {
           console.log('Uploaded a file:', snapshot.metadata.name);
@@ -244,25 +252,29 @@ export default function MypageEditPu() {
             }}
           >
             <div>
-              <img
-                src = { profile.photo !== "없음" ? profile.photo : "/img/defaultProfile.jpg" }
-                width = { 100 }
-                height = { 100 }
-                alt = "프로필"
-                style = {{ borderRadius: "50%"}}
-              />
+              <label htmlFor = "profile-image">
+                <img
+                  src = { selectedImage || (profile.photo !== "없음" ? profile.photo : "/img/defaultProfile.jpg") }
+                  width = { 100 }
+                  height = { 100 }
+                  alt = "프로필"
+                  style = {{ borderRadius: "50%", cursor: "pointer" }}
+                />
+              </label>
               <input
-                type = "file"
-                accept = "image/*"
-                onChange = { handleChangeProfile }
+                type="file"
+                id="profile-image"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleChangeProfile}
               />
-
               <p>이메일 { profile.email }</p>
               <p>회원구분 <span>개인회원</span></p>
               <p>가입일 <span>{ startDate.getFullYear() }.{ startDate.getMonth() + 1 }.{ startDate.getDate() }</span></p>
             </div>
           </div>
         }
+<br />
 
         <form onSubmit = { handleSubmit }>
           <h2>회원정보 수정</h2>
@@ -371,7 +383,7 @@ export default function MypageEditPu() {
             <input
               type = "number"
               placeholder = "인증번호"
-              value = { otp } // ??
+              value = { otp }
               onChange = { (e) => { setOtp(e.target.value) } }
               required
             />
@@ -383,7 +395,7 @@ export default function MypageEditPu() {
             </button>
           </div>
           
-          <input type = "submit" />
+          <input type = "submit" value = "수정" />
         </form>
       </div>
     )
