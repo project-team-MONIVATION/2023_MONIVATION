@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { doc, getDoc, addDoc, collection, getDocs, query, deleteDoc, where, updateDoc } from 'firebase/firestore'
 import { useNavigate, useParams } from 'react-router'
 import CommentComp from '../components/CommentComp'
+import '../css/challengeview.css'
 
 export default function DefaultChallengeView() {
     const user = useSelector((state)=>state.user.user);
@@ -199,19 +200,23 @@ export default function DefaultChallengeView() {
     return (
         <div>
             <h1>디폴트 챌린지 상세보기</h1>
-            <div>
+            <div className='challenge-wrap'>
             {/** 업로드해서 넣은 이미지 url과 그냥 imgId만 넣은 파일을 구분해서 들고와야함 */}
             <img src={challengeBoard?.img && (challengeBoard.img.length < 10 ? require(`../img/${challengeBoard.img}`) : challengeBoard.img)}
-                style={{width : "300px"}}
+                style={{width : "300px", height : "200px", borderRadius : "20px", display : 'inline-block', border : "solid black 1px"}}
             alt="" />
-            <p>챌린지명 : {challengeBoard && challengeBoard.name}</p>
-            <p>기간 : {time}</p>
-            {/** challenge 데이터에 user.nickname도 넣을 예정 */}
-            {/** 뱃지는 디폴트 챌린지만 할당 */}
-            <p>등록자명 : {challengeBoard && challengeBoard.uid}</p>
+            <div className='challenge-info-wrap'>
+                <p>챌린지명 : {challengeBoard && challengeBoard.name}</p>
+                <p> 기간 : {time}</p>
+                {/** challenge 데이터에 user.nickname도 넣을 예정 */}
+                {/** 뱃지는 디폴트 챌린지만 할당 */}
+                <p>등록자명 : {challengeBoard && challengeBoard.uid}</p>
+            </div>
+            <div className='badge-button-wrap'>
             <div style={{width : "100px", display : "inline-block", height : "100px",
             backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
             backgroundImage : `url(/img/${challengeBoard && challengeBoard.badge})`}}></div>
+            <br />
             {
                 user && user.uid ? <button onClick={handleToggled}
                 disabled={done === true}
@@ -224,13 +229,14 @@ export default function DefaultChallengeView() {
                 user && challengeBoard && challengeBoard.uid === user.uid ? 
                 <button>챌린지 삭제</button> : null
             }
+            </div>
             {
                 user && challengeBoard && challengeBoard.uid === user.uid ? <button>챌린지 수정</button> : null
             }
             
         </div>
-        <div>
-            <div style={{display : 'inline-block', backgroundColor : "gray", width : "300px", height : "500px"}}>
+        <div className='content-comment-wrap'>
+            <div style={{display : 'inline-block', backgroundColor : "gray", width : "500px", height : "500px"}}>
                 <p>챌린지 상세 설명</p>
                 <p>{challengeBoard && challengeBoard.content}</p>
             </div>

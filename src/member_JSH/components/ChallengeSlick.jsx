@@ -8,16 +8,22 @@ import { useSelector } from "react-redux";
 import { useParams } from 'react-router-dom'
 import { db } from '../../database/firebase'
 import { getDoc, doc, query, collection, getDocs } from 'firebase/firestore';
+import '../css/challengelist.css'
+import {} from '@fortawesome/fontawesome-svg-core'
+import {faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black", height : "20px",
-    width : "20px", right:"10px"}}
+      style={{ ...style, display: "block", background: "transparent", height : "20px",
+    width:"20px", zIndex:"9", left:"1px", alignItems : "center", cursor:"pointer"}}
       onClick={onClick}
-    />
+    >
+      <FontAwesomeIcon icon={faAngleRight} style={{color:"black"}}/>
+    </div>
   );
 }
 
@@ -26,10 +32,12 @@ function SamplePrevArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black", height : "20px",
-    width:"20px", zIndex:"9", left:"10px" }}
+      style={{ ...style, display: "block", background: "transparent", height : "20px",
+    width:"20px", zIndex:"9", left:"1px", alignItems : "center", cursor:"pointer"}}
       onClick={onClick}
-    />
+    >
+      <FontAwesomeIcon icon={faAngleLeft} style={{color:"black"}}/>
+    </div>
   );
 }
 
@@ -39,16 +47,14 @@ export default function ChallengeSlick() {
   const user = useSelector((state)=>state.user.user);
   const [challengeBoard, setChallengeBoard] = useState();
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
     slidesToShow: 3,
     slidesToScroll: 1,
-    arrows : true,
+    arrows : false,
     autoplay: true,
     speed: 2000,
-    autoplaySpeed: 5000,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
+    autoplaySpeed: 5000
   }
 
   useEffect(()=>{
@@ -77,8 +83,8 @@ export default function ChallengeSlick() {
   }
       
   return (
-    <div>
-    <h2>도전 챌린지</h2>
+    <div className="default-challenge-list">
+      <br />
     <Slider {...settings}>
         {
               challengeBoard && challengeBoard.map((board)=>(
@@ -86,11 +92,12 @@ export default function ChallengeSlick() {
                 <Card
                   style={{
                     backgroundColor : "gray",
-                    width : "80%",
+                    width : "70%",
                     height: "200px",
                     backgroundSize : "cover",
                     backgroundPosition : "center",
-                    padding : "10px"
+                    padding : "20px",
+                    margin : "auto",
                   }}
                 >
                   <Card.Body className="camp-slide-bar">

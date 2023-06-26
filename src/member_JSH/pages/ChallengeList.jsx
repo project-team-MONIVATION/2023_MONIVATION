@@ -45,11 +45,13 @@ export default function ChallengeList() {
 
   return (
     <div>
-      <h1>챌린지 목록</h1>
+      <h1 style={{width : "1300px", margin : "auto", border : "solid 1px black", padding : "10px"}}>챌린지</h1>
       <ChallengeSlick />
       <br />
-      <h1>유저 챌린지</h1>
       <br />
+      <h1 style={{width : "1300px", margin : "auto", border : "solid 1px black", padding : "10px"}}>유저 챌린지</h1>
+      <br />
+      
       <ul style={{listStyle : 'none'}}
         className="card-grid"
       >
@@ -62,18 +64,17 @@ export default function ChallengeList() {
                 backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
                   className="card"
                 >
-                  <p>{board.name}</p>
                 </div>
-                <p>작성자 : {board.uid}</p>
+                <br></br>
+                <p style={{display:'inline-block'}}>{board.name}</p>
               </li>
             </Link>
           ))
         }
       </ul>
-      <button>
-        <Link to='/challenge/create'>생성</Link>
+      <button className='create-button'>
+        <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '3rem'}}>+</Link>
       </button>
-      <BadgeBoxComp />
     </div>
   )
 }

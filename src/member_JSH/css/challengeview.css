@@ -1,0 +1,25 @@
+.challenge-wrap{
+    display: flex;
+    width: 1000px;
+    margin: auto;
+}
+
+.challenge-info-wrap{
+    display: inline-block;
+    border: solid black 1px;
+    height: 200px;
+    text-align: left;
+}
+
+.badge-button-wrap{
+    border: solid black 1px;
+    display: inline-block;
+    width: 300px;
+}
+
+.content-comment-wrap{
+    display: flex;
+    text-align: center;
+    margin: auto;
+    width: 1000px;
+}
