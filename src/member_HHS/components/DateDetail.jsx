@@ -455,6 +455,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     <div key={i} onClick={() => openEditExpenseModal(item.category, item.price, item.memo, item.id, installmentId)}> 
       <span>{item.category}</span>
       <span>{item.price !== undefined ? handleHyphen(item.price) : ''}&#8361;</span>
+      <span>{item.installment}</span>
       <span>{item.memo}</span>
       <hr />
     </div>

@@ -23,8 +23,6 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
   const [editMemo, setEditMemo] = useState(memo);
 
   
-  // 할부 개월 수 select에서 사용할 배열
-  const num = Array(58).fill().map((v,i)=> i+2);
 
   // 날짜 입력하는 캘린더 모달 on
   const onClickCal = (e) => {
@@ -132,6 +130,49 @@ const onInputInstallment = (e) => {
     };
 
 
+    const isDisabled = payment === "카드" && installment !== "일시불";
+    const isEditable = payment !== "카드" || (payment === "카드" && installment === "일시불");
+    
+
+
+  //     // 결제수단 옵션 생성
+  // const paymentOptions = [
+  //   { label: "현금", value: "현금" },
+  //   { label: "카드", value: "카드" },
+  //   { label: "이체", value: "이체" },
+  // ];
+
+    // 결제수단 옵션 생성
+    let paymentOptions = [];
+    if (payment === "카드") {
+      paymentOptions = [{ label: "카드", value: "카드" }];
+    } else {
+      paymentOptions = [
+        { label: "현금", value: "현금" },
+        { label: "카드", value: "카드" },
+        { label: "이체", value: "이체" },
+      ];
+    }
+
+  // // 할부 옵션 생성
+  // const installmentOptions = [
+  //   { label: "일시불", value: "일시불" }
+  // ];
+
+  // // 결제수단이 카드인 경우 할부 옵션 추가
+  // if (payment === "카드") {
+  //   installmentOptions.push({ label: "할부", value: "할부" });
+  // }
+
+    // // 결제수단이 카드인 경우 할부 옵션 추가
+    // const installmentOptions = payment === "카드"
+    // ? [
+    //     { label: "일시불", value: "일시불" },
+    //   ]
+    // : [
+    //     { label: "할부", value: "할부" }
+    //   ];
+
 
 
     
@@ -169,6 +210,8 @@ const onInputInstallment = (e) => {
             value = {editPrice}
             onChange = {(e) => setEditPrice(Number(e.target.value))}
             required
+            disabled={isDisabled}
+
           />
           <span>₩</span>
         </div>
@@ -177,30 +220,61 @@ const onInputInstallment = (e) => {
         <div>
           <select 
             name="payment" 
-            id="" 
+            id="payment" 
             value={payment}
             onChange={(e) => setPayment(e.target.value)}
+            
           >
-            <option value="현금">현금</option>
-            <option value="카드">카드</option>
-            <option value="이체">이체</option>
+                 {paymentOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
 
-            {
-              payment && payment === "카드" && (
-                <div className='input_installment'>
-                  <select className='installment' name="installment" onChange={onInputInstallment} value={installment}>
-                    <option value="일시불">일시불</option>
-                    {num.map((i) => (
-                      <option value={i} key={i}>
-                        {i}개월
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )
-            }
-        </div>
+        {/* 할부옵션 */}
+        {/* {
+            payment === '카드' && (
+              <div>
+                <select
+                  className='installment'
+                  name="installment"
+                  onChange={onInputInstallment}
+                  value={installment}
+                  disabled={installment !== '일시불'}
+                >
+{installmentOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}                </select>
+              </div>
+            )
+            }    */}
+
+
+            {payment === "카드" && installment === "일시불" && (
+            <div>
+              <select
+                className="installment"
+                name="installment"
+                onChange={onInputInstallment}
+                value={installment}
+              >
+                {/* {installmentOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))} */}
+
+                <option value="일시불">일시불</option>
+                <option value="할부">할부</option>
+              </select>
+            </div>
+          )}      
+              </div>
+
+
 
         <label>카테고리</label>
         <div>
@@ -297,16 +371,18 @@ const onInputInstallment = (e) => {
         <label>메모</label>
         <div>
           <textarea cols="30" rows="10"
-          value={editMemo} onChange={(e) => setEditMemo(e.target.value)}
+          value={editMemo} onChange={(e) => setEditMemo(e.target.value) } disabled={isDisabled}
           />
         </div>
 
         <input 
           type="submit" 
-          value="입력" 
-          disabled={!date || !editPrice || !selectedCategory}
+          value="수정" 
+          disabled={!date || !editPrice || !selectedCategory || !(payment !== "카드" || (payment === "카드" && installment === "일시불"))}
+          style={{ display: isEditable ? 'block' : 'none' }}
         />
-        <button type='button' onClick={deleteMoney}>삭제</button>
+
+        <button type='button' onClick={deleteMoney} >삭제</button>
       </form>
     </div>
   )
