@@ -6,10 +6,12 @@ import ChallengeSlick from '../components/ChallengeSlick'
 import { useParams } from 'react-router-dom'
 import { db } from '../../database/firebase'
 import { getDoc, doc, query, collection, getDocs } from 'firebase/firestore';
-import { async } from 'q'
 import { useSelector } from 'react-redux'
 import ActiveChallengeComp from '../components/ActiveChallengeComp'
-import MyChallengeSlideComp from '../components/MyChallengeSlideComp'
+//import MyChallengeSlideComp from '../components/MyChallengeSlideComp'
+
+import '../css/challengelist.css';
+import BadgeBoxComp from '../components/BadgeBoxComp'
 
 
 export default function ChallengeList() {
@@ -43,18 +45,36 @@ export default function ChallengeList() {
 
   return (
     <div>
-      <h1>챌린지 목록</h1>
+      <h1 style={{width : "1300px", margin : "auto", border : "solid 1px black", padding : "10px"}}>챌린지</h1>
       <ChallengeSlick />
       <br />
-      {
-        challengeBoard && challengeBoard.map((board)=>(
-          <Link to={`/challenge/${board.id}/view`} key={challengeBoard.id}>
-            <li>{board.name}</li>
-          </Link>
-        ))
-      }
-      <ActiveChallengeComp />
-      <Link to='/challenge/create'>생성</Link>
+      <br />
+      <h1 style={{width : "1300px", margin : "auto", border : "solid 1px black", padding : "10px"}}>유저 챌린지</h1>
+      <br />
+      
+      <ul style={{listStyle : 'none'}}
+        className="card-grid"
+      >
+        {
+          challengeBoard && challengeBoard.map((board)=>(
+            <Link to={`/challenge/${board.id}/view`} key={challengeBoard.id}>
+              <li>
+                <div style={{width : "300px", display : "inline-block", 
+                backgroundImage :`url(/img/${board.img})`,
+                backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
+                  className="card"
+                >
+                </div>
+                <br></br>
+                <p style={{display:'inline-block'}}>{board.name}</p>
+              </li>
+            </Link>
+          ))
+        }
+      </ul>
+      <button className='create-button'>
+        <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '3rem'}}>+</Link>
+      </button>
     </div>
   )
 }

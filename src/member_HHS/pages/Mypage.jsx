@@ -5,6 +5,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import { db } from '../../database/firebase';
 import { getDocs, where, query, collection } from 'firebase/firestore';
+import BadgeBoxComp from '../../member_JSH/components/BadgeBoxComp';
 
 export default function Mypage() {
   const user = useSelector((state) => state.user.user);
@@ -104,6 +105,8 @@ export default function Mypage() {
 
       <div>
         <p>내가 모은 뱃지</p>
+        {/** JSH 챌린지 완료 뱃지 리스트 추가 */}
+        <BadgeBoxComp />
         <span>식사는 거를수 없지</span>
         <span>세상엔 맛있는게 너무 많아</span>
         <span>오늘도 커피 수혈</span>

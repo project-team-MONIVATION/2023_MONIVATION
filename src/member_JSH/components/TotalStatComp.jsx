@@ -10,16 +10,6 @@ import Modal from 'react-modal';
 
 
 export default function TotalStatComp() {
-  // 일반 수입 리덕스
-  const implist = useSelector((state)=>(state.imp));
-  //const [inputs, setInputs] = useState();
-  // 일반 지출 리덕스
-  const exlist = useSelector((state)=>(state.ex));
-  // 저금 리덕스ㅇddd
-  const savelist = useSelector((state)=>(state.save));
-
-
-
   
   // 저금 리스트 모달창
   const navigate = useNavigate();
@@ -41,7 +31,21 @@ export default function TotalStatComp() {
 
   useEffect(() => {
       getSavingData();
+      getIncomeData();
+      getIncomeRepeatData();
+      getExpenseData();
+      getExpenseRepeatData();
   }, [user]);
+
+
+  // 총 일반 수입 불러오기
+  const [totalIncome, setTotalIncome] = useState('');
+  // 총 고정 수입 불러오기
+  const [totalIncomeRp, setTotalIncomeRp] = useState('');
+  // 총 일반 지출 불러오기
+  const [totalEx, setTotalEx] = useState('');
+  // 총 고정 지출 불러오기
+  const [totalExRp, setTotalExRp] = useState('');
 
 
   // 데이터 불러오기
@@ -79,9 +83,133 @@ export default function TotalStatComp() {
       }
   };
 
+
+  // 일반 지출 불러오기
+  // 일반 지출 총액 계산
+  const getIncomeData = async () => {
+    try{
+      const fmCollectionRef = collection(db, "money_income");
+      const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+      const fmQuerySnapshot = await getDocs(fmQuery);
+
+      if (!user.uid) {
+        navigate('/account/login');
+      } else {
+        let dataArray = [];
+        fmQuerySnapshot.forEach((doc)=>{
+          dataArray.push({
+            ...doc.data(),
+            id: doc.id,
+          });
+        });
+
+        let total = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          let money = dataArray[i].price;
+          total += money;
+        }
+        const totalprice = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        setTotalIncome(totalprice);
+      }
+    } catch (error){
+      console.log("실패했습니다", error);
+    }
+  }
+
+
+  // 고정 수입
+  const getIncomeRepeatData = async () => {
+    try{
+      const fmCollectionRef = collection(db, "money_income_repeat");
+      const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+      const fmQuerySnapshot = await getDocs(fmQuery);
+
+      if (!user.uid) {
+        navigate('/account/login');
+      } else {
+        let dataArray = [];
+        fmQuerySnapshot.forEach((doc)=>{
+          dataArray.push({
+            ...doc.data(),
+            id: doc.id,
+          });
+        });
+
+        let total = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          let money = dataArray[i].price;
+          total += money;
+        }
+        const totalprice = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        setTotalIncomeRp(totalprice);
+      }
+    } catch (error){
+      console.log("실패했습니다", error);
+    }
+  }
+
+  // 일반 지출
+  const getExpenseData = async () => {
+    try{
+      const fmCollectionRef = collection(db, "money_expense");
+      const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+      const fmQuerySnapshot = await getDocs(fmQuery);
+
+      if (!user.uid) {
+        navigate('/account/login');
+      } else {
+        let dataArray = [];
+        fmQuerySnapshot.forEach((doc)=>{
+          dataArray.push({
+            ...doc.data(),
+            id: doc.id,
+          });
+        });
+
+        let total = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          let money = dataArray[i].price;
+          total += money;
+        }
+        const totalprice = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        setTotalEx(totalprice);
+      }
+    } catch (error){
+      console.log("실패했습니다", error);
+    }
+  }
   
 
+  // 고정 지출
+  const getExpenseRepeatData = async () => {
+    try{
+      const fmCollectionRef = collection(db, "money_expense_repeat");
+      const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+      const fmQuerySnapshot = await getDocs(fmQuery);
 
+      if (!user.uid) {
+        navigate('/account/login');
+      } else {
+        let dataArray = [];
+        fmQuerySnapshot.forEach((doc)=>{
+          dataArray.push({
+            ...doc.data(),
+            id: doc.id,
+          });
+        });
+
+        let total = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          let money = dataArray[i].price;
+          total += money;
+        }
+        const totalprice = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        setTotalExRp(totalprice);
+      }
+    } catch (error){
+      console.log("실패했습니다", error);
+    }
+  }
   
 
 
@@ -97,28 +225,42 @@ export default function TotalStatComp() {
           <tbody>
             <th>이번 달 총액</th>
             <tr>
-              <td>반복 수입</td>
+              <td>고정 수입</td>
             </tr>
             <tr>
-              <td>0,000,000원</td>
+              <td>{totalIncomeRp ? totalIncomeRp : "0"}원</td>
             </tr>
             <tr>
               <td>일반 수입</td>
             </tr>
             <tr>
-              <td>0,000,000원</td>
+              <td>{totalIncome ? totalIncome : "0"}원</td>
             </tr>
             <tr>
-              <td>반복 지출</td>
+              <td>고정 지출</td>
             </tr>
             <tr>
-              <td>- 0,000,000원</td>
+              <td>- {totalExRp ? totalExRp : "0"}원</td>
             </tr>
             <tr>
               <td>일반 지출</td>
             </tr>
             <tr>
-              <td>- 0,000,000원</td>
+              <td>- {totalEx ? totalEx : "0"}원</td>
+            </tr>
+            {/** 총 자산 시작 */}
+            <tr>
+              <td>현재 총 자산</td>
+            </tr>
+            <tr>
+              <td>
+                {
+                  parseInt(totalIncome.replace(/,/g, ''), 10)
+                  + parseInt(totalIncomeRp.replace(/,/g, ''), 10)
+                  - parseInt(totalEx.replace(/,/g, ''), 10)
+                  - parseInt(totalExRp.replace(/,/g, ''), 10)
+                }원
+              </td>
             </tr>
 
             {/* 총 저금액 시작*/}
@@ -132,7 +274,7 @@ export default function TotalStatComp() {
                   <td>현재 총 저금액</td>
                 </tr>
                 <tr>
-                  <td>-{savingList}원</td>
+                  <td>{savingList}원</td>
                 </tr>
               </div>
               {activeModal === 3 && (
@@ -144,12 +286,6 @@ export default function TotalStatComp() {
                 </Modal>
               )}
           {/* 총 저금액 끝 */}
-            <tr>
-              <td>현재 총 자산</td>
-            </tr>
-            <tr>
-              <td>0,000,000원</td>
-            </tr>
           </tbody>
         </table>
     </div>

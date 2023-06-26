@@ -27,6 +27,16 @@ export default function ChallengeCreate() {
   // 챌린지 이미지 파일
   const [challengeImg, setChallengeImg] = useState(null);
 
+  // 체크 여부 결정하는 함수
+  const isImageSelected = (imageId) => {
+    return challengeImg === imageId;
+  };
+
+  const handleImageSelect = (imageId) => {
+    setChallengeImg(imageId);
+  };
+
+
   const onFileChanges = (event) => {
     console.log(event.target.files);
     const file = event.target.files[0];
@@ -58,27 +68,71 @@ export default function ChallengeCreate() {
         {/** 디폴트 이미지 선택은 눌렀을 때 기존에 데이터에 있는 이미지를
            * 끌어와서 선택되게하기
            */}
-          <p>이미지 선택</p>
-          <hr />
-          <ImgDivBox>예시 이미지1</ImgDivBox>
-          <ImgDivBox>예시 이미지2</ImgDivBox>
-          <ImgDivBox>예시 이미지3</ImgDivBox>
-          {/** + 버튼에 이미지불러오기/불러온이미지를 데이터에 할당하는 작업필요 */}
-          {/** input태그는 display:"none" 을 이용해 안보이게 숨겨준다. */}
-          <input type="file" style={{ display: "none" }} ref={imageInput} 
-            accept=".jpeg, .jpg, .png" onChange={onFileChanges}
-          />
-          <div style={{display : "inline-block", width : "120px", 
-          background : "white", height : "150px", borderRadius : "10px",
-          margin : "10px", border : "solid 1px black", cursor : "pointer"}}
-          onClick={onCickImageUpload}>
-            {challengeImg === null ? "+" : challengeImg && <img 
-              src={challengeImg} 
-              alt='Selected' 
-              style={{display : "inline-block", width : "120px", height : "150px", 
-              borderRadius : "10px"}}
-              />}
+          
+          <div className='img_category'>
+            <p>이미지 선택</p>
+            <hr />
+            <div className='img_category_box'>
+            <label>
+              <input
+                type="radio"
+                checked={isImageSelected('img1.jpg')}
+                onChange={() => handleImageSelect('img1.jpg')}
+              />
+              <img 
+                style={{display : "inline-block", width : "120px", 
+                background : "white", height : "150px", borderRadius : "10px",
+                margin : "10px", border : "solid 1px black", cursor : "pointer"}}
+                src={require('../img/img1.jpg')} 
+                alt=""
+              />
+            </label>
+            <label>
+              <input
+                type="radio"
+                checked={isImageSelected('img2.jpg')}
+                onChange={() => handleImageSelect('img2.jpg')}
+              />
+              <img 
+                style={{display : "inline-block", width : "120px", 
+                background : "white", height : "150px", borderRadius : "10px",
+                margin : "10px", border : "solid 1px black", cursor : "pointer"}}
+                src={require('../img/img2.jpg')} alt=""
+              />
+            </label>
+            <label>
+              <input
+                type="radio"
+                checked={isImageSelected('img3.png')}
+                onChange={() => handleImageSelect('img3.png')}
+              />
+              <img 
+                style={{display : "inline-block", width : "120px", 
+                background : "white", height : "150px", borderRadius : "10px",
+                margin : "10px", border : "solid 1px black", cursor : "pointer"}}
+                src={require('../img/img3.png')} alt=""
+              />
+            </label>
+              {/** + 버튼에 이미지불러오기/불러온이미지를 데이터에 할당하는 작업필요 */}
+              {/** input태그는 display:"none" 을 이용해 안보이게 숨겨준다. */}
+              <input type="file" style={{ display: "none" }} ref={imageInput} 
+                accept=".jpeg, .jpg, .png" onChange={onFileChanges}
+              />
+              <div style={{display : "inline-block", width : "120px", 
+              background : "white", height : "150px", borderRadius : "10px",
+              margin : "10px", border : "solid 1px black", cursor : "pointer"}}
+              onClick={onCickImageUpload}>
+                {challengeImg === null ? "+" : challengeImg && 
+                <img 
+                  src={challengeImg} 
+                  alt='Selected' 
+                  style={{display : "inline-block", width : "120px", height : "150px", 
+                  borderRadius : "10px"}}
+                  />}
+              </div>
+            </div>
           </div>
+          
           
           
           <p>챌린지 정보</p>
@@ -103,7 +157,6 @@ export default function ChallengeCreate() {
           <br />
           <button type='submit'>등록</button>
       </form>
-      <Link to='/challenge/challengeID/view'>완료(useParam 사용해서 만든 챌린지 상세보기로 이동)</Link>
     </div>
   )
 }

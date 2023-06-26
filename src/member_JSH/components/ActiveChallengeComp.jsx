@@ -8,13 +8,13 @@ import { Link } from 'react-router-dom'
 
 // 참여중인 챌린지
 export default function ActiveChallengeComp() {
-  //const user = useSelector((state)=>state.user.user);
+  const user = useSelector((state)=>state.user.user);
   // 화면에 출력하기 위한 state
   const [challengeBoard, setChallengeBoard] = useState();
 
   useEffect(()=>{
     window.scrollTo({top: 0});
-    // user_challenge 컬렉션의 값을 가져와서 사용
+    // my_challenge 컬렉션의 값을 가져와서 사용
     const getChallenge = async()=>{
       const q = query(collection(db, "my_challenge"));
       const querySnapshot = await getDocs(q);
@@ -30,6 +30,7 @@ export default function ActiveChallengeComp() {
           period : doc.data().period,
           involve : doc.data().involve,
           challengeName : doc.data().challengeName,
+          uid : doc.data().uid
         }
         dataArray.push(data)
         console.log(doc.id, " => ", doc.data());
@@ -42,13 +43,15 @@ export default function ActiveChallengeComp() {
     <div>
         <h2>참여중인 챌린지</h2>
         <div>
-          {
-            challengeBoard && challengeBoard.map((board)=>(
-            <Link to={`/challenge/${board.challengeId}/view`} key={challengeBoard.id}>
-              <li>{board.challengeName}</li>
-            </Link>
-            ))
-          }
+          <ul>
+            {
+              challengeBoard && challengeBoard.map((board)=>(
+              <Link to={`/challenge/${board.challengeId}/view`} key={challengeBoard.id}>
+                <li>{board.uid == user.uid ? board.challengeName : null}</li>
+              </Link>
+              ))
+            }
+          </ul>
         </div>
     </div>
   )

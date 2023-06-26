@@ -83,7 +83,7 @@ export default function CommentComp() {
 
   return (
     <div className='.scrollable-container'
-    style={{display : 'inline-block', backgroundColor : "gray", width : "300px", height : "500px"}}>
+    style={{display : 'inline-block', backgroundColor : "gray", width : "500px", height : "500px"}}>
         {
             commentArray && commentArray.map((array)=>(
                 params.id == array.paramId ? 

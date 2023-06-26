@@ -8,9 +8,19 @@ const ImgBox = styled.div `
     height: 150px;
     border-radius: 10px;
     margin: 10px;
+    cursor: pointer;
     `
-export default function ImgDivBox({children, ...rest}) {
+export default function ImgDivBox({children, name, value, selectedImgCategory, ...rest}) {
   return (
-    <ImgBox {...rest}>{children}</ImgBox>
+    <ImgBox selectedImgCategory={selectedImgCategory} value={value}>
+      <input
+        type = "radio"
+        name = {name}
+        value = {value}
+        style={{display : 'none'}}
+        {...rest}
+      />
+        {children}
+      </ImgBox>
   )
 }

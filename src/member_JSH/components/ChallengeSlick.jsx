@@ -1,19 +1,29 @@
-import React, { Component } from "react";
+import React, {useState, useEffect} from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import Card from 'react-bootstrap/Card';
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useParams } from 'react-router-dom'
+import { db } from '../../database/firebase'
+import { getDoc, doc, query, collection, getDocs } from 'firebase/firestore';
+import '../css/challengelist.css'
+import {} from '@fortawesome/fontawesome-svg-core'
+import {faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black", height : "20px",
-    width : "20px", right:"10px"}}
+      style={{ ...style, display: "block", background: "transparent", height : "20px",
+    width:"20px", zIndex:"9", left:"1px", alignItems : "center", cursor:"pointer"}}
       onClick={onClick}
-    />
+    >
+      <FontAwesomeIcon icon={faAngleRight} style={{color:"black"}}/>
+    </div>
   );
 }
 
@@ -22,103 +32,82 @@ function SamplePrevArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black", height : "20px",
-    width:"20px", zIndex:"9", left:"10px" }}
+      style={{ ...style, display: "block", background: "transparent", height : "20px",
+    width:"20px", zIndex:"9", left:"1px", alignItems : "center", cursor:"pointer"}}
       onClick={onClick}
-    />
+    >
+      <FontAwesomeIcon icon={faAngleLeft} style={{color:"black"}}/>
+    </div>
   );
 }
+
+// 디폴트 챌린지 슬라이드
   
-  export default class ChallengeSlick extends Component {
-    render() {
-      const settings = {
-        dots: false,
-        infinite: true,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        arrows : true,
-        autoplay: false,
-        speed: 2000,
-        autoplaySpeed: 5000,
-        nextArrow: <SampleNextArrow />,
-        prevArrow: <SamplePrevArrow />,
-      };
-      return (
-        <div>
-        <h2>도전 챌린지</h2>
-        <Slider {...settings}>
-            <div>
-              <Link to='/challenge/challengeID/view'>
+export default function ChallengeSlick() {
+  const user = useSelector((state)=>state.user.user);
+  const [challengeBoard, setChallengeBoard] = useState();
+  const settings = {
+    dots: true,
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    arrows : false,
+    autoplay: true,
+    speed: 2000,
+    autoplaySpeed: 5000
+  }
+
+  useEffect(()=>{
+    getDefaultChallenge();
+  },[user])
+
+  // default_challenge 컬렉션의 값을 가져와서 사용
+  const getDefaultChallenge = async()=>{
+    const q = query(collection(db, "default_challenge"));
+    const querySnapshot = await getDocs(q);
+    let dataArray = [];
+    querySnapshot.forEach((doc)=>{
+      let data = {
+        id : doc.id,
+        uid : doc.data().uid,
+        name : doc.data().name,
+        time : doc.data().time,
+        content : doc.data().content,
+        img : doc.data().img,
+        writeTime : doc.data().writeTime,
+      }
+      dataArray.push(data)
+      console.log(doc.id, " => ", doc.data());
+    });
+    setChallengeBoard(dataArray)
+  }
+      
+  return (
+    <div className="default-challenge-list">
+      <br />
+    <Slider {...settings}>
+        {
+              challengeBoard && challengeBoard.map((board)=>(
+              <Link to={`/challenge/${board.id}/defaultview`} key={challengeBoard.id}>
                 <Card
-                    style={{
-                      backgroundColor : "gray",
-                      width : "80%",
-                      height: "200px",
-                      backgroundSize : "cover",
-                      backgroundPosition : "center",
-                      padding : "10px"
-                    }}
-                  >
-                    <Card.Body className="camp-slide-bar">
-                    <Card.Title style={{padding : "20px", fontWeight : "bold", color : "white"}}>1</Card.Title>
-                    <Card.Text style={{marginBottom : "0"}}>설명</Card.Text>
+                  style={{
+                    backgroundColor : "gray",
+                    width : "70%",
+                    height: "200px",
+                    backgroundSize : "cover",
+                    backgroundPosition : "center",
+                    padding : "20px",
+                    margin : "auto",
+                  }}
+                >
+                  <Card.Body className="camp-slide-bar">
+                    <Card.Text style={{marginBottom : "0"}}>{board.name}</Card.Text>
                   </Card.Body>
                 </Card>
               </Link>
-            </div>
-            <div>
-              <Card
-                  style={{
-                    backgroundColor : "gray",
-                    width : "80%",
-                    height: "200px",
-                    backgroundSize : "cover",
-                    backgroundPosition : "center",
-                    padding : "10px"
-                  }}
-                >
-                  <Card.Body className="camp-slide-bar">
-                  <Card.Title style={{padding : "20px", fontWeight : "bold", color : "white"}}>2</Card.Title>
-                  <Card.Text style={{marginBottom : "0"}}>설명</Card.Text>
-                </Card.Body>
-              </Card>
-            </div>
-            <div>
-              <Card
-                  style={{
-                    backgroundColor : "gray",
-                    width : "80%",
-                    height: "200px",
-                    backgroundSize : "cover",
-                    backgroundPosition : "center",
-                    padding : "10px"
-                  }}
-                >
-                  <Card.Body className="camp-slide-bar">
-                  <Card.Title style={{padding : "20px", fontWeight : "bold", color : "white"}}>3</Card.Title>
-                  <Card.Text style={{marginBottom : "0"}}>설명</Card.Text>
-                </Card.Body>
-              </Card>
-            </div>
-            <div>
-              <Card
-                  style={{
-                    backgroundColor : "gray",
-                    width : "80%",
-                    height: "200px",
-                    backgroundSize : "cover",
-                    backgroundPosition : "center",
-                    padding : "10px"
-                  }}
-                >
-                  <Card.Body className="camp-slide-bar">
-                  <Card.Title style={{padding : "20px", fontWeight : "bold", color : "white"}}>4</Card.Title>
-                  <Card.Text style={{marginBottom : "0"}}>설명</Card.Text>
-                </Card.Body>
-              </Card>
-            </div>
-          </Slider>
-        </div>
-      );
-    }
-  }
+              ))
+        }
+      </Slider>
+    </div>
+  )
+}

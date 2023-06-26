@@ -39,14 +39,15 @@ function SampleNextArrow(props) {
 
 
 export default function MyChallengeSlideComp() {
-    // const user = useSelector((state)=>state.user.user);
+    const user = useSelector((state)=>state.user.user);
     // 화면에 출력하기 위한 state
-    const [challengeBoard, setChallengeBoard] = useState();
+    const [challengeBoard, setChallengeBoard] = useState([]);
 
     useEffect(()=>{
       window.scrollTo({top: 0});
       // user_challenge 컬렉션의 값을 가져와서 사용
       const getChallenge = async()=>{
+        if(user && user.uid){
         const q = query(collection(db, "my_challenge"));
         const querySnapshot = await getDocs(q);
         let dataArray = [];
@@ -61,14 +62,18 @@ export default function MyChallengeSlideComp() {
             period : doc.data().period,
             involve : doc.data().involve,
             challengeName : doc.data().challengeName,
+            uid : doc.data().uid
           }
-          dataArray.push(data)
+          if(data.uid == user.uid) {
+            dataArray.push(data);
+          }
           console.log(doc.id, " => ", doc.data());
         });
-        setChallengeBoard(dataArray)
+        setChallengeBoard(dataArray);
       }
+    };
       getChallenge();
-    },[])
+    },[user])
 
     const settings = {
         dots: true,
@@ -87,19 +92,14 @@ export default function MyChallengeSlideComp() {
         <h2>챌린지</h2>
         <div style={{width : "300px", height : "100px"}}>
             <Slider {...settings}>
-                {challengeBoard && !challengeBoard.done &&
+                {challengeBoard.length > 0 && !challengeBoard.done &&
                     challengeBoard.map((board) => (
-                    <Link to={`/challenge/${board.challengeId}/view`} key={challengeBoard.id}
+                    <Link to={`/challenge/${board.challengeId}/view`} key={board.id}
                         style={{textDecoration : "none"}}
                     >
                         <div>
                             <p>{board.challengeName}</p>
                             <p>{board.period}</p>
-                            <ProgressBar
-                                completed={(Date.now() - board.startDate) / (board.endDate - board.startDate) * 100}
-                                width={100}
-                            >
-                            </ProgressBar>
                         </div>
                     </Link>
                 ))}
