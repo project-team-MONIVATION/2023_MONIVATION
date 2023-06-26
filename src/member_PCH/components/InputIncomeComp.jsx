@@ -178,7 +178,10 @@ export default function InputIncomeComp({ handleSubmit }) {
         </div>
 
         <input 
-          className='submit_btn'
+          className={
+            'submit_btn' +
+            ((!date || !price || !selectedCategory) ? " disabled" : "")
+          }
           type="submit" 
           value="입력" 
           disabled={!date || !price || !selectedCategory}

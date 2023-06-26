@@ -25,6 +25,9 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
   // 기간 입력하는 모달 state
   const [showPeriod, setShowPeriod] = useState(false);
 
+  // 반복주기 입력하는 커스텀 select state
+  const [cycleSelect, setCycleSelect] = useState(false);
+
   // form의 입력 값 state
   const [date, setDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
@@ -50,6 +53,11 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
     e.preventDefault();
     setShowPeriod(true);
   };
+
+  // 반복주기 입력하는 커스텀 select on/off
+  const onClickCycleSelect = () => {
+    setCycleSelect((prev)=>!prev);
+  }
 
   // endDate 값 입력
   const onClickEndDate = (newDate) => {
@@ -78,11 +86,13 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
     return valueDate;
   };
 
+
+
+
   // submit 이벤트
   const inputIncomeRepeat = async(e) => {
     e.preventDefault();
-    // 작성된 값을 firestore의 money_income_repeat 컬렉션에 추가
-    await addDoc(collection(db, "money_income_repeat"), {
+    const incomeData = {
       uid : user.uid,
       date : date,
       startDate : date,
@@ -91,10 +101,142 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
       price : price,
       category : selectedCategory,
       memo : memo
-    });
+    }
+    const gap = incomeData.endDate - incomeData.startDate;
+    const day = Math.floor((gap / (1000 * 60 * 60 * 24)) + 1);
+    const week = Math.floor(gap / (1000 * 60 * 60 * 24 * 7));
+    const month = Math.floor(gap / (1000 * 60 * 60 * 24 * 30));
+    const year = Math.floor(gap / (1000 * 60 * 60 * 24 * 365));
+    
+    // * 2-1. cycle이 "매일"일 때
+    if ( cycle === "매일" ) {
+      // console.log(incomeData.startDate, incomeData.endDate, cycle, day)
+      // 1. incomeData를 firestore의 money_income_repeat_list 컬렉션에 추가
+      const docRef = await addDoc(collection(db, "money_income_repeat_list"), incomeData);
+      const incomeDocId = docRef.id;
+      // 2. incomeData의 date를 분할하고 계산하여 money_income_repeat 컬렉션에 추가하는 divisionIncome 함수 작성
+      const divisionIncome = async () => {
+        for (let i = 0; i < day; i++) {
+          const incomeDate = new Date(incomeData.date);
+          // i 를 이용하여 date 계산
+          incomeDate.setDate(incomeDate.getDate() + i);
+          const resultDate = incomeDate.toLocaleDateString('ko-KR');
+          // money_income_repeat 컬렉션에 추가
+          await addDoc(collection(db, 'money_income_repeat'), {
+            docid : incomeDocId,
+            uid : incomeData.uid,
+            date : new Date(resultDate),
+            startDate : incomeData.startDate,
+            endDate : incomeData.endDate,
+            price : incomeData.price,
+            category : incomeData.category,
+            memo : incomeData.memo
+          })
+        }
+      };
+      // 3. divisionIncome 함수 실행
+      divisionIncome();
+      
+    }
+
+    // * 2-2. cycle이 "매주"일 때
+    else if ( cycle === "매주" ) {
+      // console.log(incomeData.startDate, incomeData.endDate, cycle, week)
+      // 1. incomeData를 firestore의 money_income_repeat_list 컬렉션에 추가
+      const docRef = await addDoc(collection(db, "money_income_repeat_list"), incomeData);
+      const incomeDocId = docRef.id;
+      // 2. incomeData의 date를 분할하고 계산하여 money_income_repeat 컬렉션에 추가하는 divisionIncome 함수 작성
+      const divisionIncome = async () => {
+        for (let i = 0; i <= week; i++) {
+          const incomeDate = new Date(incomeData.date);
+          // i 를 이용하여 date 계산
+          incomeDate.setDate(incomeDate.getDate() + (i * 7));
+          const resultDate = incomeDate.toLocaleDateString('ko-KR');
+          // money_income_repeat 컬렉션에 추가
+          await addDoc(collection(db, 'money_income_repeat'), {
+            docid : incomeDocId,
+            uid : incomeData.uid,
+            date : new Date(resultDate),
+            startDate : incomeData.startDate,
+            endDate : incomeData.endDate,
+            price : incomeData.price,
+            category : incomeData.category,
+            memo : incomeData.memo
+          })
+        }
+      };
+      // 3. divisionIncome 함수 실행
+      divisionIncome();
+    }
+
+    // * 2-3. cycle이 "매월"일 때
+    else if ( cycle === "매월" ) {
+      //console.log(incomeData.startDate, incomeData.endDate, cycle, month)
+      // 1. incomeData를 firestore의 money_income_repeat_list 컬렉션에 추가
+      const docRef = await addDoc(collection(db, "money_income_repeat_list"), incomeData);
+      const incomeDocId = docRef.id;
+      // 2. incomeData의 date를 분할하고 계산하여 money_income_repeat 컬렉션에 추가하는 divisionIncome 함수 작성
+      const divisionIncome = async () => {
+        for (let i = 0; i <= month; i++) {
+          const incomeDate = new Date(incomeData.date);
+          // i 를 이용하여 date 계산
+          incomeDate.setMonth(incomeDate.getMonth() + i);
+          const resultDate = incomeDate.toLocaleDateString('ko-KR');
+          // money_income_repeat 컬렉션에 추가
+          await addDoc(collection(db, 'money_income_repeat'), {
+            docid : incomeDocId,
+            uid : incomeData.uid,
+            date : new Date(resultDate),
+            startDate : incomeData.startDate,
+            endDate : incomeData.endDate,
+            price : incomeData.price,
+            category : incomeData.category,
+            memo : incomeData.memo
+          })
+        }
+      };
+      // 3. divisionIncome 함수 실행
+      divisionIncome();
+    }
+
+    // * 2-4. cycle이 "매년"일 때
+    else if (cycle === "매년") {
+      //console.log(incomeData.startDate, incomeData.endDate, cycle, year)
+      // 1. incomeData를 firestore의 money_income_repeat_list 컬렉션에 추가
+      const docRef = await addDoc(collection(db, "money_income_repeat_list"), incomeData);
+      const incomeDocId = docRef.id;
+      // 2. incomeData의 date를 분할하고 계산하여 money_income_repeat 컬렉션에 추가하는 divisionIncome 함수 작성
+      const divisionIncome = async () => {
+        for (let i = 0; i <= year; i++) {
+          const incomeDate = new Date(incomeData.date);
+          // i 를 이용하여 date 계산
+          incomeDate.setFullYear(incomeDate.getFullYear() + i);
+          const resultDate = incomeDate.toLocaleDateString('ko-KR');
+          // money_income_repeat 컬렉션에 추가
+          await addDoc(collection(db, 'money_income_repeat'), {
+            docid : incomeDocId,
+            uid : incomeData.uid,
+            date : new Date(resultDate),
+            startDate : incomeData.startDate,
+            endDate : incomeData.endDate,
+            price : incomeData.price,
+            category : incomeData.category,
+            memo : incomeData.memo
+          })
+        }
+      };
+
+      // 3. divisionIncome 함수 실행
+      divisionIncome();
+    }
+
+    // 3단계
     // 입력 모달창을 닫기 위한 handleSubmit 함수를 호출
     handleSubmit();
   };
+
+
+
 
   return (
     <div id='input_form'>
@@ -165,26 +307,71 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
                       <div className='input_cycle'>
                         <p>반복주기</p>
                         <div className='select'>
-                          <div className='chevron_down'/>
-                          <select 
-                            name="cycle"
-                            onChange={(e)=>{setCycle(e.target.value)}}
-                            className={ cycle !== null ? "active" : ""}
-                          >
-                            <option value="value" selected disabled>
-                              필수선택
-                            </option>
-                            <option value="매일">매일</option>
-                            <option value="매주">매주</option>
-                            <option value="매월">매월</option>
-                            <option value="매년">매년</option>
-                          </select>
+                          <div 
+                          className={
+                            'select_box' +
+                            (cycleSelect? ' active' : '')
+                          }>
+                            <button 
+                              type='button' 
+                              className={ 
+                                'select_lable' +
+                                (cycle !== null ? " active" : "")
+                              }
+                              onClick={onClickCycleSelect}
+                            >
+                              {cycle === null ? "필수선택" : cycle}
+                            </button>
+                            <ul 
+                              className='option_list'
+                            >
+                              <li 
+                                className='ontion_item'
+                                onClick={(e)=>{
+                                  setCycle('매일')
+                                  setCycleSelect((prev)=>!prev)
+                                }}
+                              >
+                                매일
+                              </li>
+                              <li 
+                                className='ontion_item'
+                                onClick={(e)=>{
+                                  setCycle('매주')
+                                  setCycleSelect((prev)=>!prev);
+                                }}
+                              >
+                                매주
+                              </li>
+                              <li 
+                                className='ontion_item'
+                                onClick={(e)=>{
+                                  setCycle('매월')
+                                  setCycleSelect((prev)=>!prev);
+                                }}
+                              >
+                                매월
+                              </li>
+                              <li 
+                                className='ontion_item'
+                                onClick={(e)=>{
+                                  setCycle('매년')
+                                  setCycleSelect((prev)=>!prev);
+                                }}
+                              >
+                                매년
+                              </li>
+                            </ul>
+                          </div>
                         </div>
                         <button 
                           type='button' 
                           onClick={()=>{setShowPeriod(false)}}
                           disabled={!endDate || !cycle}
-                          className= {!endDate || !cycle ? "disabled" : ""}
+                          className= {
+                            'input_btn' +
+                            (!endDate || !cycle ? " disabled" : "")
+                          }
                         >
                           입력
                         </button>
@@ -261,7 +448,10 @@ export default function InputIncomeRepeatComp({ handleSubmit }) {
         </div>
 
         <input 
-          className='submit_btn'
+          className={
+            'submit_btn' +
+            ((!date || !endDate || !cycle || !price || !selectedCategory) ? " disabled" : "")
+          }
           type="submit" 
           value="입력" 
           disabled={!date || !endDate || !cycle || !price || !selectedCategory}

@@ -6,9 +6,9 @@ import { doc, getDoc, addDoc, collection, getDocs, query, deleteDoc, where, upda
 import { useNavigate, useParams } from 'react-router'
 import CommentComp from '../components/CommentComp'
 
+// 유저 챌린지 뷰
 export default function ChallengeView() {
   const user = useSelector((state)=>state.user.user);
-  //const user = useSelector((state)=>state.user);
   //const [challenge, setChallenge] = useState();
   // 주소창의 params 값 가져온다.
   const params = useParams();
@@ -29,7 +29,8 @@ export default function ChallengeView() {
   useEffect(()=>{
     const updateDocFieldDone = async()=>{
       // query를 변수명으로 쓰면안됨
-      const q = query(collection(db, "my_challenge"), where("challengeId", "==", params.id));
+      const q = query(collection(db, "my_challenge"), where("challengeId", "==", params.id), 
+      where("uid", "==", user.uid));
       const querySnapshot = await getDocs(q);
       const now = new Date()
       querySnapshot.forEach((doc) => {
@@ -82,7 +83,8 @@ export default function ChallengeView() {
       console.log(challengeData);
       if(challengeData){
         const challengeId = challengeData;
-        const q = query(collection(db, "my_challenge"), where("challengeId", "==", challengeId));
+        const q = query(collection(db, "my_challenge"), 
+        where("challengeId", "==", challengeId), where("uid", "==", user.uid));
         getDocs(q)
         .then((querySnapshot) => {
         if (querySnapshot.empty) {
@@ -153,7 +155,7 @@ export default function ChallengeView() {
       done : false,
       endDate : futureDate,
       challengeName : challengeBoard.name,
-      involve : true
+      uid : user.uid
     });
     
   };
@@ -185,7 +187,7 @@ export default function ChallengeView() {
   // 등록한 챌린지 취소 함수
   const cancleChallenge = async()=>{
     try{
-      const q = query(collection(db, "my_challenge"), where("challengeId", "==", params.id));
+      const q = query(collection(db, "my_challenge"), where("challengeId", "==", params.id), where("uid", "==", user.uid));
 
       // 쿼리 실행하여 문서 가져오기
       const querySnapshot = await getDocs(q);
@@ -227,7 +229,10 @@ export default function ChallengeView() {
     <div>
       <h1>챌린지 상세보기</h1>
       <div>
-        <img src="" alt="" />
+        {/** 업로드해서 넣은 이미지 url과 그냥 imgId만 넣은 파일을 구분해서 들고와야함 */}
+        <img src={challengeBoard?.img && (challengeBoard.img.length < 10 ? require(`../img/${challengeBoard.img}`) : challengeBoard.img)}
+          style={{width : "300px"}}
+        alt="" />
         <p>챌린지명 : {challengeBoard && challengeBoard.name}</p>
         <p>기간 : {time}</p>
         {/** challenge 데이터에 user.nickname도 넣을 예정 */}
@@ -242,7 +247,8 @@ export default function ChallengeView() {
             : <button>로그인 해주세요</button>
         }
         {
-          user && challengeBoard && challengeBoard.uid === user.uid ? <button onClick={deleteChallenge}>챌린지 삭제</button> : null
+          user && challengeBoard && challengeBoard.uid === user.uid ? 
+          <button onClick={deleteChallenge}>챌린지 삭제</button> : null
         }
         {
           user && challengeBoard && challengeBoard.uid === user.uid ? <button>챌린지 수정</button> : null
