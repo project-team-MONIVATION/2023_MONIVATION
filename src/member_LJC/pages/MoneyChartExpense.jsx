@@ -649,6 +649,11 @@ export default function MoneyChartExpense() {
                                         <input ref={el => (inputRef.current[0] = el)}  
                                         type="text"
                                         disabled
+                                        />
+                                        ~  
+                                        <input ref={el => (inputRef.current[1] = el)}  
+                                            type="text"
+                                            disabled
                                             
                                         />
                                     </div>
@@ -673,12 +678,6 @@ export default function MoneyChartExpense() {
                                 </div>
                                 <div className='endday_content'>
                                     <div>
-                                        ~  
-                                        <input ref={el => (inputRef.current[1] = el)}  
-                                            type="text"
-                                            disabled
-                                            
-                                        />
                                     </div>
                                     <div>
                                         {/* 종료일 */}
