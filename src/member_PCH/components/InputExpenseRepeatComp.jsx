@@ -24,14 +24,21 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
   // 기간 입력하는 모달 state
   const [showPeriod, setShowPeriod] = useState(false);
 
+  // 반복주기 입력하는 커스텀 select state
+  const [cycleSelect, setCycleSelect] = useState(false);
+
+  // 결제수단 입력하는 커스텀 select state
+  const [paymentSelect, setPaymentSelect] = useState(false);
+
   // form의 입력 값 state
   const [date, setDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
   const [cycle, setCycle] = useState(null);
   const [price, setPrice] = useState("");
-  const [payment, setPayment] = useState("현금");
+  const [payment, setPayment] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [memo, setMemo] = useState("");
+
 
   // 날짜 입력하는 캘린더 모달 on
   const onClickCal = (e) => {
@@ -51,6 +58,11 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
     setShowPeriod(true);
   };
 
+  // 반복주기 입력하는 커스텀 select on/off
+  const onClickCycleSelect = () => {
+    setCycleSelect((prev)=>!prev);
+  }
+
   // endDate 값 입력
   const onClickEndDate = (newDate) => {
     setEndDate(newDate);
@@ -62,6 +74,11 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
     const formattedValue = new Intl.NumberFormat().format(value); // 숫자 형식으로 변환
     event.target.value = formattedValue;
   };
+
+  // 결제수단 입력하는 커스텀 select on/off
+  const onClickPaymentSelect = () => {
+    setPaymentSelect((prev)=>!prev);
+  }
   
   // selectedCategory 값 입력
   const onClickCategory = (e) => {
@@ -79,11 +96,11 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
   };
 
 
+
   // submit 이벤트
   const inputExpenseRepeat = async(e) => {
     e.preventDefault();
-    // 작성된 값을 firestore의 money_expense_repeat 컬렉션에 추가
-    await addDoc(collection(db, "money_expense_repeat"), {
+    const expenseData = {
       uid : user.uid,
       date : date,
       startDate : date,
@@ -93,7 +110,135 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
       payment : payment,
       category : selectedCategory,
       memo : memo
-    });
+    }
+    const gap = expenseData.endDate - expenseData.startDate;
+    const day = Math.floor((gap / (1000 * 60 * 60 * 24)) + 1);
+    const week = Math.floor(gap / (1000 * 60 * 60 * 24 * 7));
+    const month = Math.floor(gap / (1000 * 60 * 60 * 24 * 30));
+    const year = Math.floor(gap / (1000 * 60 * 60 * 24 * 365));
+
+    // * 2-1. cycle이 "매일"일 때 
+    if ( cycle === "매일" ) {
+      // console.log(expenseData.startDate, expenseData.endDate, cycle, day)
+      // 1. expenseData를 firestore의 money_expense_repeat_list 컬렉션에 추가
+      const docRef = await addDoc(collection(db, "money_expense_repeat_list"), expenseData);
+      const expenseDocId = docRef.id;
+      // 2. expenseData의 date를 분할하고 계산하여 money_expense_repeat 컬렉션에 추가하는 divisionExpense 함수 작성
+      const divisionExpense = async () => {
+        for (let i = 0; i < day; i++) {
+          const expenseDate = new Date(expenseData.date);
+          // i 를 이용하여 date 계산
+          expenseDate.setDate(expenseDate.getDate() + i);
+          const resultDate = expenseDate.toLocaleDateString('ko-KR');
+          // money_expense_repeat 컬렉션에 추가
+          await addDoc(collection(db, 'money_expense_repeat'), {
+            docid : expenseDocId,
+            uid : expenseData.uid,
+            date : new Date(resultDate),
+            startDate : expenseData.startDate,
+            endDate : expenseData.endDate,
+            price : expenseData.price,
+            category : expenseData.category,
+            memo : expenseData.memo
+          })
+        }
+      };
+      // 3. divisionExpense 함수 실행
+      divisionExpense();
+    }
+
+    // * 2-2. cycle이 "매주"일 때
+    else if ( cycle === "매주" ) {
+      // console.log(expenseData.startDate, expenseData.endDate, cycle, week)
+      // 1. expenseData를 firestore의 money_expense_repeat_list 컬렉션에 추가
+      const docRef = await addDoc(collection(db, "money_expense_repeat_list"), expenseData);
+      const expenseDocId = docRef.id;
+      // 2. expenseData의 date를 분할하고 계산하여 money_expense_repeat 컬렉션에 추가하는 divisionExpense 함수 작성
+      const divisionExpense = async () => {
+        for (let i = 0; i <= week; i++) {
+          const expenseDate = new Date(expenseData.date);
+          // i 를 이용하여 date 계산
+          expenseDate.setDate(expenseDate.getDate() + (i * 7));
+          const resultDate = expenseDate.toLocaleDateString('ko-KR');
+          // money_expense_repeat 컬렉션에 추가
+          await addDoc(collection(db, 'money_expense_repeat'), {
+            docid : expenseDocId,
+            uid : expenseData.uid,
+            date : new Date(resultDate),
+            startDate : expenseData.startDate,
+            endDate : expenseData.endDate,
+            price : expenseData.price,
+            category : expenseData.category,
+            memo : expenseData.memo
+          })
+        }
+      };
+      // 3. divisionExpense 함수 실행
+      divisionExpense();
+    }
+
+    // * 2-3. cycle이 "매월"일 때
+    else if ( cycle === "매월" ) {
+      //console.log(expenseData.startDate, expenseData.endDate, cycle, month)
+      // 1. expenseData를 firestore의 money_expense_repeat_list 컬렉션에 추가
+      const docRef = await addDoc(collection(db, "money_expense_repeat_list"), expenseData);
+      const expenseDocId = docRef.id;
+      // 2. expenseData의 date를 분할하고 계산하여 money_expense_repeat 컬렉션에 추가하는 divisionExpense 함수 작성
+      const divisionExpense = async () => {
+        for (let i = 0; i <= month; i++) {
+          const expenseDate = new Date(expenseData.date);
+          // i 를 이용하여 date 계산
+          expenseDate.setMonth(expenseDate.getMonth() + i);
+          const resultDate = expenseDate.toLocaleDateString('ko-KR');
+          // money_expense_repeat 컬렉션에 추가
+          await addDoc(collection(db, 'money_expense_repeat'), {
+            docid : expenseDocId,
+            uid : expenseData.uid,
+            date : new Date(resultDate),
+            startDate : expenseData.startDate,
+            endDate : expenseData.endDate,
+            price : expenseData.price,
+            category : expenseData.category,
+            memo : expenseData.memo
+          })
+        }
+      };
+      // 3. divisionExpense 함수 실행
+      divisionExpense();
+    }
+
+    // * 2-4. cycle이 "매년"일 때
+    else if (cycle === "매년") {
+      //console.log(expenseData.startDate, expenseData.endDate, cycle, year)
+      // 1. expenseData를 firestore의 money_expense_repeat_list 컬렉션에 추가
+      const docRef = await addDoc(collection(db, "money_expense_repeat_list"), expenseData);
+      const expenseDocId = docRef.id;
+      // 2. expenseData의 date를 분할하고 계산하여 money_expense_repeat 컬렉션에 추가하는 divisionExpense 함수 작성
+      const divisionExpense = async () => {
+        for (let i = 0; i <= year; i++) {
+          const expenseDate = new Date(expenseData.date);
+          // i 를 이용하여 date 계산
+          expenseDate.setFullYear(expenseDate.getFullYear() + i);
+          const resultDate = expenseDate.toLocaleDateString('ko-KR');
+          // money_expense_repeat 컬렉션에 추가
+          await addDoc(collection(db, 'money_expense_repeat'), {
+            docid : expenseDocId,
+            uid : expenseData.uid,
+            date : new Date(resultDate),
+            startDate : expenseData.startDate,
+            endDate : expenseData.endDate,
+            price : expenseData.price,
+            category : expenseData.category,
+            memo : expenseData.memo
+          })
+        }
+      };
+
+      // 3. divisionExpense 함수 실행
+      divisionExpense();
+    }
+    
+    // 3단계
     // 입력 모달창을 닫기 위한 handleSubmit 함수를 호출
     handleSubmit();
   };
@@ -168,25 +313,71 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
                       <div className='input_cycle'>
                         <p>반복주기</p>
                         <div className='select'>
-                          <select 
-                            name="cycle"
-                            onChange={(e)=>{setCycle(e.target.value)}}
-                            className={ cycle !== null ? "active" : ""}
-                          >
-                            <option value="value" selected disabled>
-                              필수선택
-                            </option>
-                            <option value="매일">매일</option>
-                            <option value="매주">매주</option>
-                            <option value="매월">매월</option>
-                            <option value="매년">매년</option>
-                          </select>
+                          <div 
+                          className={
+                            'select_box' +
+                            (cycleSelect? ' active' : '')
+                          }>
+                            <button 
+                              type='button' 
+                              className={ 
+                                'select_lable' +
+                                (cycle !== null ? " active" : "")
+                              }
+                              onClick={onClickCycleSelect}
+                            >
+                              {cycle === null ? "필수선택" : cycle}
+                            </button>
+                            <ul 
+                              className='option_list'
+                            >
+                              <li 
+                                className='ontion_item'
+                                onClick={(e)=>{
+                                  setCycle('매일')
+                                  setCycleSelect((prev)=>!prev)
+                                }}
+                              >
+                                매일
+                              </li>
+                              <li 
+                                className='ontion_item'
+                                onClick={(e)=>{
+                                  setCycle('매주')
+                                  setCycleSelect((prev)=>!prev);
+                                }}
+                              >
+                                매주
+                              </li>
+                              <li 
+                                className='ontion_item'
+                                onClick={(e)=>{
+                                  setCycle('매월')
+                                  setCycleSelect((prev)=>!prev);
+                                }}
+                              >
+                                매월
+                              </li>
+                              <li 
+                                className='ontion_item'
+                                onClick={(e)=>{
+                                  setCycle('매년')
+                                  setCycleSelect((prev)=>!prev);
+                                }}
+                              >
+                                매년
+                              </li>
+                            </ul>
+                          </div>
                         </div>
                         <button
                           type='button' 
                           onClick={()=>{setShowPeriod(false)}}
                           disabled={!endDate || !cycle}
-                          className= {!endDate || !cycle ? "disabled" : ""}
+                          className= {
+                            'input_btn' +
+                            (!endDate || !cycle ? " disabled" : "")
+                          }
                         >
                           입력
                         </button>
@@ -212,18 +403,47 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
             </div>
           </div>
 
-          <div>
+          <div className='payment'>
             <p>결제수단</p>
-            <div className='input_installment'>
-              <select 
-                name="payment" 
-                value={payment}
-                onChange={(e)=>{setPayment(e.target.value)}}
+            <div className='input_payment'>
+              <div 
+                className={
+                  'select_box' +
+                  (paymentSelect ? ' active' : '')
+                }
               >
-                <option value="현금">현금</option>
-                <option value="카드">카드</option>
-                <option value="이체">이체</option>
-              </select>
+                <button
+                  type='button'
+                  onClick={onClickPaymentSelect}
+                >
+                  {payment ? payment : "필수선택"}
+                </button>
+                <ul
+                  className='option_list'
+                >
+                  <li
+                    className='option_item'
+                    onClick={()=>{
+                      setPayment('현금')
+                      setPaymentSelect((prev)=>!prev)
+                    }}
+                  >현금</li>
+                  <li
+                    className='option_item'
+                    onClick={()=>{
+                      setPayment('카드')
+                      setPaymentSelect((prev)=>!prev)
+                    }}
+                  >카드</li>
+                  <li
+                    className='option_item'
+                    onClick={()=>{
+                      setPayment('이체')
+                      setPaymentSelect((prev)=>!prev)
+                    }}
+                  >이체</li>
+                </ul>
+              </div>
             </div>
           </div>
 
@@ -296,10 +516,13 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
         </div>
 
         <input 
-          className='submit_btn'
+          className={
+            'submit_btn' +
+            ((!date || !endDate || !cycle || !price || !payment || !selectedCategory) ? " disabled" : "")
+          }
           type="submit" 
           value="입력" 
-          disabled={!date || !endDate || !cycle || !price || !selectedCategory}
+          disabled={!date || !endDate || !cycle || !price || !payment || !selectedCategory}
         />
       </form>
     </div>

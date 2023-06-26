@@ -21,10 +21,16 @@ export default function InputExpenseComp({ handleSubmit }) {
   // 날짜 입력하는 캘린더 모달 state
   const [showCal, setShowCal] = useState(false);
 
+  // 결제수단 입력하는 커스텀 select state
+  const [paymentSelect, setPaymentSelect] = useState(false);
+
+  // 지불방법 입력하는 커스텀 select state
+  const [installmentSelect, setInstallmentSelect] = useState(false);
+
   // form의 입력 값 state
   const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState("");
-  const [payment, setPayment] =useState("현금");
+  const [payment, setPayment] =useState(null);
   const [installment, setInstallment] = useState("일시불");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [memo, setMemo] = useState("");
@@ -51,6 +57,18 @@ export default function InputExpenseComp({ handleSubmit }) {
     const formattedValue = new Intl.NumberFormat().format(value); // 숫자 형식으로 변환
     event.target.value = formattedValue;
   };
+  
+  // 결제수단 입력하는 커스텀 select on/off
+  const onClickPaymentSelect = () => {
+    setPaymentSelect((prev)=>!prev);
+    setInstallmentSelect(false);
+  }
+
+  // 지불방법 입력하는 커스텀 select state on/off 
+  const onClickInstallmentSelect = () => {
+    setInstallmentSelect((prev)=>!prev);
+    setPaymentSelect(false);
+  }
 
   // selectedCategory 값 입력
   const onClickCategory = (e) => {
@@ -194,41 +212,110 @@ export default function InputExpenseComp({ handleSubmit }) {
 
           <div className='payment'>
             <p>결제수단</p>
-            <div
-              style={{display: "flex", width: "350px", overflow: "hidden"}}
-            >
-              <div 
-                className={
-                  ((payment === "카드") ? "card" : "")
-                  + " input_payment"
-                }
-              >
-                <select 
-                  name="payment" 
-                  value={payment}
-                  onChange={(e)=>{setPayment(e.target.value)}}
+            <div className='input'>
+              <div className='input_payment'>
+                <div 
+                  className={
+                    'select_box' +
+                    (paymentSelect ? ' active' : '') +
+                    (payment === "카드" ? ' card' : '')
+                  }
                 >
-                  <option value="현금">현금</option>
-                  <option value="카드">카드</option>
-                  <option value="이체">이체</option>
-                </select>
+                  <button
+                    type='button'
+                    onClick={onClickPaymentSelect}
+                  >
+                    {payment ? payment : "필수선택"}
+                  </button>
+                  <ul
+                    className='option_list'
+                  >
+                    <li
+                      className='option_item'
+                      onClick={()=>{
+                        setPayment('현금')
+                        setPaymentSelect((prev)=>!prev)
+                        setInstallmentSelect(false)
+                      }}
+                    >현금</li>
+                    <li
+                      className='option_item'
+                      onClick={()=>{
+                        setPayment('카드')
+                        setPaymentSelect((prev)=>!prev)
+                      }}
+                    >카드</li>
+                    <li
+                      className='option_item'
+                      onClick={()=>{
+                        setPayment('이체')
+                        setPaymentSelect((prev)=>!prev)
+                        setInstallmentSelect(false)
+                      }}
+                    >이체</li>
+                  </ul>
+                </div>
               </div>
               {
-              payment && payment === "카드" && (
-                <div className='input_installment'>
-                  <select className='installment' name="installment" onChange={(e)=>setInstallment(e.target.value)}>
-                    <option value="일시불" selected>
-                      일시불
-                    </option>
-                    {
-                      num.map((i)=>(
-                        <option value={i} key={i}>{i}개월</option>
-                      ))
-                    }
-                  </select>
-                </div>
-              )
-            }
+                payment && payment === "카드" && (
+                  <div className='input_installment'>
+                    <div 
+                      className={
+                        'select_box' +
+                        (installmentSelect ? ' active' : '')
+                      }
+                    >
+                      <button
+                        type='button'
+                        onClick={onClickInstallmentSelect}
+                      >
+                        <p>
+                          {installment
+                          ? (installment === '일시불' ? installment : `${installment}개월`)
+                          : "필수선택"}
+                        </p>
+                      </button>
+                      <ul className='option_list'>
+                        <li 
+                          className='option_item'
+                          onClick={()=>{
+                            setInstallment('일시불')
+                            setInstallmentSelect((prev)=>!prev)
+                          }}
+                        >일시불</li>
+                        {
+                          num.map((i)=>(
+                            <li 
+                              key={i}
+                              className='option_item'
+                              onClick={()=>{
+                                setInstallment(i)
+                                setInstallmentSelect((prev)=>!prev)
+                              }}
+                            >
+                              {i}개월
+                            </li>
+                          ))
+                        }
+                      </ul>
+                    </div>
+
+
+                    {/**
+                    <select className='installment' name="installment" onChange={(e)=>setInstallment(e.target.value)}>
+                      <option value="일시불" selected>
+                        일시불
+                      </option>
+                      {
+                        num.map((i)=>(
+                          <option value={i} key={i}>{i}개월</option>
+                        ))
+                      }
+                    </select>
+                    */}
+                  </div>
+                )
+              }
             </div>
           </div>
 
@@ -346,10 +433,13 @@ export default function InputExpenseComp({ handleSubmit }) {
         </div>
 
         <input 
-          className='submit_btn'
+          className={
+            'submit_btn' +
+            ((!date || !price || !payment || !selectedCategory || !installment) ? " disabled" : "")
+          }
           type="submit" 
           value="입력" 
-          disabled={!date || !price || !payment || !selectedCategory || (installment > 60) }
+          disabled={!date || !price || !payment || !selectedCategory || !installment }
         />
       </form>
     </div>
