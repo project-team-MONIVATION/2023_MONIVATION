@@ -6,9 +6,9 @@ import { doc, getDoc, addDoc, collection, getDocs, query, deleteDoc, where, upda
 import { useNavigate, useParams } from 'react-router'
 import CommentComp from '../components/CommentComp'
 
+// 유저 챌린지 뷰
 export default function ChallengeView() {
   const user = useSelector((state)=>state.user.user);
-  //const user = useSelector((state)=>state.user);
   //const [challenge, setChallenge] = useState();
   // 주소창의 params 값 가져온다.
   const params = useParams();
@@ -229,7 +229,10 @@ export default function ChallengeView() {
     <div>
       <h1>챌린지 상세보기</h1>
       <div>
-        <img src="" alt="" />
+        {/** 업로드해서 넣은 이미지 url과 그냥 imgId만 넣은 파일을 구분해서 들고와야함 */}
+        <img src={challengeBoard?.img && (challengeBoard.img.length < 10 ? require(`../img/${challengeBoard.img}`) : challengeBoard.img)}
+          style={{width : "300px"}}
+        alt="" />
         <p>챌린지명 : {challengeBoard && challengeBoard.name}</p>
         <p>기간 : {time}</p>
         {/** challenge 데이터에 user.nickname도 넣을 예정 */}
@@ -244,7 +247,8 @@ export default function ChallengeView() {
             : <button>로그인 해주세요</button>
         }
         {
-          user && challengeBoard && challengeBoard.uid === user.uid ? <button onClick={deleteChallenge}>챌린지 삭제</button> : null
+          user && challengeBoard && challengeBoard.uid === user.uid ? 
+          <button onClick={deleteChallenge}>챌린지 삭제</button> : null
         }
         {
           user && challengeBoard && challengeBoard.uid === user.uid ? <button>챌린지 수정</button> : null

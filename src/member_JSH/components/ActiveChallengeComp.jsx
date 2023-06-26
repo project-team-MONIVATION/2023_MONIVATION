@@ -14,7 +14,7 @@ export default function ActiveChallengeComp() {
 
   useEffect(()=>{
     window.scrollTo({top: 0});
-    // user_challenge 컬렉션의 값을 가져와서 사용
+    // my_challenge 컬렉션의 값을 가져와서 사용
     const getChallenge = async()=>{
       const q = query(collection(db, "my_challenge"));
       const querySnapshot = await getDocs(q);

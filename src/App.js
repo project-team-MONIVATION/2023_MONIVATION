@@ -40,6 +40,7 @@ import './member_PCH/styles/modal.css';
 import './member_PCH/styles/modalCalendar.css';
 import MoneyChartIncome from './member_LJC/pages/MoneyChartIncome';
 import MoneyChartExpense from './member_LJC/pages/MoneyChartExpense';
+import DefaultChallengeView from './member_JSH/pages/DefaultChallengeView';
 
 function App() {
 
@@ -78,6 +79,7 @@ function App() {
           <Route path='/challenge' element={<ChallengeList/>}/>
           <Route path='/challenge/create' element={<ChallengeCreate/>}/>
           <Route path='/challenge/:id/view' element={<ChallengeView/>}/>
+          <Route path='/challenge/:id/defaultview' element={<DefaultChallengeView />}/>
 
           <Route path='/asset' element={<Asset/>}/>
           <Route path='/asset/managerlist' element={<AssetManagerList/>}/>

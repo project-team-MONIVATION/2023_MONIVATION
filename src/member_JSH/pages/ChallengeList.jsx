@@ -6,10 +6,12 @@ import ChallengeSlick from '../components/ChallengeSlick'
 import { useParams } from 'react-router-dom'
 import { db } from '../../database/firebase'
 import { getDoc, doc, query, collection, getDocs } from 'firebase/firestore';
-import { async } from 'q'
 import { useSelector } from 'react-redux'
 import ActiveChallengeComp from '../components/ActiveChallengeComp'
-import MyChallengeSlideComp from '../components/MyChallengeSlideComp'
+//import MyChallengeSlideComp from '../components/MyChallengeSlideComp'
+
+import '../css/challengelist.css';
+import BadgeBoxComp from '../components/BadgeBoxComp'
 
 
 export default function ChallengeList() {
@@ -46,15 +48,32 @@ export default function ChallengeList() {
       <h1>챌린지 목록</h1>
       <ChallengeSlick />
       <br />
-      {
-        challengeBoard && challengeBoard.map((board)=>(
-          <Link to={`/challenge/${board.id}/view`} key={challengeBoard.id}>
-            <li>{board.name}</li>
-          </Link>
-        ))
-      }
-      <ActiveChallengeComp />
-      <Link to='/challenge/create'>생성</Link>
+      <h1>유저 챌린지</h1>
+      <br />
+      <ul style={{listStyle : 'none'}}
+        className="card-grid"
+      >
+        {
+          challengeBoard && challengeBoard.map((board)=>(
+            <Link to={`/challenge/${board.id}/view`} key={challengeBoard.id}>
+              <li>
+                <div style={{width : "300px", display : "inline-block", 
+                backgroundImage :`url(/img/${board.img})`,
+                backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
+                  className="card"
+                >
+                  <p>{board.name}</p>
+                </div>
+                <p>작성자 : {board.uid}</p>
+              </li>
+            </Link>
+          ))
+        }
+      </ul>
+      <button>
+        <Link to='/challenge/create'>생성</Link>
+      </button>
+      <BadgeBoxComp />
     </div>
   )
 }

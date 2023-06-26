@@ -248,6 +248,20 @@ export default function TotalStatComp() {
             <tr>
               <td>- {totalEx ? totalEx : "0"}원</td>
             </tr>
+            {/** 총 자산 시작 */}
+            <tr>
+              <td>현재 총 자산</td>
+            </tr>
+            <tr>
+              <td>
+                {
+                  parseInt(totalIncome.replace(/,/g, ''), 10)
+                  + parseInt(totalIncomeRp.replace(/,/g, ''), 10)
+                  - parseInt(totalEx.replace(/,/g, ''), 10)
+                  - parseInt(totalExRp.replace(/,/g, ''), 10)
+                }원
+              </td>
+            </tr>
 
             {/* 총 저금액 시작*/}
               <div
@@ -260,7 +274,7 @@ export default function TotalStatComp() {
                   <td>현재 총 저금액</td>
                 </tr>
                 <tr>
-                  <td>-{savingList}원</td>
+                  <td>{savingList}원</td>
                 </tr>
               </div>
               {activeModal === 3 && (
@@ -272,20 +286,6 @@ export default function TotalStatComp() {
                 </Modal>
               )}
           {/* 총 저금액 끝 */}
-
-          {/** 총 자산 시작 */}
-            <tr>
-              <td>현재 총 자산</td>
-            </tr>
-            <tr>
-              <td>
-                {
-                  parseInt(totalIncome.replace(/,/g, ''), 10)
-                  + parseInt(totalIncomeRp.replace(/,/g, ''), 10)
-                  - parseInt(totalEx.replace(/,/g, ''), 10)
-                  - parseInt(totalExRp.replace(/,/g, ''), 10)
-                }원</td>
-            </tr>
           </tbody>
         </table>
     </div>
