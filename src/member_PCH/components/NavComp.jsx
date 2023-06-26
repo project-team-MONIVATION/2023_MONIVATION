@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom'
-import { logout } from '../member_PC_HS/slice/userSlice';
+import { logout } from '../../member_PC_HS/slice/userSlice';
 
 export default function NavComp() {
   const user = useSelector((state)=>state.user.user);
@@ -15,7 +15,7 @@ export default function NavComp() {
   };
 
   return (
-    <div>
+    <div id='nav'>
       <NavLink to='/'>로고</NavLink>
       <NavLink to='/calendar'>가계부</NavLink>
       <NavLink to='/challenge'>챌린지</NavLink>
