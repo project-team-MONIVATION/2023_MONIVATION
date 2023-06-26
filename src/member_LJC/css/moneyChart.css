@@ -1,15 +1,20 @@
-/* .pull_container{
-    padding: 0 20px;
-} */
+.pull_container{
+    background-color: #735BF3;
+    height: 100vh;
+    
+}
 
 
 
 .container_wrap {
-    
+    border: 1px white solid;
+    border-radius: 30px;
+    background-color: white;
+    margin: 0 50px;
 }
 
 .wrap_1{
-    margin: 0 2.7%;
+    margin: 0 9%;
     margin-bottom: 6px;
 }
 
@@ -42,13 +47,20 @@
 .charts_wrap {
     display: flex;
     justify-content: center;
+    
 }
 
 
 .container_charts {
     display: grid;
-    grid-template-columns: repeat(3, 600px);
+    grid-template-columns: repeat(3, minmax(600px));
     grid-template-rows: repeat(2, 400px);
+    
+}
+
+.item {
+    border: 1px white solid;
+    border-radius: 30px;
 }
 
 .item:nth-child(1) {
@@ -58,23 +70,87 @@
     /* 1번 라인에서 3칸 */
     /* grid-row: 1 / span 2; */
     grid-row: 1 / 3;
-    
-    
+    margin-right: 10px;
 }
 .item:nth-child(2) {
-	background-color: rgb(196, 243, 217);
+	/* background-color: rgb(196, 243, 217); */
     grid-column : 2 / span 2;
     
 }
 .item:nth-child(3) {
-	background-color: rgb(206, 197, 231);
-
+	/* background-color: rgb(206, 197, 231); */
     grid-column : 2 / span 2;
+    
 }
+
+.menulist {
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+    height: 30px;
+}
+.menulist span:nth-child(1) {
+    left: 70px;
+    position: absolute;
+}
+.menulist span:nth-child(2) {
+    left: 190px;
+    position: absolute;
+}
+.menulist span:nth-child(3) {
+    position: absolute;
+    left: 330px;
+}
+.menulist span:nth-child(4) {
+    position: absolute;
+    right: 270px;
+}
+
+
+.item_tree_wrap {
+    display: inline-block;
+    width: 100%;
+    height: 90%;  
+    overflow-y: scroll;
+    /* border: 1px solid rgb(177, 60, 60); */
+    box-sizing: border-box;
+    color: white;
+    /* background-color: rgba(0,0,0,0.8); */
+}
+
+/* 스크롤바 설정*/
+.box2::-webkit-scrollbar{
+    width: 6px;
+}
+
+/* 스크롤바 막대 설정*/
+.box2::-webkit-scrollbar-thumb{
+    background: linear-gradient(#f64435, #ffe498);
+    border-radius: 25px;
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.box2::-webkit-scrollbar-track{
+    background-color: #ffffff;
+}
+
 
 .item_child_three{
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 4fr;
+    padding: 10px;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: 1px solid rgb(70, 107, 177);
+    color: black;
+    border-radius: 8px;
 }
+
+/* .item_child_three:nth-child(1) {
+    margin-right: 10px;
+} */
 
 .check_button {
     display: flex;

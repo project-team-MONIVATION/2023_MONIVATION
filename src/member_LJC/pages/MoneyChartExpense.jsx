@@ -21,6 +21,7 @@ import { SelectDate } from '../../member_PCH/features/IconInModal';
 
 
 
+
 ChartJS.register(
     ArcElement,
     CategoryScale,
@@ -86,6 +87,7 @@ export const lineoptions = {
 export default function MoneyChartExpense() {
     const navigate = useNavigate();
     const [value, onChange] = useState(new Date());
+
     const user = useSelector((state) => state.user.user);
 
     
@@ -110,6 +112,9 @@ export default function MoneyChartExpense() {
     const [ nowmonthfirstday, setNowmonthfirstday] = useState('');
     // 마지막날
     const [ nowmonthlastday, setNowmonthlastday] = useState('');
+
+    // 한번반복(처음 시작했을때 useEffect 반복)
+    const [checked, setChecked] = useState(false);
 
         // 일(day )열기 닫기
         const [isCheck, setCheck] = useState(false);
@@ -149,34 +154,34 @@ export default function MoneyChartExpense() {
     const inputRef = useRef([]);
     
 
-    useEffect(() => {
-        getSavingData();
-    }, [user]); // [user] 가바뀔떄마다 돈다
+    // useEffect(() => {
+    //     getSavingData();
+    // }, [user]); // [user] 가바뀔떄마다 돈다
 
-    // 지출 불러오기
-    const getSavingData = async () => {
-        try {
-            const fmCollectionRef = collection(db, "money_expense");
-            const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
-            const fmQuerySnapshot = await getDocs(fmQuery);
+    // // 지출 불러오기
+    // const getSavingData = async () => {
+    //     try {
+    //         const fmCollectionRef = collection(db, "money_expense");
+    //         const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+    //         const fmQuerySnapshot = await getDocs(fmQuery);
             
-            if (!user.uid) {
-                navigate('/account/login');
-            } else {
-                let dataArray = [];
-                let newArray = [];
+    //         if (!user.uid) {
+    //             navigate('/account/login');
+    //         } else {
+    //             let dataArray = [];
+    //             let newArray = [];
 
-                fmQuerySnapshot.forEach((doc) => {
-                    dataArray.push({
-                        ...doc.data(),
-                        id: doc.id,
-                    });
-                });
-            }
-        } catch (error) {
-            console.log("실패했습니다", error);
-        }
-    };
+    //             fmQuerySnapshot.forEach((doc) => {
+    //                 dataArray.push({
+    //                     ...doc.data(),
+    //                     id: doc.id,
+    //                 });
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.log("실패했습니다", error);
+    //     }
+    // };
     
     
 
@@ -189,7 +194,7 @@ export default function MoneyChartExpense() {
             day: '2-digit'
             };
         
-            const dataList = d.map(({ category, price, date }) => {
+            const dataList = d.map(({ category, price, date, memo }) => {
             const formattedDate = date
                 .toDate()
                 .toLocaleString('en-US', options)
@@ -199,7 +204,8 @@ export default function MoneyChartExpense() {
             return {
                 category,
                 price,
-                date: `${year}-${month}-${day}`
+                date: `${year}-${month}-${day}`,
+                memo,
             };
             });
         
@@ -353,12 +359,7 @@ export default function MoneyChartExpense() {
         // 12시 0분 0초를 못 담아서 하루 를 빼줘야 그 날에 대입이됨
         let startday = new Date(inputRef.current[0].value);
         startday.setDate(s.getDate() - 1);
-        // strartday date형식
-        // s date형식
-        // inputRef.current[0].value string  형식
-        console.log("이거뭐임",inputRef.current[0].value)
-        console.log("이거뭐임2",s)
-        console.log("이거뭐임2",startday)
+        
 
 
         const fmCollectionRef = collection(db, "money_expense");
@@ -380,7 +381,7 @@ export default function MoneyChartExpense() {
             // 중복된 카테고리 합침 
             // 중복된 카테고리의 금액도 합침
             const ctgpic = transform(deduplication(samecategory(dayFilterDateList)))
-            // console.log(ctgpic)
+            // console.log(dayFilterDateList)
 
             // 선 그래프
             // 중복된 날짜 합침
@@ -494,7 +495,14 @@ export default function MoneyChartExpense() {
         handleTest3()
     },[nowmonthfirstday,nowmonthlastday])
 
-
+    useEffect(() => {
+        chageDateOneMonth(); 
+        if(user){
+            getexpensechoiseData();
+        } else{
+            setChecked(true)
+        }
+    },[checked])
     
     
 
@@ -638,8 +646,10 @@ export default function MoneyChartExpense() {
                             <div className='startday_endday_content'>
                                 <div className='startday_content'>
                                     <div>
-                                        <input ref={el => (inputRef.current[0] = el)}  type="text"
-                                            disabled
+                                        <input ref={el => (inputRef.current[0] = el)}  
+                                        type="text"
+                                        disabled
+                                            
                                         />
                                     </div>
                                     {/* 선택한 기간별 */}
@@ -664,8 +674,10 @@ export default function MoneyChartExpense() {
                                 <div className='endday_content'>
                                     <div>
                                         ~  
-                                        <input ref={el => (inputRef.current[1] = el)}  type="text"
+                                        <input ref={el => (inputRef.current[1] = el)}  
+                                            type="text"
                                             disabled
+                                            
                                         />
                                     </div>
                                     <div>
@@ -763,18 +775,35 @@ export default function MoneyChartExpense() {
                                     data={Linedata} 
                                     options={lineoptions} 
                                     // style={{ position: "relative", height: "40vh", width:"100vh" }}
-                                    width="200%" height="100%"
+                                    width="300%" height="100%"
                                     />
                             </div>
 
                             <div className='item'>
-                                {list.map((tmp)=> 
-                                    <div className='item_child_three'>
-                                        <p>{tmp.date}</p>
-                                        <p>{tmp.category}</p>
-                                        <p>{tmp.price}</p>
-                                    </div>
-                                )}
+                                <div className='menulist'>
+                                    <span>날짜</span>
+                                    <span>카테고리</span>
+                                    <span>가격</span>
+                                    <span>메모</span>
+                                </div>
+                                <div className='item_tree_wrap box2'>
+                                    {list.map((tmp)=> 
+                                        <div className='item_child_three'>
+                                            <div >
+                                                {tmp.date}
+                                            </div>
+                                            <div > 
+                                                {tmp.category}
+                                            </div>
+                                            <div >
+                                                {tmp.price}
+                                            </div>
+                                            <div >
+                                                {tmp.memo}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
