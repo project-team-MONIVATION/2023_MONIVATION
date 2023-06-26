@@ -1,42 +1,38 @@
-import React, { useEffect, useState } from 'react';
+// 고정지출 수정 모달
 
+import React, { useState, useEffect } from 'react';
 import { db } from '../../database/firebase';
-import { updateDoc, getDoc, doc, deleteDoc } from 'firebase/firestore';
-import { useSelector } from 'react-redux';
-
+import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import Calendar from 'react-calendar';
+import moment from 'moment';
+
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
 
 export default function EditExpenseRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate }) {
+    // form의 입력 값 state
+    const [date, setDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [cycle, setCycle] = useState("매일");
+    const [editPrice, setEditPrice] = useState(price);
+    const [payment, setPayment] = useState("현금");
+    const [installment, setInstallment] = useState();
+    const [selectedCategory, setSelectedCategory] = useState(category);
+    const [editMemo, setEditMemo] = useState(memo);
+    // 캘린더 모달 state
+    const [showCal, setShowCal] = useState(false); // 날짜 입력하는 캘린더 모달 state
+    const [showPeriod, setShowPeriod] = useState(false); // 기간 입력하는 모달 state
+    // 기간 입력하는 모달의 캘린더 모달 state
+    const [showStartCal, setShowStartCal] = useState(true);
+    const [showEndCal, setShowEndCal] = useState(false);
 
-  // uid 불러오기
-  const user = useSelector((state) => state.user.user);
+    /** 파이어스토어에 업데이트 넘겨줌 */
 
-  // 날짜 입력하는 캘린더 모달 state
-  const [showCal, setShowCal] = useState(false);
-
-  // 기간 입력하는 모달 state
-  const [showPeriod, setShowPeriod] = useState(false);
-  // 기간 입력하는 모달의 캘린더 모달 state
-  const [showStartCal, setShowStartCal] = useState(true);
-  const [showEndCal, setShowEndCal] = useState(false);
-
-  // form의 입력 값 state
-  const [date, setDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [cycle, setCycle] = useState("매일");
-  const [editPrice, setEditPrice] = useState(price);
-  const [payment, setPayment] = useState("현금");
-  const [installment, setInstallment] = useState();
-  const [selectedCategory, setSelectedCategory] = useState(category);
-  const [editMemo, setEditMemo] = useState(memo);
-
-  // 날짜 입력하는 캘린더 모달 on
-  const onClickCal = (e) => {
-    e.preventDefault();
-    setShowCal(true);
-  };
+    // 날짜 입력하는 캘린더 모달 on
+    const onClickCal = (e) => {
+      e.preventDefault();
+      setShowCal(true);
+    };
 
   // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
   const onClickDate = (newDate) => {
@@ -114,14 +110,14 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
   if (expenseRepeatSnap.exists()) {
     await updateDoc(expenseRepeatRef, {
       category: selectedCategory,
-      price: editPrice,
-      memo: editMemo,
-      startDate: startDate,
-      endDate: endDate,
       cycle: cycle,
       date: date,
-      payment: payment,
+      startDate: date,
+      endDate: endDate,
       installment: payment === "카드" ? installment : null, // 결제 방법이 "카드"가 아닌 다른 방법으로 변경되면 installment값을 null로 초기화
+      memo: editMemo,
+      payment: payment,
+      price: editPrice,
     });
   }
 
@@ -175,7 +171,11 @@ useEffect(() => {
   //   }
   // };
   
-
+  // 금액 ,표시 ex1,000,000
+  const handleHyphen = (value) => {
+    const formattedValue = new Intl.NumberFormat().format(value); // 숫자 형식으로 변환
+    return formattedValue;
+  };
 
   return (
     <div
@@ -210,26 +210,36 @@ useEffect(() => {
 
         <label>기간</label>
         <div>
-          <span>{startDate && changeDate(startDate)} ~ {endDate ? changeDate(endDate) : "0000-00-00"} {cycle}</span>
+          <span>{date && changeDate(date)} ~ {endDate ? changeDate(endDate) : "0000-00-00"} {cycle}</span>
           <button onClick={ onClickPeriod }>아이콘</button>
         </div>
         {
           showPeriod && (
             <div>
-              <button type='button' onClick={()=>{setShowPeriod(false)}}>X</button>
-              <div>
-                <button type='button' onClick={ onClickStartBtn }>시작일</button>
-                <button type='button' onClick={ onClickEndBtn }>종료일</button>
-                {
-                  showStartCal && (<Calendar onChange={ onClickStartDate } value={startDate} required/>)
-                }
-                {
-                  showEndCal && (<Calendar onChange={ onClickEndDate } value={endDate}/>)
-                }
-              </div>
+              <button
+              type='button'
+              onClick={()=>{setShowPeriod(false)}}
+              >
+                X
+              </button>
+              
+                  <div>
+                        <p>종료일</p>
+                        <Calendar 
+                          formatDay={(locale, date) => moment(date).format('D')}
+                          onChange={ onClickEndDate } 
+                          value={endDate} 
+                          minDate={date}
+                          className='modal_calendar period'
+                        />
+                </div>
+
               <div>
                 <label>반복주기</label><br />
                 <select name="cycle" id="" onChange={(e)=>{setCycle(e.target.value)}}>
+                <option value="value" selected disabled>
+                              필수선택
+                            </option>
                   <option value="매일">매일</option>
                   <option value="매주">매주</option>
                   <option value="매월">매월</option>
@@ -246,10 +256,9 @@ useEffect(() => {
         <label>금액</label>
         <div>
           <input 
-            type="number" 
-            min="0"
-            value={editPrice}
-            onChange={(e)=>{setEditPrice(Number(e.target.value))}}
+            type="text" 
+            value={handleHyphen(editPrice)}
+            onChange={(e)=>{setEditPrice(Number(e.target.value.replace(/[^0-9]/g, '')))}}
             required
           />
           <span>₩</span>
@@ -267,19 +276,6 @@ useEffect(() => {
             <option value="카드">카드</option>
             <option value="이체">이체</option>
           </select>
-          {
-            payment && payment === "카드" && (
-              <div>
-                <label>할부</label>
-                <input 
-                  type="number"
-                  min="1"
-                  value={ installment }
-                  onChange={ onInputInstallment }/>
-                <span>개월</span>
-              </div>
-            )
-          }
         </div>
 
         <label>카테고리</label>

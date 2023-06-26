@@ -1,4 +1,5 @@
-// 개인회원 회원정보 수정 및 탈퇴 페이지
+// 자산관리사 회원정보 수정 및 탈퇴 페이지
+
 import { db } from '../../database/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
@@ -116,6 +117,20 @@ export default function MypageEditFm() {
               {category}
             </button>
           ))}
+        </div>
+
+        {/* 자산관리사 자기소개 */}
+        <div>
+          <p>Self - introduction</p>
+          <textarea
+            style={{backgroundColor: "#E6E6E6", borderRadius: "20px", border: "none"}}
+            name="" 
+            id="" 
+            cols="48" 
+            rows="5"
+            placeholder='자산관리 페이지에서 보여지는 내용입니다'
+            ></textarea>
+          <br />
         </div>
 
         <input type="submit" />
