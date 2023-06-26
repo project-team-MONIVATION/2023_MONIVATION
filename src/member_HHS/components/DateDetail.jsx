@@ -135,10 +135,6 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       fetchData("money_expense_repeat", setExpenseRepeat);
     };
 
-    // 지출 할부 데이터 가져오기
-    const getInstallments = () => {
-      fetchData("money_expense_repeat", setExpenseRepeat);
-    };
 
     // 화면에 가장 먼저 출력되는 것들
     useEffect(() => {
