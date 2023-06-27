@@ -1,42 +1,38 @@
-/* 배민주아체 */
-@font-face {
-  font-family: 'BMJUA';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-/* 나눔스퀘어 네오 */
-@font-face {
-  font-family: 'NanumSquareNeo-Variable';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-/* 스위트 */
-@font-face {
-  font-family: 'SUITE-Regular';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-}
-/* 카페24 서라운드 */
-@font-face {
-  font-family: 'Cafe24Ssurround';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-/* 카페24 서라운드 에어 */
-@font-face {
-  font-family: 'Cafe24SsurroundAir';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
 .App {
+  height: 100vh;
+  position: relative;
   text-align: center;
   color: #303030;
-  position: relative;
   background-color: #735BF3;
+}
+
+
+#layout  {
+  width: 80vw;
+  height: 90vh;
+  padding: 3vh;
+  margin: auto;
+  border-radius: 50px;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+#layout-in {
+  height: 84vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#layout-in::-webkit-scrollbar {
+  width: 5px;
+  background-color: #D9D9D9;
+  border-radius: 20px;
+  
+}
+
+#layout-in::-webkit-scrollbar-thumb {
+  height: 10%;
+  background-color: #b6b6b6;
+  border-radius: 20px;
 }

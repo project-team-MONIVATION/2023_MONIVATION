@@ -7,6 +7,8 @@ import { collection, doc, getDoc, getDocs, query, updateDoc, where, Timestamp } 
 import { getAuth, sendSignInLinkToEmail, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword } from 'firebase/auth'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
+import '../css/mypageEditPu.css'
+
 
 export default function MypageEditPu() {
     const params = useParams();
@@ -47,7 +49,7 @@ export default function MypageEditPu() {
       }
     };
     
-    useEffect(()=>{
+    useEffect(() => {
       const getProfile = async() => {
         const docSnap = await getDoc( doc(db, "personal_users", params.id) );
         const data = docSnap.data();
@@ -261,18 +263,10 @@ export default function MypageEditPu() {
     };
 
 
-    
-
     return (
-      <div>
+      <div id = "layout">
         { profile && 
-          <div
-            style = {{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
+          <div className = 'mypage-Edit-Pu'>
             <div>
               <label htmlFor = "profile-image">
                 <img
@@ -290,9 +284,14 @@ export default function MypageEditPu() {
                 style = {{ display: "none" }}
                 onChange = { handleChangeProfile }
               />
+            </div>
+            <div>
               <p>이메일 { profile.email }</p>
               <p>회원구분 <span>개인회원</span></p>
               <p>가입일 <span>{ startDate.getFullYear() }.{ startDate.getMonth() + 1 }.{ startDate.getDate() }</span></p>
+            </div>
+            <div>
+              회원탈퇴
             </div>
           </div>
         }
@@ -396,7 +395,7 @@ export default function MypageEditPu() {
               id = "sign-in-button"
               type = "button"
               onClick = { onSignInSubmit }
-              onChange={ (e) => {setPhoneNum(e.target.value)} }
+              onChange={ (e) => { setPhoneNum(e.target.value) } }
             >
               인증번호 발송
             </button>

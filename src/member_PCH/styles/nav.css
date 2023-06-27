@@ -1,20 +1,21 @@
 #nav {
   box-sizing: border-box;
-  width: 1337px;
-  height: 60px;
+  width: 80vw;
+  height: 6vh;
   margin: auto;
   background-color: #FFFFFF;
   border-radius: 0 0 50px 50px;
-  margin-bottom: 13px;
+  margin-bottom: 1vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
 #nav .logo {
   background-image: url('../../assets/MONIVATION_assets/logo_onlytext.png');
-  width: 228px;
-  height: 32px;
+  width: calc(228px * 0.9);
+  height: calc(32px * 0.9);
   background-size: cover;
   margin-left: 47px;
   cursor: pointer;
@@ -23,20 +24,22 @@
 #nav .nav_list {
   box-sizing: border-box;
   width: 761px;
-  height: inherit;
   margin-right: 47px;
+  display: flex;
+  align-items: center;
+}
+
+#nav .nav_item {
+  box-sizing: border-box;
+  width: 133px;
+  height: inherit;
+  margin-right: 15px;
 }
 
 #nav a {
-  box-sizing: border-box;
-  display: inline-block;
-  width: 133px;
-  height: inherit;
   color: #303030;
-  font-size: 23px;
+  font-size: 18px;
   font-weight: bold;
-  padding-top: 18px;
-  margin-right: 24px;
 }
 
 #nav a:last-child {

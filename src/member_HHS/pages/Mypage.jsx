@@ -71,7 +71,7 @@ export default function Mypage() {
     }
 
     return (
-      <div>
+      <div id='layout'>
         {/* 개인정보수정 */}
         <div>
           { datalist.map((data)=>(
