@@ -199,6 +199,7 @@ export default function DefaultChallengeView() {
     // 설정해줘야한다!
     return (
         <div id='layout'>
+            <div id='default-challenge-view'>
             <h1>디폴트 챌린지 상세보기</h1>
             <div className='challenge-wrap'>
             {/** 업로드해서 넣은 이미지 url과 그냥 imgId만 넣은 파일을 구분해서 들고와야함 */}
@@ -206,11 +207,13 @@ export default function DefaultChallengeView() {
                 style={{width : "300px", height : "200px", borderRadius : "20px", display : 'inline-block', border : "solid black 1px"}}
             alt="" />
             <div className='challenge-info-wrap'>
-                <p>챌린지명 : {challengeBoard && challengeBoard.name}</p>
-                <p> 기간 : {time}</p>
+                    <ul className='challenge-info'>
+                        <li>챌린지명 : {challengeBoard && challengeBoard.name}</li>
+                        <li>기간 : {time}</li>
+                        <li>등록자명 : {challengeBoard && challengeBoard.uid}</li>
+                    </ul>
                 {/** challenge 데이터에 user.nickname도 넣을 예정 */}
                 {/** 뱃지는 디폴트 챌린지만 할당 */}
-                <p>등록자명 : {challengeBoard && challengeBoard.uid}</p>
             </div>
             <div className='badge-button-wrap'>
             <div style={{width : "100px", display : "inline-block", height : "100px",
@@ -225,22 +228,24 @@ export default function DefaultChallengeView() {
                 </button> 
                 : <button>로그인 해주세요</button>
             }
-            {
-                user && challengeBoard && challengeBoard.uid === user.uid ? 
-                <button>챌린지 삭제</button> : null
-            }
             </div>
-            {
-                user && challengeBoard && challengeBoard.uid === user.uid ? <button>챌린지 수정</button> : null
-            }
             
         </div>
+        <hr style={{width : "1300px"}} />
         <div className='content-comment-wrap'>
             <div style={{display : 'inline-block', backgroundColor : "gray", width : "500px", height : "500px"}}>
                 <p>챌린지 상세 설명</p>
                 <p>{challengeBoard && challengeBoard.content}</p>
+                {
+                user && challengeBoard && challengeBoard.uid === user.uid ? <button>챌린지 수정</button> : null
+                }
+                {
+                user && challengeBoard && challengeBoard.uid === user.uid ? 
+                <button>챌린지 삭제</button> : null
+                }
             </div>
             <CommentComp />
+        </div>
         </div>
         </div>
     )

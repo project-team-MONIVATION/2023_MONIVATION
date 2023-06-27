@@ -82,8 +82,9 @@ export default function CommentComp() {
       },[])
 
   return (
-    <div className='.scrollable-container'
-    style={{display : 'inline-block', backgroundColor : "gray", width : "500px", height : "500px"}}>
+    <div id='comment-comp' className='.scrollable-container'
+    style={{display : 'inline-block', backgroundColor : "lightgray", width : "500px", height : "500px"}}>
+        <div>
         {
             commentArray && commentArray.map((array)=>(
                 params.id == array.paramId ? 
@@ -101,6 +102,7 @@ export default function CommentComp() {
                 </li> : null
             ))
         }
+        </div>
         <form onSubmit={addUserComment} className='commentWrap'>
             <input type="text"
                 placeholder='댓글 달기...'
