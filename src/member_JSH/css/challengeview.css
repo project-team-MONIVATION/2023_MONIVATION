@@ -4,16 +4,20 @@
     margin: auto;
 }
 
-.challenge-info-wrap{
+#default-challenge-view .challenge-info-wrap{
     display: inline-block;
     border: solid black 1px;
     height: 200px;
     text-align: left;
 }
 
-.challenge-info{
-    align-items: center;
-    justify-content: center;
+#default-challenge-view .challenge-info{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    justify-content: space-evenly;
+    height: 100%;
+    padding: 5px;
 }
 
 .badge-button-wrap{

@@ -1,0 +1,48 @@
+#nav {
+  box-sizing: border-box;
+  width: 1337px;
+  height: 60px;
+  margin: auto;
+  background-color: #FFFFFF;
+  border-radius: 0 0 50px 50px;
+  margin-bottom: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#nav .logo {
+  background-image: url('../../assets/MONIVATION_assets/logo_onlytext.png');
+  width: 228px;
+  height: 32px;
+  background-size: cover;
+  margin-left: 47px;
+  cursor: pointer;
+}
+
+#nav .nav_list {
+  box-sizing: border-box;
+  width: 761px;
+  height: inherit;
+  margin-right: 47px;
+}
+
+#nav a {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 133px;
+  height: inherit;
+  color: #303030;
+  font-size: 23px;
+  font-weight: bold;
+  padding-top: 18px;
+  margin-right: 24px;
+}
+
+#nav a:last-child {
+  margin-right: 0;
+}
+
+#nav a.active {
+  background-color: #F4E8AE;
+}

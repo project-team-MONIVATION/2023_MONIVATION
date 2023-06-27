@@ -206,13 +206,14 @@ export default function DefaultChallengeView() {
                 style={{width : "300px", height : "200px", borderRadius : "20px", display : 'inline-block', border : "solid black 1px"}}
             alt="" />
             <div className='challenge-info-wrap'>
-                <div className='challenge-info'>
-                <p>챌린지명 : {challengeBoard && challengeBoard.name}</p>
-                <p> 기간 : {time}</p>
+                    <ul className='challenge-info'>
+                        <li>챌린지명 : {challengeBoard && challengeBoard.name}</li>
+                        <li>기간 : {time}</li>
+                        <li>등록자명 : {challengeBoard && challengeBoard.uid}</li>
+                    </ul>
                 {/** challenge 데이터에 user.nickname도 넣을 예정 */}
                 {/** 뱃지는 디폴트 챌린지만 할당 */}
-                <p>등록자명 : {challengeBoard && challengeBoard.uid}</p>
-                </div>
+                
             </div>
             <div className='badge-button-wrap'>
             <div style={{width : "100px", display : "inline-block", height : "100px",
