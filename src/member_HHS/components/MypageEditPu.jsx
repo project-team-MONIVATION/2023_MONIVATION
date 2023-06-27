@@ -1,7 +1,7 @@
 // 개인회원 회원정보 수정 및 탈퇴 페이지
 
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { auth, db, storage } from '../../database/firebase';
 import { collection, doc, getDoc, getDocs, query, updateDoc, where, Timestamp } from 'firebase/firestore';
 import { getAuth, sendSignInLinkToEmail, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword } from 'firebase/auth'
@@ -10,7 +10,9 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 export default function MypageEditPu() {
     const params = useParams();
-    const [selectedImage, setSelectedImage] = useState(null); // storage 업로드 이미지 관리 
+    const location = useLocation();
+    const { name, email, uid } = location.state || "";
+    const [selectedImage, setSelectedImage] = useState(null); // storage 업로드 이미지 관리
 
     const [profile, setProfile] = useState();
     const [startDate, setStartDate] = useState('');
@@ -68,6 +70,14 @@ export default function MypageEditPu() {
       getProfile();
     }, [])
 
+    // 수정 버튼 클릭 시 확인 대화상자 표시
+    const handleClickUpdate = (e) => {
+      const confirmed = window.confirm("수정 하시겠습니까?");
+        if (confirmed) {
+          handleSubmit(e);
+        }
+    };
+
 
     /** form 입력 값 업데이트 */
     // 닉네임 업데이트
@@ -96,6 +106,16 @@ export default function MypageEditPu() {
       }
     }
 
+    /** 비밀번호 특수문자 삭제 */  
+    const characterCheck = (e) => {
+    // 허용하고 싶은 특수문자가 있다면 여기서 삭제하면 됨
+      const regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi; 
+      if( regExp.test(e.target.value) ){
+        alert("특수문자는 입력하실수 없습니다.");
+        e.target.value = e.target.value.substring( 0 , e.target.value.length - 1 ); 
+        // 입력한 특수문자 한자리 지움
+      }
+    }
 
     
     /** 생년월일 */
@@ -239,6 +259,8 @@ export default function MypageEditPu() {
           console.log('Error uploading file:', error);
         });
     };
+
+
     
 
     return (
@@ -262,11 +284,11 @@ export default function MypageEditPu() {
                 />
               </label>
               <input
-                type="file"
-                id="profile-image"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleChangeProfile}
+                type = "file"
+                id = "profile-image"
+                accept = "image/*"
+                style = {{ display: "none" }}
+                onChange = { handleChangeProfile }
               />
               <p>이메일 { profile.email }</p>
               <p>회원구분 <span>개인회원</span></p>
@@ -341,7 +363,8 @@ export default function MypageEditPu() {
               placeholder = "비밀번호"
               minLength = { 8 }
               maxLength = { 20 }
-              required
+              onKeyDown = { characterCheck }
+              disabled = { email }
             />
           </div>
           <div>
@@ -351,7 +374,8 @@ export default function MypageEditPu() {
               placeholder = "비밀번호 재확인" 
               minLength = { 8 }
               maxLength = { 20 }
-              required
+              onKeyDown = { characterCheck } 
+              disabled = { email }
             />
           </div>
           <div>
@@ -367,11 +391,12 @@ export default function MypageEditPu() {
               type = "number"
               value = { phoneNum }
               onChange = { updatePhoneNum }
-              required 
             />
             <button
+              id = "sign-in-button"
               type = "button"
               onClick = { onSignInSubmit }
+              onChange={ (e) => {setPhoneNum(e.target.value)} }
             >
               인증번호 발송
             </button>
@@ -385,7 +410,6 @@ export default function MypageEditPu() {
               placeholder = "인증번호"
               value = { otp }
               onChange = { (e) => { setOtp(e.target.value) } }
-              required
             />
             <button
               type = "button"
@@ -395,7 +419,7 @@ export default function MypageEditPu() {
             </button>
           </div>
           
-          <input type = "submit" value = "수정" />
+          <input type = "submit" value = "수정하기" onClick = { handleClickUpdate }/>
         </form>
       </div>
     )
