@@ -1,32 +1,32 @@
-a {
+#asset a {
     text-decoration: none;
     color: black;
 }
-.asset td img {
+#asset .asset td img {
     width: 300px;
     height: 180px;
 }
-.asset td iframe {
+#asset .asset td iframe {
     width: 300px;
     height: 180px;
 }
-.asset table {
+#asset .asset table {
     border-collapse: collapse;
     width: 90%;
     margin: auto;
     border-top: solid 1px black;
 }
-.asset .btm { 
+#asset .asset .btm { 
     border-bottom: 1px solid black;
 }
-.asset tr td {
+#asset .asset tr td {
     padding: 10px 20px;
 }
-.asset td p {
+#asset .asset td p {
     text-align: center;
 }
 
-.container-box {
+#asset .container-box {
     width: 90%;
     margin: auto;
     display: grid;

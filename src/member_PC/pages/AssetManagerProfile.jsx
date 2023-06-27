@@ -127,79 +127,81 @@ export default function AssetManagerProfile() {
   }, [])
 
   return (
-    <div>
-      <h1>자산관리사 프로필</h1>
-      <div style={{margin:"auto", width: "80%", display: "flex", justifyContent: "space-evenly"}}>
-      {
-        profile &&
-        <div>
-          <div style={{width: "350px", height: "300px", backgroundColor: "gray", margin: "auto", backgroundImage: `url(${profile.photo})`, backgroundSize: "cover", backgroundPosition: "center"}}>
-          </div>
-          <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "10px"}}>
-            <div>
-              <p>{profile.name}</p>
-              {profile.intro.map((intro, i)=>(
-                <p key={i}>{intro}</p>
-              ))}
+    <div style={{backgroundColor: "#735BF3"}}>
+      <div style={{backgroundColor: "white", width: "90%", margin: "auto", borderRadius: "50px"}}>
+        <h1>자산관리사 프로필</h1>
+        <div style={{margin:"auto", width: "80%", display: "flex", justifyContent: "space-evenly"}}>
+        {
+          profile &&
+          <div>
+            <div style={{width: "350px", height: "300px", backgroundColor: "gray", margin: "auto", backgroundImage: `url(${profile.photo})`, backgroundSize: "cover", backgroundPosition: "center"}}>
             </div>
-            <div style={{border: "1px solid black", padding: "10px 5px"}}>
-              <FontAwesomeIcon
-                icon={faHeart}
-                fontSize={20}
-                style={{ color: liked ? "red" : "black" }}
-                onClick={() => handleLike()}
-              />
-              <p style={{paddingTop: "5px"}}>좋아요</p>
+            <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "10px"}}>
+              <div>
+                <p>{profile.name}</p>
+                {profile.intro.map((intro, i)=>(
+                  <p key={i}>{intro}</p>
+                ))}
+              </div>
+              <div style={{border: "1px solid black", padding: "10px 5px"}}>
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  fontSize={20}
+                  style={{ color: liked ? "red" : "black" }}
+                  onClick={() => handleLike()}
+                />
+                <p style={{paddingTop: "5px"}}>좋아요</p>
+              </div>
             </div>
-          </div>
-        </div> 
-      }
-      {/* 캘린더 */}
+          </div> 
+        }
+        {/* 캘린더 */}
 
-        <div>
-          <Calendar onChange={ onClickDate } value={date}/>
-          <div style={{backgroundColor: "#735BF3", borderRadius: "20px", display: "inline-block", margin: "20px", padding: "10px 20px"}}>
-            <Link style={{color: "white", fontWeight: "bold"}} to={`/asset/managerID/profile/reservation/${params.id}`}>상담예약</Link>
+          <div>
+            <Calendar onChange={ onClickDate } value={date}/>
+            <div style={{backgroundColor: "#735BF3", borderRadius: "20px", display: "inline-block", margin: "20px", padding: "10px 20px"}}>
+              <Link style={{color: "white", fontWeight: "bold"}} to={`/asset/managerID/profile/reservation/${params.id}`}>상담예약</Link>
+            </div>
           </div>
         </div>
-      </div>
 
 
-      <h1 style={{textAlign: "left", margin: "10px 160px", fontSize: "1.5rem"}}>자문사 평가</h1>
-      <div>
-      {
-        comment ? comment.map((c, i)=>{
-          
-          const upDate = new Date(c.date.toDate());
+        <h1 style={{textAlign: "left", margin: "10px 160px", fontSize: "1.5rem"}}>자문사 평가</h1>
+        <div>
+        {
+          comment ? comment.map((c, i)=>{
+            
+            const upDate = new Date(c.date.toDate());
 
-          // 원하는 형식으로 날짜를 출력
-          const year = upDate.getFullYear();
-          const month = upDate.getMonth() + 1; 
-          const day = upDate.getDate();
-          const hour = upDate.getHours();
-          const minutes = upDate.getMinutes();
-          const seconds = upDate.getSeconds();
+            // 원하는 형식으로 날짜를 출력
+            const year = upDate.getFullYear();
+            const month = upDate.getMonth() + 1; 
+            const day = upDate.getDate();
+            const hour = upDate.getHours();
+            const minutes = upDate.getMinutes();
+            const seconds = upDate.getSeconds();
 
-          return (
-          <div key={i} style={{textAlign: "left", borderTop: "solid 1px black", width: "80%",   margin: "auto", display: "flex", alignItems: "center"}}> 
-            <div style={{margin: "10px"}}>
-              <img src={c.photo} alt="프로필사진" width={50} height={50} style={{borderRadius: "50%"}} />
+            return (
+            <div key={i} style={{textAlign: "left", borderTop: "solid 1px black", width: "80%",   margin: "auto", display: "flex", alignItems: "center"}}> 
+              <div style={{margin: "10px"}}>
+                <img src={c.photo} alt="프로필사진" width={50} height={50} style={{borderRadius: "50%"}} />
+              </div>
+              <div style={{marginLeft: "10px"}}>
+                <p style={{margin: "10px"}}>{c.nickname}</p>
+                <p style={{margin: "10px", fontSize: "0.8rem", fontWeight: "bold"}}>{year}.{month}.{day}.{hour}:{minutes}:{seconds}</p>
+                <p style={{margin: "10px"}}>{c.text}</p>
+              </div>
             </div>
-            <div style={{marginLeft: "10px"}}>
-              <p style={{margin: "10px"}}>{c.nickname}</p>
-              <p style={{margin: "10px", fontSize: "0.8rem", fontWeight: "bold"}}>{year}.{month}.{day}.{hour}:{minutes}:{seconds}</p>
-              <p style={{margin: "10px"}}>{c.text}</p>
+            )
+          })
+          :
+          (  
+            <div style={{borderTop : "1px solid black", borderBottom: "1px solid black", width: "80%", margin: "auto"}}>
+              <p style={{margin: "50px"}}>등록된 평가가 없습니다.</p>
             </div>
-          </div>
           )
-        })
-        :
-        (  
-          <div style={{borderTop : "1px solid black", borderBottom: "1px solid black", width: "80%", margin: "auto"}}>
-            <p style={{margin: "50px"}}>등록된 평가가 없습니다.</p>
-          </div>
-        )
-      }
+        }
+        </div>
       </div>
     </div>
   )
