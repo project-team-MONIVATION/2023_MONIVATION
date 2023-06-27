@@ -24,7 +24,7 @@ export default function MoneyCalendar() {
   },[])
   
   return (
-    <div>
+    <div id='layout'>
       <div
         style={{display: "flex", justifyContent: "center", alignItems:"center"}}
       >
@@ -43,7 +43,7 @@ export default function MoneyCalendar() {
         }}
       >
         {/* 통계 컴포넌트 */}
-        <div style={{border: "1px solid brown", width: "25%"}}>
+        <div style={{border: "1px solid brown", width: "25%", height: "150px", overflow:"hidden"}}>
           <Link to='/calendar/chart'>통계</Link>
           <br />
           <button
@@ -68,17 +68,17 @@ export default function MoneyCalendar() {
         </div>
 
         {/* 할부금 컴포넌트 */}
-        <div style={{border: "1px solid red", width: "25%"}}>
+        <div style={{border: "1px solid red", width: "25%", height: "150px"}}>
           <InstallmentsComp/>
         </div>
 
         {/* JSH 챌린지 컴포넌트 */}
-        <div style={{border: "1px solid red", width: "25%"}}>
+        <div style={{border: "1px solid red", width: "25%", height: "150px"}}>
           <MyChallengeSlideComp />
         </div>
         
         {/* 목표금액 컴포넌트 */}
-        <div style={{border: "1px solid red", width: "25%"}}>
+        <div style={{border: "1px solid red", width: "25%", height: "150px"}}>
           <div>
             <TargetAmountComp/>
           </div>

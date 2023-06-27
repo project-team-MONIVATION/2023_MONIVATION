@@ -44,7 +44,8 @@ export default function ChallengeList() {
   },[])
 
   return (
-    <div id='challenge-list'>
+    <div id='layout'>
+      <div id='challenge-list'>
       <h1 style={{width : "1300px", margin : "auto", border : "solid 1px black", padding : "10px"}}>챌린지</h1>
       <ChallengeSlick />
       <br />
@@ -75,6 +76,7 @@ export default function ChallengeList() {
       <button className='create-button'>
         <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '3rem'}}>+</Link>
       </button>
+      </div>
     </div>
   )
 }

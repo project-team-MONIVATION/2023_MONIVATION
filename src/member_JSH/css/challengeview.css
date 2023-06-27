@@ -4,14 +4,14 @@
     margin: auto;
 }
 
-#default-challenge-view .challenge-info-wrap{
+.challenge-info-wrap{
     display: inline-block;
     border: solid black 1px;
     height: 200px;
     text-align: left;
 }
 
-#default-challenge-view .challenge-info{
+.challenge-info{
     display: flex;
     flex-direction: column;
     text-align: left;

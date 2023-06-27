@@ -127,7 +127,7 @@ export default function AssetManagerProfile() {
   }, [])
 
   return (
-    <div>
+    <div id='layout'>
       <h1>자산관리사 프로필</h1>
       <div style={{margin:"auto", width: "80%", display: "flex", justifyContent: "space-evenly"}}>
       {

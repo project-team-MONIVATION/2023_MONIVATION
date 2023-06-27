@@ -198,7 +198,8 @@ export default function DefaultChallengeView() {
     // 이미지를 넣을 떼 height를 설정해주지 않으면 디폴트로 height : 0이 들어가있기 때문에
     // 설정해줘야한다!
     return (
-        <div id='default-challenge-view'>
+        <div id='layout'>
+            <div id='default-challenge-view'>
             <h1>디폴트 챌린지 상세보기</h1>
             <div className='challenge-wrap'>
             {/** 업로드해서 넣은 이미지 url과 그냥 imgId만 넣은 파일을 구분해서 들고와야함 */}
@@ -213,7 +214,6 @@ export default function DefaultChallengeView() {
                     </ul>
                 {/** challenge 데이터에 user.nickname도 넣을 예정 */}
                 {/** 뱃지는 디폴트 챌린지만 할당 */}
-                
             </div>
             <div className='badge-button-wrap'>
             <div style={{width : "100px", display : "inline-block", height : "100px",
@@ -245,6 +245,7 @@ export default function DefaultChallengeView() {
                 }
             </div>
             <CommentComp />
+        </div>
         </div>
         </div>
     )
