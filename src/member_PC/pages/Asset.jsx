@@ -74,97 +74,99 @@ export default function Asset() {
   },[])
   
   return (
-    <div>
-      {/* 탭 바 */}
-      <div style={{display: "flex", justifyContent: "space-between", width: "1500px", margin: "auto", alignItems: "center"}}>
-        <h1 style={{fontSize: "1.8rem"}}>Best 자산관리사</h1>
-        <Link to='/asset/managerlist'>더보기</Link>
-      </div>
+    <div id='layout'>
+      <div id='layout-in'>
+        {/* 탭 바 */}
+        <div style={{display: "flex", justifyContent: "space-between", width: "1500px", margin: "auto", alignItems: "center"}}>
+          <h1 style={{fontSize: "1.8rem"}}>Best 자산관리사</h1>
+          <Link to='/asset/managerlist'>더보기</Link>
+        </div>
 
-      {/* 탑 자문사 리스트 */}
-      <Slider {...settings}>
-      {
-        bestFmList && bestFmList.map((fm)=>(
-          <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
-            <div style={{backgroundColor: "#735BF3", width: "250px", height: "300px", margin: "50px", display: "inline-block", borderRadius: "20px"}}>
-              <div style={{backgroundColor: "white", width: "200px", height: "200px", margin: "auto", marginTop: "20px", borderRadius: "40px", backgroundImage: `url(${fm.photo})`, backgroundSize: "cover" }}></div>
-              <h1 style={{margin: "10px 0"}}>{fm.name}</h1>
-              <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}> 
+        {/* 탑 자문사 리스트 */}
+        <Slider {...settings}>
+        {
+          bestFmList && bestFmList.map((fm)=>(
+            <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
+              <div style={{backgroundColor: "#735BF3", width: "250px", height: "300px", margin: "50px", display: "inline-block", borderRadius: "20px"}}>
+                <div style={{backgroundColor: "white", width: "200px", height: "200px", margin: "auto", marginTop: "20px", borderRadius: "40px", backgroundImage: `url(${fm.photo})`, backgroundSize: "cover" }}></div>
+                <h1 style={{margin: "10px 0"}}>{fm.name}</h1>
+                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}> 
+                  <div>
+                    <span style={{padding: "0 5px"}}>{fm.field && fm.field[0]}</span>
+                    <span style={{padding: "0 5px"}}>{fm.field && fm.field[1]}</span>
+                    <span style={{padding: "0 5px"}}>{fm.field && fm.field[2]}</span>
+                  </div>
+                </div>
                 <div>
-                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[0]}</span>
-                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[1]}</span>
-                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[2]}</span>
+                  <FontAwesomeIcon 
+                    icon={faHeart}
+                    fontSize={20}
+                    style={{ color: "red" }}
+                  />:{fm.likeNum}
                 </div>
               </div>
-              <div>
-                <FontAwesomeIcon 
-                  icon={faHeart}
-                  fontSize={20}
-                  style={{ color: "red" }}
-                />:{fm.likeNum}
-              </div>
-            </div>
-          </Link>
-        ))
-      }
-      </Slider>
-      
-      {/* 관련 정보 */}
-      <div className='asset'>
-      <h1 style={{textAlign: "left", margin: "30px 0 20px 30px", fontSize: "1.8rem"}}>관련정보</h1>
-        <table>
-          <tbody>
-          <tr>
-            <td style={{verticalAlign: "top"}}>
-              <h1>관련서적</h1>
-            </td>
-            <td><img src="/img/coin.jpg" alt="사진" /></td>
-            <td><img src="/img/chart.jpg" alt="사진" /></td>
-            <td><img src="/img/money.jpg" alt="사진" /></td>
-            <td><img src="/img/man.jpg" alt="사진" /></td>
-          </tr>
-          <tr className='btm'>
-            <td></td>
-            <td>
-              <p>코인시장에서 하면 안될 3가지 행동</p>
-            </td>
-            <td>
-              <p>주식에서 중요한 10가지 법칙</p>
-            </td>
-            <td>
-              <p>돈의 흐름</p>
-            </td>
-            <td>
-              <p>멀리 내다보는 시야를 가지는게 중요한 이유</p>
-            </td>
-          </tr>
-          <tr>
+            </Link>
+          ))
+        }
+        </Slider>
+        
+        {/* 관련 정보 */}
+        <div className='asset'>
+        <h1 style={{textAlign: "left", margin: "30px 0 20px 30px", fontSize: "1.8rem"}}>관련정보</h1>
+          <table>
+            <tbody>
+            <tr>
               <td style={{verticalAlign: "top"}}>
-                <h1>꿀팁영상</h1>
+                <h1>관련서적</h1>
               </td>
-              <td>
-                <iframe src="https://www.youtube.com/embed/hikmv2mSVxo" title="3분30초만에 알아보는 자산관리방법 PICK 6" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-              </td>
-              <td>
-                <iframe src="https://www.youtube.com/embed/EnZpz8SgM4U" title="평범한 직장인으로 20억 자산까지 딱 10년!!! 누구의 도움없이도 가능한 돈에 대한 예의를 갖추자! (자산관리 1편)" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-              </td>
-              <td>
-                <iframe src="https://www.youtube.com/embed/kQZSeJXq7lE" title="월급의 몇%를 저축하고 있나요? 사회 초년생 월급관리 10분 정리!" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-              </td>
-              <td>
-                <iframe src="https://www.youtube.com/embed/GJorguPKRTk" title="삼성전자 말고 &#39;이 주식&#39;을 사모으세요. 정말 유일합니다 (이종우)" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-              </td>
-          </tr>
-          <tr className='btm'>
+              <td><img src="/img/coin.jpg" alt="사진" /></td>
+              <td><img src="/img/chart.jpg" alt="사진" /></td>
+              <td><img src="/img/money.jpg" alt="사진" /></td>
+              <td><img src="/img/man.jpg" alt="사진" /></td>
+            </tr>
+            <tr className='btm'>
               <td></td>
-              <td>"3분30초만에 알아보는 자산관리방법 PICK 6"</td>
-              <td>"평범한 직장인으로 20억 자산까지 딱 10년!!!"</td>
-              <td>"월급의 몇%를 저축하고 있나요? 사회 초년생 월급관리 10분 정리!"</td>
-              <td>"삼성전자 말고 '이 주식'을 사모으세요."</td>
-          </tr>
-          </tbody>
-        </table>
-        </div>
+              <td>
+                <p>코인시장에서 하면 안될 3가지 행동</p>
+              </td>
+              <td>
+                <p>주식에서 중요한 10가지 법칙</p>
+              </td>
+              <td>
+                <p>돈의 흐름</p>
+              </td>
+              <td>
+                <p>멀리 내다보는 시야를 가지는게 중요한 이유</p>
+              </td>
+            </tr>
+            <tr>
+                <td style={{verticalAlign: "top"}}>
+                  <h1>꿀팁영상</h1>
+                </td>
+                <td>
+                  <iframe src="https://www.youtube.com/embed/hikmv2mSVxo" title="3분30초만에 알아보는 자산관리방법 PICK 6" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                </td>
+                <td>
+                  <iframe src="https://www.youtube.com/embed/EnZpz8SgM4U" title="평범한 직장인으로 20억 자산까지 딱 10년!!! 누구의 도움없이도 가능한 돈에 대한 예의를 갖추자! (자산관리 1편)" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                </td>
+                <td>
+                  <iframe src="https://www.youtube.com/embed/kQZSeJXq7lE" title="월급의 몇%를 저축하고 있나요? 사회 초년생 월급관리 10분 정리!" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                </td>
+                <td>
+                  <iframe src="https://www.youtube.com/embed/GJorguPKRTk" title="삼성전자 말고 &#39;이 주식&#39;을 사모으세요. 정말 유일합니다 (이종우)" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                </td>
+            </tr>
+            <tr className='btm'>
+                <td></td>
+                <td>"3분30초만에 알아보는 자산관리방법 PICK 6"</td>
+                <td>"평범한 직장인으로 20억 자산까지 딱 10년!!!"</td>
+                <td>"월급의 몇%를 저축하고 있나요? 사회 초년생 월급관리 10분 정리!"</td>
+                <td>"삼성전자 말고 '이 주식'을 사모으세요."</td>
+            </tr>
+            </tbody>
+          </table>
+          </div>
+      </div>
     </div>
   )
 }

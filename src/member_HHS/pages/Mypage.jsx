@@ -71,7 +71,7 @@ export default function Mypage() {
   }
 
   return (
-    <div>
+    <div id='layout'>
       <h1>마이페이지</h1>
       
       {/* 개인정보수정 */}

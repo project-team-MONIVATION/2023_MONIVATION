@@ -105,7 +105,7 @@ export default function AssetReservation() {
   }  
 
   return (
-    <div>
+    <div id='layout'>
       <h1>상담예약</h1>
       <div style={{display: "flex"}}>
       

@@ -72,7 +72,7 @@ export default function AssetManagerList() {
     });
   
   return (
-    <div>
+    <div id='layout'>
 
       {/* 탭 바 */}
       <div style={{display: "flex", justifyContent: "space-around", alignItems: "center"}}>

@@ -21,35 +21,45 @@ export default function NavComp() {
         onClick={()=>{navigate('/')}}
       />
       <div className='nav_list'>
-        <NavLink 
-          to='/calendar'
-          className={({isActive})=>(isActive? "active" : "")}
-        >
-          가계부
-        </NavLink>
-        <NavLink 
-          to='/challenge'
-          className={({isActive})=>(isActive? "active" : "")}
-        >
-          챌린지
-        </NavLink>
-        <NavLink 
-          to='/asset'
-          className={({isActive})=>(isActive? "active" : "")}
-        >
-          자산관리
-        </NavLink>
-        <NavLink 
-          to='/mypage'
-          className={({isActive})=>(isActive? "active" : "")}
-        >
-          마이페이지
-        </NavLink>
-        <NavLink to='/'
-          onClick={ onLogout }
-        >
-          로그아웃
-        </NavLink>
+        <div className='nav_item'>
+          <NavLink 
+            to='/calendar'
+            className={({isActive})=>(isActive? "active" : "")}
+          >
+            가계부
+          </NavLink>
+        </div>
+        <div className='nav_item'>
+          <NavLink 
+            to='/challenge'
+            className={({isActive})=>(isActive? "active" : "")}
+          >
+            챌린지
+          </NavLink>
+        </div>
+        <div className='nav_item'>
+          <NavLink 
+            to='/asset'
+            className={({isActive})=>(isActive? "active" : "")}
+          >
+            자산관리
+          </NavLink>
+        </div>
+        <div className='nav_item'>
+          <NavLink 
+            to='/mypage'
+            className={({isActive})=>(isActive? "active" : "")}
+          >
+            마이페이지
+          </NavLink>
+        </div>
+        <div className='nav_item'>
+          <NavLink to='/'
+            onClick={ onLogout }
+          >
+            로그아웃
+          </NavLink>
+        </div>
       </div>
     </div>
   )
