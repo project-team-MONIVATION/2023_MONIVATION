@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { userLogin } from './member_PC_HS/slice/userSlice';
 
 import Home from './member_PCH/pages/Home';
-import Layout from './pages/Layout';
+import Layout from './member_PCH/pages/Layout';
 import MoneyCalendar from './member_JSH/pages/MoneyCalendar';
 import MoneyChart from './member_LJC/pages/MoneyChart';
 import ChallengeList from './member_JSH/pages/ChallengeList';
@@ -30,17 +30,19 @@ import SignupPU from './member_PC_HS/components/SignupPU';
 // 실험용
 import Display from './member_PC_HS/page/Display';
 
+import MoneyChartIncome from './member_LJC/pages/MoneyChartIncome';
+import MoneyChartExpense from './member_LJC/pages/MoneyChartExpense';
+import DefaultChallengeView from './member_JSH/pages/DefaultChallengeView';
+
 
 // css
 import './styles/reset.css';
 import './styles/style.css';
 import './App.css';
+import './member_PCH/styles/nav.css'
 import './member_PCH/styles/home.css';
 import './member_PCH/styles/modal.css';
 import './member_PCH/styles/modalCalendar.css';
-import MoneyChartIncome from './member_LJC/pages/MoneyChartIncome';
-import MoneyChartExpense from './member_LJC/pages/MoneyChartExpense';
-import DefaultChallengeView from './member_JSH/pages/DefaultChallengeView';
 
 function App() {
 
