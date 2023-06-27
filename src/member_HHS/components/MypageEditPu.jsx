@@ -264,42 +264,45 @@ export default function MypageEditPu() {
 
 
     return (
-      <div id = "layout">
-        { profile && 
-          <div className = 'mypage-Edit-Pu'>
-            <div>
-              <label htmlFor = "profile-image">
-                <img
-                  src = { selectedImage || (profile.photo !== "없음" ? profile.photo : "/img/defaultProfile.jpg") }
-                  width = { 100 }
-                  height = { 100 }
-                  alt = "프로필"
-                  style = {{ borderRadius: "50%", cursor: "pointer" }}
+      <div id = "layout" style = {{ overflow: 'hidden' }}>
+        <div id = 'mypage-edit-pu'>
+          { profile && 
+            <div className = 'pu-information'>
+              <div className = 'pu-img'>
+                <label htmlFor = "profile-image">
+                  <img
+                    src = { selectedImage || (profile.photo !== "없음" ? profile.photo : "/img/defaultProfile.jpg") }
+                    width = { 130 }
+                    height = { 130 }
+                    alt = "프로필"
+                  />
+                </label>
+                <input
+                  type = "file"
+                  id = "profile-image"
+                  accept = "image/*"
+                  style = {{ display: "none" }}
+                  onChange = { handleChangeProfile }
                 />
-              </label>
-              <input
-                type = "file"
-                id = "profile-image"
-                accept = "image/*"
-                style = {{ display: "none" }}
-                onChange = { handleChangeProfile }
-              />
+              </div>
+              <div className = 'text'>
+                <p>이메일 <span>{ profile.email }</span></p>
+                <p>회원구분 <span>개인회원</span></p>
+                <p>가입일 <span>{ startDate.getFullYear() }.{ startDate.getMonth() + 1 }.{ startDate.getDate() }</span></p>
+              </div>
+              <div className = 'delete'>
+                회원탈퇴
+              </div>
             </div>
-            <div>
-              <p>이메일 { profile.email }</p>
-              <p>회원구분 <span>개인회원</span></p>
-              <p>가입일 <span>{ startDate.getFullYear() }.{ startDate.getMonth() + 1 }.{ startDate.getDate() }</span></p>
-            </div>
-            <div>
-              회원탈퇴
-            </div>
-          </div>
-        }
+          }
+        
 <br />
 
-        <form onSubmit = { handleSubmit }>
-          <h2>회원정보 수정</h2>
+        <div className='edit'>
 
+        <form onSubmit = { handleSubmit }>
+          {/*<h2>회원정보 수정</h2>*/}
+          <div className='grid'>
           {/* 닉네임 수정 */}
           <div>
             <label>닉네임</label>
@@ -310,10 +313,13 @@ export default function MypageEditPu() {
               maxLength = { 10 }
               onChange = { updateNickname }
               required
+              className='edit-input-short'
             />
             <button
               type = "button"
               onClick = { onSearch }
+              className='btn'
+
             >
               중복확인
             </button>
@@ -364,6 +370,8 @@ export default function MypageEditPu() {
               maxLength = { 20 }
               onKeyDown = { characterCheck }
               disabled = { email }
+              className='edit-input-long'
+
             />
           </div>
           <div>
@@ -375,13 +383,15 @@ export default function MypageEditPu() {
               maxLength = { 20 }
               onKeyDown = { characterCheck } 
               disabled = { email }
+              className='edit-input-long'
+
             />
           </div>
-          <div>
+          {/*<div>
             {/* {
               password1 !== null && password1 === password2 ? "*  비밀번호가 일치합니다" : "* 비밀번호가 일치하지  않습니다"
             } */}
-          </div>
+          {/*</div>*/}
 
           {/* 연락처 수정 */}
           <div>
@@ -390,12 +400,15 @@ export default function MypageEditPu() {
               type = "number"
               value = { phoneNum }
               onChange = { updatePhoneNum }
+              className='edit-input-short'
+
             />
             <button
               id = "sign-in-button"
               type = "button"
               onClick = { onSignInSubmit }
               onChange={ (e) => { setPhoneNum(e.target.value) } }
+              className='btn'
             >
               인증번호 발송
             </button>
@@ -409,17 +422,24 @@ export default function MypageEditPu() {
               placeholder = "인증번호"
               value = { otp }
               onChange = { (e) => { setOtp(e.target.value) } }
+              className='edit-input-short'
             />
             <button
               type = "button"
               onClick = { onOTPVerify }
+              className='btn'
+
             >
               인증번호 확인
             </button>
           </div>
+          </div>
           
-          <input type = "submit" value = "수정하기" onClick = { handleClickUpdate }/>
+          <input type = "submit" value = "수정하기" onClick = { handleClickUpdate } className='form-submit'/>
         </form>
+        </div>
+
       </div>
-    )
+    </div>
+  )
 }
