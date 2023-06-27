@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { db,auth } from '../../database/firebase'
-import { useSelector, useDispatch } from 'react-redux'
-import { doc, getDoc, addDoc, collection, getDocs, query, deleteDoc, where } from 'firebase/firestore'
-import { useNavigate, useParams } from 'react-router'
-import CommentComp from '../components/CommentComp'
-import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import {collection, getDocs, query } from 'firebase/firestore'
+
 
 export default function BadgeBoxComp() {
   const user = useSelector((state)=>state.user.user);

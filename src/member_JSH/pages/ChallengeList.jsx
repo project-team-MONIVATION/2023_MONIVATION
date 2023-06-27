@@ -45,6 +45,7 @@ export default function ChallengeList() {
 
   return (
     <div id='layout'>
+      <div id='challenge-list'>
       <h1 style={{width : "1300px", margin : "auto", border : "solid 1px black", padding : "10px"}}>챌린지</h1>
       <ChallengeSlick />
       <br />
@@ -62,7 +63,7 @@ export default function ChallengeList() {
                 <div style={{width : "300px", display : "inline-block", 
                 backgroundImage :`url(/img/${board.img})`,
                 backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
-                  className="card"
+                  className="challengeboard-card"
                 >
                 </div>
                 <br></br>
@@ -75,6 +76,7 @@ export default function ChallengeList() {
       <button className='create-button'>
         <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '3rem'}}>+</Link>
       </button>
+      </div>
     </div>
   )
 }
