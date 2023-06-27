@@ -209,6 +209,40 @@ main #section2 .box-container .imgbox {
   width: 50%;
 }
 
+main #section2 .box-container .imgbox .goal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+main #section2 .box-container .imgbox .goal:nth-child(2) {
+  text-align: right;
+}
+
+main #section2 .box-container .imgbox .goal div {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  font-size: 50px;
+  background-color: #C7A5F3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+main #section2 .box-container .imgbox .goal div
+
+main #section2 .box-container .imgbox .goal p {
+  background-color: #C7A5F3;
+  box-sizing: border-box;
+  padding: 20px 30px;
+  padding-left: 50px;
+  border-radius: 0 50px 50px 0;
+  transform: translateX(-35px);
+}
+
 
 /* 섹션 3 */
 main #section3 {

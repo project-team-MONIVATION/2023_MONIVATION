@@ -128,9 +128,24 @@ export default function Home({ handleHover }) {
               <p>저금 목표를 설정하고 달성해 보세요</p>
             </div>
             <div className='imgbox'>
-              <p>3,000만원 모으기💰</p>
-              <p>집 떠나 독립하기🏡</p>
-              <p>해외로 현실도피🛫</p>
+              <div className='goal'>
+                <div>
+                  <span>💰</span>
+                </div>
+                <p>3,000만원 모으기</p>
+              </div>
+              <div className='goal'>
+                <div>
+                  <span>🏡</span>
+                </div>
+                <p>집 떠나 독립하기</p>
+              </div>
+              <div className='goal'>
+                <div>
+                  <span>🛫</span>
+                </div>
+                <p>해외로 현실도피</p>
+              </div>
             </div>
           </div>
           <div className='space'/>
