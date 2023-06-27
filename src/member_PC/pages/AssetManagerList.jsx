@@ -82,6 +82,42 @@ export default function AssetManagerList() {
           <button onClick={handleSearch}>검색</button>
         </div>
       </div>
+      
+      {/* 분야 필터 */}
+      <div style={{width: "600px", margin: "auto"}}>
+        {field.map((f, i)=>(
+          <button key={i} style={{margin: "5px 10px", border: "none", borderRadius: "20px", color: "white", backgroundColor: filter.includes(f) ? "#735BF3" : "gray" }} onClick={()=>handleFilter(f)}>{f}</button>
+        ))}
+      </div>
+      
+      {/* 모든 자산관리사 리스트 */}
+      <div className='container-box'>
+        { 
+          filteredFmList && filteredFmList.map((fm)=>(
+            <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
+            <div style={{backgroundColor: "#735BF3", width: "250px", height: "300px", margin: "20px 40px", display: "inline-block", borderRadius: "20px"}}>
+              <div style={{backgroundColor: "white", width: "200px", height: "200px", margin: "auto", marginTop: "20px", borderRadius: "40px", backgroundImage: `url(${fm.photo})`, backgroundSize: "cover"}}></div>
+              <h3 style={{margin: "10px 0"}}>{fm.name}</h3>
+              <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                <div>
+                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[0]}</span>
+                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[1]}</span>
+                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[2]}</span>
+                </div> 
+              </div>
+              <div>
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  fontSize={20}
+                  style={{ color: "red" }}
+                />:{fm.likeNum}
+              </div>
+            </div>
+            </Link>
+          ))
+        }
+      </div>
+  
     </div>
   )
 }
