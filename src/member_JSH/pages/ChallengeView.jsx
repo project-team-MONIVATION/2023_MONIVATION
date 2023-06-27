@@ -226,7 +226,7 @@ export default function ChallengeView() {
   }
   
   return (
-    <div>
+    <div id='layout'>
       <h1>챌린지 상세보기</h1>
       <div>
         {/** 업로드해서 넣은 이미지 url과 그냥 imgId만 넣은 파일을 구분해서 들고와야함 */}

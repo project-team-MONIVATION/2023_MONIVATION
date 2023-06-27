@@ -127,14 +127,21 @@ export default function AssetManagerProfile() {
   }, [])
 
   return (
-    <div style={{backgroundColor: "#735BF3"}}>
-      <div style={{backgroundColor: "white", width: "90%", margin: "auto", borderRadius: "50px"}}>
-        <h1>자산관리사 프로필</h1>
-        <div style={{margin:"auto", width: "80%", display: "flex", justifyContent: "space-evenly"}}>
-        {
-          profile &&
-          <div>
-            <div style={{width: "350px", height: "300px", backgroundColor: "gray", margin: "auto", backgroundImage: `url(${profile.photo})`, backgroundSize: "cover", backgroundPosition: "center"}}>
+    <div id='layout'>
+      <h1>자산관리사 프로필</h1>
+      <div style={{margin:"auto", width: "80%", display: "flex", justifyContent: "space-evenly"}}>
+      {
+        profile &&
+        <div>
+          <div style={{width: "350px", height: "300px", backgroundColor: "gray", margin: "auto", backgroundImage: `url(${profile.photo})`, backgroundSize: "cover", backgroundPosition: "center"}}>
+          </div>
+          <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "10px"}}>
+            </div>
+            <div>
+              <p>{profile.name}</p>
+              {profile.intro.map((intro, i)=>(
+                <p key={i}>{intro}</p>
+              ))}
             </div>
             <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "10px"}}>
               <div>
@@ -203,6 +210,5 @@ export default function AssetManagerProfile() {
         }
         </div>
       </div>
-    </div>
   )
 }

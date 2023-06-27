@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 
 export default function MoneyChart() {
   return (
-    <div>
+    <div id='layout'>
       <div>
         <button>
           <Link to="/calendar/chart/income">수입</Link>
