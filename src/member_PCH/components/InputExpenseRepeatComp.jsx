@@ -13,6 +13,9 @@ import { useSelector } from 'react-redux';
 import CategoryBtn from '../features/CategoryBtn';
 import { SelectDate, SelectPeriod } from '../features/IconInModal';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+
 export default function InputExpenseRepeatComp({ handleSubmit }) {
 
   // uid 불러오기 위함
@@ -327,6 +330,13 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
                               onClick={onClickCycleSelect}
                             >
                               {cycle === null ? "필수선택" : cycle}
+                              <FontAwesomeIcon 
+                                icon={faChevronDown} 
+                                className='icon_chevron'
+                                style={{
+                                  transform: cycleSelect ? "scaleY(-1)" : "",
+                                }}
+                              />
                             </button>
                             <ul 
                               className='option_list'
@@ -417,6 +427,15 @@ export default function InputExpenseRepeatComp({ handleSubmit }) {
                   onClick={onClickPaymentSelect}
                 >
                   {payment ? payment : "필수선택"}
+                  <FontAwesomeIcon 
+                    icon={faChevronDown} 
+                    className='icon_chevron'
+                    style={{
+                      transform: paymentSelect ? "scaleY(-1)" : "",
+                      top: "16px",
+                      right: "20px"
+                    }}
+                  />
                 </button>
                 <ul
                   className='option_list'
