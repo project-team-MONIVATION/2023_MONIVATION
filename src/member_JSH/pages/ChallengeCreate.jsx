@@ -62,7 +62,7 @@ export default function ChallengeCreate() {
     imageInput.current.click();
   };
   return (
-    <div>
+    <div id='layout'>
       <h1>챌린지 생성</h1>
       <form onSubmit={addUserChallenge}>
         {/** 디폴트 이미지 선택은 눌렀을 때 기존에 데이터에 있는 이미지를

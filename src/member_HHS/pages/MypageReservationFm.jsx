@@ -80,7 +80,7 @@ export default function MypageReservationFm() {
   };
 
   return (
-    <div>
+    <div id='layout'>
       <h1 style={{fontSize: "1.8rem", margin: "20px"}}>나의 예약 내역</h1>
       <table className='mypage-table'>
         <tbody>

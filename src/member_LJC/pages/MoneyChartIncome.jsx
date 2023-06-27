@@ -603,7 +603,7 @@ export default function MoneyChartExpense() {
 
 
     return (
-        <div>
+        <div id='layout'>
             <h1>수입</h1>
             <div>
                 <button>

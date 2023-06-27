@@ -629,7 +629,7 @@ export default function MoneyChartExpense() {
 
 
     return (
-        <div className='pull_container'>
+        <div id='layout' className='pull_container'>
             <h1>지출</h1>
                 <div className='container_wrap'>
                     <div className='wrap_1'>
