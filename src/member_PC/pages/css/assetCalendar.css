@@ -1,0 +1,544 @@
+#asset-calendar .content_container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  #asset-calendar .content_container .close_btn {
+    position: absolute;
+    top: 1.5%;
+    right: 1.5%;
+    border: 0;
+    color: #735BF3;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  #asset-calendar .content_container .content {
+    text-align: center;
+    padding: 50px 0;
+  }
+  
+  #asset-calendar .content_container .content .saving {
+    /* 저금 모달창 타이틀 */
+    box-sizing: border-box;
+    width: 150px;
+    height: 40px;
+    margin: auto;
+    padding-top: 10px;
+    border-radius: 50px;
+    background-color: #735BF3;
+    color: #FFFFFF;
+    font-family: 'Cafe24Ssurround';
+    font-size: 23px;
+  }
+  
+  #asset-calendar .content_container .content .btn_container {
+    width: 300px;
+    height: 40px;
+    margin: auto;
+    background-color: #8E8E8E;
+    border-radius: 50px;
+  }
+  
+  #asset-calendar .content_container .content .btn_container .btns {
+    position: absolute;
+    width: inherit;
+    top: 50px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  #asset-calendar .content_container .content .btn_container .content_btn {
+    box-sizing: border-box;
+    width: 50%;
+    height: 40px;
+    padding-top: 3.5px;
+    background-color: transparent;
+    border: 0;
+    border-radius: 50px;
+    color: #FFFFFF;
+    font-family: 'Cafe24Ssurround';
+    font-size: 23px;
+  }
+  /*
+  #asset-calendar .content_container .content .btn_container .content_btn.active {
+    background-color: #735BF3;
+  }
+  */
+  #asset-calendar #input_form .input_content {
+    width: 350px;
+    height: 560px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  #asset-calendar #input_form .input_content.expense {
+    width: 350px;
+    height: 610px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  #asset-calendar #input_form .input_content p {
+    box-sizing: border-box;
+    width: 350px;
+    text-align: left;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    font-family: 'Cafe24Ssurround';
+    font-size: 20px;
+  }
+  
+  #asset-calendar #input_form .input_content .input_box {
+    box-sizing: border-box;
+    width: 350px;
+    height: 45px;
+    background-color: #D9D9D9;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+  }
+  
+  #asset-calendar #input_form .input_content.expense .input_box {
+    box-sizing: border-box;
+    width: 350px;
+    height: 45px;
+    background-color: #D9D9D9;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+  }
+  
+  #asset-calendar #input_form .input_content .input_box span {
+    width: 300px;
+    padding-top: 2px;
+  }
+  
+  #asset-calendar #input_form .input_content .input_box button {
+    border: 0;
+    background-color: inherit;
+    padding: 0;
+  }
+  
+  #asset-calendar #input_form .input_content .input_box .input_price {
+    width: 300px;
+    background: inherit;
+    border: 0;
+    text-align: center;
+    font-size: 16px;
+  }
+  
+  #asset-calendar #input_form .input_content .input_box .won {
+    width: 20px;
+    height: 20px;
+    padding-top: 8px;
+    font-size: 18px;
+  }
+  
+  /* 커스텀 반복주기 select 시작 */
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle .select {
+    height: 180px;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    background-color: #FFFFFF;
+    transition: all 0.2s ease-in;
+    z-index: -10;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box button {
+    width: 130px;
+    height: 35px;
+    background-color: #D9D9D9;
+    color: #303030;
+    border: 0;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box button.active {
+    background-color: #F3DD73;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box .option_list {
+    position: absolute;
+    width: 130px;
+    height: 0;
+    top: 40px;
+    left: 0;
+    background-color: #D9D9D9;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: 0s;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box.active .option_list {
+    width: 130px;
+    height: 120px;
+    transition: all 0.2s ease-in;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box li {
+    box-sizing: border-box;
+    display: block;
+    height: 30px;
+    transition: all 0.2s ease-in;
+    cursor: pointer;
+    font-size: 13px;
+    border-bottom: 0.3px solid #FFFFFF;
+    padding-top: 9px;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box li:last-child {
+    border-bottom: 0;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box li:hover {
+    background-color: #bbbbbb;
+  }
+  /* 커스텀 반복주기 select 끝 */
+  
+  
+  #asset-calendar #input_form .input_content .payment .input {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  
+  /* 커스텀 결제수단 select 시작 */
+  #asset-calendar #input_form .input_content .input_payment .select_box {
+    position: relative;
+    width: 350px;
+    height: 45px;
+    margin-bottom: 15px;
+    transition: all 0.5s;
+  }
+  
+  #asset-calendar #input_form .input_content .input_payment .select_box.card {
+    width: 170px;
+    transition: all 0.5s;
+  }
+  
+  #asset-calendar #input_form .input_content .input_payment .select_box button {
+    box-sizing: border-box;
+    width: inherit;
+    height: 45px;
+    padding: 0 15px;
+    background-color: #D9D9D9;
+    border: 0;
+    border-radius: 15px;
+    font-size: 16px;
+  }
+  
+  #asset-calendar #input_form .input_content .input_payment .select_box .option_list {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    width: inherit;
+    height: 0;
+    background-color: #D9D9D9;
+    border-radius: 15px;
+    transition: all 0s;
+    overflow: hidden;
+  }
+  
+  #asset-calendar #input_form .input_content .input_payment .select_box.active .option_list {
+    width: inherit;
+    height: 90px;
+    transition: all 0.2s ease-in;
+  }
+  
+  #asset-calendar #input_form .input_content .input_payment .select_box.active .option_item {
+    cursor: pointer;
+    display: block;
+    box-sizing: border-box;
+    height: 30px;
+    padding-top: 9px;
+    font-size: 14px;
+    border-bottom: 0.5px solid #FFFFFF;
+  }
+  
+  #asset-calendar #input_form .input_content .input_payment .select_box.active .option_item:last-child {
+    border-bottom: 0;
+  }
+  
+  #asset-calendar #input_form .input_content .input_payment .select_box.active .option_item:hover{
+    background-color: #bbbbbb;
+  }
+  /* 커스텀 결제수단 select 끝 */
+  
+  
+  /* 커스텀 지불방식 select 시작 */
+  #asset-calendar #input_form .input_content .input_installment .select_box{
+    position: relative;
+    width: 0;
+    height: 45px;
+    margin-left: 10px;
+    animation: installment 0.5s 1 forwards;
+    opacity: 0;
+  }
+  
+  @keyframes installment {
+    0% {
+      width: 0;
+      visibility: hidden;
+  }
+    100% {
+      display: block;
+      width: 170px;
+      opacity: 1;
+    }
+  }
+  
+  #asset-calendar #input_form .input_content .input_installment .select_box button {
+    box-sizing: border-box;
+    width: inherit;
+    height: 45px;
+    padding: 0 15px;
+    background-color: #D9D9D9;
+    border: 0;
+    border-radius: 15px;
+    font-size: 16px;
+  }
+  
+  #asset-calendar #input_form .input_content .input_installment .select_box button p {
+    font-family: 'Cafe24SsurroundAir';
+    font-size: 16px;
+    text-align: center;
+    width: 140px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #asset-calendar #input_form .input_content .input_installment .select_box .option_list {
+    box-sizing: border-box;
+    position: absolute;
+    top: 48px;
+    left: 0;
+    width: inherit;
+    height: 0;
+    background-color: #D9D9D9;
+    border-radius: 15px;
+    transition: all 0s;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+  
+  #asset-calendar #input_form .input_content .input_installment .select_box .option_list::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  #asset-calendar #input_form .input_content .input_installment .select_box .option_list::-webkit-scrollbar-track {
+    background-color: darkgrey;
+  }
+  
+  #asset-calendar #input_form .input_content .input_installment .select_box .option_list::-webkit-scrollbar-thumb {
+    background-color: #303030;
+  }
+  
+  #asset-calendar #input_form .input_content .input_installment .select_box.active .option_list {
+    width: inherit;
+    height: 170px;
+    transition: all 0.2s ease-in;
+  }
+  
+  #asset-calendar #input_form .input_content .input_installment .select_box.active .option_item {
+    cursor: pointer;
+    display: block;
+    box-sizing: border-box;
+    height: 30px;
+    padding-top: 9px;
+    font-size: 14px;
+    border-bottom: 0.5px solid #FFFFFF;
+  }
+  
+  #asset-calendar #input_form .input_content .input_installment .select_box.active .option_item:last-child {
+    border-bottom: 0;
+  }
+  
+  #asset-calendar #input_form .input_content .input_installment .select_box.active .option_item:hover{
+    background-color: #bbbbbb;
+  }
+  
+  /* 커스텀 지불방식 select 끝 */
+  
+  #asset-calendar #input_form .option_list {
+    box-shadow: 0 2px 10px 0 rgba(0,0,0,0.15);
+  }
+  
+  
+  #asset-calendar #input_form .input_content .date_modal {
+    position: relative;
+    z-index: 2;
+  
+  }
+  
+  #asset-calendar #input_form .input_content .date_modal .input_date {
+    box-sizing: border-box;
+    position: absolute;
+    width: 350px;
+    height: 400px;
+    padding: 20px;
+    transform: translateY(-10px);
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.25);
+  }
+  
+  #asset-calendar #input_form .input_content .date_modal .input_date .close_btn {
+    font-size: 15px;
+    top: calc(20px + 1.5%);
+    right: calc(20px + 1.5%);
+  }
+  
+  #asset-calendar #input_form .input_content .date_modal .input_date .modal_calendar {
+    margin-top: 9%;
+    border: 0;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal {
+    position: relative;
+    z-index: 2;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal p {
+    width: 150px;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period {
+    box-sizing: border-box;
+    position: absolute;
+    width: 500px;
+    height: 400px;
+    padding: 20px;
+    left: 50%;
+    transform: translate(-50%, -10px);
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.25);
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .close_btn {
+    font-size: 15px;
+    top: calc(20px + 1.5%);
+    right: calc(20px + 1.5%);
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    margin-top: 20px;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_endDate .modal_calendar.period {
+    width: 280px;
+    border: 0;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle {
+    box-sizing: border-box;
+    height: 336px;
+    padding-top: 50px;
+    padding-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle p {
+    padding: 0;
+    text-align: center;
+  }
+  
+  
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle .input_btn {
+    width: 130px;
+    height: 30px;
+    background-color: #735BF3;
+    border: 0;
+    border-radius: 10px;
+    color: #FFFFFF;
+    font-family: 'Cafe24Ssurround';
+    font-size: 16px;
+  }
+  
+  #asset-calendar #input_form .input_content .period_modal .input_period .flex .input_cycle .input_btn.disabled {
+    background-color: #D9D9D9;
+    cursor: initial;
+  }
+  
+  #asset-calendar #input_form .input_content .category_box {
+    box-sizing: border-box;
+    width: 350px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+  }
+  
+  #asset-calendar #input_form .input_content .category_box label {
+    margin-bottom: 5px;
+  }
+  
+  
+  #asset-calendar #input_form .input_content textarea {
+    box-sizing: border-box;
+    width: 350px;
+    height: 60px;
+    border: 0;
+    resize: none;
+    background-color: #D9D9D9;
+    border-radius: 15px;
+    padding: 15px;
+    font-family: 'Cafe24SsurroundAir';
+    font-size: 16px;
+  }
+  
+  #asset-calendar #input_form .submit_btn {
+    width: 150px;
+    height: 50px;
+    background-color: #735BF3;
+    border: 0;
+    border-radius: 50px;
+    color: #FFFFFF;
+    font-family: 'Cafe24Ssurround';
+    font-size: 23px;
+  }
+  
+  #asset-calendar #input_form .submit_btn.disabled {
+    cursor: initial;
+    background-color: #cdc7f3;
+  }
+  
+  #asset-calendar #input_form .input_content .icon_chevron {
+    color: #303030;
+    font-size: 10px;
+    transition: all 0.2s;
+    position: absolute;
+    top: 11px;
+    right: 15px;
+  }

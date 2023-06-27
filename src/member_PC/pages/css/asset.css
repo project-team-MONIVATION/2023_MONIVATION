@@ -2,13 +2,20 @@
     text-decoration: none;
     color: black;
 }
+#asset .asset-header {
+    font-size: 1.8rem;
+}
+#asset .asset tr td:first-child {
+    width: 70px;
+    vertical-align: top;
+}
 #asset .asset td img {
-    width: 300px;
-    height: 180px;
+    width: 250px;
+    height: 150px;
 }
 #asset .asset td iframe {
-    width: 300px;
-    height: 180px;
+    width: 250px;
+    height: 150px;
 }
 #asset .asset table {
     border-collapse: collapse;
@@ -25,10 +32,6 @@
 #asset .asset td p {
     text-align: center;
 }
-
-#asset .container-box {
-    width: 90%;
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+#asset .asset {
+    overflow: hidden;
 }
