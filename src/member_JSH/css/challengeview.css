@@ -11,6 +11,11 @@
     text-align: left;
 }
 
+.challenge-info{
+    align-items: center;
+    justify-content: center;
+}
+
 .badge-button-wrap{
     border: solid black 1px;
     display: inline-block;

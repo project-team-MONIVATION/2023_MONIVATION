@@ -2,25 +2,25 @@ a{
     text-decoration: none;
 }
 
-.card-grid {
+#challenge-list .card-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3개의 열을 가진 그리드 */
     gap: 20px; /* 카드 사이의 간격 */
     margin: 30px;
 }
 
-.card {
+#challenge-list .challengeboard-card {
     border: solid 1px gray;
     padding: 30px;
     height: 100px;
     border-radius: 20px;
 }
 
-.default-challenge-list{
+#challenge-list .default-challenge-list{
     margin: 30px;
 }
 
-.create-button{
+#challenge-list .create-button{
     padding : 0px 15px;
     border-radius : 30px;
     align-items : center;
