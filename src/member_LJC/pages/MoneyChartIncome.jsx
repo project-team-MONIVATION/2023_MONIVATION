@@ -5,14 +5,20 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale,PointElement,LineElement, 
         Title, Filler,    } from 'chart.js';
-
-
+        
 import { Line, Pie, getElementAtEvent } from 'react-chartjs-2'; // 원하는 차트 종류를 가져오세요.
 
 import Calendar from 'react-calendar'
 
+
 import { Timestamp, collection, deleteDoc, doc, getDocs, query, where, } from 'firebase/firestore';
 import {db} from '../../database/firebase'
+
+import '../css/moneyChart.css'
+import '../css/select.css';
+
+import SelcectComp from '../components/SelcectComp';
+import { SelectDate } from '../../member_PCH/features/IconInModal';
 
 
 
@@ -32,9 +38,24 @@ ChartJS.register(
 
 
 export const options = {
-    responsive : false,
-    legend: {
-        align: 'bottom'  //  or 'left', 'bottom', 'right'(default)
+    responsive : true,
+    plugins: {
+        legend: {
+            display: true,
+            align: "center",
+            position: "bottom",
+            fullSize: true,
+            labels:{
+                boxHeight: 100,
+                padding: 30,
+                usePointStyle: true,
+                font: {
+                    size: 12,
+                    lineHeight : 3
+                }
+            }
+            
+        },
     },
     scale: {
         yAxes: [
@@ -47,12 +68,27 @@ export const options = {
     },
 }
 
+export const lineoptions = {
+    // responsive 속성을 false로 지정한다.
+    responsive: true,
+    scales: {
+        yAxes: [
+            {
+            ticks: {
+                beginAtZero: true,
+            },
+            },
+        ],
+        },
+    };
+
 
     
 
 export default function MoneyChartExpense() {
     const navigate = useNavigate();
     const [value, onChange] = useState(new Date());
+
     const user = useSelector((state) => state.user.user);
 
     
@@ -77,6 +113,9 @@ export default function MoneyChartExpense() {
     const [ nowmonthfirstday, setNowmonthfirstday] = useState('');
     // 마지막날
     const [ nowmonthlastday, setNowmonthlastday] = useState('');
+
+    // 한번반복(처음 시작했을때 useEffect 반복)
+    const [checked, setChecked] = useState(false);
 
         // 일(day )열기 닫기
         const [isCheck, setCheck] = useState(false);
@@ -110,40 +149,40 @@ export default function MoneyChartExpense() {
         // 각 카테고리의 금액
         const [pamount, setPamount] = useState();
 
-
+    const [list, setList] = useState([]);
 
 
     const inputRef = useRef([]);
     
 
-    useEffect(() => {
-        getSavingData();
-    }, [user]); // [user] 가바뀔떄마다 돈다
+    // useEffect(() => {
+    //     getSavingData();
+    // }, [user]); // [user] 가바뀔떄마다 돈다
 
-    // 지출 불러오기
-    const getSavingData = async () => {
-        try {
-            const fmCollectionRef = collection(db, "money_income");
-            const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
-            const fmQuerySnapshot = await getDocs(fmQuery);
+    // // 지출 불러오기
+    // const getSavingData = async () => {
+    //     try {
+    //         const fmCollectionRef = collection(db, "money_expense");
+    //         const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
+    //         const fmQuerySnapshot = await getDocs(fmQuery);
             
-            if (!user.uid) {
-                navigate('/account/login');
-            } else {
-                let dataArray = [];
-                let newArray = [];
+    //         if (!user.uid) {
+    //             navigate('/account/login');
+    //         } else {
+    //             let dataArray = [];
+    //             let newArray = [];
 
-                fmQuerySnapshot.forEach((doc) => {
-                    dataArray.push({
-                        ...doc.data(),
-                        id: doc.id,
-                    });
-                });
-            }
-        } catch (error) {
-            console.log("실패했습니다", error);
-        }
-    };
+    //             fmQuerySnapshot.forEach((doc) => {
+    //                 dataArray.push({
+    //                     ...doc.data(),
+    //                     id: doc.id,
+    //                 });
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.log("실패했습니다", error);
+    //     }
+    // };
     
     
 
@@ -156,7 +195,7 @@ export default function MoneyChartExpense() {
             day: '2-digit'
             };
         
-            const dataList = d.map(({ category, price, date }) => {
+            const dataList = d.map(({ category, price, date, memo }) => {
             const formattedDate = date
                 .toDate()
                 .toLocaleString('en-US', options)
@@ -166,7 +205,8 @@ export default function MoneyChartExpense() {
             return {
                 category,
                 price,
-                date: `${year}-${month}-${day}`
+                date: `${year}-${month}-${day}`,
+                memo,
             };
             });
         
@@ -175,8 +215,7 @@ export default function MoneyChartExpense() {
 
 
     // 라인그래프
-    // 날짜 중복제거, 각 가격합침
-    // 월, 년, 일 바꾸기
+    //날짜 중복제거, 각 가격합침
     function linededuplication (d) {
         let checkdifferntdate = "date"
 
@@ -321,7 +360,8 @@ export default function MoneyChartExpense() {
         // 12시 0분 0초를 못 담아서 하루 를 빼줘야 그 날에 대입이됨
         let startday = new Date(inputRef.current[0].value);
         startday.setDate(s.getDate() - 1);
-        console.log(startday)
+        
+
 
         const fmCollectionRef = collection(db, "money_income");
         const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid), where('date', '>=', startday), where('date', '<=', e)) 
@@ -342,18 +382,18 @@ export default function MoneyChartExpense() {
             // 중복된 카테고리 합침 
             // 중복된 카테고리의 금액도 합침
             const ctgpic = transform(deduplication(samecategory(dayFilterDateList)))
-            console.log(ctgpic)
+            // console.log(dayFilterDateList)
 
             // 선 그래프
             // 중복된 날짜 합침
             // 중복된 날짜의 금액 합침
             const ctpicdt = linededuplication(samecategory(dayFilterDateList))
-            console.log("라인 중복제거전",samecategory(dayFilterDateList))
-            console.log("라인 중복제거후",ctpicdt)
+            // console.log("라인 중복제거전",samecategory(dayFilterDateList))
+            // console.log("라인 중복제거후",ctpicdt)
 
             const ctpicdtList = samecategory(dayFilterDateList)
-
-            // console.log("완전초반 데이트덜",dayFilterDateList)
+            setList(ctpicdtList)
+            // console.log("ctpicdtList 데이트덜",ctpicdtList)
             // console.log("라인 카테고리,가격,날짜",ctpicdt)
 
             
@@ -456,10 +496,14 @@ export default function MoneyChartExpense() {
         handleTest3()
     },[nowmonthfirstday,nowmonthlastday])
 
-
-    
-    
-    
+    useEffect(() => {
+        chageDateOneMonth(); 
+        if(user){
+            getexpensechoiseData();
+        } else{
+            setChecked(true)
+        }
+    },[checked])
     
     
 
@@ -522,20 +566,6 @@ export default function MoneyChartExpense() {
         inputRef.current[1].value = changeDate(nowmonthlastday)
     }
 
-    
-
-    const [Lineoptions] = useState({
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: true,
-                text: 'Chart.js Line Chart',
-            },
-            },
-    });
 
     
     // 라인 그래프
@@ -544,7 +574,7 @@ export default function MoneyChartExpense() {
         datasets: [
             {
                 fill: true,
-                label: 'Dataset 1',
+                label: '금액',
                 data: linepriceList,
                 // .map((data) => data*100),
                 borderColor: 'rgb(255, 99, 132)',
@@ -559,7 +589,7 @@ export default function MoneyChartExpense() {
         
         datasets: [
             {
-                label: '# of Votes',
+                label: '금액',
                 data: priceList,
                 backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -584,162 +614,229 @@ export default function MoneyChartExpense() {
         ],
     };
 
+    // select에 필요한것들
+    const [selectedOption, setSelectedOption] = useState('1개월');
+    const [isActive, setIsActive] = useState(false);
+
+    const handleSelect = (item) => {
+        
+        setSelectedOption(item);
+        setIsActive(false);
+    };
+
+    const toggleOptions = () => {
+        setIsActive(!isActive);
+    };
+
+
     
 
-    // const Linedata = {
-    //     labels,
-    //     datasets: [
-    //         {
-    //             fill: true,
-    //             label: 'Dataset 2',
-    //             data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-    //             borderColor: 'rgb(53, 162, 235)',
-    //             backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    //         },
-    //         ],
-    // };
-
-
-
-
     return (
-        <div id='layout'>
-            <h1>수입</h1>
-            <div>
-                <button>
-                    <Link to="/calendar/chart/income">수입</Link>
-                </button>
-                <button>
-                    <Link to="/calendar/chart/expense">지출</Link>
-                </button>
-            </div>
-                    <input ref={el => (inputRef.current[0] = el)}  type="text"
-                        disabled
-                    />
-                    ~  
-                    <input ref={el => (inputRef.current[1] = el)}  type="text"
-                        disabled
-                    />
-        <br />
-            {/* 일별  */}
-            <button 
-                onClick={() => {setCheck((e) => !e);}}
-            >
-                {isCheck ? "일" : "일"}
-            </button>
-            {isCheck && (
-                <div className='modal-cal modal-cal2'>
-                    <Calendar 
-                        onChange={onChange} 
-                        value={value}
-                        onClickDay={(value, event) => {setOnClickDay(value); setCheck(false);}}
-                    />
+        <div id='layout' className='pull_container'>
+                <div id='moneychart_page' className='container_wrap'>
+                    <div className='wrap'>
+                        <div className='income_expenditure_btn'>
+                                <Link to="/calendar/chart/income">
+                                    <button
+                                        className='btnin hover3'
+                                    >
+                                            수입
+                                    </button>
+                                </Link>
+
+                            <button
+                                className='btnex hover2'
+                            >
+                                <Link to="/calendar/chart/expense">지출</Link>
+                            </button>
+                        </div>
+
+                        <div className='period_content'>
+                            <div className='inputs_wrap'>
+                                <div className='startday_content'>
+                                    <div>
+                                        <input 
+                                        className='input_box_start'
+                                        ref={el => (inputRef.current[0] = el)}  
+                                        type="text"
+                                        disabled
+                                        />
+                                    </div>    
+                                    <div>    
+                                        {/* 시작일 */}
+                                        <button
+                                            onClick={() => {setCheck2((e) => !e); setCheck(false); }}
+                                            className='input_btn_box_start'
+                                        >
+                                            <SelectDate showCal={ischeck2}/>
+                                        </button>
+                                        {ischeck2 && (
+                                            <div className='modal-cal'>
+                                                <Calendar 
+                                                    onChange={onChange}
+                                                    value={value}
+                                                    onClickDay={(value, event) => {setStartdayclick(value); setCheck2(false); setCheck3(true); setMindate(value);}}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>    
+                                </div>
+                                <div className='endday_content'>
+                                    <div>
+                                        
+                                        <input ref={el => (inputRef.current[1] = el)}  
+                                            type="text"
+                                            disabled
+                                            className='input_box_end'
+                                            />
+                                    </div>
+                                    <div>        
+                                        {/* 종료일 */}
+                                        <button
+                                            onClick={() => {setCheck3((e) => !e); setCheck(false); } }
+                                            className='input_btn_box_end'
+                                        >
+                                            <SelectDate showCal={ischeck3}/>
+                                        </button>
+                                        {ischeck3 && (
+                                            <div className='modal-cal'>
+                                                <Calendar 
+                                                    onChange={onChange} 
+                                                    value={value}
+                                                    onClickDay={(value, event) => {setEnddayclick(value); setCheck3(false);}}
+                                                    minDate={mindate}
+                                                />
+                                            </div>
+                                        )}
+                                        
+                                    </div>
+                                </div>
+                            </div>
+            
+                            {/* 일별  */}
+                            {/* <button 
+                                onClick={() => {setCheck((e) => !e);}}
+                            >
+                                {isCheck ? "일" : "일"}
+                            </button>
+                            {isCheck && (
+                                <div className='modal-cal modal-cal2'>
+                                    <Calendar 
+                                        onChange={onChange} 
+                                        value={value}
+                                        onClickDay={(value, event) => {setOnClickDay(value); setCheck(false);}}
+                                    />
+                                </div>
+                            )} */}
+                            <div className='selectBoxWrap'>
+                                <div className={`selectBox2 ${isActive ? 'active' : ''}`}>
+                                    <button className="label" onClick={toggleOptions}>
+                                        {selectedOption}
+                                    </button>
+                                    {/* 1개월 */}
+                                    <ul className={`optionList ${isActive ? 'active' : ''}`}>
+                                        <li onClick={() => {chageDateOneMonth(); handleSelect('1개월')}}
+                                            className="optionItem"
+                                        >
+                                            1개월
+                                        </li>
+                                        
+                                        {/* 2개월 */}
+                                        <li className="optionItem"
+                                            onClick={() => {chageDateTwoMonth(); handleSelect('2개월')}}
+                                        >
+                                            2개월
+                                        </li>
+                                        
+                                        {/* 3개월 */}
+                                        <li className="optionItem"
+                                            onClick={() => {chageDateTreeMonth(); handleSelect('3개월')}}
+                                        >
+                                            3개월
+                                        </li>
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className='check_button '
+                        onClick={() => getexpensechoiseData()}>
+                            {/* <button
+                                className='searchbutton btnPush btnBlueGreen'
+                                
+                                > */}
+                                <img src="/img/search.png" 
+                                    className='imgindex'
+                                    style={{width:"30px", height:"30px" }}
+                                    
+                                />
+                            {/* </button> */}
+                        </div>
+                    </div>            
+                    <div className='charts_wrap'>
+                        <div className='container_charts'>
+                            <div className='item'>
+                                <Pie 
+                                    data={data} 
+                                    options={options} 
+                                    width="500vh" height="500vh" 
+                                />
+                                <div className='ptotal'>
+                                    <span>Total</span><br />
+                                    <span>{ptotal}</span>
+                                </div>
+
+                            </div>
+                            
+                            
+                            <div className='item'>
+                                <Line
+                                    className='piegp'
+                                    data={Linedata} 
+                                    options={lineoptions} 
+                                    // style={{ position: "relative", height: "40vh", width:"100vh" }}
+                                    width="300%" height="100%"
+                                />
+                            </div>
+
+                            <div className='item'>
+                                <div className='menulist'>
+                                    <span>날짜</span>
+                                    <span>카테고리</span>
+                                    <span>가격</span>
+                                    <span>메모</span>
+                                </div>
+                                <div className='item_tree_wrap box2'>
+                                    {list.map((tmp)=> 
+                                        <div className='item_child_three'>
+                                            <div >
+                                                {tmp.date}
+                                            </div>
+                                            <div > 
+                                                {tmp.category}
+                                            </div>
+                                            <div >
+                                                {tmp.price}
+                                            </div>
+                                            <div >
+                                                {tmp.memo}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                    </div>                        
+                                    
                 </div>
-            )}
 
-        <br />
-            {/* 1개월 */}
-            <button
-                onClick={() => {chageDateOneMonth()}}
-            >
-                1개월
-            </button>
-        <br />
-            {/* 2개월 */}
-            <button
-                onClick={() => {chageDateTwoMonth()}}
-            >
-                2개월
-            </button>
-        <br />
-            {/* 3개월 */}
-            <button
-                onClick={() => {chageDateTreeMonth()}}
-            >
-                3개월
-            </button>
-            
 
-            {/* 선택한 기간별 */}
-            <div>
 
-        <br />    
-                    <div className='saving-period'>
-                        {/* 시작일 */}
-                        <button
-                            onClick={() => {setCheck2((e) => !e); setCheck(false); }}
-                        >
-                        <p style={{ color: ischeck2 ? "#BB363F" : "#000" }}>시작일</p>
-                        </button>
-                        {ischeck2 && (
-                            <div className='modal-cal'>
-                                <Calendar 
-                                    onChange={onChange}
-                                    value={value}
-                                    onClickDay={(value, event) => {setStartdayclick(value); setCheck2(false); setCheck3(true); setMindate(value);}}
-                                />
-                            </div>
-                        )}
 
-                        {/* 종료일 */}
-                        <button
-                            onClick={() => {setCheck3((e) => !e); setCheck(false); } }
-                        >
-                        <p style={{ color: ischeck3 ? "#BB363F" : "#000" }}>종료일</p>
-                        </button>
-                        {ischeck3 && (
-                            <div className='modal-cal'>
-                                <Calendar 
-                                    onChange={onChange} 
-                                    value={value}
-                                    onClickDay={(value, event) => {setEnddayclick(value); setCheck3(false);}}
-                                    minDate={mindate}
-                                />
-                            </div>
-                        )}
-                <br />
-                        
-                
-                        
-                <br />
-                        <button
-                            onClick={() => getexpensechoiseData()}
-                        >
-                            조회
-                        </button>
-                <br />
-                        <button
-                            // onClick={() => test()}
-                        >
-                            test
-                        </button>
 
-                    </div>
-                
-            </div>
-            <h2>선택 기간의 지출 총금액</h2>
-            {ptotal}
-            <h2>가격{pamount}</h2>
-            <h2>날짜{pdate}</h2>
-            <h2>카테고리명{pcategory}</h2>
-
-            
-
-            
-            
-            
-            
-            <Pie 
-                data={data} 
-                options={options} 
-                width="800px" height="800px" 
-            />
-
-            <Line
-                data={Linedata} 
-                options={Lineoptions} 
-                
-            />
         </div>
     )
 }
