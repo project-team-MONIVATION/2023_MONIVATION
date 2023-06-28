@@ -1,0 +1,124 @@
+#mypage-edit-pu {
+    position: relative;
+}
+
+#mypage-edit-pu > .pu-information {
+    position: absolute;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+}
+
+.pu-information .pu-img img {
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.pu-information .text {
+    text-align: start;
+    margin-right: 90px;
+    width: 320px;
+    font-size: 1rem;
+    line-height: 30px;
+    margin-left: 40px;
+    color: rgb(176, 176, 176);
+
+}
+
+.pu-information .text span {
+    font-size: 1.1rem;
+    color: black;
+
+}
+
+.delete {
+    width: 200px;
+    text-align: end;
+    color: #735BF3;
+}
+
+.edit {
+    position: absolute;
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 610px 610px;
+    grid-template-rows: 120px 120px 120px;
+    justify-content: start;
+}
+
+.grid > div > label {
+    font-size: 1.2rem;
+    font-family: 'Cafe24Ssurround';
+    display: flex;
+    padding-left: 35px;
+    margin-bottom: 10px;
+}
+
+.edit-input-long {
+    border-radius: 50px;
+    border: 1px solid var(--black-60, #8E8E8E);
+    background: #FFF;
+    width: 471px;
+    height: 45px;
+    font-size: 1rem;
+    padding-left: 25px;
+    margin-left: 0;
+}
+
+.edit-input-short {
+    border-radius: 50px;
+    border: 1px solid var(--black-60, #8E8E8E);
+    background: #FFF;
+    width: 325px;
+    height: 45px;
+    padding-left: 25px;
+    font-size: 1rem;
+}
+
+.btn {
+    border-radius: 50px;
+    border: 1px solid var(--black-60, #8E8E8E);
+    background: #E5E5E5;
+    width: 118px;
+    height: 45px;
+    margin-left: 20px;
+    font-size: 1rem;
+}
+
+.form-submit {
+    width: 415px;
+    height: 48px;
+    border-radius: 50px;
+    /* border: 1px solid var(--black-60, #8E8E8E); */
+    border: none;
+    background: #735BF3;
+    transition: background 0.6s ease-in-out, opacity 0.6s ease-in-out;
+    font-size: 1.1rem;
+}
+
+.form-submit:hover {
+    background: #2CA0C6;
+}
+
+.nickname-input {
+    width: 500px;
+    text-align: left;
+    margin-left: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.password-input {
+    width: 500px;
+    text-align: left;
+    margin-left: 30px;
+}
