@@ -76,9 +76,7 @@ export default function Mypage() {
       <div id='layout' className='mypage-wrap'>
         {/* 개인정보수정 */}
         <div
-          style={{border:"1px solid black"}}
           className='grid-item'
-        
         >
           { datalist.map((data)=>(
             <div key = { data.id }>
@@ -95,64 +93,82 @@ export default function Mypage() {
               { fmQuerySnapshot.empty ? null : (
                 <div>
                   <Link to = {`/mypage/editfm/${data.id}`}>수정</Link>
-                  <br />
-                  <Link to = {`/mypage/reservationfm/${data.id}`}>상담예약 내역</Link>
+                  <div >
+
+                 
+                  <Link
+                 
+                  to = {`/mypage/reservationfm/${data.id}`}>상담예약 내역</Link>
+                   </div>
                 </div>
               ) }
-              <img
-                src = { data.photo }
-                width = { 100 }
-                height = { 100 }
-                alt = "프로필"
-                style = {{ borderRadius: "50%" }}
-              />
-              <br />
-              <p>{ data.nickname }</p>
-              <p>{ data.email }</p>
+                <div
+                className='profile'
+                >
+                  <img
+                    src = { data.photo }
+                    width = { 100 }
+                    height = { 100 }
+                    alt = "프로필"
+                    style = {{ borderRadius: "50%" }}
+                  />
+                  <div>
+                    <p>{ data.nickname }</p>
+                    <p>{ data.email }</p>
+                  </div>
+                </div>
             </div>
           )) }
         </div>
 
         <div
-          style={{border:"1px solid black"}}
-          className='grid-item'
-
+          className = 'grid-item'
         >
-          {/** JSH 챌린지 완료 뱃지 리스트 추가 */}
-          <BadgeBoxComp />
+          <div
+            className='grid-item-row-two'
+          >
+            {/** JSH 챌린지 완료 뱃지 리스트 추가 */}
+            <BadgeBoxComp />
+          </div>
         </div>
 
-        <div
-          style={{border:"1px solid black"}}
-          className='grid-item'
 
-        
+        <div
+          className='grid-item'
         >
-          <p>목표금액</p>
+          <h2
+            className = 'div-short'
+          >
+            목표금액</h2>
           <div>
             <p>노트북 D-4까지 10,000원 저금하면 돼요!</p>
           </div>
         </div>
 
+<div
+  className = 'grid-item'
+>
         <div
-          style={{border:"1px solid black"}}
-          className='grid-item'
-
-        
+          className = 'active-challenge'
         >
-          <p>참여중인 챌린지</p>
+          <h2
+            className = 'div-long'
+          >
+            참여중인 챌린지</h2>
           <div></div>
         </div>
 
         <div
-          style={{border:"1px solid black"}}
-          className='grid-item'
-
-        
+          className = 'complete-challenge'
         >
-          <p>완료중인 챌린지</p>
+          <h2
+            className = 'div-long'
+          
+          >완료중인 챌린지</h2>
           <div></div>
         </div>
+</div>
+
       </div>
     )
 }
