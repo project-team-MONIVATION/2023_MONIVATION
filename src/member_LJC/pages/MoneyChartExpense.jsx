@@ -614,7 +614,7 @@ export default function MoneyChartExpense() {
     };
 
     // select에 필요한것들
-    const [selectedOption, setSelectedOption] = useState('fruits 🍊');
+    const [selectedOption, setSelectedOption] = useState('1개월');
     const [isActive, setIsActive] = useState(false);
 
     const handleSelect = (item) => {
@@ -630,10 +630,10 @@ export default function MoneyChartExpense() {
 
     return (
         <div id='layout' className='pull_container'>
-            <h1>지출</h1>
-                <div className='container_wrap'>
-                    <div className='wrap_1'>
+                <div id='moneychart_page' className='container_wrap'>
+                    <div className='wrap'>
                         <div className='income_expenditure_btn'>
+                        
                             <button>
                                 <Link to="/calendar/chart/income">수입</Link>
                             </button>
@@ -643,22 +643,23 @@ export default function MoneyChartExpense() {
                         </div>
 
                         <div className='period_content'>
-                            <div className='startday_endday_content'>
+                            <div className='inputs_wrap'>
                                 <div className='startday_content'>
                                     <div>
-                                        <input ref={el => (inputRef.current[0] = el)}  
+                                        <input 
+                                        className='input_box_start'
+                                        ref={el => (inputRef.current[0] = el)}  
                                         type="text"
                                         disabled
-                                            
                                         />
-                                    </div>
-                                    {/* 선택한 기간별 */}
-                                    <div>
+                                    </div>    
+                                    <div>    
                                         {/* 시작일 */}
                                         <button
                                             onClick={() => {setCheck2((e) => !e); setCheck(false); }}
+                                            className='input_btn_box_start'
                                         >
-                                            <SelectDate />
+                                            <SelectDate showCal={ischeck2}/>
                                         </button>
                                         {ischeck2 && (
                                             <div className='modal-cal'>
@@ -669,7 +670,7 @@ export default function MoneyChartExpense() {
                                                 />
                                             </div>
                                         )}
-                                    </div>
+                                    </div>    
                                 </div>
                                 <div className='endday_content'>
                                     <div>
@@ -677,15 +678,16 @@ export default function MoneyChartExpense() {
                                         <input ref={el => (inputRef.current[1] = el)}  
                                             type="text"
                                             disabled
-                                            
-                                        />
+                                            className='input_box_end'
+                                            />
                                     </div>
-                                    <div>
+                                    <div>        
                                         {/* 종료일 */}
                                         <button
                                             onClick={() => {setCheck3((e) => !e); setCheck(false); } }
+                                            className='input_btn_box_end'
                                         >
-                                        <SelectDate />
+                                            <SelectDate showCal={ischeck3}/>
                                         </button>
                                         {ischeck3 && (
                                             <div className='modal-cal'>
@@ -729,14 +731,14 @@ export default function MoneyChartExpense() {
                                     >
                                         1개월
                                     </li>
-                                    <br />
+                                    
                                     {/* 2개월 */}
                                     <li className="optionItem"
                                         onClick={() => {chageDateTwoMonth(); handleSelect('2개월')}}
                                     >
                                         2개월
                                     </li>
-                                    <br />
+                                    
                                     {/* 3개월 */}
                                     <li className="optionItem"
                                         onClick={() => {chageDateTreeMonth(); handleSelect('3개월')}}
@@ -744,7 +746,7 @@ export default function MoneyChartExpense() {
                                         3개월
                                     </li>
                                 </ul>
-                                <br />
+                                
                             </div>
                         </div>
                         
@@ -764,19 +766,23 @@ export default function MoneyChartExpense() {
                                     data={data} 
                                     options={options} 
                                     width="500vh" height="500vh" 
-                                    
-                                    />
-                                    <h2>선택 기간의 지출 총금액</h2>
-                                    {ptotal}
+                                />
+                                <div className='ptotal'>
+                                    <span>Total</span><br />
+                                    <span>{ptotal}</span>
+                                </div>
+
                             </div>
+                            
                             
                             <div className='item'>
                                 <Line
+                                    className='piegp'
                                     data={Linedata} 
                                     options={lineoptions} 
                                     // style={{ position: "relative", height: "40vh", width:"100vh" }}
                                     width="300%" height="100%"
-                                    />
+                                />
                             </div>
 
                             <div className='item'>
@@ -804,6 +810,7 @@ export default function MoneyChartExpense() {
                                         </div>
                                     )}
                                 </div>
+                                
                             </div>
                         </div>
 
