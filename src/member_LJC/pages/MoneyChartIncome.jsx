@@ -671,8 +671,9 @@ export default function MoneyChartExpense() {
                                             <SelectDate showCal={ischeck2}/>
                                         </button>
                                         {ischeck2 && (
-                                            <div className='modal-cal'>
+                                            <div className='modal-cal_start'>
                                                 <Calendar 
+                                                    className="startcalnedar"
                                                     onChange={onChange}
                                                     value={value}
                                                     onClickDay={(value, event) => {setStartdayclick(value); setCheck2(false); setCheck3(true); setMindate(value);}}
@@ -699,8 +700,9 @@ export default function MoneyChartExpense() {
                                             <SelectDate showCal={ischeck3}/>
                                         </button>
                                         {ischeck3 && (
-                                            <div className='modal-cal'>
+                                            <div className='modal-cal_end'>
                                                 <Calendar 
+                                                    className="startcalnedar"
                                                     onChange={onChange} 
                                                     value={value}
                                                     onClickDay={(value, event) => {setEnddayclick(value); setCheck3(false);}}

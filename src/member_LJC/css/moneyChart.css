@@ -1,7 +1,59 @@
+/* 카페24 서라운드 에어 */
+@font-face {
+    font-family: 'Cafe24SsurroundAir';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .pull_container{
     background-color: #735BF3;
     height: 100vh;
 }
+
+
+
+#moneychart_page .modal-cal_start {
+    box-sizing: border-box;
+    position: absolute;
+    width: 360px;
+    height: 350px;
+    padding: 20px;
+    transform: translateY(-10px);
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.25);
+
+}
+
+#moneychart_page .modal-cal_end {
+    box-sizing: border-box;
+    position: absolute;
+    width: 360px;
+    height: 350px;
+    padding: 20px;
+    transform: translateY(-10px);
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.25);
+
+}
+
+#moneychart_page .startcalnedar{
+    margin-top: 2%;
+    border: 0;
+}
+
+#moneychart_page .startcalnedar .react-calendar__navigation{
+    display: flex;
+    height: 44px;
+    margin-bottom: 1em;
+}
+
+
+
+
+
 
 #moneychart_page .container_wrap {
     padding-bottom: 100px;
