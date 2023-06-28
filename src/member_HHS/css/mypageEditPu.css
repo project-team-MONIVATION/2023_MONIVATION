@@ -41,28 +41,18 @@
     color: #735BF3;
 }
 
-
-/*
-#mypage-edit-pu .profile-image {
-    border-radius: 50%;
-    cursor: pointer;
-}*/
-
 .edit {
     position: absolute;
     top: 200px;
     left: 50%;
     transform: translateX(-50%);
-
-
 }
 
 .grid {
-        display: grid;
+    display: grid;
     grid-template-columns: 610px 610px;
     grid-template-rows: 120px 120px 120px;
     justify-content: start;
-
 }
 
 .grid > div > label {
@@ -71,42 +61,64 @@
     display: flex;
     padding-left: 35px;
     margin-bottom: 10px;
-
 }
 
 .edit-input-long {
     border-radius: 50px;
     border: 1px solid var(--black-60, #8E8E8E);
     background: #FFF;
-    width: 441px;
-height: 44px;
-font-size: 1rem;
-padding-left: 25px;
-margin-left: 0;
+    width: 471px;
+    height: 45px;
+    font-size: 1rem;
+    padding-left: 25px;
+    margin-left: 0;
 }
 
 .edit-input-short {
     border-radius: 50px;
-border: 1px solid var(--black-60, #8E8E8E);
-background: #FFF;
-width: 325px;
-height: 44px;
-padding-left: 25px;
-
+    border: 1px solid var(--black-60, #8E8E8E);
+    background: #FFF;
+    width: 325px;
+    height: 45px;
+    padding-left: 25px;
+    font-size: 1rem;
 }
 
-.btn{
+.btn {
     border-radius: 50px;
-border: 1px solid var(--black-60, #8E8E8E);
-background: #E5E5E5;
-width: 108px;
-height: 42px;
+    border: 1px solid var(--black-60, #8E8E8E);
+    background: #E5E5E5;
+    width: 118px;
+    height: 45px;
+    margin-left: 20px;
+    font-size: 1rem;
 }
 
 .form-submit {
     width: 415px;
-height: 44px;
+    height: 48px;
     border-radius: 50px;
-border: 1px solid var(--black-60, #8E8E8E);
-background: #FFF;
+    /* border: 1px solid var(--black-60, #8E8E8E); */
+    border: none;
+    background: #735BF3;
+    transition: background 0.6s ease-in-out, opacity 0.6s ease-in-out;
+    font-size: 1.1rem;
+}
+
+.form-submit:hover {
+    background: #2CA0C6;
+}
+
+.nickname-input {
+    width: 500px;
+    text-align: left;
+    margin-left: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.password-input {
+    width: 500px;
+    text-align: left;
+    margin-left: 30px;
 }

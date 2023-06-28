@@ -306,23 +306,24 @@ export default function MypageEditPu() {
           {/* 닉네임 수정 */}
           <div>
             <label>닉네임</label>
-            <input
-              type = "text"
-              value = { nickname }
-              minLength = { 2 }
-              maxLength = { 10 }
-              onChange = { updateNickname }
-              required
-              className='edit-input-short'
-            />
-            <button
-              type = "button"
-              onClick = { onSearch }
-              className='btn'
-
-            >
-              중복확인
-            </button>
+            <div className = 'nickname-input'>
+              <input
+                type = "text"
+                value = { nickname }
+                minLength = { 2 }
+                maxLength = { 10 }
+                onChange = { updateNickname }
+                required
+                className = 'edit-input-short'
+              />
+              <button
+                type = "button"
+                onClick = { onSearch }
+                className = 'btn'
+              >
+                중복확인
+              </button>
+            </div>
           </div>
 
           {/* 출생일 수정 */}
@@ -363,16 +364,17 @@ export default function MypageEditPu() {
           {/* 비밀번호 수정 */}
           <div>
             <label>비밀번호</label>
-            <input
-              type = "password"
-              placeholder = "비밀번호"
-              minLength = { 8 }
-              maxLength = { 20 }
-              onKeyDown = { characterCheck }
-              disabled = { email }
-              className='edit-input-long'
-
-            />
+            <div className = 'password-input'>
+              <input
+                type = "password"
+                placeholder = "비밀번호"
+                minLength = { 8 }
+                maxLength = { 20 }
+                onKeyDown = { characterCheck }
+                disabled = { email }
+                className='edit-input-long'
+              />
+            </div>
           </div>
           <div>
             <label>비밀번호 확인</label>
