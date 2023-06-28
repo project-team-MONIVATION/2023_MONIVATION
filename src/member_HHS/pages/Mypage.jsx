@@ -8,6 +8,8 @@ import { getDocs, where, query, collection } from 'firebase/firestore';
 
 import BadgeBoxComp from '../../member_JSH/components/BadgeBoxComp';
 
+import '../css/mypage.css'
+
 export default function Mypage() {
     const user = useSelector((state) => state.user.user);
     const [datalist, setDatalist] = useState([]);
@@ -71,9 +73,13 @@ export default function Mypage() {
     }
 
     return (
-      <div id='layout'>
+      <div id='layout' className='mypage-wrap'>
         {/* 개인정보수정 */}
-        <div>
+        <div
+          style={{border:"1px solid black"}}
+          className='grid-item'
+        
+        >
           { datalist.map((data)=>(
             <div key = { data.id }>
               
@@ -106,28 +112,44 @@ export default function Mypage() {
             </div>
           )) }
         </div>
-<br />
 
-        <div>
+        <div
+          style={{border:"1px solid black"}}
+          className='grid-item'
+
+        >
           {/** JSH 챌린지 완료 뱃지 리스트 추가 */}
           <BadgeBoxComp />
         </div>
-<br />
 
-        <div>
+        <div
+          style={{border:"1px solid black"}}
+          className='grid-item'
+
+        
+        >
           <p>목표금액</p>
           <div>
             <p>노트북 D-4까지 10,000원 저금하면 돼요!</p>
           </div>
         </div>
-<br />
 
-        <div>
+        <div
+          style={{border:"1px solid black"}}
+          className='grid-item'
+
+        
+        >
           <p>참여중인 챌린지</p>
           <div></div>
         </div>
 
-        <div>
+        <div
+          style={{border:"1px solid black"}}
+          className='grid-item'
+
+        
+        >
           <p>완료중인 챌린지</p>
           <div></div>
         </div>

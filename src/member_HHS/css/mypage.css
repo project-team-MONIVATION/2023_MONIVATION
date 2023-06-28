@@ -1,0 +1,15 @@
+.mypage-wrap {
+    display: grid;
+    grid-template-columns : 35% 65%;
+    grid-template-rows: repeat(3, 1fr);
+    justify-items: stretch;
+    justify-self: start;
+}
+
+.mypage-wrap .grid-item:nth-child(2) {
+    grid-row: 2; /* 2번째 행으로 이동 */
+}
+
+.mypage-wrap .grid-item:nth-child(3) {
+    grid-row: 3; /* 2번째 행으로 이동 */
+}
