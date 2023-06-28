@@ -43,6 +43,7 @@ import './member_PCH/styles/nav.css'
 import './member_PCH/styles/home.css';
 import './member_PCH/styles/modal.css';
 import './member_PCH/styles/modalCalendar.css';
+import './member_PCH/styles/badgeCircularSlide.css'
 
 function App() {
 

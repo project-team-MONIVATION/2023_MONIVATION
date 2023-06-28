@@ -1,0 +1,51 @@
+#mainpage .circular_slide {
+  overscroll-behavior: none;
+}
+
+#mainpage .wrapper {
+  background: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#mainpage .circle {
+  border-radius: 50%;
+  position: relative;
+  touch-action: none;
+  border: 15px solid #d9d9d9;
+}
+
+#mainpage .circle .explain {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#mainpage .circle .explain p {
+  font-weight: bold;
+}
+
+#mainpage .circle .explain p span {
+  background-color: #F4E8AE;
+}
+
+#mainpage .satellite {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #414141;
+  border-radius: 50%;
+  background: #f95e5e;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+#mainpage .satellite p {
+  font-size: 12px;
+  font-weight: bold;
+}

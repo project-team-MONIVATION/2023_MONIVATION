@@ -315,7 +315,6 @@ main #section3 .box-container .imgbox {
 main #section3 .box-container .imgbox {
   position: relative;
   width: 50%;
-  height: 90%;
 }
 
 main #section3 .box-container .imgbox .badge {
@@ -408,6 +407,10 @@ main #section7 {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+main #section7 .btnbox button {
+  margin-top: 10px;
 }
 
 
