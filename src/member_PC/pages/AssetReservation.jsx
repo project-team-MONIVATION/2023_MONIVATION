@@ -5,10 +5,10 @@ import Calendar from 'react-calendar';
 import { db } from '../../database/firebase';
 import { doc , getDoc, getDocs, query, updateDoc, collection, where } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
+import './css/assetReservation.css'
 
 // 캘린더 css
 import 'react-calendar/dist/Calendar.css'
-import './css/calendarMini.css'
 
 export default function AssetReservation() {
   const user = useSelector((state) => state.user.user);
@@ -106,53 +106,57 @@ export default function AssetReservation() {
 
   return (
     <div id='layout'>
-      <h1>상담예약</h1>
-      <div style={{display: "flex"}}>
-      
-      {/* 캘린더 */}
-      <div>
-        <div>
-          <Calendar className='main_calendar' onChange={ onClickDate } value={date}/>
-        </div>
-        <div style={{margin: "10px"}}>
-          <span>{date && changeDate(date)}</span>
-        </div>
-      </div>
+      <div id='asset-reservation'>
+        <h1 class='reservation-header'>상담예약</h1>
+        <div style={{display: "flex"}}>
+          {/* 캘린더 */}
+          <div>
+            <div>
+              <Calendar id='asset-calendar' className='.content-container .btn_container .btns .content_btn' onChange={ onClickDate } value={date}/>
+            </div>
+            <div style={{margin: "10px"}}>
+              <span>{date && changeDate(date)}</span>
+            </div>
+          </div>
 
-      <div style={{display: show === true ? "block" : "none", border: "solid 1px black", borderRadius: "20px", marginLeft: "20px"}}>
-        <form onSubmit={submitForm}>
-          <h2>상담신청</h2>
-          <hr />
-          <div style={{textAlign: "left", margin: "10px"}}>
-            <label style={{display: "inline-block", textAlign: "left", width: "100px", fontWeight: "bold"}}>이름</label>
-            <input type="text" value={name} size={30} onChange={(e)=>{setName(e.target.value)}}/>
+          <div className='reservation-div' style={{display: show === true ? "block" : "none"}}>
+            <form className='reservation-form' onSubmit={submitForm}>
+              <h2>상담신청</h2>
+              <hr />
+              <div>
+                <label>이름</label>
+                <input type="text" value={name} size={30} required onChange={(e)=>{setName(e.target.value)}}/>
+              </div>
+              <div>
+                <label>이메일 주소</label>
+                <input type="email" value={email} size={30} required onChange={(e)=>{setEmail(e.target.value)}}/>
+              </div>
+              <div>
+                <label>휴대폰 번호</label>
+                <input type="number" value={phone} size={30} required onChange={(e)=>{setPhone(e.target.value)}}/>
+              </div>
+              <hr />
+              <div>
+                <label>상담 제목</label>
+                <input type="text" value={title} size={50} required onChange={(e)=>{setTitle(e.target.value)}}/>
+              </div>
+              <div>
+                <label className='last-label'>상담 내용</label>
+                <textarea cols={50} rows={10} value={content} required onChange={(e)=>{setContent(e.target.value)}}></textarea>
+              </div>
+              <hr />
+              <div className='notification'>
+                <h1>개인정보 수집 이용 동의에 대한 안내</h1>
+                <p>MONIVATION은 사용자 문의를 처리하기 위해 다음과 같이 개인정보를 수집 및 이용할 것입니다</p>
+                <div>
+                  <input type="checkbox" required/>
+                  <label>위 내용에 동의합니다</label>
+                </div>
+              </div>
+              <input type="submit" value= "예약확정하기" />
+            </form>
           </div>
-          <div style={{textAlign: "left", margin: "10px"}}>
-            <label style={{display: "inline-block", textAlign: "left", width: "100px", fontWeight: "bold"}}>이메일 주소</label>
-            <input type="email" value={email} size={30} onChange={(e)=>{setEmail(e.target.value)}}/>
-          </div>
-          <div style={{textAlign: "left", margin: "10px"}}>
-            <label style={{display: "inline-block", textAlign: "left", width: "100px", fontWeight: "bold"}}>휴대폰 번호</label>
-            <input type="number" value={phone} size={30} onChange={(e)=>{setPhone(e.target.value)}}/>
-          </div>
-          <hr />
-          <div style={{textAlign: "left", margin: "10px"}}>
-            <label style={{display: "inline-block", textAlign: "left", width: "100px", fontWeight: "bold"}}>상담 제목</label>
-            <input type="text" value={title} size={30} onChange={(e)=>{setTitle(e.target.value)}}/>
-          </div>
-          <div style={{textAlign: "left", margin: "10px"}}>
-            <label style={{display: "inline-block", textAlign: "left", width: "100px", fontWeight: "bold", verticalAlign: "top"}}>상담 내용</label>
-            <textarea cols={30} rows={7} value={content} onChange={(e)=>{setContent(e.target.value)}}></textarea>
-          </div>
-          <hr />
-          <p>개인정보 수집 이용 동의에 대한 안내</p>
-          <p>MONIVATION은 사용자 문의를 처리하기 위해 다음과 같이 개인정보를 수집 및 이용할 것입니다</p>
-          <input type="checkbox" required/>
-          <label>위 내용에 동의합니다</label>
-          
-          <input type="submit" value= "예약확정하기" />
-        </form>
-      </div>
+        </div>
       </div>
     </div>
   )

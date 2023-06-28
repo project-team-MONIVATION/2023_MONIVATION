@@ -104,6 +104,10 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     };
 
     /** form 입력 값 업데이트*/
+    // 가격 업데이트
+    const updatePrice = (e) => {
+      setEditPrice(Number(e.target.value.replace(/[^0-9]/g, '')));
+    }
     // 반복주기 업데이트
     const updateCycle = (e) => {
       setCycle(e.target.value);
@@ -256,7 +260,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
             <input
               type = "text"
               value = { handleHyphen(editPrice) }
-              onChange = { (e) => setEditPrice(Number(e.target.value.replace(/[^0-9]/g, ''))) }
+              onChange = { updatePrice }
               required
             />
             <span>₩</span>

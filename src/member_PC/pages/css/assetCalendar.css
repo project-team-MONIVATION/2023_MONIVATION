@@ -1,0 +1,36 @@
+.modal_calendar .react-calendar__tile--now {
+  background: #D9D9D9;
+}
+
+.modal_calendar .react-calendar__tile--now:enabled:hover,
+.modal_calendar .react-calendar__tile--now:enabled:focus {
+  background: #F4E8AE;
+}
+
+.modal_calendar .react-calendar__tile--active {
+  background: #F4E8AE;
+  color: #303030;
+}
+
+.modal_calendar .react-calendar__tile--active:enabled:hover,
+.modal_calendar .react-calendar__tile--active:enabled:focus {
+  background: #F4E8AE;
+  color: #303030;
+}
+
+.modal_calendar .react-calendar__tile:disabled {
+  background-color: inherit;
+  cursor: initial;
+}
+
+.modal_calendar .react-calendar__month-view__days__day--weekend.react-calendar__tile:disabled {
+  color: #ebc7c7;
+}
+
+.modal_calendar .react-calendar__month-view__days__day--neighboringMonth.react-calendar__tile:disabled {
+  color: #D9D9D9;
+}
+
+.modal_calendar .react-calendar__navigation button:disabled {
+  background-color: inherit;
+}
