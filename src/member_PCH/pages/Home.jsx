@@ -14,6 +14,7 @@ import MainNavComp from '../components/MainNavComp';
 import ChallengeSlideComp from '../components/ChallengeSlideComp';
 import AssetMotionComp from '../components/AssetMotionComp';
 import BadgeCircularSlideComp from '../components/BadgeCircularSlideComp';
+import BestManagerSlideComp from '../components/BestManagerSlideComp';
 
 
 export default function Home({ handleHover }) {
@@ -237,10 +238,11 @@ export default function Home({ handleHover }) {
         <section id='section6'>
           <div className='box-container'>
             <div className='textbox'>
-              <h3>Wealth Management Consultation</h3>
+              <h3>Asset Manager Consultation</h3>
               <p>자산관리사에게 <span>궁금한 것</span>을 물어보세요</p>
             </div>
             <div className='slidebox'>
+              <BestManagerSlideComp/>
             </div>
           </div>
           <div className='space'/>
@@ -249,7 +251,8 @@ export default function Home({ handleHover }) {
         <section id='section7'>
           <div className='btnbox'>
             <p>🌟돈관리 도파민 생성🌟</p>
-            <button onClick={()=>{window.scrollTo({top:0, behavior:"smooth"})}}>우리와 함께 하세요</button>
+            <button onClick={()=>{window.scrollTo({top:0, behavior:"smooth"})}}>우리와 함께 하세요!</button>
+            <div className='click_icon'/>
           </div>
         </section>
       </main>
