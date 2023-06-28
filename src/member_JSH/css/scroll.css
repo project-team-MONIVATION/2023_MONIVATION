@@ -1,6 +1,21 @@
+#comment-comp{
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 0 0 40px 40px;
+  border: solid 5px lightgrey;
+  border-top: none;
+  background-color: white;
+}
+
 #comment-comp .scrollable-container {
-    overflow-y: scroll;
-    overflow: auto;
     scrollbar-width: thin; /* 스크롤바 두께 설정 */
     scrollbar-color: gray lightgray; /* 스크롤바 색상 설정 */
-  }
+}
+
+#comment-comp .commentWrap{
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+}

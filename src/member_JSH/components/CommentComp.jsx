@@ -82,8 +82,7 @@ export default function CommentComp() {
       },[])
 
   return (
-    <div id='comment-comp' className='.scrollable-container'
-    style={{display : 'inline-block', backgroundColor : "lightgray", width : "500px", height : "500px"}}>
+    <div id='comment-comp' className='.scrollable-container'>
         <div>
         {
             commentArray && commentArray.map((array)=>(
@@ -103,23 +102,26 @@ export default function CommentComp() {
             ))
         }
         </div>
-        <form onSubmit={addUserComment} className='commentWrap'>
-            <input type="text"
-                placeholder='댓글 달기...'
-                value={comment}
-                onChange={onChange}
-            />
+        <div className='commentWrap'>
+          <form onSubmit={addUserComment} >
             <input type="file" style={{ display: "none" }} ref={imageInput} 
-            accept=".jpeg, .jpg, .png" onChange={onFileChanges}
-            />
-            <div style={{display : "inline-block", width : "50px", 
-            background : "white", height : "20px", borderRadius : "10px",
-            margin : "10px", border : "solid 1px black", cursor : "pointer"}}
-            onClick={onCickImageUpload}>
-              이미지
-            </div>
-            <button type='submit'>등록</button>
-        </form>
+              accept=".jpeg, .jpg, .png" onChange={onFileChanges}
+              />
+              <div style={{display : "inline-block", width : "50px", 
+              background : "white", height : "20px", borderRadius : "10px",
+              margin : "10px", border : "solid 1px black", cursor : "pointer"}}
+              onClick={onCickImageUpload}>
+                이미지
+              </div>
+              <input type="text"
+                  placeholder='댓글 달기...'
+                  value={comment}
+                  onChange={onChange}
+              />
+              
+              <button type='submit'>등록</button>
+          </form>
+        </div>
     </div>
   )
 }
