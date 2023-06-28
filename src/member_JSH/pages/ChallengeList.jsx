@@ -45,37 +45,39 @@ export default function ChallengeList() {
 
   return (
     <div id='layout'>
-      <div id='challenge-list'>
-      <h1 style={{width : "1300px", margin : "auto", border : "solid 1px black", padding : "10px"}}>챌린지</h1>
-      <ChallengeSlick />
-      <br />
-      <br />
-      <h1 style={{width : "1300px", margin : "auto", border : "solid 1px black", padding : "10px"}}>유저 챌린지</h1>
-      <br />
-      
-      <ul style={{listStyle : 'none'}}
-        className="card-grid"
-      >
-        {
-          challengeBoard && challengeBoard.map((board)=>(
-            <Link to={`/challenge/${board.id}/view`} key={challengeBoard.id}>
-              <li>
-                <div style={{width : "300px", display : "inline-block", 
-                backgroundImage :`url(/img/${board.img})`,
-                backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
-                  className="challengeboard-card"
-                >
-                </div>
-                <br></br>
-                <p style={{display:'inline-block'}}>{board.name}</p>
-              </li>
-            </Link>
-          ))
-        }
-      </ul>
-      <button className='create-button'>
-        <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '3rem'}}>+</Link>
-      </button>
+      <div id='layout-in'>
+        <div id='challenge-list'>
+        <h1 style={{width : "1300px", margin : "auto", border : "solid 1px black", padding : "10px"}}>챌린지</h1>
+        <ChallengeSlick />
+        <br />
+        <br />
+        <h1 style={{width : "1300px", margin : "auto", border : "solid 1px black", padding : "10px"}}>유저 챌린지</h1>
+        <br />
+        
+        <ul style={{listStyle : 'none'}}
+          className="card-grid"
+        >
+          {
+            challengeBoard && challengeBoard.map((board)=>(
+              <Link to={`/challenge/${board.id}/view`} key={challengeBoard.id}>
+                <li>
+                  <div style={{width : "300px", display : "inline-block", 
+                  backgroundImage :`url(/img/${board.img})`,
+                  backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
+                    className="challengeboard-card"
+                  >
+                  </div>
+                  <br></br>
+                  <p style={{display:'inline-block'}}>{board.name}</p>
+                </li>
+              </Link>
+            ))
+          }
+        </ul>
+        <button className='create-button'>
+          <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '3rem'}}>+</Link>
+        </button>
+        </div>
       </div>
     </div>
   )
