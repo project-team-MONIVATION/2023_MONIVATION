@@ -245,12 +245,17 @@ main #section2 .box-container .imgbox .goal {
 }
 
 main #section2 .box-container .imgbox .goal:nth-child(1) {
-  margin-left: 7%;
+  margin-left: 13%;
 }
 
 main #section2 .box-container .imgbox .goal:nth-child(2) {
   margin-top: 20px;
-  margin-left: 48%;
+  margin-left: 52%;
+}
+
+main #section2 .box-container .imgbox .goal:nth-child(3) {
+  margin-top: 20px;
+  margin-left: 7%;
 }
 
 main #section2 .box-container .imgbox .goal:hover span {
@@ -310,7 +315,7 @@ main #section3 .box-container .imgbox {
 main #section3 .box-container .imgbox {
   position: relative;
   width: 50%;
-  height: 100%;
+  height: 90%;
 }
 
 main #section3 .box-container .imgbox .badge {
@@ -318,21 +323,25 @@ main #section3 .box-container .imgbox .badge {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 150px;
-  height: 150px;
-  border: 4px solid #303030;
+  width: 120px;
+  height: 120px;
+  border: 3px solid #303030;
   border-radius: 50%;
   position: absolute;
   transform: translateX(-50%);
 }
 
 main #section3 .box-container .imgbox .badge .img {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   background-size: cover;
   margin-bottom: 5px;
 }
 
+main #section3 .box-container .imgbox .badge p {
+  font-size: 12px;
+  font-weight: bold;
+}
 
 /* 섹션 4 */
 main #section4 {

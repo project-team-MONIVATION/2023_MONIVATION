@@ -13,6 +13,7 @@ import LogoFlowComp from '../components/LogoFlowComp';
 import MainNavComp from '../components/MainNavComp';
 import ChallengeSlideComp from '../components/ChallengeSlideComp';
 import AssetMotionComp from '../components/AssetMotionComp';
+import BadgeCircularSlideComp from '../components/BadgeCircularSlideComp';
 
 
 export default function Home({ handleHover }) {
@@ -62,12 +63,12 @@ export default function Home({ handleHover }) {
 
   // 섹션3 애니메이션 관리 state 및 함수
   const badges = [
-    {img: `url(${require('../../assets/img/hospital.png')})`, text:"건강이 최고", back: "rgb(243, 164, 164)", top: 0, left: "50%"},
-    {img: `url(${require('../../assets/img/phone.png')})`, text:"데이터 만수르", back: "rgb(250, 250, 210)", top: 150, left: "25%"},
-    {img: `url(${require('../../assets/img/coffee.png')})`, text:"오늘도 커피 수혈", back: "rgb(235, 204, 178)", top: 150, left: "75%"},
-    {img: `url(${require('../../assets/img/car.png')})`, text:"소중한 내 차", back: "rgb(177, 243, 202)", top: 300, left: "25%"},
-    {img: `url(${require('../../assets/img/drink.png')})`, text:"설마 오늘도?", back: "rgb(194, 176, 231)", top: 300, left: "75%"},
-    {img: `url(${require('../../assets/img/education.png')})`, text:"프로 자기계발러", back: "rgb(187, 227, 240)", top: 450, left: "50%"},
+    {img: `url(${require('../../assets/img/hospital.png')})`, text:"건강이 최고", back: "rgb(243, 164, 164)", top: "10%", left: "50%"},
+    {img: `url(${require('../../assets/img/phone.png')})`, text:"데이터 만수르", back: "rgb(250, 250, 210)", top: "25%", left: "28%"},
+    {img: `url(${require('../../assets/img/coffee.png')})`, text:"오늘도 커피 수혈", back: "rgb(235, 204, 178)", top: "25%", left: "72%"},
+    {img: `url(${require('../../assets/img/car.png')})`, text:"소중한 내 차", back: "rgb(177, 243, 202)", top: "55%", left: "28%"},
+    {img: `url(${require('../../assets/img/drink.png')})`, text:"설마 오늘도?", back: "rgb(194, 176, 231)", top: "55%", left: "72%"},
+    {img: `url(${require('../../assets/img/education.png')})`, text:"프로 자기계발러", back: "rgb(187, 227, 240)", bottom: "10%", left: "50%"},
   ]
 
 
@@ -211,6 +212,10 @@ export default function Home({ handleHover }) {
               <h3>Collect Badges</h3>
               <p>가계부를 꾸준히 기록하고 <span>귀여운 뱃지</span>를 획득하세요</p>
             </div>
+            {/**
+            <BadgeCircularSlideComp/>
+             */}
+            {/** 
             <div className='imgbox'>
               {
                 badges.map((badge, i)=>(
@@ -219,7 +224,8 @@ export default function Home({ handleHover }) {
                     style={{
                       backgroundColor : badge.back,
                       top: badge.top,
-                      left: badge.left
+                      left: badge.left,
+                      bottom : badge.bottom
                     }}
                   >
                     <div
@@ -231,6 +237,7 @@ export default function Home({ handleHover }) {
                 ))
               }
             </div>
+            */}
           </div>
           <div className='space'/>
         </section>
