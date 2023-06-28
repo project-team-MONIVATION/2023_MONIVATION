@@ -766,19 +766,23 @@ export default function MoneyChartExpense() {
                                     data={data} 
                                     options={options} 
                                     width="500vh" height="500vh" 
-                                    
-                                    />
-                                    <h2>선택 기간의 지출 총금액</h2>
-                                    {ptotal}
+                                />
+                                <div className='ptotal'>
+                                    <span>Total</span><br />
+                                    <span>{ptotal}</span>
+                                </div>
+
                             </div>
+                            
                             
                             <div className='item'>
                                 <Line
+                                    className='piegp'
                                     data={Linedata} 
                                     options={lineoptions} 
                                     // style={{ position: "relative", height: "40vh", width:"100vh" }}
                                     width="300%" height="100%"
-                                    />
+                                />
                             </div>
 
                             <div className='item'>
@@ -806,6 +810,7 @@ export default function MoneyChartExpense() {
                                         </div>
                                     )}
                                 </div>
+                                
                             </div>
                         </div>
 
