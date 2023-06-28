@@ -2,6 +2,12 @@ a{
     text-decoration: none;
 }
 
+#challenge-list{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
 #challenge-list .card-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3개의 열을 가진 그리드 */

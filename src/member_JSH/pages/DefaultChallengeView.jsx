@@ -1,5 +1,5 @@
 // 챌린지 상세보기 페이지
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { db,auth } from '../../database/firebase'
 import { useSelector, useDispatch } from 'react-redux'
 import { doc, getDoc, addDoc, collection, getDocs, query, deleteDoc, where, updateDoc } from 'firebase/firestore'
@@ -21,6 +21,9 @@ export default function DefaultChallengeView() {
     const [done, setDone] = useState();
 
     const navigate = useNavigate();
+
+    const parentRef = useRef(null);
+    const childRef = useRef(null);
 
     useEffect(()=>{
         getDefaultChallenge();
@@ -171,80 +174,111 @@ export default function DefaultChallengeView() {
         const querySnapshot = await getDocs(q);
         const now = new Date()
         querySnapshot.forEach((doc) => {
-          const documentRef = doc.ref;
-          const endDate = doc.data().endDate;
-          const timeDifference = endDate.toDate() - now;
+            const documentRef = doc.ref;
+            const endDate = doc.data().endDate;
+            const timeDifference = endDate.toDate() - now;
   
-          if(timeDifference <= 0){
-            setTimeout(()=>{
-              updateDoc(documentRef, {done : true})
-              .then(() => {
-                console.log('완료된 챌린지입니다.');
-                setDone(true);
+            if(timeDifference <= 0){
+                setTimeout(()=>{
+                updateDoc(documentRef, {done : true})
+                .then(() => {
+                    console.log('완료된 챌린지입니다.');
+                    setDone(true);
+                    //console.log(done);
+                })
+                .catch((error) => {
+                    console.error('Error updating field:', error);
+                });
+                }, timeDifference);
+            } else {
+                console.log('지정된 시간이 아직 남았습니다.');
+                setDone(false);
                 //console.log(done);
-              })
-              .catch((error) => {
-                console.error('Error updating field:', error);
-              });
-            }, timeDifference);
-          } else {
-            console.log('지정된 시간이 아직 남았습니다.');
-            setDone(false);
-            //console.log(done);
-          }
+            }
         });
-      };
+    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+        const parentRect = parentRef.current.getBoundingClientRect();
+        const scrollTop = parentRef.current.scrollTop;
+    
+        childRef.current.style.top = `${parentRect.top + scrollTop}px`;
+        };
+    
+        parentRef.current.addEventListener('scroll', handleScroll);
+    
+        return () => {
+            if (parentRef.current) {
+                parentRef.current.removeEventListener('scroll', handleScroll);
+            }
+        };
+    }, []);
+    
 
     // 이미지를 넣을 떼 height를 설정해주지 않으면 디폴트로 height : 0이 들어가있기 때문에
     // 설정해줘야한다!
     return (
         <div id='layout'>
             <div id='default-challenge-view'>
-            <h1>디폴트 챌린지 상세보기</h1>
             <div className='challenge-wrap'>
+                <div></div>
             {/** 업로드해서 넣은 이미지 url과 그냥 imgId만 넣은 파일을 구분해서 들고와야함 */}
             <img src={challengeBoard?.img && (challengeBoard.img.length < 10 ? require(`../img/${challengeBoard.img}`) : challengeBoard.img)}
-                style={{width : "300px", height : "200px", borderRadius : "20px", display : 'inline-block', border : "solid black 1px"}}
+                style={{width : "100%", height : "200px", borderRadius : "20px", display : 'inline-block', border : "solid black 1px"}}
             alt="" />
             <div className='challenge-info-wrap'>
                     <ul className='challenge-info'>
-                        <li>챌린지명 : {challengeBoard && challengeBoard.name}</li>
+                        <li style={{fontSize : "2rem"}}>{challengeBoard && challengeBoard.name}</li>
                         <li>기간 : {time}</li>
-                        <li>등록자명 : {challengeBoard && challengeBoard.uid}</li>
+                        <li>등록자명 : Monivation</li>
+                        <li style={{display:'flex', alignItems:'center'}}>
+                            <label htmlFor="">획득 가능한 뱃지 </label>
+                            <div style={{width : "50px", display : "inline-block", height : "50px", borderRadius : "20px",
+                            backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
+                            backgroundImage : `url(/img/${challengeBoard && challengeBoard.badge})`}}></div>
+                        </li>
                     </ul>
                 {/** challenge 데이터에 user.nickname도 넣을 예정 */}
                 {/** 뱃지는 디폴트 챌린지만 할당 */}
             </div>
             <div className='badge-button-wrap'>
-            <div style={{width : "100px", display : "inline-block", height : "100px",
-            backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
-            backgroundImage : `url(/img/${challengeBoard && challengeBoard.badge})`}}></div>
-            <br />
-            {
-                user && user.uid ? <button onClick={handleToggled}
-                disabled={done === true}
-                >
-                    {isToggled ? '참여하기' : '참여중'}
-                </button> 
-                : <button>로그인 해주세요</button>
-            }
+                {
+                    user && user.uid ? <button onClick={handleToggled}
+                    disabled={done === true}
+                    >
+                        {isToggled ? '참여하기' : '참여중'}
+                    </button> 
+                    : <button>로그인 해주세요</button>
+                }
+                <button>공유</button>
             </div>
-            
+            <div></div>
         </div>
-        <hr style={{width : "1300px"}} />
-        <div className='content-comment-wrap'>
-            <div style={{display : 'inline-block', backgroundColor : "gray", width : "500px", height : "500px"}}>
-                <p>챌린지 상세 설명</p>
-                <p>{challengeBoard && challengeBoard.content}</p>
-                {
-                user && challengeBoard && challengeBoard.uid === user.uid ? <button>챌린지 수정</button> : null
-                }
-                {
-                user && challengeBoard && challengeBoard.uid === user.uid ? 
-                <button>챌린지 삭제</button> : null
-                }
+        <br />
+        <div style={{width : "95%", backgroundColor:"lightgray", height:"5px", margin:'auto'}} />
+        <div id='content'className='content-comment-wrap'>
+            <div style={{backgroundColor : "red", width:"100%"}}></div>
+            <div style={{backgroundColor : "transparent", padding: "30px"}}
+            >
+                <div style={{backgroundColor : "lightgrey", width : "100%", height:"100%"}}
+                className='challenge-content'
+                ref={parentRef}
+                >
+                    <p>{challengeBoard && challengeBoard.content}</p>
+                    <div className='content-button'ref={childRef}>
+                        {
+                        user && challengeBoard && challengeBoard.uid === user.uid ? <button >수정</button> : null
+                        }
+                        {
+                        user && challengeBoard && challengeBoard.uid === user.uid ? 
+                        <button >삭제</button> : null
+                    }
+                </div>
+                </div>
             </div>
             <CommentComp />
+            <div style={{backgroundColor : "red", width:"100%"}}></div>
         </div>
         </div>
         </div>
