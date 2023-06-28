@@ -107,7 +107,7 @@ const Coin = ({ style, moveHeight }) => {
 
 
 export default function FallingCoinComp(style = { style }) {
-  const makeCoinAnimation = (mh=45) => {
+  const makeCoinAnimation = (mh=46) => {
     let width = "128px";
     let height = "128px";
     let backgroundImage = `url(${require('../../assets/img/coin.png')})`;
@@ -130,22 +130,26 @@ export default function FallingCoinComp(style = { style }) {
   return (
     <div>
       <div>
-        <LeftContainer style={style} customWidth={25} customLeft={4.4}>{makeCoinAnimation(37)}</LeftContainer>
+        <LeftContainer style={style} customWidth={25} customLeft={4.4}>{makeCoinAnimation(38)}</LeftContainer>
         <LeftContainer style={style} customWidth={28} customLeft={4}>{makeCoinAnimation(38)}</LeftContainer>
         <LeftContainer style={style} customWidth={29} customLeft={3.6}>{makeCoinAnimation(40)}</LeftContainer>
         <LeftContainer style={style} customWidth={30} customLeft={3.2}>{makeCoinAnimation(42)}</LeftContainer>
-        <LeftContainer style={style} customWidth={31} customLeft={2.8}>{makeCoinAnimation()}</LeftContainer>
-        <LeftContainer style={style} customWidth={32} customLeft={2.4}>{makeCoinAnimation()}</LeftContainer>
+        <LeftContainer style={style} customWidth={31} customLeft={2.8}>{makeCoinAnimation(44)}</LeftContainer>
+        <LeftContainer style={style} customWidth={32} customLeft={2.4}>{makeCoinAnimation(44)}</LeftContainer>
+        <LeftContainer style={style} customWidth={33} customLeft={2}>{makeCoinAnimation()}</LeftContainer>
+        <LeftContainer style={style} customWidth={33} customLeft={2}>{makeCoinAnimation()}</LeftContainer>
         <LeftContainer style={style} customWidth={33} customLeft={2}>{makeCoinAnimation()}</LeftContainer>
         <LeftContainer style={style} customWidth={33} customLeft={2}>{makeCoinAnimation()}</LeftContainer>
       </div>
       <div>
-        <RightContainer style={style} customWidth={25} customRight={4.4}>{makeCoinAnimation(37)}</RightContainer>
+        <RightContainer style={style} customWidth={25} customRight={4.4}>{makeCoinAnimation(38)}</RightContainer>
         <RightContainer style={style} customWidth={28} customRight={4}>{makeCoinAnimation(38)}</RightContainer>
         <RightContainer style={style} customWidth={29} customRight={3.6}>{makeCoinAnimation(40)}</RightContainer>
         <RightContainer style={style} customWidth={30} customRight={3.2}>{makeCoinAnimation(42)}</RightContainer>
-        <RightContainer style={style} customWidth={31} customRight={2.8}>{makeCoinAnimation()}</RightContainer>
-        <RightContainer style={style} customWidth={32} customRight={2.4}>{makeCoinAnimation()}</RightContainer>
+        <RightContainer style={style} customWidth={31} customRight={2.8}>{makeCoinAnimation(44)}</RightContainer>
+        <RightContainer style={style} customWidth={32} customRight={2.4}>{makeCoinAnimation(44)}</RightContainer>
+        <RightContainer style={style} customWidth={33} customRight={2}>{makeCoinAnimation()}</RightContainer>
+        <RightContainer style={style} customWidth={33} customRight={2}>{makeCoinAnimation()}</RightContainer>
         <RightContainer style={style} customWidth={33} customRight={2}>{makeCoinAnimation()}</RightContainer>
         <RightContainer style={style} customWidth={33} customRight={2}>{makeCoinAnimation()}</RightContainer>
       </div>
