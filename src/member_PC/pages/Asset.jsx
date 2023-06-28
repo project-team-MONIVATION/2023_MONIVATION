@@ -84,7 +84,7 @@ export default function Asset() {
         {/* 탭 바 */}
         <HeaderBox>
           <h1 className='asset-header'>Best 자산관리사</h1>
-          <Link to='/asset/managerlist'><p style={{backgroundColor: "#D9D9D9", padding: "5px 10px", borderRadius: "20px"}}>자산관리사 더보기</p></Link>
+          <Link to='/asset/managerlist'><p style={{backgroundColor: "#D9D9D9", padding: "5px 10px", borderRadius: "20px"}}>전체보기</p></Link>
         </HeaderBox>
 
         {/* 탑 자문사 리스트 */}

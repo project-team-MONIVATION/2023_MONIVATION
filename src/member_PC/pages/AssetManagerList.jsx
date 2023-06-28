@@ -78,7 +78,8 @@ export default function AssetManagerList() {
     });
   
   return (
-    <div id='layout' style={{overflowY: "scroll"}}>
+    <div id='layout'>
+      <div id='layout-in'>
       <div id='managerlist'>
         {/* 탭 바 */}
         <HeaderBox>
@@ -92,7 +93,7 @@ export default function AssetManagerList() {
         {/* 분야 필터 */}
         <div className='field-btn'>
           {field.map((f, i)=>(
-            <button key={i} style={{backgroundColor: filter.includes(f) ? "#735BF3" : "gray" }} onClick={()=>handleFilter(f)}>{f}</button>
+            <button key={i} style={{backgroundColor: filter.includes(f) ? "#735BF3" : "#D9D9D9" }} onClick={()=>handleFilter(f)}>{f}</button>
           ))}
         </div>
         
@@ -122,6 +123,7 @@ export default function AssetManagerList() {
             ))
           }
         </div>
+      </div>
       </div>
     </div>
   )
