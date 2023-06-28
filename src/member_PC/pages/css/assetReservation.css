@@ -1,0 +1,41 @@
+#asset-reservation .reservation-header {
+    font-size: 1.8rem; 
+    text-align: center; 
+    margin-bottom: 50px;
+}
+#asset-reservation .reservation-div {
+    border: solid 1px black; 
+    border-radius: 20px; 
+    margin-left: 20px;
+}
+#asset-reservation .reservation-form div {
+    text-align: left; 
+    margin: 10px;
+}
+#asset-reservation .reservation-form div label{
+    display: inline-block; 
+    text-align: left; 
+    width: 100px; 
+    font-weight: bold;
+}
+#asset-reservation .reservation-form .last-label {
+    vertical-align: top;
+}
+#asset-reservation .notification {
+    text-align: left;
+}
+#asset-reservation .notification h1 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+#asset-reservation .notification p {
+    font-size: 0.8rem;
+    margin: 10px 0;
+}
+#asset-reservation .notification div {
+    display: flex;
+    align-items: center;
+}
+#asset-reservation .notification div label {
+    width: 200px;
+}
