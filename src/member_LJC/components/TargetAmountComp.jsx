@@ -15,6 +15,12 @@ import TargetAmountInputComp from './TargetAmountInputComp';
 import TargetAmonutListComp from './TargetAmonutListComp';
 import ProgressBar from './ProgressBar';
 
+// 폰트어썸
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faGear, faCoins } from "@fortawesome/free-solid-svg-icons";
+
+import '../css/moneyCalendar.css'
+
 export default function TargetAmountComp() {
     const [value, onChange] = useState(new Date());
 
@@ -28,8 +34,9 @@ export default function TargetAmountComp() {
 
     const [activeModal, setActiveModal] = useState(null);
 
-    const [hdpercent, setHdpercent] = useState('');
-    const [nowpercent, setNowpercent] = useState('');
+    
+
+    
 
     // 오늘 날짜
     const YYYY = String(value.getFullYear())
@@ -82,28 +89,6 @@ export default function TargetAmountComp() {
         }
     };
 
-    // useEffect(() => {
-    //     getDateDiffHDpercent();
-    //     getDateDiffNOWpercent();
-    // }, [taList]);
-    
-    // const getDateDiffHDpercent = () => {
-    //     // 현재 상태 값을 기반으로 hdpercent 값을 계산하는 로직을 이곳으로 이동합니다.
-    //     const date1 = new Date(taList[0]?.endday);
-    //     const date2 = new Date(taList[0]?.startday);
-    //     const diffDate = date1.getTime() - date2.getTime();
-    //     const result = Math.abs(diffDate / (1000 * 60 * 60 * 24));
-    //     setHdpercent(result);
-    // };
-    
-    // const getDateDiffNOWpercent = () => {
-    //     // 현재 상태 값을 기반으로 nowpercent 값을 계산하는 로직을 이곳으로 이동합니다.
-    //     const date1 = new Date();
-    //     const date2 = new Date(taList[0]?.startday);
-    //     const diffDate = date1.getTime() - date2.getTime();
-    //     const result = Math.abs(diffDate / (1000 * 60 * 60 * 24));
-    //     setNowpercent(result < 0 ? 0 : result);
-    // };
 
 
     const getDateDiffHDpercent = (d1, d2) => {
@@ -113,7 +98,8 @@ export default function TargetAmountComp() {
         const diffDate = date1.getTime() - date2.getTime();
         
         const result = Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
-        console.log("백퍼샌트값",result)
+        
+        
         return result
     }
 
@@ -166,70 +152,51 @@ export default function TargetAmountComp() {
         return reasult
     }
 
+    
+
+    const dealt = (d1, d2) => { 
+        let maxnum = getDateDiffHDpercent(d2, d1);
+        let num = getDateDiffNOWpercent(new Date(), d1, d2)
+        console.log("몇필셀?" ,Math.floor((num / maxnum) * 100))
+        return Math.floor((num / maxnum) * 100); 
+    }
+
+
     return (
         <div>
-            목표금액
-            <br />
-
-            
-            {/* 모달로 */}
-            {/* 제목 */}
-            {/* 기간 */}
-            {/* 금액 */}
-            <button onClick={()=>{
-                setModalIsOpen(true);
-                openModal(1);
-                }}>
-                추가
-            </button>
-            {
-                activeModal === 1 && (
-                    <Modal isOpen={modalIsOpen}>
-                    <div>
-                        <h3>목표금액 추가 모달창</h3>
-                        <button onClick={()=>setModalIsOpen(false)}>취소</button>
-                        <TargetAmountInputComp setModalIsOpen={setModalIsOpen}/>
-                    </div>
-                    </Modal>
-                )
-            }
-
-            {/* 모달로 리스트로 쫙 나오게 */}
-            {/* 제목 */}
-            {/* 기간 */}
-            {/* 금액 */}
-            {/* 삭제 */}
-            <button onClick={()=>{
-                setModalIsOpen(true);
-                openModal(2);
-                }}>
-                변경(리스트)
-            </button>
-            {
-                activeModal === 2 && (
-                    <Modal isOpen={modalIsOpen}>
-                    <div>
-                        <h3>목표금액 수정,리스트 모달창</h3>
-                        <button onClick={()=>setModalIsOpen(false)}>취소</button>
-                        <TargetAmonutListComp setModalIsOpen={setModalIsOpen}/>
-                    </div>
-                    </Modal>
-                )
-            }
-
-            {/* 슬라이드 */}
-            
+        {/* 슬라이드 */}
         <Slider {...settings}>
 
             {taList.map((tmp) =>
-                <div>
-                    <h3>{tmp.title}</h3>
-                    <h3>{tmp.amount}</h3>
-                    <h3>D-{Dday(tmp.endday, new Date())}</h3>
+                <div id='target_A'
+                    className='targetA_component'
+                >
+                    <div className='targetA_list'>
+                        <div className='A_title'>{tmp.title}</div>
+                        <div className='A_amount'>{tmp.amount}</div>
+                    </div>
                     
-                    
-                    <ProgressBar num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)} maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}/>
-                    {console.log(getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday))}
+                    <div className='targetA_bar'>
+                        <div
+                            className='A_bar_icon'
+                            style={{
+                                // width: '60px',
+                                // height: '40px',
+                                // marginRight: "1px",
+                                // backgroundColor: '#735BF3',
+                                transform: `translateX(${dealt(tmp.startday, tmp.endday)}%)`,
+                                transition : 'all 0.3s',
+                                // borderRadius: '15px'
+                            }}
+                        >
+                        </div>
+                        <div style={{width : "70%", padding : "0 0"}}>
+                            <ProgressBar num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)} maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}/>
+                            D-{Dday(tmp.endday, new Date())}&nbsp;  
+                            <FontAwesomeIcon icon={faCoins}/>
+
+                        </div>
+                    </div>
                 </div>
             )}
 

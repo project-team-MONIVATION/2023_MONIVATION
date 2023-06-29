@@ -10,6 +10,7 @@ import { Line, Pie, getElementAtEvent } from 'react-chartjs-2'; // 원하는 차
 
 import Calendar from 'react-calendar'
 
+
 import { Timestamp, collection, deleteDoc, doc, getDocs, query, where, } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
@@ -633,11 +634,15 @@ export default function MoneyChartExpense() {
                 <div id='moneychart_page' className='container_wrap'>
                     <div className='wrap'>
                         <div className='income_expenditure_btn'>
-                        
-                            <button>
+                            <button
+                                className='btnin hover2'
+                            >
                                 <Link to="/calendar/chart/income">수입</Link>
                             </button>
-                            <button>
+
+                            <button
+                                className='btnex hover3'
+                            >
                                 <Link to="/calendar/chart/expense">지출</Link>
                             </button>
                         </div>
@@ -656,14 +661,15 @@ export default function MoneyChartExpense() {
                                     <div>    
                                         {/* 시작일 */}
                                         <button
-                                            onClick={() => {setCheck2((e) => !e); setCheck(false); }}
+                                            onClick={() => {setCheck2((e) => !e); setCheck3(false); }}
                                             className='input_btn_box_start'
                                         >
                                             <SelectDate showCal={ischeck2}/>
                                         </button>
                                         {ischeck2 && (
-                                            <div className='modal-cal'>
+                                            <div className='modal-cal_start'>
                                                 <Calendar 
+                                                    className="startcalnedar"
                                                     onChange={onChange}
                                                     value={value}
                                                     onClickDay={(value, event) => {setStartdayclick(value); setCheck2(false); setCheck3(true); setMindate(value);}}
@@ -674,7 +680,7 @@ export default function MoneyChartExpense() {
                                 </div>
                                 <div className='endday_content'>
                                     <div>
-                                        ~  
+                                        
                                         <input ref={el => (inputRef.current[1] = el)}  
                                             type="text"
                                             disabled
@@ -684,14 +690,15 @@ export default function MoneyChartExpense() {
                                     <div>        
                                         {/* 종료일 */}
                                         <button
-                                            onClick={() => {setCheck3((e) => !e); setCheck(false); } }
+                                            onClick={() => {setCheck3((e) => !e); setCheck2(false); } }
                                             className='input_btn_box_end'
                                         >
                                             <SelectDate showCal={ischeck3}/>
                                         </button>
                                         {ischeck3 && (
-                                            <div className='modal-cal'>
+                                            <div className='modal-cal_end'>
                                                 <Calendar 
+                                                    className='startcalnedar'
                                                     onChange={onChange} 
                                                     value={value}
                                                     onClickDay={(value, event) => {setEnddayclick(value); setCheck3(false);}}
@@ -699,7 +706,7 @@ export default function MoneyChartExpense() {
                                                 />
                                             </div>
                                         )}
-                                        <br />
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -719,44 +726,50 @@ export default function MoneyChartExpense() {
                                     />
                                 </div>
                             )} */}
-
-                            <div className={`selectBox2 ${isActive ? 'active' : ''}`}>
-                                <button className="label" onClick={toggleOptions}>
-                                    {selectedOption}
-                                </button>
-                                {/* 1개월 */}
-                                <ul className={`optionList ${isActive ? 'active' : ''}`}>
-                                    <li onClick={() => {chageDateOneMonth(); handleSelect('1개월')}}
-                                        className="optionItem"
-                                    >
-                                        1개월
-                                    </li>
+                            <div className='selectBoxWrap'>
+                                <div className={`selectBox2 ${isActive ? 'active' : ''}`}>
+                                    <button className="label" onClick={toggleOptions}>
+                                        {selectedOption}
+                                    </button>
+                                    {/* 1개월 */}
+                                    <ul className={`optionList ${isActive ? 'active' : ''}`}>
+                                        <li onClick={() => {chageDateOneMonth(); handleSelect('1개월')}}
+                                            className="optionItem"
+                                        >
+                                            1개월
+                                        </li>
+                                        
+                                        {/* 2개월 */}
+                                        <li className="optionItem"
+                                            onClick={() => {chageDateTwoMonth(); handleSelect('2개월')}}
+                                        >
+                                            2개월
+                                        </li>
+                                        
+                                        {/* 3개월 */}
+                                        <li className="optionItem"
+                                            onClick={() => {chageDateTreeMonth(); handleSelect('3개월')}}
+                                        >
+                                            3개월
+                                        </li>
+                                    </ul>
                                     
-                                    {/* 2개월 */}
-                                    <li className="optionItem"
-                                        onClick={() => {chageDateTwoMonth(); handleSelect('2개월')}}
-                                    >
-                                        2개월
-                                    </li>
-                                    
-                                    {/* 3개월 */}
-                                    <li className="optionItem"
-                                        onClick={() => {chageDateTreeMonth(); handleSelect('3개월')}}
-                                    >
-                                        3개월
-                                    </li>
-                                </ul>
-                                
+                                </div>
                             </div>
                         </div>
                         
-                        <br />
-                        <div className='check_button'>
-                            <button
-                                onClick={() => getexpensechoiseData()}
-                            >
-                                조회
-                            </button>
+                        <div className='check_button '
+                        onClick={() => getexpensechoiseData()}>
+                            {/* <button
+                                className='searchbutton btnPush btnBlueGreen'
+                                
+                                > */}
+                                <img src="/img/search.png" 
+                                    className='imgindex'
+                                    style={{width:"30px", height:"30px" }}
+                                    
+                                />
+                            {/* </button> */}
                         </div>
                     </div>            
                     <div className='charts_wrap'>
@@ -815,8 +828,8 @@ export default function MoneyChartExpense() {
                         </div>
 
                     </div>                        
+                                    
                 </div>
-
 
 
 
