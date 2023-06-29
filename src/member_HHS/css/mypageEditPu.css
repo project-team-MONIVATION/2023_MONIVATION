@@ -21,27 +21,36 @@
     margin-left: 30px;
     object-fit: cover; /* 이미지 비율을 유지하면서 컨테이너에 맞게 조정 */
     border: 3px solid black;
+    transition: filter 0.2s ease-in-out;
+
 }
+
+
+.pu-information .pu-img img:hover {
+    filter: grayscale(50%);
+}
+
+
 
 .pu-information .text {
     text-align: start;
     margin-right: 90px;
     width: 1000px;
-    font-size: 1rem;
+    font-size: 1.1rem;
     line-height: 30px;
-    margin-left: 40px;
+    margin-left: 50px;
     color: rgb(176, 176, 176);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     gap: 7px;
-    margin-bottom: 10px;
+    margin-bottom: 13px;
     letter-spacing : 0.1em;
     
 }
 
 .pu-information .text span {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: black;
     padding-left: 10px;
 }
