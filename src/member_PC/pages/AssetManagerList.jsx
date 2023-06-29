@@ -104,12 +104,12 @@ export default function AssetManagerList() {
               <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
               <AssetBox>
                 <AssetImage style={{backgroundImage: `url(${fm.photo})`}}></AssetImage>
-                <h3 style={{margin: "10px 0"}}>{fm.name}</h3>
+                <p style={{margin: "10px 0 5px 0", fontWeight: "bold"}}>{fm.name}</p>
                 <AssetField>
                   <div>
-                    <FieldSpan>{fm.field && fm.field[0]}</FieldSpan>
-                    <FieldSpan>{fm.field && fm.field[1]}</FieldSpan>
-                    <FieldSpan>{fm.field && fm.field[2]}</FieldSpan>
+                    {fm.field && fm.field[0] && <FieldSpan>{fm.field[0]}</FieldSpan>}
+                    {fm.field && fm.field[1] && <FieldSpan>{fm.field[1]}</FieldSpan>}
+                    {fm.field && fm.field[2] && <FieldSpan>{fm.field[2]}</FieldSpan>}
                   </div> 
                 </AssetField>
                 <FontAwesomeIcon

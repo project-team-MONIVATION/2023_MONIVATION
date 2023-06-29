@@ -3,11 +3,11 @@ import styled from 'styled-components'
 
 const BackgroundBox = styled.div`
     background-color: #D9D9D9;
-    width: 200px;
-    height: 250px;
+    width: 220px;
+    height: 290px;
     margin: 30px;
     display: inline-block;
-    border-radius: 20px;
+    border-radius: 10px;
 `
 
 export default function AssetBox({children, ...rest}) {

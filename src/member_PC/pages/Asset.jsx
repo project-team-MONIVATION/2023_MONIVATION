@@ -17,29 +17,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './css/asset.css'
 
-// 화살표 컴퍼넌트
-const NextArrow = ({ onClick, style }) => { 
-  return (
-    <FontAwesomeIcon
-      icon={faChevronRight}
-      onClick={onClick}
-      type='button'
-      style={{ ...style, position: "absolute", display: "inline-block", color: "darkgray", zIndex: "10", cursor: "pointer", width:"40px", height:"40px", top: "120", right:"0%"}}
-    />
-  );
-};
-
-const PrevArrow = ({ onClick, style }) => {
-  return (
-    <FontAwesomeIcon
-      icon={faChevronLeft}
-      onClick={onClick}
-      type='button'
-      style={{ ...style, position: "absolute", display: "inline-block", color: "darkgray", zIndex: "10", cursor: "pointer", width:"40px", height:"40px", top: "120", left:"0%"}}
-    />
-  );
-};
-
 export default function Asset() {
   const user = useSelector((state) => state.user.user);
 
@@ -54,8 +31,6 @@ export default function Asset() {
     speed: 1000,
     slidesToShow: 4,
     slidesToScroll: 4,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />
   };
 
   useEffect(()=>{
@@ -97,7 +72,7 @@ export default function Asset() {
               <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
                 <AssetBox>
                   <AssetImage style={{backgroundImage: `url(${fm.photo})`}}></AssetImage>
-                  <h1 style={{margin: "10px 0"}}>{fm.name}</h1>
+                  <p style={{margin: "10px 0", fontWeight: "bold"}}>{fm.name}</p>
                   <AssetField> 
                     <div>
                       <FieldSpan>{fm.field && fm.field[0]}</FieldSpan>
