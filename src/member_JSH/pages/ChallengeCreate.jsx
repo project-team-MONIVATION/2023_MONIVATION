@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import ImgDivBox from '../styled-component/ImgDivBox';
 import { db } from '../../database/firebase';
 import { async } from 'q';
+import '../css/challengecreate.css';
 
 export default function ChallengeCreate() {
   const user = useSelector((state)=>state.user.user);
@@ -63,100 +64,114 @@ export default function ChallengeCreate() {
   };
   return (
     <div id='layout'>
-      <h1>챌린지 생성</h1>
-      <form onSubmit={addUserChallenge}>
-        {/** 디폴트 이미지 선택은 눌렀을 때 기존에 데이터에 있는 이미지를
-           * 끌어와서 선택되게하기
-           */}
-          
-          <div className='img_category'>
-            <p>이미지 선택</p>
-            <hr />
-            <div className='img_category_box'>
-            <label>
-              <input
-                type="radio"
-                checked={isImageSelected('img1.jpg')}
-                onChange={() => handleImageSelect('img1.jpg')}
-              />
-              <img 
-                style={{display : "inline-block", width : "120px", 
-                background : "white", height : "150px", borderRadius : "10px",
-                margin : "10px", border : "solid 1px black", cursor : "pointer"}}
-                src={require('../img/img1.jpg')} 
-                alt=""
-              />
-            </label>
-            <label>
-              <input
-                type="radio"
-                checked={isImageSelected('img2.jpg')}
-                onChange={() => handleImageSelect('img2.jpg')}
-              />
-              <img 
-                style={{display : "inline-block", width : "120px", 
-                background : "white", height : "150px", borderRadius : "10px",
-                margin : "10px", border : "solid 1px black", cursor : "pointer"}}
-                src={require('../img/img2.jpg')} alt=""
-              />
-            </label>
-            <label>
-              <input
-                type="radio"
-                checked={isImageSelected('img3.png')}
-                onChange={() => handleImageSelect('img3.png')}
-              />
-              <img 
-                style={{display : "inline-block", width : "120px", 
-                background : "white", height : "150px", borderRadius : "10px",
-                margin : "10px", border : "solid 1px black", cursor : "pointer"}}
-                src={require('../img/img3.png')} alt=""
-              />
-            </label>
-              {/** + 버튼에 이미지불러오기/불러온이미지를 데이터에 할당하는 작업필요 */}
-              {/** input태그는 display:"none" 을 이용해 안보이게 숨겨준다. */}
-              <input type="file" style={{ display: "none" }} ref={imageInput} 
-                accept=".jpeg, .jpg, .png" onChange={onFileChanges}
-              />
-              <div style={{display : "inline-block", width : "120px", 
-              background : "white", height : "150px", borderRadius : "10px",
-              margin : "10px", border : "solid 1px black", cursor : "pointer"}}
-              onClick={onCickImageUpload}>
-                {challengeImg === null ? "+" : challengeImg && 
-                <img 
-                  src={challengeImg} 
-                  alt='Selected' 
-                  style={{display : "inline-block", width : "120px", height : "150px", 
-                  borderRadius : "10px"}}
-                  />}
-              </div>
-            </div>
+      <div id='layout-in'>
+        <div id='challenge-create'>
+          <h1>챌린지 생성</h1>
+          <div className='challenge-create-wrap'>
+            <form onSubmit={addUserChallenge}>
+                <div className='img_category'>
+                  <p>이미지 선택</p>
+                  <div className='img_category_box'>
+                  <label>
+                    <input
+                      type="radio"
+                      checked={isImageSelected('img1.jpg')}
+                      onChange={() => handleImageSelect('img1.jpg')}
+                      
+                    />
+                    <img 
+                      style={{display : "inline-block", 
+                      background : "white",
+                      border : isImageSelected('img1.jpg') ? 'solid 2px blue' : 'none',
+                      }}
+                      src={require('../img/img1.jpg')} 
+                      alt=""
+                    />
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      checked={isImageSelected('img2.jpg')}
+                      onChange={() => handleImageSelect('img2.jpg')}
+                      
+                    />
+                    <img 
+                      style={{display : "inline-block", 
+                      background : "white",
+                      border: isImageSelected('img2.jpg') ? 'solid 2px blue' : 'none', 
+                      }}
+                      src={require('../img/img2.jpg')} alt=""
+                    />
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      checked={isImageSelected('img3.png')}
+                      onChange={() => handleImageSelect('img3.png')}
+                    />
+                    <img 
+                      style={{display : "inline-block", 
+                      background : "white",
+                      border: isImageSelected('img3.png') ? 'solid 2px blue' : 'none', 
+                      }}
+                      src={require('../img/img3.png')} alt=""
+                    />
+                  </label>
+                    {/** + 버튼에 이미지불러오기/불러온이미지를 데이터에 할당하는 작업필요 */}
+                    {/** input태그는 display:"none" 을 이용해 안보이게 숨겨준다. */}
+                    <input type="file" style={{ display: "none" }} ref={imageInput} 
+                      accept=".jpeg, .jpg, .png" onChange={onFileChanges}
+                    />
+                    <div style={{display : "inline-block", width : "200px", 
+                    background : "white", height : "150px", borderRadius : "10px",
+                    margin : "10px", border : "solid 1px black", cursor : "pointer"}}
+                    onClick={onCickImageUpload}>
+                      {challengeImg === null ? "+" : challengeImg && 
+                      <img 
+                        src={challengeImg} 
+                        alt='Selected' 
+                        style={{display : "inline-block", width : "120px", height : "150px", 
+                        borderRadius : "10px"}}
+                        />}
+                    </div>
+                  </div>
+                </div>
+                
+                
+                
+                <p>챌린지 정보</p>
+                <div className='challenge-create-info'>
+                    <ul>
+                      <li>
+                        <label htmlFor="" >챌린지명 </label>
+                        <input type="text" value={challengeName} 
+                              onChange={(e)=>setChallengeName(e.target.value)}
+                              name='challenge_img' />
+                      </li>
+                      <li>
+                        <label htmlFor="">챌린지 기간 </label>
+                            <select name="" id="" onChange={(e)=>setChallengeTime(e.target.value)}>
+                              <option value="" selected>기간을 선택하세요</option>
+                              <option value="one-minutes">1분</option>
+                              <option value="week">일주일</option>
+                              <option value="one-month">1개월</option>
+                              <option value="three-month">3개월</option>
+                              <option value="six-month">6개월</option>
+                            </select>
+                      </li>
+                    </ul>
+                </div>
+
+                <div className='challenge-content-write'>
+                  <p>내용 작성</p>
+                  <textarea name="" id="" cols="90" rows="30" onChange={(e)=>setChallengeContent(e.target.value)}></textarea>
+                  <br />
+                  <button type='submit'>등록</button>
+                </div>
+            </form>
           </div>
-          
-          
-          
-          <p>챌린지 정보</p>
-          <hr />
-          <label htmlFor="" >챌린지명</label>
-          <input type="text" value={challengeName} 
-          onChange={(e)=>setChallengeName(e.target.value)}
-          name='challenge_img'
-          /><br />
-          <label htmlFor="">기간</label>
-          <select name="" id="" onChange={(e)=>setChallengeTime(e.target.value)}>
-            <option value="" selected>기간을 선택하세요</option>
-            <option value="one-minutes">1분</option>
-            <option value="week">일주일</option>
-            <option value="one-month">1개월</option>
-            <option value="three-month">3개월</option>
-            <option value="six-month">6개월</option>
-          </select>
-          <p>내용 작성</p>
-          <hr />
-          <textarea name="" id="" cols="60" rows="10" onChange={(e)=>setChallengeContent(e.target.value)}></textarea>
-          <br />
-          <button type='submit'>등록</button>
-      </form>
+        </div>
+      </div>
     </div>
   )
 }

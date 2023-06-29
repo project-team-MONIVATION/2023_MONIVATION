@@ -1,0 +1,30 @@
+#total-stat-wrap{
+    height: 99%;
+    display: inline-block;
+    border: solid lightgray 1px;
+    min-width: 10%;
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
+    margin-right: 0.3rem;
+    background-color: transparent;
+
+    
+}
+
+#total-stat-wrap table{
+    height: 100%;
+    
+}
+
+#total-stat-wrap table tbody {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+#total-stat-wrap table tbody :first-child {
+    display: table-row;
+    height: 17%;
+    background-color: transparent;
+}
+
