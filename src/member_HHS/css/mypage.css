@@ -1,19 +1,27 @@
 .mypage-wrap {
     display: grid;
-    grid-template-columns : 45% 55%;
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns : 600px 700px;
+    grid-template-rows: repeat(1, 194px 347px 347px);
     justify-items: stretch;
     justify-self: start;
+    position: relative;
+    overflow: hidden;
+    justify-self: start;
+    
 }
+
 
 .mypage-wrap .grid-item:nth-child(1) {
     border-radius: 40px;
-    width: 480px;
-    height: 157px;
+    width: 520px;
+    height: 170px;
     flex-shrink: 0;
     background-color: #ededed;
-    margin-left: 7px;
-    position: relative;
+    position: absolute;
+    left: 60px;
+    top: 55px;
+    z-index: 1;
+
 }
 
 .mypage-wrap .grid-item:nth-child(2) {
@@ -25,14 +33,16 @@
 .mypage-wrap .grid-item:nth-child(3)
  {
     border-radius: 40px;
-    width: 480px;
-    height: 310px;
-    flex-shrink: 0;
-    margin-left: 7px;
+    width: 520px;
+    height: 327px;
     margin-bottom: 15px;
     background-color: #ededed;
-
+    position: absolute;
+    left: 60px;
+    margin-top: 20px;
+    z-index: 1;
 }
+
 
 
 .mypage-wrap .grid-item:nth-child(3) {
@@ -41,21 +51,21 @@
 }
 
 
+
 .mypage-wrap .grid-item:nth-child(4) {
     grid-column: 2; /* 2번째 행으로 이동 */
     position: absolute;
-    display: flex;
-    right: 300px;
-    flex-direction: column;
-    justify-content: space-between;
+    top: 55px;
+    right: 70px;
+    z-index: 0;
+
 }
 
 .grid-item:nth-child(4) .active-challenge,
 .grid-item:nth-child(4) .complete-challenge {
     border-radius: 40px;
-    width: 772px;
-    height: 397px;
-    flex-shrink: 0;
+    width: 840px;
+    height: 424px;
     margin-bottom: 20px;
     background-color: #ededed;
 }
@@ -76,15 +86,18 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     align-items: flex-start;
     padding-left: 40px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    position: absolute;
+    top: 40px;
+    left: 120px;
 }
 
 
 .div-short {
-    width: 366px;
+    width: 410px;
     height: 43px;
     flex-shrink: 0;
     border-radius: 50px;
@@ -100,7 +113,7 @@
 }
 
 .div-long {
-    width: 417px;
+    width: 540px;
     height: 43px;
     flex-shrink: 0;
     border-radius: 50px;
@@ -113,11 +126,14 @@
     letter-spacing: 2px;
     font-size: 1.3rem;
     color: #8E8E8E;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 
 }
 
 .mypage-wrap .grid-item .edit-btn-reservation a:nth-child(2) {
-    width: 366px;
+    width: 410px;
     height: 43px;
     flex-shrink: 0;
     border-radius: 50px;
@@ -132,7 +148,7 @@
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Cafe24Ssurround';
-    bottom: 8px;
+    bottom: 13px;
     transition: box-shadow 0.4s ease-in-out;
     box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* 초기 그림자 설정 */
 
@@ -149,16 +165,37 @@
     width: 23px;
     height: 22px;
     position: absolute;
-    top: 16px;
-    right: 28px;
+    top: 30px;
+    right: 40px;
 }
 
 
+/* GoalBox */
 #goal-box img {
     width: 17px;
     height: 17px;
     margin-bottom: 2.3px;
 }
 
+#goal-box .circular-bar-box {
+    z-index: 2;
+    display: inline-block;
+    position: absolute;
+    top: 50px;
+}
 
+
+#goal-box .d-day-box {
+    font-size: 2rem;
+    text-align: start;
+    margin: 40px 0 20px 70px;
+}
+
+#goal-box .d-day-box h3 {
+    margin-bottom: 10px;
+}
+
+#goal-box .d-day-box p {
+    font-size: 1.4rem;
+}
 

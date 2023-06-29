@@ -107,10 +107,10 @@ export default function Mypage() {
                 >
                   <img
                     src = { data.photo }
-                    width = { 100 }
-                    height = { 100 }
+                    width = { 80 }
+                    height = { 80 }
                     alt = "프로필"
-                    style = {{ borderRadius: "50%" }}
+                    style = {{ borderRadius: "50%" , top : "17px", position:"absolute", left:"40px", border:"2px solid black"}}
                   />
                   <div>
                     <p>{ data.nickname }</p>
@@ -141,7 +141,7 @@ export default function Mypage() {
           >
             목표금액
           </h2>
-          <div>
+          <div className='gorl-box'>
             <GorlBoxComp />
           </div>
         </div>

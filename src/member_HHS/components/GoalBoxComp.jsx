@@ -87,7 +87,7 @@ export default function GoalBoxComp() {
         const diffDate = date1.getTime() - date2.getTime();
         
         const result = Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
-        console.log("백퍼샌트값",result)
+        console.log("백퍼센트값",result)
         return result
     }
 
@@ -146,18 +146,22 @@ export default function GoalBoxComp() {
 
             {taList.map((tmp) =>
                 <div>
-                    <h3>{tmp.title}</h3>
-                    <h3>D-{Dday(tmp.endday, new Date())}<span>까지</span></h3>
-                    <h3>{tmp.amount}<span>&#8361;</span><span>모으면 돼요!</span> </h3>
+                    <div className='d-day-box'>
+                        <h3>{tmp.title}</h3>
+                        <h3>D-{Dday(tmp.endday, new Date())}<span>까지</span></h3>
+                        <h3>{tmp.amount}<span>&#8361;</span><p>모으면 돼요!</p> </h3>
+                    </div>
 
-                    <div style={{width:"100px", height:"100px"}}>
+                    <div style={{width:"100px", height:"100px"}} className='circular-bar-box'>
                       <CircularProgressbar value={60} text={`60%`} />
                     </div>
 
                     <img src="/img/money-bag.png" alt="money-bag" />
                     
-                    <ProgressBar num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)} maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}/>
-                    {console.log(getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday))}
+                    <div className='bar-box'>
+                        <ProgressBar num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)} maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}/>
+                        {console.log(getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday))}
+                    </div>
 
                       <p>{tmp.endday}</p>                    
                 </div>
