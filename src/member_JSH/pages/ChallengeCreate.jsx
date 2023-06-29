@@ -138,36 +138,45 @@ export default function ChallengeCreate() {
                 </div>
                 
                 
+                <div className='cc-info-wr-wrap'>
+                  <ul>
+                    <li>
+                      <div className='challenge-create-info'>
+                      <p>챌린지 정보</p>
+                        <ul>
+                          <li>
+                            <label htmlFor="" >챌린지명 </label>
+                            <input type="text" value={challengeName} 
+                                  onChange={(e)=>setChallengeName(e.target.value)}
+                                  name='challenge_img' />
+                          </li>
+                          <li>
+                            <label htmlFor="">챌린지 기간 </label>
+                                <select name="" id="" onChange={(e)=>setChallengeTime(e.target.value)}>
+                                  <option value="" selected>기간을 선택하세요</option>
+                                  <option value="one-minutes">1분</option>
+                                  <option value="week">일주일</option>
+                                  <option value="one-month">1개월</option>
+                                  <option value="three-month">3개월</option>
+                                  <option value="six-month">6개월</option>
+                                </select>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li>
+                      <div className='challenge-content-write'>
+                        <p>내용 작성</p>
+                        <textarea name="" id="" cols="90" rows="30" onChange={(e)=>setChallengeContent(e.target.value)}></textarea>
+                        <br />
+                        <button type='submit'>등록</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
                 
-                <p>챌린지 정보</p>
-                <div className='challenge-create-info'>
-                    <ul>
-                      <li>
-                        <label htmlFor="" >챌린지명 </label>
-                        <input type="text" value={challengeName} 
-                              onChange={(e)=>setChallengeName(e.target.value)}
-                              name='challenge_img' />
-                      </li>
-                      <li>
-                        <label htmlFor="">챌린지 기간 </label>
-                            <select name="" id="" onChange={(e)=>setChallengeTime(e.target.value)}>
-                              <option value="" selected>기간을 선택하세요</option>
-                              <option value="one-minutes">1분</option>
-                              <option value="week">일주일</option>
-                              <option value="one-month">1개월</option>
-                              <option value="three-month">3개월</option>
-                              <option value="six-month">6개월</option>
-                            </select>
-                      </li>
-                    </ul>
-                </div>
 
-                <div className='challenge-content-write'>
-                  <p>내용 작성</p>
-                  <textarea name="" id="" cols="90" rows="30" onChange={(e)=>setChallengeContent(e.target.value)}></textarea>
-                  <br />
-                  <button type='submit'>등록</button>
-                </div>
+                
             </form>
           </div>
         </div>

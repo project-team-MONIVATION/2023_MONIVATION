@@ -244,8 +244,7 @@ export default function DefaultChallengeView() {
         <div style={{width : "95%", backgroundColor:"lightgray", height:"5px", margin:'auto'}} />
         <div id='content'className='content-comment-wrap'>
             <div style={{backgroundColor : "transparent", width:"100%"}}></div>
-            <div style={{backgroundColor : "transparent", padding: "30px"}}
-            >
+            <div style={{backgroundColor : "transparent", padding: "30px"}}>
                 <div className='content-button'>
                         {
                         user && challengeBoard && challengeBoard.uid === user.uid ? <button >수정</button> : null

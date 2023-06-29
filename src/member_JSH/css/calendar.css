@@ -136,9 +136,8 @@
 /* 날짜 타일만 모여있는 div 길이를 변화시킨다.
 * 높이에 따라 타일 하나하나의 길이도 변화됨.
 */
-
 .main_calendar .react-calendar__month-view__days{
-  height: 50vh;
+  height: 48vh;
 }
 
 .main_calendar .react-calendar__month-view__days__day--neighboringMonth {

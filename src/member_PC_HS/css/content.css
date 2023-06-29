@@ -1,0 +1,39 @@
+#signup-agreement {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#signup-agreement .signup-agreement-div {
+    position: relative;
+    background-color: white; 
+    padding: 20px;
+    color: gray;
+}
+#signup-agreement .signup-agreement-div h1 {
+    margin: 10px 0;
+}
+#signup-agreement .signup-agreement-div h1:first-child {
+    font-size: 1.3rem;
+    margin: 0;
+    padding-bottom: 20px;
+}
+#signup-agreement .signup-agreement-div p {
+    margin: 5px 0;
+}
+#signup-agreement .signup-agreement-div button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    padding-top: 15px;
+    padding-right: 15px;
+}

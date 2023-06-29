@@ -60,7 +60,6 @@
 }
 
 #challenge-create .challenge-create-info ul{
-    display: flex;
     justify-content: center;
     width: 90%;
 }
@@ -106,4 +105,12 @@
     font-weight: bold;
     color: white;
     background-color: #F4D750;
+}
+
+.cc-info-wr-wrap{
+    width: 80%;
+    margin: auto;
+}
+#challenge-create .cc-info-wr-wrap>ul{
+    display: flex;
 }
