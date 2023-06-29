@@ -198,22 +198,7 @@ export default function DefaultChallengeView() {
         });
     };
 
-    useEffect(() => {
-        const handleScroll = () => {
-        const parentRect = parentRef.current.getBoundingClientRect();
-        const scrollTop = parentRef.current.scrollTop;
     
-        childRef.current.style.top = `${parentRect.top + scrollTop}px`;
-        };
-    
-        parentRef.current.addEventListener('scroll', handleScroll);
-    
-        return () => {
-            if (parentRef.current) {
-                parentRef.current.removeEventListener('scroll', handleScroll);
-            }
-        };
-    }, []);
     
 
     // 이미지를 넣을 떼 height를 설정해주지 않으면 디폴트로 height : 0이 들어가있기 때문에
@@ -258,27 +243,27 @@ export default function DefaultChallengeView() {
         <br />
         <div style={{width : "95%", backgroundColor:"lightgray", height:"5px", margin:'auto'}} />
         <div id='content'className='content-comment-wrap'>
-            <div style={{backgroundColor : "red", width:"100%"}}></div>
+            <div style={{backgroundColor : "transparent", width:"100%"}}></div>
             <div style={{backgroundColor : "transparent", padding: "30px"}}
             >
-                <div style={{backgroundColor : "lightgrey", width : "100%", height:"100%"}}
-                className='challenge-content'
-                ref={parentRef}
-                >
-                    <p>{challengeBoard && challengeBoard.content}</p>
-                    <div className='content-button'ref={childRef}>
+                <div className='content-button'>
                         {
                         user && challengeBoard && challengeBoard.uid === user.uid ? <button >수정</button> : null
                         }
                         {
                         user && challengeBoard && challengeBoard.uid === user.uid ? 
                         <button >삭제</button> : null
-                    }
-                </div>
+                        }
+                    </div>
+                <div style={{backgroundColor : "lightgrey", width : "100%", height:"100%"}}
+                className='challenge-content'
+                >
+                    <p>{challengeBoard && challengeBoard.content}</p>
+                    {/** ref={childRef} */}
                 </div>
             </div>
             <CommentComp />
-            <div style={{backgroundColor : "red", width:"100%"}}></div>
+            <div style={{backgroundColor : "transparent", width:"100%"}}></div>
         </div>
         </div>
         </div>

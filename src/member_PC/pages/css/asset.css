@@ -35,3 +35,8 @@
 #asset .asset {
     overflow: hidden;
 }
+/* 리액트 슬릭 */
+#asset .slick-list {
+    margin: auto;
+    width: 85%;
+}
