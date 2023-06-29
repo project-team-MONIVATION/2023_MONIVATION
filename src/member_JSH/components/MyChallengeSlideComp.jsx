@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ProgressBar from 'react-progressbar';
+import ProgressBar from '../../member_LJC/components/ProgressBar'
 import styled from 'styled-components'
 
 
@@ -43,6 +43,43 @@ export default function MyChallengeSlideComp() {
     // 화면에 출력하기 위한 state
     const [challengeBoard, setChallengeBoard] = useState([]);
     const [taList , setTaList] = useState([]);
+    
+    const getDateDiffHDpercent = (d1, d2) => {
+      const date1 = new Date(d1);
+      const date2 = new Date(d2);
+      
+      const diffDate = date1.getTime() - date2.getTime();
+      
+      const result = Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
+      console.log("백퍼샌트값",result)
+      return result
+    }
+
+    // 오늘 날짜, 시작날짜 , 끝나는 날짜
+    const getDateDiffNOWpercent = (d1, d2, d3) => {
+      const date1 = d1
+      const date2 = new Date(d2);
+      const date3 = new Date(d3);
+      
+      const diffDate = date1.getTime() - date2.getTime();
+      const hdpercent = date3.getTime() - date2.getTime();
+
+      let result = "";
+
+      if(diffDate < 0){
+          const diffDate = 0
+          result = Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
+          
+      } else if (hdpercent < diffDate){
+          const diffDate = hdpercent
+          result = Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
+
+      } else {
+          result = Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
+      }
+      
+      return result
+    }
 
     useEffect(()=>{
       window.scrollTo({top: 0});
@@ -102,7 +139,9 @@ export default function MyChallengeSlideComp() {
                             <p>{board.challengeName}</p>
                             <p>{board.period}</p>
                             <div style={{width:"20px", height:"20px", backgroundColor:"gray", margin : "5px"}}></div>
-                            <div style={{width : "95%", backgroundColor : "Red", height:"5px"}}></div>
+                            <ProgressBar num={getDateDiffNOWpercent(new Date(), board.startDate, board.endDate)} 
+                            maxNum={getDateDiffHDpercent(board.endDate, board.startDate)}/>
+                            {console.log(getDateDiffNOWpercent(new Date(), board.startDate, board.endDate))}
                         </div>
                     </Link>
                 ))}
