@@ -3,8 +3,10 @@
     display: flex;
     justify-content: space-around;
     /* align-items: center; */
-    width: 85%;
+    max-width: 99%;
     gap: 0 10px;
+    max-height: 22%;
+    height: 22%;
 }
 
 
@@ -14,11 +16,10 @@
     border: 0px solid #8E8E8E;
     border-radius:50px;
     width: 25%;
-    height: 150px; 
+    height: 100%; 
     overflow:hidden; 
     cursor: pointer;
-    
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
 }
 
 
@@ -72,7 +73,7 @@
     margin-left: 45%;
 }
 #secomp.secomp_container .piegp{
-    margin-top: -118px;
+    margin-top: -53%;
 }
 
 
@@ -82,10 +83,10 @@
     border: 0px solid #8E8E8E;
     border-radius:50px;
     width: 25%;
-    height: 150px; 
+    height: 100%; 
     overflow:hidden; 
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
 }
 #MoneyCalendar .installment_component .title {
     margin-top: 18px;
@@ -112,10 +113,10 @@
     border: 0px solid #8E8E8E;
     border-radius:50px;
     width: 25%;
-    height: 150px; 
+    height: 100%; 
     overflow:hidden; 
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
 }
 #MoneyCalendar .challenge_component .title {
     margin-top: 18px;
@@ -132,10 +133,10 @@
     border: 0px solid #8E8E8E;
     border-radius:50px;
     width: 25%;
-    height: 150px; 
+    height: 100%; 
     overflow:hidden; 
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
 }
 
 #MoneyCalendar .target_amount_component .title_container{
@@ -213,5 +214,10 @@
 #target_A.targetA_component .targetA_bar .A_bar_icon {
     /* margin-right: 50px; */
 
-    width: 100%;
+    width: 220px;
+}
+
+/* 비어있는 div */
+#MoneyCalendar .empty {
+    width: 220px;
 }

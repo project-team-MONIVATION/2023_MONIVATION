@@ -58,13 +58,14 @@ export default function MoneyCalendar() {
           backgroundColor : "transparent", 
           maxWidth:"99%",
           margin: "auto",
-          boxShadow: "0 0 20px 1px rgba(0,0,0,0.25)",
+          boxShadow: "0 0 10px 1px rgba(0,0,0,0.2)",
           borderRadius: "50px",
           marginBottom: "2%",
           position: "relative",
           boxSizing: "border-box",
           paddingTop: "80px",
-          paddingBottom: "50px"
+          paddingBottom: "50px",
+          boxSizing: "border-box"
         }}
       >
         <TotalStatComp />
@@ -209,6 +210,9 @@ export default function MoneyCalendar() {
           </div>
           
         </div>
+
+        {/** 비어있는 div */}
+        <div className='empty'></div>
       </div>
     </div>
   )
