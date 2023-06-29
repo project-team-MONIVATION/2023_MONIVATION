@@ -15,6 +15,18 @@ import SavingInput from '../../member_LJC/pages/SavingInput'; // 저금 모달
 import DateDetail from '../../member_HHS/components/DateDetail'; // 날짜별 상세보기 모달
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../database/firebase';
+import styled from 'styled-components';
+
+
+const InputBtn = styled.button`
+  border: 0;
+  background-color: transparent;
+  font-family: 'Cafe24Ssurround';
+  font-size: 20px;
+  color: #ffffff;
+  width: 80%;
+  margin-right: 20%;
+`
 
 
 export default function CalendarComp() {
@@ -149,16 +161,17 @@ export default function CalendarComp() {
 
 
   return (
-    <div>
+    <div style={{width : "77%"}}>
+      <div className='money-calendar-wrap' >
       <Calendar onChange={setValue} value={value}
         className='main_calendar'
         formatDay={(locale, date) => moment(date).format('D')}
-        showNeighboringMonth={false}
+        showNeighboringMonth={true}
         //년 단위 이동 버튼 없앰
         next2Label={null}
         prev2Label={null}
         navigationAriaLive={null}
-        locale="en"
+        locale="ko"
 
         // 날짜 눌러서 상세 모달창 나오게 함
         onClickDay={(value, event)=> {openModal2(value)}}
@@ -212,6 +225,7 @@ export default function CalendarComp() {
           );
         }}
       />
+      </div>
 
       {isModalOpen2 && (
         <div
@@ -243,29 +257,59 @@ export default function CalendarComp() {
       )}
 
       {/* 수입, 지출, 저금 모달 버튼 */}
-      <button onClick={() => {
-        setModalIsOpen(true);
-        openModal(1);
-      }}>
-        수입
-      </button>
-      <button onClick={()=>{
-        setModalIsOpen(true);
-        openModal(2);
-      }}>
-        지출
-      </button>
-      <button onClick={()=>{
-        setModalIsOpen(true);
-        openModal(3);
-      }}>
-        저금
-      </button>
-        {/*<div className='text-gray-500 mt-4'>
-          {
-            moment(value).format("YYYY-MM-DD")
-          }
-        </div>*/}
+      <button
+        style={{
+          position: "absolute",
+          width: "80px",
+          height: "80px",
+          border: 0,
+          borderRadius: "50%",
+          bottom: "-33%",
+          right: 0,
+          backgroundColor: "#F4D750",
+          zIndex: 3
+        }}
+      >+</button>
+      <div 
+        className='money_input_btns'
+        style={{
+          position: "absolute",
+          bottom: "-28%",
+          right: "3%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-evenly",
+          alignContent: "center",
+          borderRadius: "30px",
+          backgroundColor: "#595959",
+          width: "140px",
+          height: "160px",
+          boxSizing: "border-box",
+          padding: "10px 0"
+        }}
+      >
+        <InputBtn onClick={() => {
+          setModalIsOpen(true);
+          openModal(1);
+        }}>
+          수입
+        </InputBtn>
+        <InputBtn onClick={()=>{
+          setModalIsOpen(true);
+          openModal(2);
+        }}>
+          지출
+        </InputBtn>
+        <InputBtn 
+          onClick={()=>{
+          setModalIsOpen(true);
+          openModal(3);
+          }}
+          style={{ marginBottom: "20px"}}
+        >
+          저금
+        </InputBtn>
+      </div>
 
         {/**수입 입력 창 */}
         {

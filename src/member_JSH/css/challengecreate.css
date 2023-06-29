@@ -1,0 +1,109 @@
+
+#challenge-create hr{
+    width: 95%;
+    color: lightgray;
+}
+
+#challenge-create h1{
+    text-align: left;
+    width: 90%;
+    border: none;
+    padding: 15px;
+    font-size: 1.5rem;
+    background-color: #735BF3;
+    color: white;
+    margin: auto;
+
+}
+
+#challenge-create p{
+    width: 30%;
+    margin: 50px;
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+#challenge-create textarea{
+    padding: 20px;
+    border-radius: 10px;
+}
+
+
+#challenge-create .img_category_box{
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+}
+
+#challenge-create .img_category_box img{
+    width: 90%;
+    height: 150px;
+    border-radius: 10px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+#challenge-create .img_category_box input[type="radio"]{
+    display: none;
+}
+
+#challenge-create-wrap{
+    border: 1px solid lightgray;
+}
+
+#challenge-create .challenge-create-info{
+    min-height: 100px;
+    width: 80%;
+    margin: auto;
+
+}
+
+#challenge-create .challenge-create-info ul{
+    display: flex;
+    justify-content: center;
+    width: 90%;
+}
+
+#challenge-create .challenge-create-info li{
+    margin: 20px;
+}
+
+#challenge-create .challenge-create-info input[type='text']{
+    padding: 10px;
+    min-width: 300px;
+    border-radius: 15px;
+    margin-left: 5px;
+}
+
+#challenge-create .challenge-create-info select{
+    min-width: 320px;
+    padding: 14px;
+    border-radius: 15px;
+    background-color: #C7A5F3;
+    border: none;
+    font-weight: bold;
+    margin-left: 5px;
+    color: white;
+    appearance: menulist-button;
+}
+
+#challenge-create .challenge-create-info option{
+    background-color: white;
+    border: black 1px solid;
+    color: black;
+    border-bottom: #C7A5F3 1px solid;
+    padding: 10px;
+}
+
+#challenge-create .challenge-content-write button{
+    padding: 10px;
+    width: 20%;
+    margin: 20px;
+    border-radius: 20px;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background-color: #F4D750;
+}

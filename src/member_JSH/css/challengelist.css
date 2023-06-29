@@ -7,6 +7,16 @@ a{
     height: 100%;
 }
 
+#challenge-list h1{
+    width: 90%;
+    border: none;
+    padding: 15px;
+    font-size: 1.5rem;
+    background-color: #735BF3;
+    color: white;
+    margin: auto;
+}
+
 #challenge-list .card-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3개의 열을 가진 그리드 */
@@ -25,9 +35,14 @@ a{
     margin: 30px;
 }
 
-#challenge-list .create-button{
-    padding : 0px 15px;
-    border-radius : 30px;
+.create-button{
+    padding : 7px 20px 0px 20px;
+    border-radius : 60px;
     align-items : center;
     border : none;
+    background-color: #C7A5F3;
+    z-index: 9;
+    position: absolute;
+    bottom: 50px;
+    right: 250px;
 }

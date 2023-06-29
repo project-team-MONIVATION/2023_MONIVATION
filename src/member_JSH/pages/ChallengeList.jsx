@@ -47,11 +47,11 @@ export default function ChallengeList() {
     <div id='layout'>
       <div id='layout-in'>
         <div id='challenge-list'>
-        <h1 style={{width : "1300px", margin : "auto", border : "solid 1px black", padding : "10px"}}>챌린지</h1>
+        <h1 style={{width : "90%", margin : "auto", padding : "10px"}}>챌린지</h1>
         <ChallengeSlick />
         <br />
         <br />
-        <h1 style={{width : "1300px", margin : "auto", border : "solid 1px black", padding : "10px"}}>유저 챌린지</h1>
+        <h1 style={{width : "90%", margin : "auto", padding : "10px"}}>유저 챌린지</h1>
         <br />
         
         <ul style={{listStyle : 'none'}}
@@ -74,10 +74,11 @@ export default function ChallengeList() {
             ))
           }
         </ul>
-        <button className='create-button'>
-          <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '3rem'}}>+</Link>
-        </button>
+        
         </div>
+        <button className='create-button'>
+          <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '4rem', color:"white"}}>+</Link>
+        </button>
       </div>
     </div>
   )
