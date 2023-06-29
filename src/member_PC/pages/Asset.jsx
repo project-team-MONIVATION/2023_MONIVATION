@@ -44,6 +44,7 @@ export default function Asset() {
   const user = useSelector((state) => state.user.user);
 
   const [bestFmList, setBestFmList] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const settings = {
     autoplay: true,
@@ -74,16 +75,18 @@ export default function Asset() {
             dataArray.push(data)
         });
         setBestFmList(dataArray);
+        setIsLoaded(true);
     }
     getList();
   },[])
   
   return (
     <div id='layout' style={{overflowY: 'hidden'}}>
+      {isLoaded &&
       <div id='asset'>
         {/* 탭 바 */}
         <HeaderBox>
-          <h1 className='asset-header'>Best 자산관리사</h1>
+          <h1 className='asset-header animated'>Best 자산관리사</h1>
           <Link to='/asset/managerlist'><p style={{backgroundColor: "#D9D9D9", padding: "5px 10px", borderRadius: "20px"}}>전체보기</p></Link>
         </HeaderBox>
 
@@ -116,7 +119,7 @@ export default function Asset() {
       
         {/* 관련 정보 */}
         <div className='asset'>
-          <h1 style={{textAlign: "left", margin: "30px 0 30px 80px", fontSize: "1.8rem"}}>관련정보</h1>
+          <h1 className='animated' style={{textAlign: "left", margin: "60px 0 30px 80px", fontSize: "1.8rem"}}>관련정보</h1>
           <table>
             <tbody>
               <tr>
@@ -171,6 +174,7 @@ export default function Asset() {
           </table>
         </div>
       </div>
+    }
     </div>
   )
 }
