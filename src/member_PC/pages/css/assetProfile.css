@@ -19,7 +19,7 @@
 }
 #manager-profile .profile-intro {
     display: flex;
-    align-items: center;
+    align-items: end;
     justify-content: space-between;
     margin-top: 10px;
 }
@@ -45,7 +45,7 @@
     margin-top: 70px;
     text-align: left; 
     margin: 10px 160px; 
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 #manager-profile .comment-box {
     text-align: left; 
@@ -90,7 +90,7 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    width: 40%; 
+    width: 150px; 
     margin: auto;
     margin-top: 20px; 
     

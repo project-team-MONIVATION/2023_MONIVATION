@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const BackgroundBox = styled.div`
-    background-color: #8C78FF;
+    background-color: #D9D9D9;
     width: 200px;
     height: 250px;
     margin: 15px;

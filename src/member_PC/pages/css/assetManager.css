@@ -10,8 +10,9 @@
     margin-left: 2px;
 }
 #managerlist .field-btn {
-    width: 40%; 
+    width: 100%; 
     margin: auto;
+    margin: 15px;
 }
 #managerlist .field-btn button {
     margin: 5px 10px;
