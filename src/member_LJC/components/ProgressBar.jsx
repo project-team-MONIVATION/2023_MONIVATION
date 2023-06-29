@@ -6,7 +6,7 @@ const ProgressBar = ({ num, maxNum }) => {
     // console.log("현재퍼센트, 백퍼샌트",num,maxNum)
     const progressStyle = {
         width: '100%',
-        height: '10px',
+        height: '3px',
         backgroundColor: 'white',
     };
 
