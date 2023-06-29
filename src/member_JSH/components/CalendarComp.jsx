@@ -149,16 +149,17 @@ export default function CalendarComp() {
 
 
   return (
-    <div>
+    <div style={{width : "80%"}}>
+      <div className='money-calendar-wrap' >
       <Calendar onChange={setValue} value={value}
         className='main_calendar'
         formatDay={(locale, date) => moment(date).format('D')}
-        showNeighboringMonth={false}
+        showNeighboringMonth={true}
         //년 단위 이동 버튼 없앰
         next2Label={null}
         prev2Label={null}
         navigationAriaLive={null}
-        locale="en"
+        locale="ko"
 
         // 날짜 눌러서 상세 모달창 나오게 함
         onClickDay={(value, event)=> {openModal2(value)}}
@@ -212,6 +213,7 @@ export default function CalendarComp() {
           );
         }}
       />
+      </div>
 
       {isModalOpen2 && (
         <div

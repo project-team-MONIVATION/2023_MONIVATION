@@ -26,7 +26,8 @@ export default function MoneyCalendar() {
   return (
     <div id='layout'>
       <div
-        style={{display: "flex", justifyContent: "center", alignItems:"center"}}
+        style={{display: "flex", justifyContent: "center", alignItems:"flex-start",
+      height:"75%",maxHeight:"75%", backgroundColor : "transparent", maxWidth:"80%"}}
       >
         <TotalStatComp />
         <CalendarComp />
