@@ -6,6 +6,12 @@ import { useSelector } from 'react-redux';
 import { doc, updateDoc, query, getDoc, getDocs, collection, where } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import './css/assetManager.css'
+import AssetBox from './styledComponent/AssetBox';
+import AssetImage from './styledComponent/AssetImage';
+import AssetField from './styledComponent/AssetField';
+import FieldSpan from './styledComponent/FieldSpan';
+import HeaderBox from './styledComponent/HeaderBox';
 
 
 export default function AssetManagerList() {
@@ -73,51 +79,52 @@ export default function AssetManagerList() {
   
   return (
     <div id='layout'>
-
-      {/* 탭 바 */}
-      <div style={{display: "flex", justifyContent: "space-around", alignItems: "center"}}>
-        <h1>자산관리사 목록</h1>
-        <div>
-          <input type="text" value={searchTerm} onChange={handleInputChange}/>
-          <button onClick={handleSearch}>검색</button>
+      <div id='layout-in'>
+      <div id='managerlist'>
+        {/* 탭 바 */}
+        <HeaderBox>
+          <h1 style={{fontSize: "1.8rem"}}>자산관리사 목록</h1>
+          <div className='search-bar'>
+            <input type="text" value={searchTerm} onChange={handleInputChange}/>
+            <button onClick={handleSearch}>검색</button>
+          </div>
+        </HeaderBox>
+        
+        {/* 분야 필터 */}
+        <div className='field-btn'>
+          {field.map((f, i)=>(
+            <button key={i} style={{backgroundColor: filter.includes(f) ? "#735BF3" : "#D9D9D9" }} onClick={()=>handleFilter(f)}>{f}</button>
+          ))}
+        </div>
+        
+        {/* 모든 자산관리사 리스트 */}
+        <div className='container-box'>
+          { 
+            filteredFmList && filteredFmList.map((fm)=>(
+              <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
+              <AssetBox>
+                <AssetImage style={{backgroundImage: `url(${fm.photo})`}}></AssetImage>
+                <h3 style={{margin: "10px 0"}}>{fm.name}</h3>
+                <AssetField>
+                  <div>
+                    <FieldSpan>{fm.field && fm.field[0]}</FieldSpan>
+                    <FieldSpan>{fm.field && fm.field[1]}</FieldSpan>
+                    <FieldSpan>{fm.field && fm.field[2]}</FieldSpan>
+                  </div> 
+                </AssetField>
+                <FontAwesomeIcon
+                    icon={faHeart}
+                    fontSize={15}
+                    style={{ color: "red" }}
+                />
+                <FieldSpan>:{fm.likeNum}</FieldSpan>
+              </AssetBox>
+              </Link>
+            ))
+          }
         </div>
       </div>
-      
-      {/* 분야 필터 */}
-      <div style={{width: "600px", margin: "auto"}}>
-        {field.map((f, i)=>(
-          <button key={i} style={{margin: "5px 10px", border: "none", borderRadius: "20px", color: "white", backgroundColor: filter.includes(f) ? "#735BF3" : "gray" }} onClick={()=>handleFilter(f)}>{f}</button>
-        ))}
       </div>
-      
-      {/* 모든 자산관리사 리스트 */}
-      <div className='container-box'>
-        { 
-          filteredFmList && filteredFmList.map((fm)=>(
-            <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
-            <div style={{backgroundColor: "#735BF3", width: "250px", height: "300px", margin: "20px 40px", display: "inline-block", borderRadius: "20px"}}>
-              <div style={{backgroundColor: "white", width: "200px", height: "200px", margin: "auto", marginTop: "20px", borderRadius: "40px", backgroundImage: `url(${fm.photo})`, backgroundSize: "cover"}}></div>
-              <h3 style={{margin: "10px 0"}}>{fm.name}</h3>
-              <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                <div>
-                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[0]}</span>
-                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[1]}</span>
-                  <span style={{padding: "0 5px"}}>{fm.field && fm.field[2]}</span>
-                </div> 
-              </div>
-              <div>
-                <FontAwesomeIcon
-                  icon={faHeart}
-                  fontSize={20}
-                  style={{ color: "red" }}
-                />:{fm.likeNum}
-              </div>
-            </div>
-            </Link>
-          ))
-        }
-      </div>
-  
     </div>
   )
 }

@@ -31,13 +31,13 @@ export default function MainNavComp() {
     };
   }, [position]);  
 
-  // console.log(position)
+  console.log(position)
 
   
   return (
     <div>
       {
-        position > 900 && 
+        position > 990 && 
           (user
             ? (
               <nav className='main-nav onlongin'>

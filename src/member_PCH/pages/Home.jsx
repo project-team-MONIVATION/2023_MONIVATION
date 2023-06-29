@@ -1,6 +1,6 @@
 // 메인페이지 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,9 +13,19 @@ import LogoFlowComp from '../components/LogoFlowComp';
 import MainNavComp from '../components/MainNavComp';
 import ChallengeSlideComp from '../components/ChallengeSlideComp';
 import AssetMotionComp from '../components/AssetMotionComp';
+import BadgeCircularSlideComp from '../components/BadgeCircularSlideComp';
+import BestManagerSlideComp from '../components/BestManagerSlideComp';
 
 
-export default function Home({ handleHover }) {
+/** CSS */
+import '../styles/nav.css'
+import '../styles/home.css';
+import '../styles/modal.css';
+import '../styles/modalCalendar.css';
+import '../styles/badgeCircularSlide.css';
+
+
+export default function Home() {
   const user = useSelector((state)=>state.user.user);
   // console.log(user);
 
@@ -23,16 +33,52 @@ export default function Home({ handleHover }) {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
 
+
+  // 로그아웃
   const onLogout = () => {
     console.log(sessionStorage.getItem('user'))
     dispatch(logout());
     navigate('/');
   }
 
+
+  // 섹션2 애니메이션 관리 state 및 함수
+  const [isDrawn, setIsDrawn] = useState([]);
+  const goals = [
+    { icon: "💰", text: "3,000만원 모으기" },
+    { icon: "🏡", text: "집 떠나 독립하기" },
+    { icon: "🛫", text: "해외로 현실도피" }
+  ];
+
+  const handleClick = (index) => {
+    const updatedDrawn = [...isDrawn];
+    updatedDrawn[index] = true;
+    setIsDrawn(updatedDrawn);
+  };
+
+  const draw = {
+    hidden: { pathLength: 0, opacity: 0 },
+    visible: {
+      pathLength: 1,
+      opacity: 1,
+      transition: {
+        pathLength: { type: "spring", duration: 1.5, bounce: 0 },
+        opacity: { duration: 0.01 }
+      }
+    }
+  };
+
+
+  // 푸터 토글
   const footerToggleBtn = () => {
     setFooterHidden(footerHidden => !footerHidden);
   };
+
+  useEffect(()=>{
+    window.scrollTo({top: 0})
+  }, []); 
 
 
   return (
@@ -125,12 +171,38 @@ export default function Home({ handleHover }) {
           <div className='box-container'>
             <div className='textbox'>
               <h3>Achieve the Goal</h3>
-              <p>저금 목표를 설정하고 달성해 보세요</p>
+              <p><span>저금 목표</span>를 설정하고 달성해 보세요</p>
             </div>
-            <div className='imgbox'>
-              <p>3,000만원 모으기💰</p>
-              <p>집 떠나 독립하기🏡</p>
-              <p>해외로 현실도피🛫</p>
+            <div className="imgbox">
+              {goals.map((goal, i) => (
+                <div
+                  className="goal"
+                  onClick={() => handleClick(i)}
+                  key={i}
+                >
+                  <motion.svg
+                    width="100"
+                    height="100"
+                    viewBox="0 0 200 200"
+                    initial="hidden" // 추가
+                    animate={isDrawn[i] ? "visible" : "hidden"}
+                    className="circle_animation"
+                  >
+                    <motion.circle
+                      className="circle"
+                      cx="100"
+                      cy="100"
+                      r="92"
+                      stroke="#735BF3"
+                      variants={draw}
+                    />
+                  </motion.svg>
+                  <div>
+                    <span>{goal.icon}</span>
+                  </div>
+                  <p>{goal.text}</p>
+                </div>
+              ))}
             </div>
           </div>
           <div className='space'/>
@@ -140,13 +212,10 @@ export default function Home({ handleHover }) {
           <div className='box-container'>
             <div className='textbox'>
               <h3>Collect Badges</h3>
-              <p>가계부를 꾸준히 기록하여 귀여운 뱃지를 획득하세요</p>
+              <p>가계부를 꾸준히 기록하고 <span>귀여운 뱃지</span>를 획득하세요</p>
             </div>
-            <div className='imgbox'>
-              <p>세상엔 맛있는 게 너무 많아</p>
-              <p>오늘도 커피 수혈</p>
-              <p>데이터 만수르</p>
-              <p>건강이 최고</p>
+            <div className='imgbox circular_slide'>
+              <BadgeCircularSlideComp/>
             </div>
           </div>
           <div className='space'/>
@@ -156,7 +225,7 @@ export default function Home({ handleHover }) {
           <div className='box-container'>
             <div className='textbox'>
               <h3>Challenge Together</h3>
-              <p>다른 유저들과 함께 도전하세요</p>
+              <p>다른 유저들과 <span>함께</span> 도전하세요</p>
             </div>
             <div className='slidebox'>
               <ChallengeSlideComp/>
@@ -169,7 +238,7 @@ export default function Home({ handleHover }) {
           <div className='box-container'>
             <div className='textbox'>
               <h3>Tips Board</h3>
-              <p>자산관리에 관련한 영상과 책을 추천받아 보세요</p>
+              <p>자산관리에 유용한 정보를 <span>추천</span>받아 보세요</p>
             </div>
             <div className='slidebox'>
               <AssetMotionComp/>
@@ -180,9 +249,12 @@ export default function Home({ handleHover }) {
 
         <section id='section6'>
           <div className='box-container'>
-            <h3>Wealth Management Consultation</h3>
-            <p>자산관리사에게 궁금한 것을 물어보세요</p>
+            <div className='textbox'>
+              <h3>Asset Manager Consultation</h3>
+              <p>자산관리사에게 <span>궁금한 것</span>을 물어보세요</p>
+            </div>
             <div className='slidebox'>
+              <BestManagerSlideComp/>
             </div>
           </div>
           <div className='space'/>
@@ -191,7 +263,14 @@ export default function Home({ handleHover }) {
         <section id='section7'>
           <div className='btnbox'>
             <p>🌟돈관리 도파민 생성🌟</p>
-            <button onClick={()=>{window.scrollTo({top:0, behavior:"smooth"})}}>우리와 함께 하세요</button>
+            <button 
+              onClick={()=>{
+                window.scrollTo({top:0, behavior:"smooth"})
+              }}
+            >
+              우리와 함께 시작해봐요!
+            </button>
+            <div className='click_icon'/>
           </div>
         </section>
       </main>
@@ -202,17 +281,26 @@ export default function Home({ handleHover }) {
           About Us. <br />
           Asset Management Service
           </p>
-          <p className='sns'>Instagram</p>
-          <p className='sns'>Kakaochanel</p>
+          <a className='sns' href='https://instagram.com/monivation.2023' target="_blank">Instagram</a>
+          <a className='sns'>Kakaochanel</a>
         </div>
         <div className='about'>
-          <span>MONIVATION</span>
-          <button onClick={footerToggleBtn}>▽</button>
+          <button
+            onClick={footerToggleBtn}
+          >
+            <span>MONIVATION</span>
+            {
+              footerHidden
+              ? (<span>△</span>)
+              : (<span>▽</span>)
+            }
+          </button>
           <div>
             {
               footerHidden && (
                 <div className='hiddenbox'>
-                  Front-end Team Project.
+                  <p>Front-end Team Project.</p>
+                  <p>2023.05.16~2023.07.07</p>
                 </div>
               )
             }

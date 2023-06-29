@@ -1,34 +1,42 @@
-a {
+#asset a {
     text-decoration: none;
     color: black;
 }
-.asset td img {
-    width: 300px;
-    height: 180px;
+#asset .asset-header {
+    font-size: 1.8rem;
 }
-.asset td iframe {
-    width: 300px;
-    height: 180px;
+#asset .asset tr td:first-child {
+    width: 70px;
+    vertical-align: top;
 }
-.asset table {
+#asset .asset td img {
+    width: 250px;
+    height: 150px;
+}
+#asset .asset td iframe {
+    width: 250px;
+    height: 150px;
+}
+#asset .asset table {
     border-collapse: collapse;
     width: 90%;
     margin: auto;
     border-top: solid 1px black;
 }
-.asset .btm { 
+#asset .asset .btm { 
     border-bottom: 1px solid black;
 }
-.asset tr td {
+#asset .asset tr td {
     padding: 10px 20px;
 }
-.asset td p {
+#asset .asset td p {
     text-align: center;
 }
-
-.container-box {
-    width: 90%;
+#asset .asset {
+    overflow: hidden;
+}
+/* 리액트 슬릭 */
+#asset .slick-list {
     margin: auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    width: 85%;
 }

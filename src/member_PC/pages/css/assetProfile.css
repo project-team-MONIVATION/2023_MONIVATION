@@ -1,0 +1,101 @@
+#manager-profile .top-box {
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    width: 80%;
+}
+#manager-profile .profile-header {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 50px;
+}
+#manager-profile .profile-photo {
+    width: 400px; 
+    height: 300px;
+    background-color: gray;
+    margin: auto; 
+    background-size: cover;
+    background-position: center;
+}
+#manager-profile .profile-intro {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+#manager-profile .profile-intro div:first-child {
+    text-align: left;
+}
+#manager-profile .profile-intro div:last-child {
+    border: 1px solid lightgray;
+    padding: 10px;
+}
+
+#manager-profile .profile-intro p:first-child{
+    margin: 10px 0;
+}
+#manager-profile .profile-intro .heartnum {
+    padding-top: 5px; 
+    color: lightgray;
+}
+#manager-profile .commentlist {
+    margin-top: 70px;
+}
+#manager-profile .commentlist h1 {
+    margin-top: 70px;
+    text-align: left; 
+    margin: 10px 160px; 
+    font-size: 1.3rem;
+}
+#manager-profile .comment-box {
+    text-align: left; 
+    border-top: solid 1px black;
+    width: 80%;   
+    margin: auto; 
+    display: flex; 
+    align-items: center;
+}
+#manager-profile .comment-box div:first-child {
+    margin: 10px;
+}
+#manager-profile .comment-box div:first-child img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+#manager-profile .comment-box div:last-child {
+    margin-left: 10px;
+}
+#manager-profile .comment-box div:last-child p{
+    margin: 10px;
+}
+#manager-profile .comment-box div:last-child p:nth-child(2){
+    margin: 10px;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+#manager-profile .comment-nothing {
+    border-top : 1px solid black; 
+    border-bottom: 1px solid black; 
+    width: 80%; 
+    margin: auto;
+}
+#manager-profile .comment-nothing p {
+    margin: 50px;
+}
+#manager-profile .reservation-btn {
+    background-color: #735BF3;
+    border-radius: 20px; 
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 150px; 
+    margin: auto;
+    margin-top: 20px; 
+    
+}
+#manager-profile .reservation-btn span {
+    color: white; 
+    font-weight: bold;
+}
