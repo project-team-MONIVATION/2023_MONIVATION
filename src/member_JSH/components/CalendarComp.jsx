@@ -257,58 +257,60 @@ export default function CalendarComp() {
       )}
 
       {/* 수입, 지출, 저금 모달 버튼 */}
-      <button
-        style={{
-          position: "absolute",
-          width: "80px",
-          height: "80px",
-          border: 0,
-          borderRadius: "50%",
-          bottom: "-33%",
-          right: 0,
-          backgroundColor: "#F4D750",
-          zIndex: 3
-        }}
-      >+</button>
-      <div 
-        className='money_input_btns'
-        style={{
-          position: "absolute",
-          bottom: "-28%",
-          right: "3%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-evenly",
-          alignContent: "center",
-          borderRadius: "30px",
-          backgroundColor: "#595959",
-          width: "140px",
-          height: "160px",
-          boxSizing: "border-box",
-          padding: "10px 0"
-        }}
-      >
-        <InputBtn onClick={() => {
-          setModalIsOpen(true);
-          openModal(1);
-        }}>
-          수입
-        </InputBtn>
-        <InputBtn onClick={()=>{
-          setModalIsOpen(true);
-          openModal(2);
-        }}>
-          지출
-        </InputBtn>
-        <InputBtn 
-          onClick={()=>{
-          setModalIsOpen(true);
-          openModal(3);
+      <div>
+        <button
+          style={{
+            position: "absolute",
+            width: "80px",
+            height: "80px",
+            border: 0,
+            borderRadius: "50%",
+            bottom: "-33%",
+            right: 0,
+            backgroundColor: "#F4D750",
+            zIndex: 3
           }}
-          style={{ marginBottom: "20px"}}
+        >+</button>
+        <div 
+          className='money_input_btns'
+          style={{
+            position: "absolute",
+            bottom: "-28%",
+            right: "3%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-evenly",
+            alignContent: "center",
+            borderRadius: "30px",
+            backgroundColor: "#595959",
+            width: "140px",
+            height: "160px",
+            boxSizing: "border-box",
+            padding: "10px 0"
+          }}
         >
-          저금
-        </InputBtn>
+          <InputBtn onClick={() => {
+            setModalIsOpen(true);
+            openModal(1);
+          }}>
+            수입
+          </InputBtn>
+          <InputBtn onClick={()=>{
+            setModalIsOpen(true);
+            openModal(2);
+          }}>
+            지출
+          </InputBtn>
+          <InputBtn 
+            onClick={()=>{
+            setModalIsOpen(true);
+            openModal(3);
+            }}
+            style={{ marginBottom: "20px"}}
+          >
+            저금
+          </InputBtn>
+        </div>
       </div>
 
         {/**수입 입력 창 */}

@@ -1,0 +1,224 @@
+/* 하단 컴포넌트 전채 */
+#MoneyCalendar.bottom_component_container {
+    display: flex;
+    justify-content: space-around;
+    /* align-items: center; */
+    max-width: 99%;
+    gap: 0 10px;
+    max-height: 22%;
+    height: 22%;
+}
+
+
+
+/* 통계차트 */
+#MoneyCalendar .chart_component_container {
+    border: 0px solid #8E8E8E;
+    border-radius:50px;
+    width: 25%;
+    height: 100%; 
+    overflow:hidden; 
+    cursor: pointer;
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
+}
+
+
+#MoneyCalendar .chart_component_container .title {
+    margin-top: 18px;
+    margin-right: 60%;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+#MoneyCalendar .chart_component_container .chartbtn_container{
+    width: 60px;
+    height: 80px;
+    margin-right: 1px;
+    margin-left: 50px;
+    background-color: #8E8E8E;
+    border-radius: 15px;
+    margin-top : 10px;
+
+    
+}
+
+
+#MoneyCalendar .chartbtn_container .btns {
+    position: relative;
+    width: inherit;
+    top: -31px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+#MoneyCalendar .chartbtn_container .co_btn {
+    box-sizing: border-box;
+    width: 60px;
+    height: 30px;
+    padding-top: 3.5px;
+    background-color: transparent;
+    border: 0;
+    border-radius: 50px;
+    color: #FFFFFF;
+    /* font-family: 'Cafe24Ssurround'; */
+    font-weight: 100;
+    font-size: 15px;
+}
+
+/* 통계 컴포넌트 */
+#secomp.secomp_container {
+    margin-left: 45%;
+}
+#secomp.secomp_container .piegp{
+    margin-top: -53%;
+}
+
+
+
+/* 할부금  */
+#MoneyCalendar .installment_component {
+    border: 0px solid #8E8E8E;
+    border-radius:50px;
+    width: 25%;
+    height: 100%; 
+    overflow:hidden; 
+    cursor: pointer;
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
+}
+#MoneyCalendar .installment_component .title {
+    margin-top: 18px;
+    margin-right: 60%;
+    font-size: 15px;
+    font-weight: 600;
+}
+#MoneyCalendar .installment_total {
+    margin-top: 30px;
+}
+
+
+/* 할부금 컴프 */
+#installment.total_price {
+    font-size: 35px;
+    font-weight: 600;
+
+}
+
+
+
+/* 첼린지 */
+#MoneyCalendar .challenge_component {
+    border: 0px solid #8E8E8E;
+    border-radius:50px;
+    width: 25%;
+    height: 100%; 
+    overflow:hidden; 
+    cursor: pointer;
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
+}
+#MoneyCalendar .challenge_component .title {
+    margin-top: 18px;
+    margin-right: 60%;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+
+
+/* 목표금액 */
+#MoneyCalendar .target_amount_component {
+    border: 0px solid #8E8E8E;
+    border-radius:50px;
+    width: 25%;
+    height: 100%; 
+    overflow:hidden; 
+    cursor: pointer;
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
+}
+
+#MoneyCalendar .target_amount_component .title_container{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 18px;
+    font-size: 15px;
+    font-weight: 600; 
+
+    /* width: 100%;
+    margin-right: 60%;*/
+}
+
+#MoneyCalendar .target_amount_component .title_container .title {
+    
+}
+
+#MoneyCalendar .target_amount_component .title_container .title_btn {
+    display: flex;
+    gap: 3px;
+    margin-top: -5px;
+    margin-left: 40px;
+}
+
+
+
+
+#MoneyCalendar .target_amount_component .title_container .title_btn .title_plusebtn {
+    border: 0;
+    background-color: #ECECEC;
+    border-radius: 100px;
+}
+#MoneyCalendar .target_amount_component .title_container .title_btn .title_changebtn {
+    border: 0;
+    background-color: #ECECEC;
+    border-radius: 100px;
+}
+
+/* 목표금액 컴프 */
+#target_A.targetA_component{
+    margin-top: 15px;
+    margin: 15px 30px;
+}
+
+#target_A.targetA_component .targetA_list{
+    background-color: #ECECEC;
+    border-radius: 10px;
+
+    font-weight: 500;
+
+    width: 80%;
+    height: 43px;
+    
+
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+#target_A.targetA_component .targetA_list .A_title{
+    margin-top: 5px;
+    margin-left: 5px;
+}
+#target_A.targetA_component .targetA_list .A_amount{
+    margin-top: 25px;
+    margin-right: 5px;
+}
+
+#target_A.targetA_component .targetA_bar{
+    margin-top: -5px;
+    
+    width: 245px;
+}
+
+#target_A.targetA_component .targetA_bar .A_bar_icon {
+    /* margin-right: 50px; */
+
+    width: 245px;
+    
+}
+
+/* 비어있는 div */
+#MoneyCalendar .empty {
+    width: 220px;
+}
