@@ -1,11 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-const Back = styled.body `
+/* 수정함 body->div, overflow: hidden */
+const Back = styled.div `
     background-image: linear-gradient(to right bottom, #21D6CC, #7D21CF);
     height: 100vh;  
     font-family: 'Cafe24Ssurround';
     position: relative;
+    
+    overflow: hidden;
 `
 const BackgroundImage = styled.div`
   background-size: 50%;
