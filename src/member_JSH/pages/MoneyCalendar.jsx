@@ -24,16 +24,30 @@ export default function MoneyCalendar() {
   },[])
   
   return (
-    <div id='layout'>
+    <div id='layout' style={{ position: "relative"}}>
       <div
-        style={{display: "flex", justifyContent: "center", alignItems:"flex-start",
-      height:"75%",maxHeight:"75%", backgroundColor : "transparent", maxWidth:"80%"}}
+        style={{
+          display: "flex", 
+          justifyContent: "center", 
+          alignItems:"flex-start",
+          height:"75%",
+          maxHeight:"75%", 
+          backgroundColor : "transparent", 
+          maxWidth:"99%",
+          margin: "auto",
+          boxShadow: "0 0 20px 1px rgba(0,0,0,0.25)",
+          borderRadius: "50px",
+          marginBottom: "2%",
+          position: "relative",
+          boxSizing: "border-box",
+          paddingTop: "80px",
+          paddingBottom: "50px"
+        }}
       >
         <TotalStatComp />
         <CalendarComp />
       </div>
 
-      <hr />
 
       <div
         style={{

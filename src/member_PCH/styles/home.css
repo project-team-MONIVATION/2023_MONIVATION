@@ -204,6 +204,17 @@ main .space {
   background-color: #ECECEC;
 }
 
+/* 섹션 2, 3 textbox 클래스 */
+main #section2 .box-container .textbox,
+main #section3 .box-container .textbox {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
 /* 섹션 2 */
 main #section2 {
   width: 100%;
@@ -245,12 +256,17 @@ main #section2 .box-container .imgbox .goal {
 }
 
 main #section2 .box-container .imgbox .goal:nth-child(1) {
-  margin-left: 7%;
+  margin-left: 13%;
 }
 
 main #section2 .box-container .imgbox .goal:nth-child(2) {
   margin-top: 20px;
-  margin-left: 48%;
+  margin-left: 52%;
+}
+
+main #section2 .box-container .imgbox .goal:nth-child(3) {
+  margin-top: 20px;
+  margin-left: 7%;
 }
 
 main #section2 .box-container .imgbox .goal:hover span {
@@ -310,7 +326,6 @@ main #section3 .box-container .imgbox {
 main #section3 .box-container .imgbox {
   position: relative;
   width: 50%;
-  height: 100%;
 }
 
 main #section3 .box-container .imgbox .badge {
@@ -318,21 +333,25 @@ main #section3 .box-container .imgbox .badge {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 150px;
-  height: 150px;
-  border: 4px solid #303030;
+  width: 120px;
+  height: 120px;
+  border: 3px solid #303030;
   border-radius: 50%;
   position: absolute;
   transform: translateX(-50%);
 }
 
 main #section3 .box-container .imgbox .badge .img {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   background-size: cover;
   margin-bottom: 5px;
 }
 
+main #section3 .box-container .imgbox .badge p {
+  font-size: 12px;
+  font-weight: bold;
+}
 
 /* 섹션 4 */
 main #section4 {
@@ -347,7 +366,8 @@ main #section4 .box-container {
 }
 
 main #section4 .box-container .textbox {
-  margin-bottom: 2%
+  margin-bottom: 5%;
+  margin-top: 1%;
 }
 
 main #section4 .box-container .slidebox button {
@@ -369,9 +389,9 @@ main #section5 .box-container {
 }
 
 main #section5 .box-container .textbox {
+  width: 100%;
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
 }
 
 main #section5 .box-container .textbox p {
@@ -388,7 +408,11 @@ main #section6 {
 main #section6 .box-container {
   box-sizing: border-box;
   height: 700px;
-  padding: 0 5%;
+  padding: 75px 5%;
+}
+
+main #section6 .box-container .slidebox .slick-dots {
+  bottom: -40px;
 }
 
 
@@ -399,6 +423,56 @@ main #section7 {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+main #section7 .btnbox {
+  position: relative;
+}
+
+main #section7 .btnbox p {
+  font-family: 'Cafe24Ssurround';
+  font-size: 25px;
+}
+
+main #section7 .btnbox button {
+  margin-top: 25px;
+  width: 400px;
+  height: 100px;
+  border: 0;
+  border-radius: 20px;
+  font-family: 'Cafe24Ssurround';
+  font-size: 30px;
+  background-color: #F3DD73;
+  border: 1px solid rgba(0,0,0,0.21);
+  border-bottom-color: rgba(0,0,0,0.34);
+  text-shadow:0 1px 0 rgba(0,0,0,0.15);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.34) inset, 
+              0 2px 0 -1px rgba(0,0,0,0.13), 
+              0 3px 0 -1px rgba(0,0,0,0.08), 
+              0 3px 13px -1px rgba(0,0,0,0.21);
+}
+
+main #section7 .btnbox button:hover,
+main #section7 .click_icon:hover button {
+  background: linear-gradient(150deg, rgb(33, 214, 204), rgb(125, 33, 207));
+  color: #FFFFFF;
+}
+
+main #section7 .btnbox button:active {
+  top: 2px;
+  border-color: rgba(0,0,0,0.34) rgba(0,0,0,0.21) rgba(0,0,0,0.21);
+  box-shadow: 0 3px 0 rgba(255,255,255,0.89),0 3px rgba(0,0,0,0.05) inset;
+  position: relative;
+}
+
+main #section7 .click_icon {
+  width: 80px;
+  height: 80px;
+  background-image: url('../../assets//icon//mouse-pointer-click.png');
+  background-size: contain;
+  position: absolute;
+  bottom: -30px;
+  right: -40px;
 }
 
 
@@ -439,6 +513,7 @@ main #section7 {
   text-decoration-line: underline;
   text-decoration-style: wavy;
   text-decoration-color: #F4D750;
+  cursor: pointer;
 }
 
 #mainpage footer .about {
@@ -448,14 +523,29 @@ main #section7 {
   text-align: left;
 }
 
-#mainpage footer .about span {
-  font-size: 1.2rem;
-}
-
 #mainpage footer .about button {
   border: 0;
   background-color: inherit;
   color: white;
+}
+
+#mainpage footer .about span:first-child {
+  font-size: 1.2rem;
+  margin-right: 5px;
+}
+
+#mainpage footer .about .hiddenbox {
+  border: 0.5px solid white;
+  border-radius: 5px;
+  width: 24%;
+  box-sizing: border-box;
+  padding: 15px;
+  margin-top: 5px;
+}
+
+#mainpage footer .about .hiddenbox p:nth-child(2) {
+  margin-top: 8px;
+  font-size: 13px;
 }
 
 #mainpage footer .about .copy {
