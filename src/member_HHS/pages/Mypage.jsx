@@ -7,6 +7,9 @@ import { db } from '../../database/firebase';
 import { getDocs, where, query, collection } from 'firebase/firestore';
 
 import BadgeBoxComp from '../../member_JSH/components/BadgeBoxComp';
+import GorlBoxComp from '../components/GoalBoxComp';
+import ActiveChallengeComp from '../components/ActiveChallengeComp';
+import CompleteChallengeComp from '../components/CompleteChallengeComp';
 
 import '../css/mypage.css'
 
@@ -83,23 +86,20 @@ export default function Mypage() {
               
               {/* 개인유저 */}
               { puQuerySnapshot.empty ? null : (
-                <div>
-                  <Link to = {`/mypage/editpu/${data.id}`}>수정</Link>
-                  <br />
+                <div className='edit-btn-reservation'>
+                  <Link to = {`/mypage/editpu/${data.id}`}>
+                    <img src = "/img/edit.png" alt = "edit-icon" />
+                  </Link>
                   <Link to = {`/mypage/reservationpu/${data.id}`}>상담예약 내역</Link>
                 </div>
               )}
               {/* 자산관리사 */}
               { fmQuerySnapshot.empty ? null : (
-                <div>
-                  <Link to = {`/mypage/editfm/${data.id}`}>수정</Link>
-                  <div >
-
-                 
-                  <Link
-                 
-                  to = {`/mypage/reservationfm/${data.id}`}>상담예약 내역</Link>
-                   </div>
+                <div className='edit-btn-reservation'>
+                  <Link to = {`/mypage/editfm/${data.id}`}>
+                    <img src = "/img/edit.png" alt = "edit-icon" />
+                  </Link>
+                  <Link to = {`/mypage/reservationfm/${data.id}`}>상담예약 내역</Link>
                 </div>
               ) }
                 <div
@@ -139,15 +139,16 @@ export default function Mypage() {
           <h2
             className = 'div-short'
           >
-            목표금액</h2>
+            목표금액
+          </h2>
           <div>
-            <p>노트북 D-4까지 10,000원 저금하면 돼요!</p>
+            <GorlBoxComp />
           </div>
         </div>
 
-<div
-  className = 'grid-item'
->
+    <div
+      className = 'grid-item'
+    >
         <div
           className = 'active-challenge'
         >
@@ -155,7 +156,9 @@ export default function Mypage() {
             className = 'div-long'
           >
             참여중인 챌린지</h2>
-          <div></div>
+          <div>
+            <ActiveChallengeComp />
+          </div>
         </div>
 
         <div
@@ -165,7 +168,9 @@ export default function Mypage() {
             className = 'div-long'
           
           >완료중인 챌린지</h2>
-          <div></div>
+          <div>
+            <CompleteChallengeComp />
+          </div>
         </div>
 </div>
 
