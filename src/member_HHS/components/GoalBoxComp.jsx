@@ -152,7 +152,7 @@ export default function GoalBoxComp() {
                         <h3>{tmp.amount}<span>&#8361;</span><p>모으면 돼요!</p> </h3>
                     </div>
 
-                    <div style={{width:"100px", height:"100px"}} className='circular-bar-box'>
+                    <div style={{width:"140px", height:"140px"}} className='circular-bar-box'>
                       <CircularProgressbar value={60} text={`60%`} />
                     </div>
 
@@ -161,9 +161,9 @@ export default function GoalBoxComp() {
                     <div className='bar-box'>
                         <ProgressBar num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)} maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}/>
                         {console.log(getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday))}
+                      <p>{tmp.endday}</p>                    
                     </div>
 
-                      <p>{tmp.endday}</p>                    
                 </div>
             )}
         </Slider>

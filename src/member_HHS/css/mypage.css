@@ -1,6 +1,6 @@
 .mypage-wrap {
     display: grid;
-    grid-template-columns : 600px 700px;
+    grid-template-columns : 600px 900px;
     grid-template-rows: repeat(1, 194px 347px 347px);
     justify-items: stretch;
     justify-self: start;
@@ -9,6 +9,7 @@
     justify-self: start;
     
 }
+
 
 
 .mypage-wrap .grid-item:nth-child(1) {
@@ -172,30 +173,52 @@
 
 /* GoalBox */
 #goal-box img {
-    width: 17px;
+    width: 16px;
     height: 17px;
     margin-bottom: 2.3px;
+    margin-left: 180px;
 }
 
 #goal-box .circular-bar-box {
     z-index: 2;
     display: inline-block;
     position: absolute;
-    top: 50px;
+    top:37px;
+    right: 90px;
 }
 
 
 #goal-box .d-day-box {
-    font-size: 2rem;
+    font-size: 1.8rem;
     text-align: start;
-    margin: 40px 0 20px 70px;
+    margin: 40px 0 10px 85px;
+    letter-spacing : 0.1em;
+}
+
+#goal-box .bar-box {
+    width: 350px;
+    display: inline-block;
+}
+
+#goal-box .bar-box p {
+    font-size: 0.75em;
+    display: inline-block;
+    margin-top: 2px;
+    margin-left: 270px;
 }
 
 #goal-box .d-day-box h3 {
     margin-bottom: 10px;
 }
 
-#goal-box .d-day-box p {
+#goal-box .d-day-box p,
+#goal-box .d-day-box span {
     font-size: 1.4rem;
+    margin-left: 4px;
 }
 
+
+#goal-box .d-day-box p{
+    margin-top: 10px;
+    margin-left: 0;
+}
