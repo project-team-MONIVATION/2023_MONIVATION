@@ -5,10 +5,10 @@ import Calendar from 'react-calendar';
 import { db } from '../../database/firebase';
 import { doc , getDoc, getDocs, query, updateDoc, collection, where } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import './css/assetReservation.css'
-
-// 캘린더 css
-import 'react-calendar/dist/Calendar.css'
+import './css/reservationCalendar.css'
 
 export default function AssetReservation() {
   const user = useSelector((state) => state.user.user);
@@ -24,6 +24,8 @@ export default function AssetReservation() {
 
   const [date, setDate] = useState(new Date());
   const [confirmDate, setConfirmDate] = useState('');
+
+  const minDate = new Date();
 
   // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
   const onClickDate = (newDate) => {
@@ -105,23 +107,24 @@ export default function AssetReservation() {
   }  
 
   return (
-    <div id='layout'>
+    <div id='layout' style={{overflow: 'hidden'}}>
       <div id='asset-reservation'>
-        <h1 class='reservation-header'>상담예약</h1>
-        <div style={{display: "flex"}}>
+        <h1 className='reservation-header'>상담예약</h1>
+        <div className='reservation-box'>
           {/* 캘린더 */}
-          <div>
-            <div>
-              <Calendar id='asset-calendar' className='.content-container .btn_container .btns .content_btn' onChange={ onClickDate } value={date}/>
+          <div className='reservation-calendar-box'>
+            <div className='reservation-day'>
+              <FontAwesomeIcon icon={faCalendarDays} color='black' fontSize={20}/>
+              <span style={{fontWeight: 'bold', marginLeft: "5px"}}>{date && changeDate(date)}</span>
             </div>
-            <div style={{margin: "10px"}}>
-              <span>{date && changeDate(date)}</span>
+            <div>
+              <Calendar className='reservation-calendar' minDate={minDate} onChange={ onClickDate } value={date}/>
             </div>
           </div>
 
           <div className='reservation-div' style={{display: show === true ? "block" : "none"}}>
             <form className='reservation-form' onSubmit={submitForm}>
-              <h2>상담신청</h2>
+              <h1 className='reservation-form-header'>상담신청</h1>
               <hr />
               <div>
                 <label>이름</label>
@@ -153,7 +156,7 @@ export default function AssetReservation() {
                   <label>위 내용에 동의합니다</label>
                 </div>
               </div>
-              <input type="submit" value= "예약확정하기" />
+              <input type="submit" className='reservation-submit-btn' value= "예약 확정하기" />
             </form>
           </div>
         </div>

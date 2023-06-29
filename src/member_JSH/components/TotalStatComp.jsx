@@ -7,6 +7,7 @@ import SavingList from '../../member_LJC/pages/SavingList';
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, query, where, Timestamp, } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 import Modal from 'react-modal';
+import '../css/totalstat.css';
 
 
 export default function TotalStatComp() {
@@ -216,14 +217,16 @@ export default function TotalStatComp() {
 
 
   return (
-    <div style={{height : "538px", 
-    display : 'inline-block', 
-    backgroundColor : 'lightgray', marginTop : '3.8rem',
-    border : 'solid 1px black', marginRight : "0.6rem",
-    minWidth : '150px'}}>
+    <div id='total-stat-wrap'>
         <table>
           <tbody>
-            <th>이번 달 총액</th>
+            <tr>
+              <td>
+                <div>
+                </div>
+              </td>
+            </tr>
+            <tr>이번 달 총액</tr>
             <tr>
               <td>고정 수입</td>
             </tr>

@@ -6,6 +6,9 @@ import { signInWithEmailAndPassword, getAuth, onAuthStateChanged } from 'firebas
 import { useNavigate, useParams } from 'react-router'
 import '../css/scroll.css'
 import { getStorage, ref, getDownloadURL, uploadBytes} from "firebase/storage";
+import {} from '@fortawesome/fontawesome-svg-core'
+import {faImage} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 
@@ -82,46 +85,54 @@ export default function CommentComp() {
       },[])
 
   return (
-    <div id='comment-comp' className='.scrollable-container'>
-        <div>
-        {
-            commentArray && commentArray.map((array)=>(
-                params.id == array.paramId ? 
-                <li style={{listStyle : 'none'}}>
-                    <img src={array.photo} alt="" 
-                      style={{borderRadius : "20px", width : "30px"}}
-                    />
-                    <label htmlFor="">{array.commentId}</label>
-                    <br />
-                    <img src={array.commentImg ? array.commentImg : require('../img/noneImage.jpg')} alt="" 
-                      style={{width : "200px", backgroundColor : "red"}}
-                    />
-                    <p>{array.content}</p>
-                    <p>{array.paramId}</p>
-                </li> : null
-            ))
-        }
-        </div>
-        <div className='commentWrap'>
-          <form onSubmit={addUserComment} >
-            <input type="file" style={{ display: "none" }} ref={imageInput} 
-              accept=".jpeg, .jpg, .png" onChange={onFileChanges}
-              />
-              <div style={{display : "inline-block", width : "50px", 
-              background : "white", height : "20px", borderRadius : "10px",
-              margin : "10px", border : "solid 1px black", cursor : "pointer"}}
-              onClick={onCickImageUpload}>
-                이미지
-              </div>
-              <input type="text"
-                  placeholder='댓글 달기...'
-                  value={comment}
-                  onChange={onChange}
-              />
-              
-              <button type='submit'>등록</button>
-          </form>
-        </div>
+    <div id='comment-comp'>
+      <div className='comment-scroll'>
+          
+          {
+              commentArray && commentArray.map((array)=>(
+                  params.id == array.paramId ? 
+                  <li style={{listStyle : 'none'}}>
+                      <ul>
+                        <li style={{display:'flex', alignItems:'center'}}>
+                          <img src={array.photo} alt="" 
+                          style={{borderRadius : "20px", width : "30px", margin:"20px 15px 10px 30px"}}
+                          />
+                          <label htmlFor="" style={{marginTop : "20px"}}>{array.commentId}</label>
+                        </li>
+                        <li>
+                          <img src={array.commentImg ? array.commentImg : require('../img/noneImage.jpg')} alt="" 
+                          style={{width : "350px", backgroundColor : "red"}}
+                          />
+                          </li>
+                        <li>
+                          <span>{array.content}</span>
+                        </li>
+                        
+                      </ul>
+                  </li> : null
+              ))
+          }
+          
+          
+      </div>
+      <div className='commentWrap'>
+            <form onSubmit={addUserComment} >
+              <input type="file" style={{ display: "none" }} ref={imageInput} 
+                accept=".jpeg, .jpg, .png" onChange={onFileChanges}
+                />
+                <div style={{display : "inline-block"}}
+                onClick={onCickImageUpload} className='comment-img'>
+                  <FontAwesomeIcon icon={faImage} />
+                </div>
+                <input type="text"
+                    placeholder='댓글 달기...'
+                    value={comment}
+                    onChange={onChange}
+                    className='comment-input'
+                />
+                <button type='submit'>등록</button>
+            </form>
+          </div>
     </div>
   )
 }

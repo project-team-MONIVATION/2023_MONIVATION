@@ -128,37 +128,38 @@ export default function AssetManagerProfile() {
   }, [])
 
   return (
-    <div id='layout' style={{overflowY: "scroll"}}>
+    <div id='layout'>
+      <div id='layout-in'>
       <div id="manager-profile">
         <h1 className="profile-header">자산관리사 프로필</h1>
         <div className='top-box'>
-        {
-          profile &&
-          <div>
-            <div className='profile-photo' style={{backgroundImage: `url(${profile.photo})`}}></div>
-            <div className='profile-intro'>
-              <div>
-                <p>{profile.name}</p>
-                {profile.intro.map((intro, i)=>(
-                  <p key={i}>{intro}</p>
-                ))}
+          {
+            profile &&
+            <div>
+              <div className='profile-photo' style={{backgroundImage: `url(${profile.photo})`}}></div>
+              <div className='profile-intro'>
+                <div>
+                  <p>{profile.name}</p>
+                  {profile.intro.map((intro, i)=>(
+                    <p key={i}>{intro}</p>
+                  ))}
+                </div>
+                <div>
+                  <FontAwesomeIcon
+                    icon={faHeart}
+                    fontSize={20}
+                    style={{ color: liked ? "red" : "lightgray" }}
+                    onClick={() => handleLike()}
+                  />
+                  <h1 className='heartnum'>{profile.likeNum}</h1>
+                </div>
               </div>
-              <div>
-                <FontAwesomeIcon
-                  icon={faHeart}
-                  fontSize={20}
-                  style={{ color: liked ? "red" : "lightgray" }}
-                  onClick={() => handleLike()}
-                />
-                <h1 className='heartnum'>{profile.likeNum}</h1>
-              </div>
-            </div>
-          </div> 
-        }
+            </div> 
+          }
 
           {/* 캘린더 */}
           <div>
-            <Calendar onChange={ onClickDate } value={date}/>
+            <Calendar className="asset-calendar" onChange={ onClickDate } value={date}/>
             <Link to={`/asset/managerID/profile/reservation/${params.id}`}>
               <div className='reservation-btn'>
                 <FontAwesomeIcon icon={faCalendarCheck} fontSize={20} color='white'/>
@@ -204,6 +205,7 @@ export default function AssetManagerProfile() {
             )
           }
         </div>
+      </div>
       </div>
     </div>
   )
