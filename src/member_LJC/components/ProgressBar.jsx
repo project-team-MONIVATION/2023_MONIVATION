@@ -14,6 +14,7 @@ const ProgressBar = ({ num, maxNum }) => {
         backgroundColor: 'red',
         width: `${dealt}%`,
         height: '100%',
+        
     };
 
     return (
