@@ -1,0 +1,224 @@
+.mypage-wrap {
+    display: grid;
+    grid-template-columns : 600px 900px;
+    grid-template-rows: repeat(1, 194px 347px 347px);
+    justify-items: stretch;
+    justify-self: start;
+    position: relative;
+    overflow: hidden;
+    justify-self: start;
+    
+}
+
+
+
+.mypage-wrap .grid-item:nth-child(1) {
+    border-radius: 40px;
+    width: 520px;
+    height: 170px;
+    flex-shrink: 0;
+    background-color: #ededed;
+    position: absolute;
+    left: 60px;
+    top: 55px;
+    z-index: 1;
+
+}
+
+.mypage-wrap .grid-item:nth-child(2) {
+    grid-row: 2; /* 2번째 행으로 이동 */
+
+}
+
+.mypage-wrap .grid-item-row-two,
+.mypage-wrap .grid-item:nth-child(3)
+ {
+    border-radius: 40px;
+    width: 520px;
+    height: 327px;
+    margin-bottom: 15px;
+    background-color: #ededed;
+    position: absolute;
+    left: 60px;
+    margin-top: 20px;
+    z-index: 1;
+}
+
+
+
+.mypage-wrap .grid-item:nth-child(3) {
+    grid-row: 3; /* 2번째 행으로 이동 */
+    margin-bottom: 0;
+}
+
+
+
+.mypage-wrap .grid-item:nth-child(4) {
+    grid-column: 2; /* 2번째 행으로 이동 */
+    position: absolute;
+    top: 55px;
+    right: 70px;
+    z-index: 0;
+
+}
+
+.grid-item:nth-child(4) .active-challenge,
+.grid-item:nth-child(4) .complete-challenge {
+    border-radius: 40px;
+    width: 840px;
+    height: 424px;
+    margin-bottom: 20px;
+    background-color: #ededed;
+}
+
+.grid-item:nth-child(4) .complete-challenge {
+    margin-bottom: 0;
+}
+
+
+.profile {
+    display: flex;
+    justify-self: start;
+    margin-left: 25px;
+}
+
+
+.profile div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    align-items: flex-start;
+    padding-left: 40px;
+    font-size: 1.1rem;
+    position: absolute;
+    top: 40px;
+    left: 120px;
+}
+
+
+.div-short {
+    width: 410px;
+    height: 43px;
+    flex-shrink: 0;
+    border-radius: 50px;
+    background: #2CA0C6;
+    margin: auto;
+    margin-top: 18px;
+    top: 50%;
+    line-height: 45px;
+    letter-spacing: 2px;
+    font-size: 1.3rem;
+    color: #fff;
+
+}
+
+.div-long {
+    width: 540px;
+    height: 43px;
+    flex-shrink: 0;
+    border-radius: 50px;
+    border: 1px solid var(--black-60, #8E8E8E);
+    background: #F3DD73;
+    border: none;
+    margin: auto;
+    margin-top: 18px;
+    line-height: 45px;
+    letter-spacing: 2px;
+    font-size: 1.3rem;
+    color: #8E8E8E;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+.mypage-wrap .grid-item .edit-btn-reservation a:nth-child(2) {
+    width: 410px;
+    height: 43px;
+    flex-shrink: 0;
+    border-radius: 50px;
+    background: #2CA0C6;
+    margin: auto;
+    margin-top: 18px;
+    line-height: 45px;
+    letter-spacing: 2px;
+    font-size: 1.3rem;
+    color: #fff;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cafe24Ssurround';
+    bottom: 13px;
+    transition: box-shadow 0.4s ease-in-out;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* 초기 그림자 설정 */
+
+}
+
+.mypage-wrap .grid-item .edit-btn-reservation a:nth-child(2):hover {
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3); /* 변경될 그림자 설정 */
+}
+
+
+
+
+.mypage-wrap .grid-item .edit-btn-reservation a:nth-child(1) img {
+    width: 23px;
+    height: 22px;
+    position: absolute;
+    top: 30px;
+    right: 40px;
+}
+
+
+/* GoalBox */
+#goal-box img {
+    width: 16px;
+    height: 17px;
+    margin-bottom: 2.3px;
+    margin-left: 180px;
+}
+
+#goal-box .circular-bar-box {
+    z-index: 2;
+    display: inline-block;
+    position: absolute;
+    top:37px;
+    right: 90px;
+}
+
+
+#goal-box .d-day-box {
+    font-size: 1.8rem;
+    text-align: start;
+    margin: 40px 0 10px 85px;
+    letter-spacing : 0.1em;
+}
+
+#goal-box .bar-box {
+    width: 350px;
+    display: inline-block;
+}
+
+#goal-box .bar-box p {
+    font-size: 0.75em;
+    display: inline-block;
+    margin-top: 2px;
+    margin-left: 270px;
+}
+
+#goal-box .d-day-box h3 {
+    margin-bottom: 10px;
+}
+
+#goal-box .d-day-box p,
+#goal-box .d-day-box span {
+    font-size: 1.4rem;
+    margin-left: 4px;
+}
+
+
+#goal-box .d-day-box p{
+    margin-top: 10px;
+    margin-left: 0;
+}
