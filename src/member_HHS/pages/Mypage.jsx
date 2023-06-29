@@ -7,6 +7,11 @@ import { db } from '../../database/firebase';
 import { getDocs, where, query, collection } from 'firebase/firestore';
 
 import BadgeBoxComp from '../../member_JSH/components/BadgeBoxComp';
+import GorlBoxComp from '../components/GoalBoxComp';
+import ActiveChallengeComp from '../components/ActiveChallengeComp';
+import CompleteChallengeComp from '../components/CompleteChallengeComp';
+
+import '../css/mypage.css'
 
 export default function Mypage() {
     const user = useSelector((state) => state.user.user);
@@ -71,66 +76,104 @@ export default function Mypage() {
     }
 
     return (
-      <div id='layout'>
+      <div id='layout' className='mypage-wrap'>
         {/* 개인정보수정 */}
-        <div>
+        <div
+          className='grid-item'
+        >
           { datalist.map((data)=>(
             <div key = { data.id }>
               
               {/* 개인유저 */}
               { puQuerySnapshot.empty ? null : (
-                <div>
-                  <Link to = {`/mypage/editpu/${data.id}`}>수정</Link>
-                  <br />
+                <div className='edit-btn-reservation'>
+                  <Link to = {`/mypage/editpu/${data.id}`}>
+                    <img src = "/img/edit.png" alt = "edit-icon" />
+                  </Link>
                   <Link to = {`/mypage/reservationpu/${data.id}`}>상담예약 내역</Link>
                 </div>
               )}
               {/* 자산관리사 */}
               { fmQuerySnapshot.empty ? null : (
-                <div>
-                  <Link to = {`/mypage/editfm/${data.id}`}>수정</Link>
-                  <br />
+                <div className='edit-btn-reservation'>
+                  <Link to = {`/mypage/editfm/${data.id}`}>
+                    <img src = "/img/edit.png" alt = "edit-icon" />
+                  </Link>
                   <Link to = {`/mypage/reservationfm/${data.id}`}>상담예약 내역</Link>
                 </div>
               ) }
-              <img
-                src = { data.photo }
-                width = { 100 }
-                height = { 100 }
-                alt = "프로필"
-                style = {{ borderRadius: "50%" }}
-              />
-              <br />
-              <p>{ data.nickname }</p>
-              <p>{ data.email }</p>
+                <div
+                className='profile'
+                >
+                  <img
+                    src = { data.photo }
+                    width = { 80 }
+                    height = { 80 }
+                    alt = "프로필"
+                    style = {{ borderRadius: "50%" , top : "17px", position:"absolute", left:"40px", border:"2px solid black"}}
+                  />
+                  <div>
+                    <p>{ data.nickname }</p>
+                    <p>{ data.email }</p>
+                  </div>
+                </div>
             </div>
           )) }
         </div>
-<br />
 
-        <div>
-          {/** JSH 챌린지 완료 뱃지 리스트 추가 */}
-          <BadgeBoxComp />
-        </div>
-<br />
-
-        <div>
-          <p>목표금액</p>
-          <div>
-            <p>노트북 D-4까지 10,000원 저금하면 돼요!</p>
+        <div
+          className = 'grid-item'
+        >
+          <div
+            className='grid-item-row-two'
+          >
+            {/** JSH 챌린지 완료 뱃지 리스트 추가 */}
+            <BadgeBoxComp />
           </div>
         </div>
-<br />
 
-        <div>
-          <p>참여중인 챌린지</p>
-          <div></div>
+
+        <div
+          className='grid-item'
+        >
+          <h2
+            className = 'div-short'
+          >
+            목표금액
+          </h2>
+          <div className='gorl-box'>
+            <GorlBoxComp />
+          </div>
         </div>
 
-        <div>
-          <p>완료중인 챌린지</p>
-          <div></div>
+    <div
+      className = 'grid-item'
+    >
+        <div
+          className = 'active-challenge'
+        >
+          <h2
+            className = 'div-long'
+          >
+            참여중인 챌린지</h2>
+          <div>
+            <ActiveChallengeComp />
+          </div>
         </div>
+
+        <div
+          className = 'complete-challenge'
+        >
+          <h2
+            className = 'div-long'
+          
+          >완료중인 챌린지</h2>
+          <div>
+            <CompleteChallengeComp />
+          </div>
+        </div>
+</div>
+
       </div>
     )
 }
