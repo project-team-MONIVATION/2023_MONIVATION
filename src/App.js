@@ -39,11 +39,9 @@ import DefaultChallengeView from './member_JSH/pages/DefaultChallengeView';
 import './styles/reset.css';
 import './styles/style.css';
 import './App.css';
-import './member_PCH/styles/nav.css'
-import './member_PCH/styles/home.css';
-import './member_PCH/styles/modal.css';
-import './member_PCH/styles/modalCalendar.css';
-import './member_PCH/styles/badgeCircularSlide.css'
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 
 function App() {
 

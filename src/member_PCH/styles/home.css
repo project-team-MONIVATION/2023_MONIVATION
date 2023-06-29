@@ -204,6 +204,17 @@ main .space {
   background-color: #ECECEC;
 }
 
+/* 섹션 2, 3 textbox 클래스 */
+main #section2 .box-container .textbox,
+main #section3 .box-container .textbox {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
 /* 섹션 2 */
 main #section2 {
   width: 100%;
@@ -355,7 +366,8 @@ main #section4 .box-container {
 }
 
 main #section4 .box-container .textbox {
-  margin-bottom: 2%
+  margin-bottom: 5%;
+  margin-top: 1%;
 }
 
 main #section4 .box-container .slidebox button {
@@ -377,9 +389,9 @@ main #section5 .box-container {
 }
 
 main #section5 .box-container .textbox {
+  width: 100%;
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
 }
 
 main #section5 .box-container .textbox p {
@@ -396,7 +408,11 @@ main #section6 {
 main #section6 .box-container {
   box-sizing: border-box;
   height: 700px;
-  padding: 0 5%;
+  padding: 75px 5%;
+}
+
+main #section6 .box-container .slidebox .slick-dots {
+  bottom: -40px;
 }
 
 
@@ -497,6 +513,7 @@ main #section7 .click_icon {
   text-decoration-line: underline;
   text-decoration-style: wavy;
   text-decoration-color: #F4D750;
+  cursor: pointer;
 }
 
 #mainpage footer .about {
@@ -506,14 +523,29 @@ main #section7 .click_icon {
   text-align: left;
 }
 
-#mainpage footer .about span {
-  font-size: 1.2rem;
-}
-
 #mainpage footer .about button {
   border: 0;
   background-color: inherit;
   color: white;
+}
+
+#mainpage footer .about span:first-child {
+  font-size: 1.2rem;
+  margin-right: 5px;
+}
+
+#mainpage footer .about .hiddenbox {
+  border: 0.5px solid white;
+  border-radius: 5px;
+  width: 24%;
+  box-sizing: border-box;
+  padding: 15px;
+  margin-top: 5px;
+}
+
+#mainpage footer .about .hiddenbox p:nth-child(2) {
+  margin-top: 8px;
+  font-size: 13px;
 }
 
 #mainpage footer .about .copy {

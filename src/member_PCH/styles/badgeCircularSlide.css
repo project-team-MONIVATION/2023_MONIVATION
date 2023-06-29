@@ -1,37 +1,37 @@
-#mainpage .circular_slide {
+#main .circular_slide {
   overscroll-behavior: none;
 }
 
-#mainpage .wrapper {
+#badgeslide {
   background: #f0f0f0;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#mainpage .circle {
+#badgeslide .circle {
   border-radius: 50%;
   position: relative;
   touch-action: none;
   border: 15px solid #d9d9d9;
 }
 
-#mainpage .circle .explain {
+#badgeslide .circle .explain {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-#mainpage .circle .explain p {
+#badgeslide .circle .explain p {
   font-weight: bold;
 }
 
-#mainpage .circle .explain p span {
+#badgeslide .circle .explain p span {
   background-color: #F4E8AE;
 }
 
-#mainpage .satellite {
+#badgeslide .satellite {
   width: 50px;
   height: 50px;
   border: 3px solid #414141;
@@ -45,7 +45,7 @@
   cursor: pointer;
 }
 
-#mainpage .satellite p {
+#badgeslide .satellite p {
   font-size: 12px;
   font-weight: bold;
 }

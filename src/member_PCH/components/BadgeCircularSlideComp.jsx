@@ -50,7 +50,7 @@ export default function CircularSlider() {
 
 
   return (
-    <div className="wrapper">
+    <div className="wrapper" id='badgeslide'>
       <div
         className="circle"
         style={{

@@ -1,6 +1,6 @@
 // 메인페이지 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +17,15 @@ import BadgeCircularSlideComp from '../components/BadgeCircularSlideComp';
 import BestManagerSlideComp from '../components/BestManagerSlideComp';
 
 
-export default function Home({ handleHover }) {
+/** CSS */
+import '../styles/nav.css'
+import '../styles/home.css';
+import '../styles/modal.css';
+import '../styles/modalCalendar.css';
+import '../styles/badgeCircularSlide.css';
+
+
+export default function Home() {
   const user = useSelector((state)=>state.user.user);
   // console.log(user);
 
@@ -25,6 +33,7 @@ export default function Home({ handleHover }) {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
 
 
   // 로그아웃
@@ -67,6 +76,9 @@ export default function Home({ handleHover }) {
     setFooterHidden(footerHidden => !footerHidden);
   };
 
+  useEffect(()=>{
+    window.scrollTo({top: 0})
+  }, []); 
 
 
   return (
@@ -202,7 +214,7 @@ export default function Home({ handleHover }) {
               <h3>Collect Badges</h3>
               <p>가계부를 꾸준히 기록하고 <span>귀여운 뱃지</span>를 획득하세요</p>
             </div>
-            <div className='imgbox'>
+            <div className='imgbox circular_slide'>
               <BadgeCircularSlideComp/>
             </div>
           </div>
@@ -251,7 +263,13 @@ export default function Home({ handleHover }) {
         <section id='section7'>
           <div className='btnbox'>
             <p>🌟돈관리 도파민 생성🌟</p>
-            <button onClick={()=>{window.scrollTo({top:0, behavior:"smooth"})}}>우리와 함께 하세요!</button>
+            <button 
+              onClick={()=>{
+                window.scrollTo({top:0, behavior:"smooth"})
+              }}
+            >
+              우리와 함께 시작해봐요!
+            </button>
             <div className='click_icon'/>
           </div>
         </section>
@@ -263,17 +281,26 @@ export default function Home({ handleHover }) {
           About Us. <br />
           Asset Management Service
           </p>
-          <p className='sns'>Instagram</p>
-          <p className='sns'>Kakaochanel</p>
+          <a className='sns' href='https://instagram.com/monivation.2023' target="_blank">Instagram</a>
+          <a className='sns'>Kakaochanel</a>
         </div>
         <div className='about'>
-          <span>MONIVATION</span>
-          <button onClick={footerToggleBtn}>▽</button>
+          <button
+            onClick={footerToggleBtn}
+          >
+            <span>MONIVATION</span>
+            {
+              footerHidden
+              ? (<span>△</span>)
+              : (<span>▽</span>)
+            }
+          </button>
           <div>
             {
               footerHidden && (
                 <div className='hiddenbox'>
-                  Front-end Team Project.
+                  <p>Front-end Team Project.</p>
+                  <p>2023.05.16~2023.07.07</p>
                 </div>
               )
             }
