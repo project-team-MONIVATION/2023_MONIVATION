@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { doc, getDoc, addDoc, collection, getDocs, query, deleteDoc, where, updateDoc } from 'firebase/firestore'
 import { useNavigate, useParams } from 'react-router'
 import CommentComp from '../components/CommentComp'
+import '../css/challengeview.css'
 
 // 유저 챌린지 뷰
 export default function ChallengeView() {
@@ -227,39 +228,56 @@ export default function ChallengeView() {
   
   return (
     <div id='layout'>
-      <h1>챌린지 상세보기</h1>
-      <div>
-        {/** 업로드해서 넣은 이미지 url과 그냥 imgId만 넣은 파일을 구분해서 들고와야함 */}
-        <img src={challengeBoard?.img && (challengeBoard.img.length < 10 ? require(`../img/${challengeBoard.img}`) : challengeBoard.img)}
-          style={{width : "300px"}}
-        alt="" />
-        <p>챌린지명 : {challengeBoard && challengeBoard.name}</p>
-        <p>기간 : {time}</p>
-        {/** challenge 데이터에 user.nickname도 넣을 예정 */}
-        {/** 뱃지는 디폴트 챌린지만 할당 */}
-        <p>등록자명 : {challengeBoard && challengeBoard.uid}</p>
-        {
-          user && user.uid ? <button onClick={handleToggled}
-          disabled={done === true}
-          >
-            {isToggled ? '참여하기' : '참여중'}
-            </button> 
-            : <button>로그인 해주세요</button>
-        }
-        {
-          user && challengeBoard && challengeBoard.uid === user.uid ? 
-          <button onClick={deleteChallenge}>챌린지 삭제</button> : null
-        }
-        {
-          user && challengeBoard && challengeBoard.uid === user.uid ? <button>챌린지 수정</button> : null
-        }
-      </div>
-      <div>
-        <div style={{display : 'inline-block', backgroundColor : "gray", width : "300px", height : "500px"}}>
-          <p>챌린지 상세 설명</p>
-          <p>{challengeBoard && challengeBoard.content}</p>
+      <div id='challenge-view'>
+        <div className='challenge-wrap'>
+          <div></div>
+          {/** 업로드해서 넣은 이미지 url과 그냥 imgId만 넣은 파일을 구분해서 들고와야함 */}
+          <img src={challengeBoard?.img && (challengeBoard.img.length < 10 ? require(`../img/${challengeBoard.img}`) : challengeBoard.img)}
+            style={{width : "100%", height : "200px", borderRadius : "20px", display : 'inline-block', border : "solid black 1px"}}
+          alt="" />
+          <div challengeName='challenge-info-wrap'>
+            <ul className='challenge-info'>
+              <li style={{fontSize : "2rem"}}>{challengeBoard && challengeBoard.name}</li>
+              <li>기간 : {time}</li>
+              <li>등록자명 : {challengeBoard && challengeBoard.uid}</li>
+            </ul>
+          </div>
+          <div className='badge-button-wrap'>
+            {
+              user && user.uid ? <button onClick={handleToggled}
+              disabled={done === true}
+              >
+                {isToggled ? '참여하기' : '참여중'}
+                </button> 
+                : <button>로그인 해주세요</button>
+            }
+            <button>공유</button>
+          </div>
+          <div></div>
         </div>
-        <CommentComp />
+        <br />
+        <div style={{width : "95%", backgroundColor:"lightgray", height:"5px", margin:'auto'}} />
+        <div id='content' className='content-comment-wrap'>
+          <div style={{backgroundColor : "transparent", width:"100%"}}></div>
+          <div style={{backgroundColor : "transparent", padding: "30px"}}>
+            <div className='content-button'>
+              {
+                user && challengeBoard && challengeBoard.uid === user.uid ? <button>수정</button> : null
+              }
+              {
+                user && challengeBoard && challengeBoard.uid === user.uid ? 
+                <button onClick={deleteChallenge}>삭제</button> : null
+              }
+            </div>
+            <div style={{backgroundColor : "lightgrey", width : "100%", height:"100%"}}
+                className='challenge-content'
+            >
+              <p>{challengeBoard && challengeBoard.content}</p>
+            </div>
+          </div>
+          <CommentComp />
+          <div style={{backgroundColor : "transparent", width:"100%"}}></div>
+        </div>
       </div>
     </div>
   )
