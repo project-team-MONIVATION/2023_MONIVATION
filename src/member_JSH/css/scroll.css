@@ -1,7 +1,6 @@
 #comment-comp{
   width: 100%;
-  max-height: 530px;
-  min-height: 500px;
+  min-height: 540px;
   height: 100%;
   position: relative;
   border-radius: 0 0 40px 40px;
@@ -13,10 +12,8 @@
 .comment-scroll{
   overflow: auto;
   width: 100%;
-  max-height: 510px;
+  max-height: 535px;
   min-height: 500px;
-
-
 }
 
 .commentWrap{

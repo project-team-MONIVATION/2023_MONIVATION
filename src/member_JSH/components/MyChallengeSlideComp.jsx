@@ -42,6 +42,7 @@ export default function MyChallengeSlideComp() {
     const user = useSelector((state)=>state.user.user);
     // 화면에 출력하기 위한 state
     const [challengeBoard, setChallengeBoard] = useState([]);
+    const [taList , setTaList] = useState([]);
 
     useEffect(()=>{
       window.scrollTo({top: 0});
@@ -88,9 +89,9 @@ export default function MyChallengeSlideComp() {
         prevArrow: <SamplePrevArrow />,
       };
     return (
-      <div>
+      <div style={{padding:"5px"}}>
         <h2>챌린지</h2>
-        <div style={{width : "300px", height : "100px"}}>
+        <div style={{width : "300px", height : "100%", margin:"10px"}}>
             <Slider {...settings}>
                 {challengeBoard.length > 0 && !challengeBoard.done &&
                     challengeBoard.map((board) => (
@@ -100,6 +101,8 @@ export default function MyChallengeSlideComp() {
                         <div>
                             <p>{board.challengeName}</p>
                             <p>{board.period}</p>
+                            <div style={{width:"20px", height:"20px", backgroundColor:"gray", margin : "5px"}}></div>
+                            <div style={{width : "95%", backgroundColor : "Red", height:"5px"}}></div>
                         </div>
                     </Link>
                 ))}
