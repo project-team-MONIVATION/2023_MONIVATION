@@ -211,7 +211,7 @@
 }
 
 #target_A.targetA_component .targetA_bar .A_bar_icon {
-    margin-right: 50px;
+    /* margin-right: 50px; */
 
     width: 245px;
     

@@ -184,15 +184,18 @@ export default function TargetAmountComp() {
                                 // height: '40px',
                                 // marginRight: "1px",
                                 // backgroundColor: '#735BF3',
-                                transform: `translateX(${dealt(tmp.startday, tmp.endday)}px)`,
+                                transform: `translateX(${dealt(tmp.startday, tmp.endday)}%)`,
                                 transition : 'all 0.3s',
                                 // borderRadius: '15px'
                             }}
                         >
+                        </div>
+                        <div style={{width : "70%", padding : "0 0"}}>
+                            <ProgressBar num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)} maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}/>
                             D-{Dday(tmp.endday, new Date())}&nbsp;  
                             <FontAwesomeIcon icon={faCoins}/>
+
                         </div>
-                        <ProgressBar num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)} maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}/>
                     </div>
                 </div>
             )}
