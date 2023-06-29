@@ -72,7 +72,12 @@ export default function InstallmentsComp() {
         <div 
             id='installment'
             className='total_price'>
-            {totalinstallments}
+                <div className='T_TOTAL'>
+                    TOTAL
+                </div>
+                <div className='T_price'>
+                    {totalinstallments}
+                </div>
         </div>
     )
 }

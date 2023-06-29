@@ -94,16 +94,24 @@
     font-size: 15px;
     font-weight: 600;
 }
-#MoneyCalendar .installment_total {
-    margin-top: 30px;
+#MoneyCalendar .installment_component .installment_total {
+    margin-left: 70px;
+    margin-top: 50px;
 }
-
 
 /* 할부금 컴프 */
 #installment.total_price {
-    font-size: 35px;
-    font-weight: 600;
+    display: flex;
 
+}
+
+#installment.total_price {
+    font-size: 10px;
+    font-weight: 600;
+}
+#installment.total_price .T_price{
+    font-size: 30px;
+    font-weight: 600;
 }
 
 
@@ -206,16 +214,14 @@
 }
 
 #target_A.targetA_component .targetA_bar{
-    margin: 0px 0px;
-    
-    width: 100%;
+    width: 80%;
 }
 
 #target_A.targetA_component .targetA_bar .A_bar_icon {
     /* margin-right: 50px; */
-
-    width: 220px;
+    width: i;
 }
+
 
 /* 비어있는 div */
 #MoneyCalendar .empty {
