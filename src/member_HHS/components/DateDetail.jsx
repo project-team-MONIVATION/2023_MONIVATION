@@ -11,7 +11,6 @@ import EditIncome from './EditIncome';
 import EditIncomeRepeat from './EditIncomeRepeat'
 import EditExpense from './EditExpense';
 import EditExpenseRepeat from './EditExpenseRepeat'
-import ModalWrap from '../styleComponent/DateDetail/ModalWrap';
 import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
 import DateDetailBox from '../styleComponent/DateDetail/DateDetailBox';
 import SearchDate from '../styleComponent/DateDetail/SearchDate';
