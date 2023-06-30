@@ -186,8 +186,8 @@ export default function TargetAmountComp() {
                                 // height: '40px',
                                 // marginRight: "1px",
                                 // backgroundColor: '#735BF3',
-                                transform: `translateX(${dealt(tmp.startday, tmp.endday)*0.9}%)`,
-                                transition : 'all 0.3s',
+                                // transform: `translateX(${dealt(tmp.startday, tmp.endday)*0.9}%)`,
+                                // transition : 'all 0.3s',
                                 // borderRadius: '15px'
                             }}
                         >
@@ -200,11 +200,6 @@ export default function TargetAmountComp() {
                         }}
                         >
                             <ProgressBar num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)} maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}/>
-                            {/* <div style={{position : "absolute", textAlign : "center"}}>
-                            </div> */}
-                            {console.log("num",getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday))}
-                            {console.log("max",getDateDiffHDpercent(tmp.endday, tmp.startday))}
-
                         </div>
                     </div>
                 </div>
