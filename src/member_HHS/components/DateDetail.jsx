@@ -262,11 +262,11 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 
     return (
       <DateDetailBox>
-        <div>
+        <div style={{height:"800px"}}>
           <CloseBtn onClick = { closeModal2 }>X</CloseBtn>
           <SearchDate> {/* 날짜검색 캘린더 모달 */}
             <button onClick = { onClickCal }>
-              <img src="/img/calendar.png" alt="calendar" />
+              <img src="img/calendar.png" alt="calendar" />
               <span>날짜 검색</span>
             </button>
             <h2>{ selectedDate && changeDate(selectedDate) }</h2>
@@ -286,33 +286,38 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               </div>
             ) }
           </SearchDate>
-<br />
 
+  <div style={{ height: '90px' }}>
           {/* 수입 상세 출력 */}
-          <Accordion   className={activeAccordion === 1 ? 'active' : ''}
-  onClick={() => toggleAccordion(1)}>
-            <h3>이 날의 수입은?</h3>
-            <h3>
-              { handleHyphen (
-                filteredIncome.reduce((total, item) => total + item.price, 0) +
-                filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
-              ) }
-              <span>&#8361;</span>
-            </h3>
+          <Accordion active={activeAccordion === 1}
+
+            onClick={() => toggleAccordion(1)}>
+            <div>
+              <h3>이 날의 <span>수입</span>은?</h3>
+              <h3>
+                { handleHyphen (
+                  filteredIncome.reduce((total, item) => total + item.price, 0) +
+                  filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
+                ) }
+                <span> &#8361;</span>
+              </h3>
+            </div>
           </Accordion>
-<br />
-          <MoneyList>
-            <h4>수입</h4>
-            <h4>
-              {/* 선택한 날짜와 동일한 수입 값의 합 계산 */}
-              { handleHyphen ( 
-                filteredIncome.reduce((total, item) => total + item.price, 0)
-              ) }
-              <span>&#8361;</span>
-            </h4>
+</div>
+          <MoneyList active={activeAccordion === 1}>
+            <div>
+              <h3>수입</h3>
+              <h3>
+                {/* 선택한 날짜와 동일한 수입 값의 합 계산 */}
+                { handleHyphen ( 
+                  filteredIncome.reduce((total, item) => total + item.price, 0)
+                  ) }
+                <span> &#8361;</span>
+              </h3>
+            </div>
           </MoneyList>
-<br />
-          <div>
+
+          <MoneyList active={activeAccordion === 1}>
             {/* 선택한 날짜와 동일한 수입 값들 출력 */}
             { filteredIncome.map((item, i) => ( 
               <div key = {i}
@@ -325,19 +330,21 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 <hr />
               </div>
             ))}
-          </div>
-<br />
-          <div>
-            <h4>반복수입</h4>
-            <h4>
-              { handleHyphen(
-                filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
-              ) }
-              &#8361;
-            </h4>
-          </div>
-<br />
-          <div>
+          </MoneyList>
+
+          <MoneyList active={activeAccordion === 1}>
+            <div>
+              <h3>반복수입</h3>
+              <h3>
+                { handleHyphen(
+                  filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
+                  ) }
+                &#8361;
+              </h3>
+            </div>
+          </MoneyList>
+
+          <MoneyList active={activeAccordion === 1}>
             { filteredIncomeRepeat.map((item, i) => (
               <div key = {i}
                 onClick = { () =>
@@ -349,33 +356,44 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 <hr />
               </div>
             ))}
-          </div>
+          </MoneyList>
 
 <br />
 <br />
+<div style={{ height: '90px' }}>
           {/* 지출 */}
-          <Accordion>
-            <h3>이 날의 지출은?</h3>
-            <h3>
-              { handleHyphen(
-                filteredExpense.reduce((total, item) => total + item.price, 0) +
-                filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
-              ) }
-              <span>&#8361;</span>
-            </h3>
+          <Accordion
+          active={activeAccordion === 2}
+                  style={{background:"black"}}
+          onClick={() => toggleAccordion(2)}
+          >
+            <div>
+              <h3>이 날의 <span>지출</span>은?</h3>
+              <h3>
+                { handleHyphen(
+                  filteredExpense.reduce((total, item) => total + item.price, 0) +
+                  filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
+                ) }
+                <span> &#8361;</span>
+              </h3>
+            </div>
+            
           </Accordion>
+          </div>
 <br />
-          <MoneyList>
-            <h4>지출</h4>
-            <h4>
-              { handleHyphen(
-                filteredExpense.reduce((total, item) => total + item.price, 0)
-              ) }
-              <span>&#8361;</span>
-            </h4>
+          <MoneyList active={activeAccordion === 2}>
+            <div>
+              <h3>지출</h3>
+              <h3>
+                { handleHyphen(
+                  filteredExpense.reduce((total, item) => total + item.price, 0)
+                  ) }
+                <span>&#8361;</span>
+              </h3>
+            </div>
           </MoneyList>
 <br />
-          <MoneyList>
+          <MoneyList active={activeAccordion === 2}>
             { filteredExpense.map((item, i) => {
               // 해당 expense에 매칭되는 installments 문서 찾기
               const matchingInstallment = installments.find(
@@ -401,17 +419,20 @@ export default function DateDetail({ closeModal2, selectedDate }) {
             }) }
 <br />
           </MoneyList>
-          <div>
-            <h4>반복지출</h4>
-            <h4>
-              { handleHyphen(
-                filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
-              ) }
-              <span>&#8361;</span>
-            </h4>
-          </div>
+          <MoneyList active={activeAccordion === 2}>
+            <div>
+              <h3>반복지출</h3>
+              <h3>
+                { handleHyphen(
+                  filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
+                ) }
+                <span>&#8361;</span>
+              </h3>              
+            </div>
+
+          </MoneyList>
 <br />
-          <MoneyList>
+          <MoneyList active={activeAccordion === 2}>
             { filteredExpenseRepeat.map((item, i) => (
               <div key = {i}
                 onClick = {() =>

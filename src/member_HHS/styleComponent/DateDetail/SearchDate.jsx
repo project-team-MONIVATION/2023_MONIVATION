@@ -11,11 +11,13 @@ const SearchDateStyled = styled.div `
         height: 39px;
         flex-shrink: 0;
         border-radius: 50px;
-        border: 1px solid var(--black-60, #8E8E8E);
+        border: none;
+        box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.20);
         background: #FFF;
         margin-top: 50px;
         margin-left: 20px;
         position: relative;
+
         & > img {
             width: 17.5px;
             position: absolute;
@@ -29,6 +31,7 @@ const SearchDateStyled = styled.div `
             letter-spacing: 0.1em;
             position: absolute;
             top: 11px;
+            right: 20px;
         }
     }
 
