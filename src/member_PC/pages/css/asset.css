@@ -1,9 +1,36 @@
+@keyframes slide-up {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+#asset .animated {
+    animation: slide-up 0.5s ease-in-out forwards;
+}
 #asset a {
     text-decoration: none;
     color: black;
 }
 #asset .asset-header {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    background-color: #735BF3;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 15px;
+}
+#asset .asset-header2 {
+    font-size: 1.5rem;
+    background-color: #735BF3;
+    color: white;
+    border-radius: 20px;
+    display: inline-block;
+    left: -100px;
+    padding: 10px 15px;
+    margin: 25px 80px ;
 }
 #asset .asset tr td:first-child {
     width: 70px;
@@ -38,5 +65,5 @@
 /* 리액트 슬릭 */
 #asset .slick-list {
     margin: auto;
-    width: 85%;
+    width: 95%;
 }

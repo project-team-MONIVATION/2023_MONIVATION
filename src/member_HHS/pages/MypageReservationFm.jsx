@@ -75,8 +75,8 @@ export default function MypageReservationFm() {
 
       updateDoc(userRef, { reservation: updatedReservations });
     }); 
-
     closeModal();
+    alert('상담이 완료되었습니다!')
   };
 
   return (
