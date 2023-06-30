@@ -4,11 +4,7 @@ const ProgressBar = ({ num, maxNum }) => {
     const dealt = Math.floor((num / maxNum) * 100);
 
     const progressStyle = {
-        width: '100px',
-        height: '100px',
-        borderRadius: '50%',
-        backgroundColor: 'white',
-        position: 'relative',
+        progress_text:'red'
     };
 
     const dealtStyle = {

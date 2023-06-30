@@ -3,6 +3,8 @@ import { db,auth } from '../../database/firebase'
 import { useSelector } from 'react-redux'
 import {collection, getDocs, query } from 'firebase/firestore'
 
+import '../../member_HHS/css/mypage.css'
+
 
 export default function BadgeBoxComp() {
   const user = useSelector((state)=>state.user.user);
@@ -43,14 +45,17 @@ export default function BadgeBoxComp() {
   },[user])
   return (
     <div>
-        <h2>내가 모은 뱃지</h2>
-        <div>
-          <ul>
+        <h2 className='div-short'>내가 모은 뱃지</h2>
+        <div className='badges-box'>
+          <ul className='badges'>
             {challengeBoard.length > 0 &&
                     challengeBoard.map((board) => (
-                      <div style={{width : "100px", display : "inline-block", height : "100px",
-                      backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
-                      backgroundImage : `url(/img/${board.badge ? board.badge : null})`}}></div>
+                      <div style={{display:"flex", flexDirection: "column"}}>
+                        <div style={{width : "100px", display : "inline-block", height : "100px",
+                        backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
+                        backgroundImage : `url(/img/${board.badge ? board.badge : null})`}}></div>
+                        <p style={{fontSize:"0.8rem"}}>식사는 거를 수 없지</p> {/* 임의로 넣어준 텍스트 */}
+                      </div>
               ))}
           </ul>
         </div>

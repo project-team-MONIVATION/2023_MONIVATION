@@ -2,7 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 const LoginForm = styled.form `
-  & > input[type="text"] {
+  & > input[type="text"],
+  & > input[type="password"] {
     display: inline-block;
     border-radius: 26px;
     background-color: #E6E6E6;
