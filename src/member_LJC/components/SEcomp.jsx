@@ -207,7 +207,7 @@ export default function SEcomp() {
                 <Doughnut 
                     data={data} 
                     options={options}
-                    width="140px" height="140px"
+                    width="160px" height="160px"
                 />
             </div>
 

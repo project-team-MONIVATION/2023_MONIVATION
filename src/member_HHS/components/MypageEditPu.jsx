@@ -1,7 +1,7 @@
 // 개인회원 회원정보 수정 및 탈퇴 페이지
 
 import React, { useState, useEffect } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { auth, db, storage } from '../../database/firebase';
 import { collection, doc, getDoc, getDocs, query, updateDoc, where, Timestamp } from 'firebase/firestore';
 import { getAuth, sendSignInLinkToEmail, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword } from 'firebase/auth'
@@ -13,6 +13,8 @@ import '../css/mypageEditPu.css'
 export default function MypageEditPu() {
     const params = useParams();
     const location = useLocation();
+    const navigate = useNavigate();
+
     const { name, email, uid } = location.state || "";
     const [selectedImage, setSelectedImage] = useState(null); // storage 업로드 이미지 관리
 
@@ -37,7 +39,6 @@ export default function MypageEditPu() {
     /** form 실행 */
     const handleSubmit = async (e) => {
       e.preventDefault();
-  
       const usersRef = doc(db, "personal_users", params.id);
       const usersSnap = await getDoc(usersRef);
       if (usersSnap.exists()) {
@@ -47,6 +48,7 @@ export default function MypageEditPu() {
           phone: phoneNum,
         });
       }
+      navigate('/mypage');
     };
     
     useEffect(() => {

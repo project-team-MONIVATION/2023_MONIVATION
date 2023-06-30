@@ -28,7 +28,7 @@ import '../../member_LJC/css/moneyCalendar.css';
 export default function MoneyCalendar() {
 
   // 수입 지출 컴프 바꾸기위한 버튼
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   // 창 이동 
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ export default function MoneyCalendar() {
   },[])
   
   return (
-    <div id='layout' style={{ position: "relative"}}>
+    <div id='layout' style={{ position: "relative", padding: "3vh"}}>
       <div
         style={{
           display: "flex", 
@@ -87,46 +87,51 @@ export default function MoneyCalendar() {
           >
             통계
           </div>
-          <div className='chartbtn_container'
-              onClick={(event) => {event.stopPropagation();}}
-          >
-            <div 
-            className='back'
-            style={{
-              width: '60px',
-              height: '40px',
-              marginRight: "1px",
-              backgroundColor: '#735BF3',
-              transform: open ? 'translateY(0)' : 'translateY(40px)',
-              transition : 'all 0.3s',
-              borderRadius: '15px'
-            }}
-            />
-            <div className='btns'>
-              <button
-                onClick={() => {setOpen((e) => !e);}}
-                className='co_btn'
-              >지출
-              </button>
+          <div className='content'>
+            <div className='chartbtn_container'
+                onClick={(event) => {event.stopPropagation();}}
+            >
+              <div 
+              className='back'
+              style={{
+                width: '60px',
+                height: '40px',
+                marginRight: "1px",
+                backgroundColor: '#735BF3',
+                transform: open ? 'translateY(0)' : 'translateY(40px)',
+                transition : 'all 0.3s',
+                borderRadius: '15px'
+              }}
+              />
+              <div className='btns'>
+                <button
+                  onClick={() => {setOpen((e) => !e);}}
+                  className='co_btn'
+                >지출
+                </button>
 
-              <button
-                onClick={() => {setOpen((e) => !e);}}
-                className='co_btn'
-              >수입
-              </button>
+                <button
+                  onClick={() => {setOpen((e) => !e);}}
+                  className='co_btn'
+                >수입
+                </button>
+              </div>
             </div>
+            
+            {
+              open 
+              ? (
+                <div style={{position: "absolute", top:"50%", right:"6%", transform: "translate(0, -50%)"}}>
+                  <SEcomp/>
+                </div>
+              )
+              : (
+                <div style={{position: "absolute", top:"50%", right:"6%", transform: "translate(0, -50%)"}}>
+                  <SIcomp/>
+                </div>
+              )
+            }
           </div>
-          
-            {open && (
-            <div>
-              <SEcomp/>
-            </div>
-            )}
-            {! open && (
-            <div>
-              <SIcomp/>
-            </div>
-            )}
         </div>
 
         {/* 할부금 컴포넌트 */}
