@@ -2,12 +2,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { addDoc, collection, doc, getDocs } from 'firebase/firestore';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { useRef } from 'react';
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ImgDivBox from '../styled-component/ImgDivBox';
-import { db } from '../../database/firebase';
+import { db, storage } from '../../database/firebase';
 import { async } from 'q';
 import '../css/challengecreate.css';
 
@@ -64,7 +65,7 @@ export default function ChallengeCreate() {
   };
   return (
     <div id='layout'>
-      <div id='layout-in'>
+      <div id=''>
         <div id='challenge-create'>
           <h1>챌린지 생성</h1>
           <div className='challenge-create-wrap'>
@@ -136,8 +137,6 @@ export default function ChallengeCreate() {
                     </div>
                   </div>
                 </div>
-                
-                
                 <div className='cc-info-wr-wrap'>
                   <ul>
                     <li>
@@ -167,16 +166,13 @@ export default function ChallengeCreate() {
                     <li>
                       <div className='challenge-content-write'>
                         <p>내용 작성</p>
-                        <textarea name="" id="" cols="90" rows="30" onChange={(e)=>setChallengeContent(e.target.value)}></textarea>
+                        <textarea name="" id="" cols="70" rows="20" onChange={(e)=>setChallengeContent(e.target.value)}></textarea>
                         <br />
                         <button type='submit'>등록</button>
                       </div>
                     </li>
                   </ul>
                 </div>
-                
-
-                
             </form>
           </div>
         </div>

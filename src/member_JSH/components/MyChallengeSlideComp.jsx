@@ -10,7 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProgressBar from '../../member_LJC/components/ProgressBar';
 import styled from 'styled-components'
-
+import '../css/challengeslide.css';
 
 
 function SampleNextArrow(props) {
@@ -127,18 +127,18 @@ export default function MyChallengeSlideComp() {
         prevArrow: <SamplePrevArrow />,
       };
     return (
-      <div style={{padding:"5px"}}>
-        <h2>챌린지</h2>
-        <div style={{width : "95%", height : "100%", margin:"10px"}}>
+      <div id='my-ch-slide'>
+        <div className='my-ch-slide-wrap'>
             <Slider {...settings}>
                 {challengeBoard.length > 0 && !challengeBoard.done &&
                     challengeBoard.map((board) => (
                     <Link to={`/challenge/${board.challengeId}/view`} key={board.id}
-                        style={{textDecoration : "none"}}
                     >
                         <div>
+                          <div className='my-ch-slide-content'>
                             <p>{board.challengeName}</p>
                             <p>{board.period}</p>
+                          </div>
                             <div style={{width:"20px", height:"20px", backgroundColor:"gray", margin : "5px"}}></div>
                             <ProgressBar num={getDateDiffNOWpercent(new Date(), board.startDate, board.endDate)} 
                             maxNum={getDateDiffHDpercent(board.endDate, board.startDate)}/>
