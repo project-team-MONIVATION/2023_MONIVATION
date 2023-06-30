@@ -8,12 +8,16 @@ import { Doughnut } from 'react-chartjs-2';
 import { Timestamp, collection, deleteDoc, doc, getDocs, query, where, } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
+import '../css/moneyCalendar.css'
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const options = {
     responsive : false,
-    legend: {
-        align: 'bottom'  //  or 'left', 'bottom', 'right'(default)
+    plugins: {
+        legend: {
+            display: false,
+        }
     },
     scale: {
         yAxes: [
@@ -51,7 +55,7 @@ export default function SEcomp() {
         labels: categoryList,
         datasets: [
             {
-                label: '# of Votes',
+                label: '금액',
                 data: priceList,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -154,7 +158,6 @@ export default function SEcomp() {
     
         let dayFilterDateList = [];
         
-        console.log("UID 나옴??",fmQuery)
         
         try {
             // 전부 뽑아옴
@@ -193,21 +196,21 @@ export default function SEcomp() {
 
     
     return (
-        <div>
-            통계 컴프
+        <div id='secomp'
+            className='secomp_container'
+        >
             {/* 현재달 */}
             {/* 라벨 */}
-            <h2>총금액{ptotal}</h2>
-            <Doughnut 
-                data={data} 
-                options={options}
-                width="200px" height="200px"
-            />;
-            {/* <button
-                onClick={() => {chageDateOneMonth()}}
-            >
-                test
-            </button> */}
+            
+                
+            <div className='piegp'>
+                <Doughnut 
+                    data={data} 
+                    options={options}
+                    width="140px" height="140px"
+                />
+            </div>
+
             
         </div>
     )

@@ -6,7 +6,7 @@ import { userLogin } from './member_PC_HS/slice/userSlice';
 import Home from './member_PCH/pages/Home';
 import Layout from './member_PCH/pages/Layout';
 import MoneyCalendar from './member_JSH/pages/MoneyCalendar';
-import MoneyChart from './member_LJC/pages/MoneyChart';
+
 import ChallengeList from './member_JSH/pages/ChallengeList';
 import ChallengeCreate from './member_JSH/pages/ChallengeCreate';
 import ChallengeView from './member_JSH/pages/ChallengeView';
@@ -73,7 +73,6 @@ function App() {
           <Route path='/calendar' element={<MoneyCalendar/>}/>
 
           {/* 통계 페이지+수입/지출 라우터 */}
-          <Route path='/calendar/chart' element={<MoneyChart/>}/>
           <Route path='/calendar/chart/income' element={<MoneyChartIncome/>}/>
           <Route path='/calendar/chart/expense' element={<MoneyChartExpense/>}/>
           

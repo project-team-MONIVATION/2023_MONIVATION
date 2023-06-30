@@ -108,6 +108,8 @@
   font-size: 1em;
   /*추가*/
   border: solid 1px lightgray;
+  box-sizing: border-box;
+  height: 4vh;
 }
 
 /* 요일 abbr태그 */
@@ -135,9 +137,8 @@
 * 높이에 따라 타일 하나하나의 길이도 변화됨.
 */
 .main_calendar .react-calendar__month-view__days{
-  height: 50vh;
+  height: 48vh;
 }
-
 
 .main_calendar .react-calendar__month-view__days__day--neighboringMonth {
   color: #c3c3c3;

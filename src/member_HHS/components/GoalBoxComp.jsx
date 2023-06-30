@@ -4,24 +4,21 @@ import { useSelector } from 'react-redux';
 import { collection, deleteDoc, doc, getDocs, query, where, } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
-import Calendar from 'react-calendar';
-import styled from 'styled-components';
-import Modal from 'react-modal';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import TargetAmountInputComp from './TargetAmountInputComp';
-import TargetAmonutListComp from './TargetAmonutListComp';
-import ProgressBar from './ProgressBar';
+import ProgressBar from '../../member_LJC/components/ProgressBar';
 
-// 폰트어썸
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faGear, faCoins } from "@fortawesome/free-solid-svg-icons";
+import ProgressBarCircle from './ProgressBarCircle';
 
-import '../css/moneyCalendar.css'
+import { CircularProgressbar  } from 'react-circular-progressbar';
+import '../css/mypage.css'
 
-export default function TargetAmountComp() {
+import 'react-circular-progressbar/dist/styles.css';
+
+
+export default function GoalBoxComp() {
     const [value, onChange] = useState(new Date());
 
     const navigate = useNavigate();
@@ -30,13 +27,11 @@ export default function TargetAmountComp() {
 
     const [taList , setTaList] = useState([]);
 
-    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const [activeModal, setActiveModal] = useState(null);
 
-    
-
-    
+    const [hdpercent, setHdpercent] = useState('');
+    const [nowpercent, setNowpercent] = useState('');
 
     // 오늘 날짜
     const YYYY = String(value.getFullYear())
@@ -44,11 +39,7 @@ export default function TargetAmountComp() {
     const DD = String(value.getDate()).padStart(2,"0")
     const valueDate = `${YYYY}-${MM}-${DD}`
 
-    
 
-    const openModal = (modalId) => {
-        setActiveModal(modalId);
-    };
 
     const settings = {
         dots: true,
@@ -89,8 +80,6 @@ export default function TargetAmountComp() {
         }
     };
 
-
-
     const getDateDiffHDpercent = (d1, d2) => {
         const date1 = new Date(d1);
         const date2 = new Date(d2);
@@ -98,8 +87,7 @@ export default function TargetAmountComp() {
         const diffDate = date1.getTime() - date2.getTime();
         
         const result = Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
-        
-        
+        console.log("백퍼센트값",result)
         return result
     }
 
@@ -152,56 +140,32 @@ export default function TargetAmountComp() {
         return reasult
     }
 
-    
-
-    const dealt = (d1, d2) => { 
-        let maxnum = getDateDiffHDpercent(d2, d1);
-        let num = getDateDiffNOWpercent(new Date(), d1, d2)
-        console.log("몇필셀?" ,Math.floor((num / maxnum) * 100))
-        return Math.floor((num / maxnum) * 100); 
-    }
-
-
     return (
-        <div>
-        {/* 슬라이드 */}
+        <div id='goal-box'>
         <Slider {...settings}>
 
             {taList.map((tmp) =>
-                <div id='target_A'
-                    className='targetA_component'
-                >
-                    <div className='targetA_list'>
-                        <div className='A_title'>{tmp.title}</div>
-                        <div className='A_amount'>{tmp.amount}</div>
+                <div>
+                    <div className='d-day-box'>
+                        <h3>{tmp.title}</h3>
+                        <h3>D-{Dday(tmp.endday, new Date())}<span>까지</span></h3>
+                        <h3>{tmp.amount}<span>&#8361;</span><p>모으면 돼요!</p> </h3>
                     </div>
-                    
-                    <div className='targetA_bar'>
-                        <div
-                            className='A_bar_icon'
-                            style={{
-                                // width: '60px',
-                                // height: '40px',
-                                // marginRight: "1px",
-                                // backgroundColor: '#735BF3',
-                                transform: `translateX(${dealt(tmp.startday, tmp.endday)}%)`,
-                                transition : 'all 0.3s',
-                                // borderRadius: '15px'
-                            }}
-                        >
-                        </div>
-                        <div style={{width : "70%", padding : "0 0"}}>
-                            <ProgressBar num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)} maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}/>
-                            D-{Dday(tmp.endday, new Date())}&nbsp;  
-                            <FontAwesomeIcon icon={faCoins}/>
 
-                        </div>
+                    <div style={{width:"140px", height:"140px"}} className='circular-bar-box'>
+                      <CircularProgressbar value={60} text={`60%`} />
                     </div>
+
+                    <img src="/img/money-bag.png" alt="money-bag" />
+                    
+                    <div className='bar-box'>
+                        <ProgressBar num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)} maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}/>
+                        {console.log(getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday))}
+                      <p>{tmp.endday}</p>                    
+                    </div>
+
                 </div>
             )}
-
-            
-            
         </Slider>
         </div>
     )

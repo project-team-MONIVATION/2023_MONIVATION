@@ -304,7 +304,7 @@ export default function MypageEditPu() {
           {/*<h2>회원정보 수정</h2>*/}
           <div className='grid'>
           {/* 닉네임 수정 */}
-          <div>
+          <div style={{display:'inline'}}>
             <label>닉네임</label>
             <div className = 'nickname-input'>
               <input
@@ -327,12 +327,15 @@ export default function MypageEditPu() {
           </div>
 
           {/* 출생일 수정 */}
-          <div>
-            <label>출생</label>
+          <div
+            className='birth-wrap'
+          >
+          <label>출생</label>
             <select
               value = { selectedYear }
               onChange = { onYearChange }
               required
+              className = 'selected-birth'
             >
               <option value = "" disabled>
                 출생연도
@@ -343,6 +346,7 @@ export default function MypageEditPu() {
               value = { selectedMonth }
               onChange = { onMonthChange }
               required
+              className = 'selected-birth'
             >
               <option value = "" disabled>
                 월
@@ -353,6 +357,7 @@ export default function MypageEditPu() {
               value = { selectedDay }
               onChange = { onDayChange }
               required
+              className = 'selected-birth'
             >
               <option value = "" disabled>
                 일
@@ -376,7 +381,9 @@ export default function MypageEditPu() {
               />
             </div>
           </div>
-          <div>
+          <div 
+            className='edit-div'
+          >
             <label>비밀번호 확인</label>
             <input
               type = "password"
@@ -398,26 +405,30 @@ export default function MypageEditPu() {
           {/* 연락처 수정 */}
           <div>
             <label>연락처</label>
-            <input
-              type = "number"
-              value = { phoneNum }
-              onChange = { updatePhoneNum }
-              className='edit-input-short'
+            <div className='phone-input'>
+              <input
+                type = "number"
+                value = { phoneNum }
+                onChange = { updatePhoneNum }
+                className='edit-input-short'
 
-            />
-            <button
-              id = "sign-in-button"
-              type = "button"
-              onClick = { onSignInSubmit }
-              onChange={ (e) => { setPhoneNum(e.target.value) } }
-              className='btn'
-            >
-              인증번호 발송
-            </button>
+              />
+              <button
+                id = "sign-in-button"
+                type = "button"
+                onClick = { onSignInSubmit }
+                onChange={ (e) => { setPhoneNum(e.target.value) } }
+                className='btn'
+              >
+                인증번호 발송
+              </button>
+            </div>
           </div>
 
           {/* 연락처 인증번호 */}
-          <div>
+          <div
+            className='edit-div'
+          >
             <label>인증번호</label>
             <input
               type = "number"
