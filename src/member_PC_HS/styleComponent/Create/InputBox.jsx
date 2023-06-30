@@ -5,7 +5,6 @@ const WelcomeBox = styled.div `
   display: inline-block;
   text-align: center;
   width: 550px;
-  padding-top: 80px;
   & h2 {
     font-family: 'SUITE-Regular';
     font-weight: 300;

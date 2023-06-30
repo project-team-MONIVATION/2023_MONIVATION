@@ -33,11 +33,9 @@ const Btns = styled.div `
   }
 
   & div {
-    position: absolute;
-    top: 345px;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
+    justify-content: center;
+    margin-top: 10px;
   }
 
   & button {
