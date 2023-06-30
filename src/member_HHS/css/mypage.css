@@ -159,8 +159,7 @@
     font-family: 'Cafe24Ssurround';
     bottom: 13px;
     transition: box-shadow 0.3s ease-in-out;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* 초기 그림자 설정 */
-    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.20);
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.20); /* 초기 그림자 설정 */
 
 
 }

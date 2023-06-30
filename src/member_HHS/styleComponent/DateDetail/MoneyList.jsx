@@ -1,16 +1,39 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
-const MoneyListStyled = styled.div `
+const MoneyListPanel = styled.div`
+    position: relative;
+    top: 0px;
     padding: 0 16px;
-    background-color: #ffffff;
-    max-height: 0;
+    background-color: #fff;
+    max-height: ${({ active }) => (active ? '700px' : '0')};
     overflow: hidden;
-    transition: max-height 0.2s ease-out;
-    border-bottom: 1px solid #eeeeee;
+    transition: max-height 0.5s ease-out;
 
+    & div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px 40px;
+        & h3 {
+            font-size: 1.3rem;
+            letter-spacing: 0.1em;
+        }
+        & h3:nth-child(1) {
+            margin-top: 3px;
+            & span {
+                color: #6717CD;
+                font-family: 'Cafe24Ssurround';
+
+            }
+        }
+        & h3:nth-child(2) span { 
+            font-size: 1rem;
+            font-family: 'EliceDigitalBaeum-Bd';
+        }
+    }
 `;
 
-export default function MoneyList({ children, ...rest }) {
-  return <MoneyListStyled {...rest}>{children}</MoneyListStyled>;
+export default function MoneyList({ children, active }) {
+  return <MoneyListPanel active={active}>{children}</MoneyListPanel>;
 }
