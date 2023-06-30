@@ -260,9 +260,10 @@ export default function CalendarComp() {
       >
         <div
           className='money_pluse_btn_wrap'
+          onClick={() => {pulsebtn()}}
+          style={{cursor: "pointer"}}
         >
           <button
-            onClick={() => {pulsebtn()}}
             // className='pluse_btn'
             className={`pluse_btn ${InputBtns ? 'clike' : ''}`}
           ></button>
