@@ -1,7 +1,7 @@
 @keyframes slide-up {
     0% {
         opacity: 0;
-        transform: translateY(70px);
+        transform: translateY(50px);
     }
     100% {
         opacity: 1;
@@ -16,7 +16,21 @@
     color: black;
 }
 #asset .asset-header {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    background-color: #735BF3;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 15px;
+}
+#asset .asset-header2 {
+    font-size: 1.5rem;
+    background-color: #735BF3;
+    color: white;
+    border-radius: 20px;
+    display: inline-block;
+    left: -100px;
+    padding: 10px 15px;
+    margin: 25px 80px ;
 }
 #asset .asset tr td:first-child {
     width: 70px;

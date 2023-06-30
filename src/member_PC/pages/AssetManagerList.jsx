@@ -83,7 +83,7 @@ export default function AssetManagerList() {
       <div id='managerlist'>
         {/* 탭 바 */}
         <HeaderBox>
-          <h1 className='animated' style={{fontSize: "1.8rem"}}>자산관리사 목록</h1>
+          <h1 className='managerlist-h1 animated'>자산관리사 목록</h1>
           <div className='search-bar'>
             <input type="text" value={searchTerm} onChange={handleInputChange}/>
             <button onClick={handleSearch}>검색</button>
@@ -93,7 +93,7 @@ export default function AssetManagerList() {
         {/* 분야 필터 */}
         <div className='field-btn'>
           {field.map((f, i)=>(
-            <button key={i} style={{backgroundColor: filter.includes(f) ? "#735BF3" : "#D9D9D9", transition: "background-color 0.5s" }} onClick={()=>handleFilter(f)}>{f}</button>
+            <button key={i} className='filter-button' style={{backgroundColor: filter.includes(f) ? "#735BF3" : "#D9D9D9", transition: "background-color 0.5s" }} onClick={()=>handleFilter(f)}>{f}</button>
           ))}
         </div>
         

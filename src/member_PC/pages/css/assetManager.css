@@ -1,7 +1,7 @@
 @keyframes slide-up {
     0% {
         opacity: 0;
-        transform: translateY(70px);
+        transform: translateY(50px);
     }
     100% {
         opacity: 1;
@@ -10,6 +10,13 @@
 }
 #managerlist .animated {
     animation: slide-up 0.5s ease-in-out forwards;
+}
+#managerlist .managerlist-h1 {
+    font-size: 1.5rem;
+    background-color: #735BF3;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 15px;
 }
 #managerlist a {
     text-decoration: none;
@@ -24,16 +31,19 @@
 }
 #managerlist .field-btn {
     width: 100%; 
-    margin: auto;
-    margin: 15px;
+    margin: 20px auto;
 }
-#managerlist .field-btn button {
+#managerlist .field-btn .filter-button {
     margin: 5px 10px;
     padding: 4px 8px;
     border: none; 
     border-radius: 20px; 
     color: white;
 }
+#managerlist .field-btn .filter-button:hover {
+    background-color: #735BF3;
+}
+
 #managerlist .container-box {
     width: 95%;
     margin: auto;

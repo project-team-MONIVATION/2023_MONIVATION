@@ -159,7 +159,7 @@ export default function AssetManagerProfile() {
           }
 
           {/* 캘린더 */}
-          <div>
+          <div className='calendar-box'>
             <Calendar className="asset-calendar" onChange={ onClickDate } value={date}/>
             <Link to={`/asset/managerID/profile/reservation/${params.id}`}>
               <div className='reservation-btn'>

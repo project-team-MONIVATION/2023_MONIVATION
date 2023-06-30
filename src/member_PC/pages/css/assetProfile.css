@@ -4,6 +4,9 @@
     margin: auto;
     width: 80%;
 }
+#manager-profile .calendar-box {
+    animation: showAnimation 0.5s forwards;
+}
 #manager-profile .profile-header {
     font-size: 1.8rem;
     text-align: left;
