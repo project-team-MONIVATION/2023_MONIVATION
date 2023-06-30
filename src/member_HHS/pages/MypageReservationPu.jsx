@@ -54,6 +54,7 @@ export default function MypageReservationPu() {
       date : new Date(),
     });
     setReviewModal(false);
+    alert('리뷰작성이 완료되었습니다!')
   }
 
   return (

@@ -212,50 +212,43 @@ export default function TotalStatComp() {
     }
   }
   
-
-
-
-
   return (
     <div id='total-stat-wrap'>
         <table>
           <tbody>
-            <tr>
-              <td>
-                <div>
-                </div>
-              </td>
-            </tr>
-            <tr>이번 달 총액</tr>
-            <tr>
+            <th className='tb-title'>이번 달 총액</th>
+            <tr className='tb-subtitle'>
               <td>고정 수입</td>
             </tr>
-            <tr>
+            <tr className='tb-money'>
               <td>{totalIncomeRp ? totalIncomeRp : "0"}원</td>
             </tr>
-            <tr>
+            <tr className='tb-subtitle'>
               <td>일반 수입</td>
             </tr>
-            <tr>
+            <tr className='tb-money'>
               <td>{totalIncome ? totalIncome : "0"}원</td>
             </tr>
-            <tr>
+            <tr className='tb-subtitle'>
               <td>고정 지출</td>
             </tr>
-            <tr>
+            <tr className='tb-money'>
               <td>- {totalExRp ? totalExRp : "0"}원</td>
             </tr>
-            <tr>
+            <tr className='tb-subtitle'>
               <td>일반 지출</td>
             </tr>
-            <tr>
+            <tr className='tb-money'>
               <td>- {totalEx ? totalEx : "0"}원</td>
             </tr>
+            <tr style={{backgroundColor:'white', height:"1vh"}}>
+              <td></td>
+            </tr>
             {/** 총 자산 시작 */}
-            <tr>
+            <tr className='tb-subtitle-totalresult'>
               <td>현재 총 자산</td>
             </tr>
-            <tr>
+            <tr className='tb-money' style={{backgroundColor:'#D1CAF8'}}>
               <td>
                 {
                   parseInt(totalIncome.replace(/,/g, ''), 10)
@@ -265,7 +258,9 @@ export default function TotalStatComp() {
                 }원
               </td>
             </tr>
-
+            <tr style={{backgroundColor:'white', height:"0.8vh"}}>
+              <td></td>
+            </tr>
             {/* 총 저금액 시작*/}
               <div
                 onClick={()=>{
@@ -273,10 +268,10 @@ export default function TotalStatComp() {
                   openModal(3);
                 }}
               >
-                <tr>
+                <tr className='tb-subtitle-totalresult'>
                   <td>현재 총 저금액</td>
                 </tr>
-                <tr>
+                <tr style={{backgroundColor:'#F4E8AE', textAlign:'right'}}>
                   <td>{savingList}원</td>
                 </tr>
               </div>

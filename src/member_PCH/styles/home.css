@@ -378,12 +378,12 @@ main #section4 .box-container .slidebox button {
 /* 섹션 5 */
 main #section5 {
   width: 100%;
-  height: 750px;
+  height: 950px;
 }
 
 main #section5 .box-container {
   box-sizing: border-box;
-  height: 700px;
+  height: 900px;
   padding: 4% 10%;
   position: relative;
 }
@@ -398,6 +398,25 @@ main #section5 .box-container .textbox p {
   margin-top: 10px;
 }
 
+main #section5 .box-container .slidebox button.slick-prev:before, 
+main #section5 .box-container .slidebox button.slick-next:before {
+  color: #afafaf;
+}
+
+main #section5 .box-container .slidebox button.slick-prev:hover:before, 
+main #section5 .box-container .slidebox button.slick-next:hover:before {
+  color: #7c7c7c;
+}
+
+main #section5 .box-container .slidebox .slick-list,
+main #section5 .box-container .slidebox .video div *  {
+  height: 100%;
+}
+
+main #section5 .box-container .slidebox .video .ytp-title-channel {
+  width: 30px;
+  height: 30px;
+}
 
 /* 섹션 6 */
 main #section6 {

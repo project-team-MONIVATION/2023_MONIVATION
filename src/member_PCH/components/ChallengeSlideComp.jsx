@@ -48,7 +48,7 @@ export default function ChallengeSlideComp() {
     centerPadding : 0,
     slidesToShow: 3,
     speed : 500,
-    arrow : false
+    arrow : true
   };
 
   return (

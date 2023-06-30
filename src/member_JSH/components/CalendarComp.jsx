@@ -4,6 +4,7 @@ import moment, { locale } from 'moment';
 import 'moment/locale/ko';
 import 'react-calendar/dist/Calendar.css'; // css import
 import '../css/calendar.css';
+import '../../member_LJC/css/moneyCalendar.css'
 import Modal from 'react-modal';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -17,6 +18,8 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../database/firebase';
 import styled from 'styled-components';
 import ModalWrap from '../../member_HHS/styleComponent/DateDetail/ModalWrap';
+import { animate } from 'framer-motion';
+
 
 
 const InputBtn = styled.button`
@@ -74,6 +77,17 @@ export default function CalendarComp() {
     const openModal = (modalId) => {
       setActiveModal(modalId);
     };
+
+    // input버튼 열기 닫기
+    const [InputBtns, setInputBtns] = useState(false);
+
+    const pulsebtn = () => {
+      setInputBtns(!InputBtns)
+      console.log(InputBtns)
+    }
+    
+
+
 
     // 닫기 버튼은 chatGPT 좀더 참고해야할듯
     const closeModal = () => {
@@ -152,7 +166,7 @@ export default function CalendarComp() {
         getExpense();
         getExpenseRepeat();
       }
-    }, [user]);
+    }, [user, modalIsOpen]);
 
     // 금액 천자리 콤마(,)
     const handleHyphen = (value) => {
@@ -241,37 +255,21 @@ export default function CalendarComp() {
       )}
 
       {/* 수입, 지출, 저금 모달 버튼 */}
-      <div>
-        <button
-          style={{
-            position: "absolute",
-            width: "80px",
-            height: "80px",
-            border: 0,
-            borderRadius: "50%",
-            bottom: "-33%",
-            right: 0,
-            backgroundColor: "#F4D750",
-            zIndex: 3
-          }}
-        >+</button>
+      <div id='moneyinput'
+        className='moneyinput_container'
+      >
+        <div
+          className='money_pluse_btn_wrap'
+          onClick={() => {pulsebtn()}}
+          style={{cursor: "pointer"}}
+        >
+          <button
+            // className='pluse_btn'
+            className={`pluse_btn ${InputBtns ? 'clike' : ''}`}
+          ></button>
+        </div>
         <div 
-          className='money_input_btns'
-          style={{
-            position: "absolute",
-            bottom: "-28%",
-            right: "3%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-evenly",
-            alignContent: "center",
-            borderRadius: "30px",
-            backgroundColor: "#595959",
-            width: "140px",
-            height: "160px",
-            boxSizing: "border-box",
-            padding: "10px 0"
-          }}
+          className={InputBtns ? 'money_input_btns' : 'money_input_btns_delete'}
         >
           <InputBtn onClick={() => {
             setModalIsOpen(true);
