@@ -25,10 +25,10 @@ a{
 }
 
 #challenge-list .challengeboard-card {
-    border: solid 1px gray;
-    padding: 30px;
-    height: 100px;
+    width: 70%;
+    height: 250px;
     border-radius: 20px;
+    
 }
 
 #challenge-list .default-challenge-list{

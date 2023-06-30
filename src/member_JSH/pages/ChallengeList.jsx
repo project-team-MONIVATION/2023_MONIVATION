@@ -61,12 +61,13 @@ export default function ChallengeList() {
             challengeBoard && challengeBoard.map((board)=>(
               <Link to={`/challenge/${board.id}/view`} key={challengeBoard.id}>
                 <li>
-                  <div style={{width : "300px", display : "inline-block", 
+                  <img style={{display : "inline-block", 
                   backgroundImage :`url(/img/${board.img})`,
-                  backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
+                  backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}
                     className="challengeboard-card"
+                    src={board?.img && (board.img.length < 10 ? require(`../img/${board.img}`) : board.img)}
                   >
-                  </div>
+                  </img>
                   <br></br>
                   <p style={{display:'inline-block'}}>{board.name}</p>
                 </li>
@@ -74,7 +75,6 @@ export default function ChallengeList() {
             ))
           }
         </ul>
-        
         </div>
         <button className='create-button'>
           <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '4rem', color:"white"}}>+</Link>
