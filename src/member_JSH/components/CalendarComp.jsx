@@ -16,6 +16,7 @@ import DateDetail from '../../member_HHS/components/DateDetail'; // 날짜별 �
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../database/firebase';
 import styled from 'styled-components';
+import ModalWrap from '../../member_HHS/styleComponent/DateDetail/ModalWrap';
 
 
 const InputBtn = styled.button`
@@ -228,32 +229,15 @@ export default function CalendarComp() {
       </div>
 
       {isModalOpen2 && (
-        <div
-          style = {{
-            position: 'fixed',
-            top: '0',
-            left: '0',
-            right: '0',
-            bottom: '0',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center', }}
-        >
-          <div
-            style={{
-              width: '600px',
-              backgroundColor: 'white',
-              padding: '20px',
-              borderRadius: '5px', }}
-          >
+        <ModalWrap>
+          <div>
             <DateDetail
               closeModal2 = { closeModal2 }
               selectedDate = { value }
               onDataReceived = { handleDataReceived }
             />
           </div>
-        </div>
+        </ModalWrap>
       )}
 
       {/* 수입, 지출, 저금 모달 버튼 */}

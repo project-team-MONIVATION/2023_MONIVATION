@@ -50,9 +50,12 @@ export default function BadgeBoxComp() {
           <ul className='badges'>
             {challengeBoard.length > 0 &&
                     challengeBoard.map((board) => (
-                      <div style={{width : "100px", display : "inline-block", height : "100px",
-                      backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
-                      backgroundImage : `url(/img/${board.badge ? board.badge : null})`}}></div>
+                      <div style={{display:"flex", flexDirection: "column"}}>
+                        <div style={{width : "100px", display : "inline-block", height : "100px",
+                        backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
+                        backgroundImage : `url(/img/${board.badge ? board.badge : null})`}}></div>
+                        <p style={{fontSize:"0.8rem"}}>식사는 거를 수 없지</p> {/* 임의로 넣어준 텍스트 */}
+                      </div>
               ))}
           </ul>
         </div>

@@ -2,16 +2,29 @@ import React, { useEffect, useState } from 'react'
 import { db, auth } from '../../database/firebase'
 import { useSelector } from 'react-redux'
 import { collection, getDocs, query } from 'firebase/firestore'
+import { Link } from 'react-router-dom';
+
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProgressBar from '../../member_LJC/components/ProgressBar'
 
-import ChallengeBox from '../styleComponent/Challenge/ChallengeBox'
-import ChallengeList from '../styleComponent/Challenge/ChallengeList'
+import ChallengeBox from '../styleComponent/Challenge/ChallengeBox';
+import ChallengeList from '../styleComponent/Challenge/ChallengeList';
+import EmptyColumn from '../styleComponent/Challenge/EmptyColumn';
+import ChallengeAdd from '../styleComponent/Challenge/ChallengeAdd';
 
-
+const settings = {
+  dots: true,
+  fade: true,
+  infinite: true,
+  speed: 1000,
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  rows: 1,
+  slidesPerRow: 3,
+};
 
 export default function ActiveChallengeComp() {
   const user = useSelector((state) => state.user.user);
@@ -41,7 +54,7 @@ export default function ActiveChallengeComp() {
           badge : doc.data().badge
         }
         // 완료된 챌린지 필터링
-        if(data.uid == user.uid && data.done == false) {
+        if(data.uid == user.uid && data.done == true  ) {
           dataArray.push(data);
         }
         console.log(doc.id, " => ", doc.data());
@@ -93,37 +106,84 @@ export default function ActiveChallengeComp() {
         return result
       }
 
-      const settings = {
-        dots: true,
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows : false,
-        autoplay: true,
-        speed: 2000,
-        autoplaySpeed: 5000,
-      };
 
+
+
+
+
+      
   return (
-    <div>
-      {
-        activeChallenge.length > 0 &&
-        <ChallengeBox>
-          {  
-          activeChallenge.map((item) => (
-            <ChallengeList key = {item.id}>
-              <li></li>
-              <li>{item.challengeName}</li>
-              <li>
-                <ProgressBar num={getDateDiffNOWpercent(new Date(), item.startDate, item.endDate)} 
-                              maxNum={getDateDiffHDpercent(item.endDate, item.startDate)}/>
-                              {console.log(getDateDiffNOWpercent(new Date(), item.startDate, item.endDate))}
-              </li>
-            </ChallengeList>
-          ))
+  <div>
+    {activeChallenge.length > 0 ? (
+      <Slider {...settings}>
+        {activeChallenge.reduce((accumulator, item, index) => {
+          if (index % 3 === 0) {
+            accumulator.push(
+              <div key={index}>
+                <ChallengeList>
+                  <li>
+                    <img src="challengeImg" alt="challengeImg" />
+                  </li>
+                  <li># {item.challengeName}</li>
+                  <li>
+                    <ProgressBar
+                      num={getDateDiffNOWpercent(new Date(), item.startDate, item.endDate)}
+                      maxNum={getDateDiffHDpercent(item.endDate, item.startDate)}
+                    />
+                    {console.log(getDateDiffNOWpercent(new Date(), item.startDate, item.endDate))}
+                  </li>
+                </ChallengeList>
+              </div>
+            );
+          } else {
+            accumulator[accumulator.length - 1].props.children.push(
+              <ChallengeList key={index}>
+                <li>
+                  <img src="challengeImg" alt="challengeImg" />
+                </li>
+                <li># {item.challengeName}</li>
+                <li>
+                  <ProgressBar
+                    num={getDateDiffNOWpercent(new Date(), item.startDate, item.endDate)}
+                    maxNum={getDateDiffHDpercent(item.endDate, item.startDate)}
+                  />
+                  {console.log(getDateDiffNOWpercent(new Date(), item.startDate, item.endDate))}
+                </li>
+              </ChallengeList>
+            );
           }
-        </ChallengeBox>
-      }
-    </div>
-  )
+          return accumulator;
+        }, [])}
+        {activeChallenge.length < 3 && (
+          <div>
+            {activeChallenge.length === 0 && (
+              <ChallengeList>
+                <ChallengeAdd>
+                  <li>챌린지를 추가해보세요</li>
+                </ChallengeAdd>
+              </ChallengeList>
+            )}
+            {activeChallenge.length === 1 && <EmptyColumn />}
+            <ChallengeList>
+              <ChallengeAdd>
+                <li>챌린지를 추가해보세요</li>
+              </ChallengeAdd>
+            </ChallengeList>
+          </div>
+        )}
+      </Slider>
+    ) : (
+      <ChallengeBox>
+        <ChallengeList>
+          <ChallengeAdd>
+            <li>챌린지를 추가해보세요</li>
+          </ChallengeAdd>
+        </ChallengeList>
+        <EmptyColumn />
+        <EmptyColumn />
+      </ChallengeBox>
+    )}
+  </div>
+);
+
 }

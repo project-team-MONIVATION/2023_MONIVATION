@@ -9,6 +9,8 @@ const ChallengeBoxStyled = styled.div `
     left: 50%;
     transform: translateX(-50%); */
     display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 
 `
 

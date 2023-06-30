@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const ChallengeListStyled = styled.div `
+const ChallengeAddStyled = styled.div `
     width: 230px;
     height: 310px;
     top: 85px;
@@ -15,8 +15,8 @@ const ChallengeListStyled = styled.div `
     }
 `
 
-export default function ChallengeList({ children, ...rest }) {
+export default function ChallengeAdd({ children, ...rest }) {
   return (
-    <ChallengeListStyled {...rest}>{children}</ChallengeListStyled>
+    <ChallengeAddStyled {...rest}>{children}</ChallengeAddStyled>
   )
 }
