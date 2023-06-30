@@ -20,6 +20,18 @@
     overflow:hidden; 
     cursor: pointer;
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
+    transition: .5s;
+}
+#MoneyCalendar .chart_component_container:hover {
+    border: 0px solid #8E8E8E;
+    border-radius:50px;
+    background-color: #ECECEC;
+    width: 25%;
+    height: 100%; 
+    overflow:hidden; 
+    cursor: pointer;
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
+    transition: .5s;
 }
 
 
@@ -30,13 +42,6 @@
     font-weight: 600;
 }
 
-#MoneyCalendar .chart_component_container .title:hover {
-    margin-top: 18px;
-    margin-right: 60%;
-    font-size: 18px;
-    transition: .3s;
-}
-
 
 #MoneyCalendar .chart_component_container .chartbtn_container{
     width: 60px;
@@ -45,7 +50,7 @@
     margin-left: 50px;
     background-color: #8E8E8E;
     border-radius: 15px;
-    margin-top : 10px;
+    margin-top : 30px;
 }
 
 
@@ -79,7 +84,7 @@
     margin-left: 45%;
 }
 #secomp.secomp_container .piegp{
-    margin-top: -53%;
+    margin-top: -65%;
 }
 
 
