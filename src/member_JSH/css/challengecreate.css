@@ -18,7 +18,7 @@
 
 #challenge-create p{
     width: 30%;
-    margin: 50px;
+    margin: 35px;
     margin-bottom: 0;
     font-weight: bold;
     font-size: 1.3rem;
@@ -27,11 +27,12 @@
 #challenge-create textarea{
     padding: 20px;
     border-radius: 10px;
+    border: solid 2px lightgray;
 }
 
 
 #challenge-create .img_category_box{
-    min-height: 200px;
+    min-height: 150px;
     display: flex;
     justify-content: center;
 }
@@ -73,6 +74,8 @@
     min-width: 300px;
     border-radius: 15px;
     margin-left: 5px;
+    border: solid 2px lightgray;
+
 }
 
 #challenge-create .challenge-create-info select{
