@@ -83,7 +83,7 @@ export default function AssetManagerList() {
       <div id='managerlist'>
         {/* 탭 바 */}
         <HeaderBox>
-          <h1 className='managerlist-h1 animated'>자산관리사 목록</h1>
+          <h1 className='managerlist-h1'>자산관리사 목록</h1>
           <div className='search-bar'>
             <input type="text" value={searchTerm} onChange={handleInputChange}/>
             <button onClick={handleSearch}>검색</button>
@@ -91,14 +91,14 @@ export default function AssetManagerList() {
         </HeaderBox>
         
         {/* 분야 필터 */}
-        <div className='field-btn'>
+        <div className='field-btn animated'>
           {field.map((f, i)=>(
             <button key={i} className='filter-button' style={{backgroundColor: filter.includes(f) ? "#735BF3" : "#D9D9D9", transition: "background-color 0.5s" }} onClick={()=>handleFilter(f)}>{f}</button>
           ))}
         </div>
         
         {/* 모든 자산관리사 리스트 */}
-        <div className='container-box'>
+        <div className='container-box animated'>
           { 
             filteredFmList && filteredFmList.map((fm)=>(
               <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
