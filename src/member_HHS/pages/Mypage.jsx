@@ -167,7 +167,7 @@ export default function Mypage() {
           <h2
             className = 'div-long'
           
-          >완료중인 챌린지</h2>
+          >완료한 챌린지</h2>
           <div>
             <CompleteChallengeComp />
           </div>
