@@ -102,12 +102,14 @@ export default function TargetAmountComp() {
         
         return result
     }
+    
 
     // 오늘 날짜, 시작날짜 , 끝나는 날짜
     const getDateDiffNOWpercent = (d1, d2, d3) => {
         const date1 = d1
         const date2 = new Date(d2);
         const date3 = new Date(d3);
+        console.log("dgsdga", date1,date2,date3)
         
         const diffDate = date1.getTime() - date2.getTime();
         const hdpercent = date3.getTime() - date2.getTime();
@@ -184,17 +186,20 @@ export default function TargetAmountComp() {
                                 // height: '40px',
                                 // marginRight: "1px",
                                 // backgroundColor: '#735BF3',
-                                transform: `translateX(${dealt(tmp.startday, tmp.endday)}%)`,
-                                transition : 'all 0.3s',
+                                // transform: `translateX(${dealt(tmp.startday, tmp.endday)*0.9}%)`,
+                                // transition : 'all 0.3s',
                                 // borderRadius: '15px'
                             }}
                         >
+                                D-{Dday(tmp.endday, new Date())}&nbsp;  
+                                <FontAwesomeIcon icon={faCoins}/>
                         </div>
-                        <div style={{width : "70%", padding : "0 0"}}>
+                        <div 
+                            style={{width : "100%", 
+                            // position : "relative" 
+                        }}
+                        >
                             <ProgressBar num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)} maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}/>
-                            D-{Dday(tmp.endday, new Date())}&nbsp;  
-                            <FontAwesomeIcon icon={faCoins}/>
-
                         </div>
                     </div>
                 </div>
