@@ -94,12 +94,14 @@
     cursor: pointer;
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
 }
+
 #MoneyCalendar .installment_component .title {
     margin-top: 18px;
     margin-right: 60%;
     font-size: 15px;
     font-weight: 600;
 }
+
 #MoneyCalendar .installment_component .installment_total {
     margin-left: 70px;
     margin-top: 50px;
@@ -108,7 +110,6 @@
 /* 할부금 컴프 */
 #installment.total_price {
     display: flex;
-
 }
 
 #installment.total_price {
