@@ -315,9 +315,9 @@ export default function MoneyChartExpense() {
 
     // 조회 버튼
     // 조회 누르면 각 조건에 맞는 데이터 들을 db에서 꺼내옴
-    const getexpensechoiseData = async () => {
-        let s = new Date(inputRef.current[0].value);
-        let e = new Date(inputRef.current[1].value);
+    const getexpensechoiseData = async (s, e) => {
+        s= s ? s : new Date(inputRef.current[0].value);
+        e= e ? e : new Date(inputRef.current[1].value);
 
         // 12시 0분 0초를 못 담아서 하루 를 빼줘야 그 날에 대입이됨
         let startday = new Date(inputRef.current[0].value);
@@ -417,6 +417,8 @@ export default function MoneyChartExpense() {
             // setPdate(Pdates);
             // setPcategory(Pcategory);
             // setPamount(Pprice);
+
+            console.log("실행확인",s,e)
         } 
 
             
@@ -446,15 +448,19 @@ export default function MoneyChartExpense() {
         handleTest3()
     },[nowmonthfirstday,nowmonthlastday])
     
-    useEffect(() => {
+    useEffect(() => {    
         chageDateOneMonth(); 
         if(user){
-            getexpensechoiseData();
+            let date = new Date();
+            getexpensechoiseData(new Date(date.getFullYear(), date.getMonth(), 1), new Date(date.getFullYear(), date.getMonth() + 1, 0));
         } else{
             setChecked(true)
         }
+        console.log("체크")
     },[checked])
-    
+
+
+
     
     //string 형식으로 바꾸기
     const changeDate = (newDate) => {

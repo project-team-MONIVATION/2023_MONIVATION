@@ -81,13 +81,15 @@ export default function MoneyCalendar() {
         
         <div 
         className='chart_component_container'
+        onClick={() => {navigate('/calendar/chart/expense')}} 
         >
           <div className='title'
-            onClick={() => {navigate('/calendar/chart/expense')}} 
           >
             통계
           </div>
-          <div className='chartbtn_container'>
+          <div className='chartbtn_container'
+              onClick={(event) => {event.stopPropagation();}}
+          >
             <div 
             className='back'
             style={{

@@ -155,36 +155,6 @@ export default function MoneyChartExpense() {
     const inputRef = useRef([]);
     
 
-    // useEffect(() => {
-    //     getSavingData();
-    // }, [user]); // [user] 가바뀔떄마다 돈다
-
-    // // 지출 불러오기
-    // const getSavingData = async () => {
-    //     try {
-    //         const fmCollectionRef = collection(db, "money_expense");
-    //         const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
-    //         const fmQuerySnapshot = await getDocs(fmQuery);
-            
-    //         if (!user.uid) {
-    //             navigate('/account/login');
-    //         } else {
-    //             let dataArray = [];
-    //             let newArray = [];
-
-    //             fmQuerySnapshot.forEach((doc) => {
-    //                 dataArray.push({
-    //                     ...doc.data(),
-    //                     id: doc.id,
-    //                 });
-    //             });
-    //         }
-    //     } catch (error) {
-    //         console.log("실패했습니다", error);
-    //     }
-    // };
-    
-    
 
     
     // 데이터들 카테고리,가격 나열
@@ -353,9 +323,9 @@ export default function MoneyChartExpense() {
 
     // 조회 버튼
     // 조회 누르면 각 조건에 맞는 데이터 들을 db에서 꺼내옴
-    const getexpensechoiseData = async () => {
-        let s = new Date(inputRef.current[0].value);
-        let e = new Date(inputRef.current[1].value);
+    const getexpensechoiseData = async (s, e) => {
+        s= s ? s : new Date(inputRef.current[0].value);
+        e= e ? e : new Date(inputRef.current[1].value);
 
         // 12시 0분 0초를 못 담아서 하루 를 빼줘야 그 날에 대입이됨
         let startday = new Date(inputRef.current[0].value);
@@ -500,6 +470,16 @@ export default function MoneyChartExpense() {
         chageDateOneMonth(); 
         if(user){
             getexpensechoiseData();
+        } else{
+            setChecked(true)
+        }
+    },[checked])
+
+    useEffect(() => {    
+        chageDateOneMonth(); 
+        if(user){
+            let date = new Date();
+            getexpensechoiseData(new Date(date.getFullYear(), date.getMonth(), 1), new Date(date.getFullYear(), date.getMonth() + 1, 0));
         } else{
             setChecked(true)
         }
