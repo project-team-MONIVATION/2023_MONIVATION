@@ -14,9 +14,22 @@
     text-align: center; 
     margin-bottom: 50px;
 }
+@keyframes showAnimation {
+    0% {
+        opacity: 0;
+        width: 0;
+        visibility: hidden;
+    }
+    100% {
+        opacity: 1;
+        width: 600px;
+        visibility: visible;
+    }
+}
 #asset-reservation .reservation-div {
     border: solid 1px gray; 
     border-radius: 20px;
+    animation: showAnimation 0.5s forwards;
 }
 #asset-reservation .reservation-form .reservation-form-header {
     font-size: 1.2rem;

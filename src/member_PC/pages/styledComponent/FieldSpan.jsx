@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 const AssetSpan = styled.span`
     font-size: 0.8rem;
-    padding: 0 2px;
+    font-weight: bold;
+    padding: 2px 4px;
 `
 
 export default function FieldSpan({children, ...rest}) {

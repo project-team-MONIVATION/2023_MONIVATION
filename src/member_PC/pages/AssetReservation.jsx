@@ -122,7 +122,7 @@ export default function AssetReservation() {
             </div>
           </div>
 
-          <div className='reservation-div' style={{display: show === true ? "block" : "none"}}>
+          <div className={`reservation-div ${show ? 'show' : ''}`}>
             <form className='reservation-form' onSubmit={submitForm}>
               <h1 className='reservation-form-header'>상담신청</h1>
               <hr />

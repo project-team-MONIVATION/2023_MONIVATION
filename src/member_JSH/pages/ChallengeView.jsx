@@ -163,6 +163,10 @@ export default function ChallengeView() {
 
   // 만든 챌린지 삭제 함수
   const deleteChallenge = async(e)=>{
+    const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
+    if (!confirmDelete) {
+      return;
+    }
     e.preventDefault();
     const docRef = doc(db, "user_challenge", params.id);
     const q = query(collection(db, "user_comments"), where("paramId", "==", params.id));
