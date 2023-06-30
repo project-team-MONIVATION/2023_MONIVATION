@@ -11,6 +11,11 @@ import EditIncome from './EditIncome';
 import EditIncomeRepeat from './EditIncomeRepeat'
 import EditExpense from './EditExpense';
 import EditExpenseRepeat from './EditExpenseRepeat'
+import ModalWrap from '../styleComponent/DateDetail/ModalWrap';
+import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
+import DateDetailBox from '../styleComponent/DateDetail/DateDetailBox';
+import SearchDate from '../styleComponent/DateDetail/SearchDate';
+import Accordion from '../styleComponent/DateDetail/Accordion';
 
 
 export default function DateDetail({ closeModal2, selectedDate }) {
@@ -248,13 +253,16 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 
 
     return (
-      <div>
+      <DateDetailBox>
         <div>
-          <button onClick = { closeModal2 }>닫기</button>
-          <div> {/* 날짜검색 캘린더 모달 */}
-            <button onClick = { onClickCal }>날짜 검색</button>
+          <CloseBtn onClick = { closeModal2 }>X</CloseBtn>
+          <SearchDate> {/* 날짜검색 캘린더 모달 */}
+            <button onClick = { onClickCal }>
+              <img src="/img/calendar.png" alt="calendar" />
+              <span>날짜 검색</span>
+            </button>
             <h2>{ selectedDate && changeDate(selectedDate) }</h2>
-
+    
             { showCal && (
               <div>
                 <button
@@ -269,20 +277,20 @@ export default function DateDetail({ closeModal2, selectedDate }) {
                 />
               </div>
             ) }
-          </div>
+          </SearchDate>
 <br />
 
           {/* 수입 상세 출력 */}
-          <div>
+          <Accordion>
             <h3>이 날의 수입은?</h3>
             <h3>
               { handleHyphen (
                 filteredIncome.reduce((total, item) => total + item.price, 0) +
                 filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
               ) }
-              &#8361;
+              <span>&#8361;</span>
             </h3>
-          </div>
+          </Accordion>
 <br />
           <div>
             <h4>수입</h4>
@@ -291,7 +299,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               { handleHyphen ( 
                 filteredIncome.reduce((total, item) => total + item.price, 0)
               ) }
-              &#8361;
+              <span>&#8361;</span>
             </h4>
           </div>
 <br />
@@ -344,7 +352,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
                 filteredExpense.reduce((total, item) => total + item.price, 0) +
                 filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
               ) }
-              &#8361;
+              <span>&#8361;</span>
             </h3>
           </div>
 <br />
@@ -354,7 +362,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               { handleHyphen(
                 filteredExpense.reduce((total, item) => total + item.price, 0)
               ) }
-              &#8361;
+              <span>&#8361;</span>
             </h4>
           </div>
 <br />
@@ -390,7 +398,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               { handleHyphen(
                 filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
               ) }
-              &#8361;
+              <span>&#8361;</span>
             </h4>
           </div>
 <br />
@@ -471,6 +479,6 @@ export default function DateDetail({ closeModal2, selectedDate }) {
             />
           )}
 
-    </div>
+    </DateDetailBox>
   )
 } 

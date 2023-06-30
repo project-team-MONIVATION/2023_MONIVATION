@@ -17,33 +17,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './css/asset.css'
 
-// 화살표 컴퍼넌트
-const NextArrow = ({ onClick, style }) => { 
-  return (
-    <FontAwesomeIcon
-      icon={faChevronRight}
-      onClick={onClick}
-      type='button'
-      style={{ ...style, position: "absolute", display: "inline-block", color: "darkgray", zIndex: "10", cursor: "pointer", width:"40px", height:"40px", top: "120", right:"0%"}}
-    />
-  );
-};
-
-const PrevArrow = ({ onClick, style }) => {
-  return (
-    <FontAwesomeIcon
-      icon={faChevronLeft}
-      onClick={onClick}
-      type='button'
-      style={{ ...style, position: "absolute", display: "inline-block", color: "darkgray", zIndex: "10", cursor: "pointer", width:"40px", height:"40px", top: "120", left:"0%"}}
-    />
-  );
-};
-
 export default function Asset() {
   const user = useSelector((state) => state.user.user);
 
   const [bestFmList, setBestFmList] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const settings = {
     autoplay: true,
@@ -53,8 +31,6 @@ export default function Asset() {
     speed: 1000,
     slidesToShow: 4,
     slidesToScroll: 4,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />
   };
 
   useEffect(()=>{
@@ -74,17 +50,19 @@ export default function Asset() {
             dataArray.push(data)
         });
         setBestFmList(dataArray);
+        setIsLoaded(true);
     }
     getList();
   },[])
   
   return (
     <div id='layout' style={{overflowY: 'hidden'}}>
+      {isLoaded &&
       <div id='asset'>
         {/* 탭 바 */}
         <HeaderBox>
-          <h1 className='asset-header'>Best 자산관리사</h1>
-          <Link to='/asset/managerlist'><p style={{backgroundColor: "#D9D9D9", padding: "5px 10px", borderRadius: "20px"}}>전체보기</p></Link>
+          <h1 className='asset-header animated'>Best 자산관리사</h1>
+          <Link to='/asset/managerlist'><p style={{backgroundColor: "#D9D9D9", fontWeight: "bold", padding: "5px 15px", borderRadius: "20px"}}>전체보기</p></Link>
         </HeaderBox>
 
         {/* 탑 자문사 리스트 */}
@@ -94,7 +72,7 @@ export default function Asset() {
               <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
                 <AssetBox>
                   <AssetImage style={{backgroundImage: `url(${fm.photo})`}}></AssetImage>
-                  <h1 style={{margin: "10px 0"}}>{fm.name}</h1>
+                  <p style={{margin: "10px 0", fontWeight: "bold"}}>{fm.name}</p>
                   <AssetField> 
                     <div>
                       <FieldSpan>{fm.field && fm.field[0]}</FieldSpan>
@@ -116,7 +94,9 @@ export default function Asset() {
       
         {/* 관련 정보 */}
         <div className='asset'>
-          <h1 style={{textAlign: "left", margin: "30px 0 30px 80px", fontSize: "1.8rem"}}>관련정보</h1>
+          <div style={{display: 'flex'}}>
+            <h1 className='asset-header2 animated'>관련정보</h1>
+          </div>
           <table>
             <tbody>
               <tr>
@@ -171,6 +151,7 @@ export default function Asset() {
           </table>
         </div>
       </div>
+    }
     </div>
   )
 }

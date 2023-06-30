@@ -88,10 +88,7 @@ export const lineoptions = {
 export default function MoneyChartExpense() {
     const navigate = useNavigate();
     const [value, onChange] = useState(new Date());
-
     const user = useSelector((state) => state.user.user);
-
-    
 
     // 오늘 날짜
     const  today = new Date
@@ -151,41 +148,8 @@ export default function MoneyChartExpense() {
 
     const [list, setList] = useState([]);
 
-
     const inputRef = useRef([]);
     
-
-    // useEffect(() => {
-    //     getSavingData();
-    // }, [user]); // [user] 가바뀔떄마다 돈다
-
-    // // 지출 불러오기
-    // const getSavingData = async () => {
-    //     try {
-    //         const fmCollectionRef = collection(db, "money_expense");
-    //         const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid));
-    //         const fmQuerySnapshot = await getDocs(fmQuery);
-            
-    //         if (!user.uid) {
-    //             navigate('/account/login');
-    //         } else {
-    //             let dataArray = [];
-    //             let newArray = [];
-
-    //             fmQuerySnapshot.forEach((doc) => {
-    //                 dataArray.push({
-    //                     ...doc.data(),
-    //                     id: doc.id,
-    //                 });
-    //             });
-    //         }
-    //     } catch (error) {
-    //         console.log("실패했습니다", error);
-    //     }
-    // };
-    
-    
-
     
     // 데이터들 카테고리,가격 나열
     function samecategory(d) {
@@ -213,7 +177,6 @@ export default function MoneyChartExpense() {
             return dataList;
     }
 
-
     // 라인그래프
     //날짜 중복제거, 각 가격합침
     function linededuplication (d) {
@@ -233,7 +196,6 @@ export default function MoneyChartExpense() {
             }
         }
         
-        console.log("dif",checkdifferntdate)
         
         
         if(checkdifferntdate == "date"){
@@ -315,8 +277,6 @@ export default function MoneyChartExpense() {
         }
     }
 
-
-
     // 파이 그래프에 필요한
     // 카테고리 중복제거,각 가격합침
     function deduplication (d) {
@@ -332,15 +292,6 @@ export default function MoneyChartExpense() {
         return result
     }
     
-    // 총합
-    function alltotal (d) {
-        let totalAmount = 0;
-        for(let i = 0; i< d.length; i++) {
-            totalAmount += d[i].total;
-        }
-        return totalAmount
-    }
-
     // 파이 그래프에 필요한
     // 객체를 { category: "카테고리명", total: 금액 } 형태의 배열로 변환
     function transform (d) {
@@ -350,6 +301,17 @@ export default function MoneyChartExpense() {
         }));
         return transformedArray
     }
+
+    // 총합
+    function alltotal (d) {
+        let totalAmount = 0;
+        for(let i = 0; i< d.length; i++) {
+            totalAmount += d[i].total;
+        }
+        return totalAmount
+    }
+
+
 
     // 조회 버튼
     // 조회 누르면 각 조건에 맞는 데이터 들을 db에서 꺼내옴
@@ -388,18 +350,9 @@ export default function MoneyChartExpense() {
             // 중복된 날짜 합침
             // 중복된 날짜의 금액 합침
             const ctpicdt = linededuplication(samecategory(dayFilterDateList))
-            // console.log("라인 중복제거전",samecategory(dayFilterDateList))
-            // console.log("라인 중복제거후",ctpicdt)
 
             const ctpicdtList = samecategory(dayFilterDateList)
             setList(ctpicdtList)
-            // console.log("ctpicdtList 데이트덜",ctpicdtList)
-            // console.log("라인 카테고리,가격,날짜",ctpicdt)
-
-            
-            // console.log('라인그래프 가격,날짜 가격합산된',linededuplication(samecategory(dayFilterDateList)))
-            // console.log('중복제거',deduplication(samecategory(dayFilterDateList)))
-            // console.log('배열로 변경',ctgpic)
 
             // 총 합금액
             const alltotall = alltotal(ctgpic)
@@ -444,27 +397,26 @@ export default function MoneyChartExpense() {
 
 
             // 년이 다른게 있으면 년 라인으로 넣기
-
             // 날짜 카테고리 가격 넣기
-            let Pprice = [];
-            let Pdates= [];
-            let Pcategory= [];
+            // let Pprice = [];
+            // let Pdates= [];
+            // let Pcategory= [];
 
-            for(let i=0; i<ctpicdtList.length; i++){
+            // for(let i=0; i<ctpicdtList.length; i++){
                 
-                let price = ctpicdtList[i].price;
-                let date = ctpicdtList[i].date;
-                let category = ctpicdtList[i].category;
+            //     let price = ctpicdtList[i].price;
+            //     let date = ctpicdtList[i].date;
+            //     let category = ctpicdtList[i].category;
                 
                 
-                Pprice.push(price);
-                Pdates.push(date);
-                Pcategory.push(category)
-            }
+            //     Pprice.push(price);
+            //     Pdates.push(date);
+            //     Pcategory.push(category)
+            // }
             
-            setPdate(Pdates);
-            setPcategory(Pcategory);
-            setPamount(Pprice);
+            // setPdate(Pdates);
+            // setPcategory(Pcategory);
+            // setPamount(Pprice);
         } 
 
             
@@ -476,26 +428,24 @@ export default function MoneyChartExpense() {
         
     }
 
-    // console.log("잘담겼나?",linedateList)
-    // console.log('2021-12-31'=='2021-12-31')
 
     // 1 . dayFilterDateList date형식으로 변환
     // 2 .reduce를 써서 날짜 중복이면 가격 합침
     // 3 .객체를 { date: "날짜", total: 금액 } 형태의 배열로 변환
 
-
+    
     useEffect(() => {   
         handleTest()
     },[onedayclick])
-
+    
     useEffect(() => {
         handleTest2()
     },[startdayclick,enddayclick])
-
+    
     useEffect(() => {
         handleTest3()
     },[nowmonthfirstday,nowmonthlastday])
-
+    
     useEffect(() => {
         chageDateOneMonth(); 
         if(user){
@@ -506,7 +456,7 @@ export default function MoneyChartExpense() {
     },[checked])
     
     
-
+    //string 형식으로 바꾸기
     const changeDate = (newDate) => {
         if(!newDate){
             newDate=new Date()

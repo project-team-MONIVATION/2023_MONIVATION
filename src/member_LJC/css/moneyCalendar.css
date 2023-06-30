@@ -30,6 +30,13 @@
     font-weight: 600;
 }
 
+#MoneyCalendar .chart_component_container .title:hover {
+    margin-top: 18px;
+    margin-right: 60%;
+    font-size: 18px;
+    transition: .3s;
+}
+
 
 #MoneyCalendar .chart_component_container .chartbtn_container{
     width: 60px;
@@ -39,15 +46,14 @@
     background-color: #8E8E8E;
     border-radius: 15px;
     margin-top : 10px;
-
-    
 }
+
 
 
 #MoneyCalendar .chartbtn_container .btns {
     position: relative;
     width: inherit;
-    top: -31px;
+    top: -29px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -96,14 +102,22 @@
     font-weight: 600;
 }
 
-#MoneyCalendar .installment_total {
-    margin-top: 30px;
+#MoneyCalendar .installment_component .installment_total {
+    margin-left: 70px;
+    margin-top: 50px;
 }
-
 
 /* 할부금 컴프 */
 #installment.total_price {
-    font-size: 35px;
+    display: flex;
+}
+
+#installment.total_price {
+    font-size: 10px;
+    font-weight: 600;
+}
+#installment.total_price .T_price{
+    font-size: 30px;
     font-weight: 600;
 }
 
@@ -151,6 +165,9 @@
     margin-right: 60%;*/
 }
 
+/* #MoneyCalendar .target_amount_component .title_container .title {
+    
+} */
 
 #MoneyCalendar .target_amount_component .title_container .title_btn {
     display: flex;
@@ -204,19 +221,140 @@
 }
 
 #target_A.targetA_component .targetA_bar{
-    margin-top: -5px;
-    
-    width: 245px;
+    width: 80%;
+    margin-top: 10px;
 }
 
 #target_A.targetA_component .targetA_bar .A_bar_icon {
     /* margin-right: 50px; */
-
-    width: 245px;
-    
+    width: i;
+    margin-bottom: 20px;
 }
+
 
 /* 비어있는 div */
 #MoneyCalendar .empty {
     width: 220px;
+
+}
+
+/* money input 입력 버튼 */
+/* #moneyinput.moneyinput_container{
+    border: 1px solid black;
+} */
+
+#moneyinput.moneyinput_container .money_pluse_btn_wrap {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 0;
+    border-radius: 50%;
+    bottom: -33%;
+    right: 0;
+    background-color: #F4D750;
+    z-index: 3;
+
+    transition: .5s;
+}
+#moneyinput.moneyinput_container .money_pluse_btn_wrap:hover {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 0;
+    border-radius: 50%;
+    bottom: -33%;
+    right: 0;
+    background-color: #ffc400;
+    z-index: 3;
+
+    transition: .5s;
+}
+
+
+#moneyinput .pluse_btn {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    right: 9%;
+    border: none;
+    background-color: rgba(0,0,0,0);
+    
+    margin-right: 13px;
+    margin-top: 20px;
+}
+
+#moneyinput .pluse_btn:before, #moneyinput .pluse_btn:after{
+    content: "";
+    position: absolute;
+
+    background-color: rgb(255, 255, 255);
+    transition: transform 0.25s ease-out;
+}
+
+  /* vertical line */
+#moneyinput .pluse_btn:before{
+    top: 0;
+    left: 45%;
+    width: 5px;
+    height: 100%;
+    margin-left: -1px;
+}
+
+  /* horizontal line */
+#moneyinput .pluse_btn:after{
+    top: 45%;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    margin-top: -1px;
+}
+
+#moneyinput .pluse_btn.clike{
+    cursor: pointer;
+}
+
+#moneyinput .pluse_btn.clike:before{ 
+transform: rotate(90deg); 
+}
+
+#moneyinput .pluse_btn.clike:after{ 
+transform: rotate(180deg); 
+}
+
+
+
+#moneyinput.moneyinput_container .money_input_btns {
+    position: absolute;
+    bottom: -28%;
+    right: 3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-content: center;
+    border-radius: 30px;
+    background-color: #595959;
+    width: 140px;
+    height: 160px;
+    box-sizing: border-box;
+    padding: 10px 0;
+
+    transition: .5s;
+}
+
+#moneyinput.moneyinput_container .money_input_btns_delete {
+    position: absolute;
+    bottom: -28%;
+    right: 3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-content: center;
+    border-radius: 50px;
+    background-color: #ffffff;
+    width: 0.1px;
+    height: 0.1px;
+    box-sizing: border-box;
+    padding: 10px 0;
+    
+    transition: .5s;
 }

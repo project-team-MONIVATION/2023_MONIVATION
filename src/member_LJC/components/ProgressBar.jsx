@@ -14,7 +14,9 @@ const ProgressBar = ({ num, maxNum }) => {
         backgroundColor: 'red',
         width: `${dealt}%`,
         height: '100%',
+        
     };
+    console.log("나와라", dealt)
 
     return (
         <div style={progressStyle}>

@@ -131,11 +131,12 @@ export default function AssetManagerProfile() {
     <div id='layout'>
       <div id='layout-in'>
       <div id="manager-profile">
-        <h1 className="profile-header">자산관리사 프로필</h1>
+        
         <div className='top-box'>
           {
             profile &&
             <div>
+              <h1 className="profile-header">자산관리사 프로필</h1>
               <div className='profile-photo' style={{backgroundImage: `url(${profile.photo})`}}></div>
               <div className='profile-intro'>
                 <div>
@@ -158,7 +159,7 @@ export default function AssetManagerProfile() {
           }
 
           {/* 캘린더 */}
-          <div>
+          <div className='calendar-box'>
             <Calendar className="asset-calendar" onChange={ onClickDate } value={date}/>
             <Link to={`/asset/managerID/profile/reservation/${params.id}`}>
               <div className='reservation-btn'>
