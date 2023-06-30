@@ -40,9 +40,29 @@ export default function ChallengeCreate() {
 
 
   const onFileChanges = (event) => {
-    console.log(event.target.files);
+    //console.log(event.target.files);
     const file = event.target.files[0];
-    setChallengeImg(URL.createObjectURL(file));
+    //setChallengeImg(URL.createObjectURL(file));
+
+    const storageRef = ref(storage, file.name);
+
+    uploadBytes(storageRef, file)
+      .then((snapshot)=>{
+        console.log('Uploaded a file : ', snapshot.metadata.name);
+        // 이미지의 다운로드 URL 얻기
+        getDownloadURL(snapshot.ref)
+          .then((downloadURL)=>{
+            console.log('Download URL:', downloadURL);
+            // 여기서 다운로드 URL을 활용하여 저장하거나 출력하는
+            // 등의 작업을 수행할 수 있습니다.
+          })
+          .catch((error)=>{
+            console.log('Error getting download URL:', error);
+          });
+      })
+      .catch((error)=>{
+        console.log('Error uploading file : ', error);
+      })
   };
 
   const addUserChallenge = async(e) =>{
@@ -78,7 +98,6 @@ export default function ChallengeCreate() {
                       type="radio"
                       checked={isImageSelected('img1.jpg')}
                       onChange={() => handleImageSelect('img1.jpg')}
-                      
                     />
                     <img 
                       style={{display : "inline-block", 
