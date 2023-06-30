@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const AccordionStyled = styled.div `
+const AccordionBtn = styled.button `
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -13,43 +13,26 @@ const AccordionStyled = styled.div `
     border: 1px solid #CDCDCD;
     background: #FFF;
     :hover {
-        border: 1px solid #CDCDCD;
-        background: #CDCDCD;
-    }
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
 
-    & button {
-        width: 172px;
-        height: 39px;
-        flex-shrink: 0;
-        border-radius: 50px;
-        border: 1px solid var(--black-60, #8E8E8E);
-        background: #FFF;
-        margin-top: 50px;
-        margin-left: 20px;
-        position: relative;
-        & > img {
-            width: 17.5px;
-            position: absolute;
-            left: 20px;
-            top: 10px;
-        }
+  &.active {
+    font-weight: bold;
+  }
 
-        & > span {
-            font-size: 1.05rem;
-            color: #8A8A8A;
-            letter-spacing: 0.1em;
-            position: absolute;
-            top: 11px;
-        }
-    }
+  :after {
+    content: '\002B';
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+  }
 
-    & h2 {
-        font-size: 2.1rem;
-        margin-top: 56px;
-        margin-right: 20px;
-    }
+  &.active:after {
+    content: "\2212";
+  }
 `;
 
 export default function Accordion({ children, ...rest }) {
-  return <AccordionStyled {...rest}>{children}</AccordionStyled>;
+  return <AccordionBtn {...rest}>{children}</AccordionBtn>;
 }

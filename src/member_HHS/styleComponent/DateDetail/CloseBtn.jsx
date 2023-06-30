@@ -15,7 +15,7 @@ const CloseBtnStyled = styled.button.attrs(props => ({
     font-family: 'Cafe24Ssurround';
     padding: 6px;
     transition: color 0.2s ease-in-out; /* transition 속성 추가 */
-
+    z-index: 10;
 
     :hover {
         color: #2CA0C6;
