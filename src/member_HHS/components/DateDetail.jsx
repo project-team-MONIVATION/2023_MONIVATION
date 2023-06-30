@@ -16,6 +16,7 @@ import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
 import DateDetailBox from '../styleComponent/DateDetail/DateDetailBox';
 import SearchDate from '../styleComponent/DateDetail/SearchDate';
 import Accordion from '../styleComponent/DateDetail/Accordion';
+import MoneyList from '../styleComponent/DateDetail/MoneyList';
 
 
 export default function DateDetail({ closeModal2, selectedDate }) {
@@ -251,6 +252,13 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       return formattedValue;
     };
 
+    /** 아코디언 형식 출력 */
+    const [activeAccordion, setActiveAccordion] = useState(null);
+
+    const toggleAccordion = (index) => {
+      setActiveAccordion((prevIndex) => (prevIndex === index ? null : index));
+    };
+
 
     return (
       <DateDetailBox>
@@ -281,7 +289,8 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 <br />
 
           {/* 수입 상세 출력 */}
-          <Accordion>
+          <Accordion   className={activeAccordion === 1 ? 'active' : ''}
+  onClick={() => toggleAccordion(1)}>
             <h3>이 날의 수입은?</h3>
             <h3>
               { handleHyphen (
@@ -292,7 +301,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
             </h3>
           </Accordion>
 <br />
-          <div>
+          <MoneyList>
             <h4>수입</h4>
             <h4>
               {/* 선택한 날짜와 동일한 수입 값의 합 계산 */}
@@ -301,7 +310,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               ) }
               <span>&#8361;</span>
             </h4>
-          </div>
+          </MoneyList>
 <br />
           <div>
             {/* 선택한 날짜와 동일한 수입 값들 출력 */}
@@ -345,7 +354,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 <br />
 <br />
           {/* 지출 */}
-          <div>
+          <Accordion>
             <h3>이 날의 지출은?</h3>
             <h3>
               { handleHyphen(
@@ -354,9 +363,9 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               ) }
               <span>&#8361;</span>
             </h3>
-          </div>
+          </Accordion>
 <br />
-          <div>
+          <MoneyList>
             <h4>지출</h4>
             <h4>
               { handleHyphen(
@@ -364,9 +373,9 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               ) }
               <span>&#8361;</span>
             </h4>
-          </div>
+          </MoneyList>
 <br />
-          <div>
+          <MoneyList>
             { filteredExpense.map((item, i) => {
               // 해당 expense에 매칭되는 installments 문서 찾기
               const matchingInstallment = installments.find(
@@ -391,7 +400,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               );
             }) }
 <br />
-          </div>
+          </MoneyList>
           <div>
             <h4>반복지출</h4>
             <h4>
@@ -402,7 +411,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
             </h4>
           </div>
 <br />
-          <div>
+          <MoneyList>
             { filteredExpenseRepeat.map((item, i) => (
               <div key = {i}
                 onClick = {() =>
@@ -415,7 +424,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 <hr />
               </div>
             ))}
-          </div>
+          </MoneyList>
 <br />
         </div>
           {/** 서브 모달 컴포넌트 */}
