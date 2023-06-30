@@ -9,6 +9,7 @@ import InputBox from '../styleComponent/Create/InputBox'
 import SignupForm from '../styleComponent/Create/SignupForm'
 import BtnBox from '../styleComponent/Create/BtnBox'
 import WithEmailBtn from '../styleComponent/Create/WithEmailBtn'
+import CreateBtn from '../styleComponent/LoginForm/CreateBtn';
 
 export default function Create() {
   const navigate = useNavigate();
@@ -259,107 +260,128 @@ export default function Create() {
 
   return (
     <WrapForm>
-      {showPersonalUsers || showFinancialManagers ? (
-        <InputBox>
-          {/* 내용 2 */}
-          {showPersonalUsers && (
-            <BtnBox>
-              <img src="/img/logo.png" alt="" style={{width:"100px"}}/>
-              <h2>Let's create <br /> a personal account</h2>
+      <div
+      />
+      <div
+        style={{
+          width: "600px",
+          height: "82px",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <CreateBtn onClick={()=>{navigate('/account/create')}}>Create Account</CreateBtn>
+        <CreateBtn onClick={()=>{navigate('/account/login')}}>Login</CreateBtn>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          height: "556px"
+        }}
+      >
+        {showPersonalUsers || showFinancialManagers ? (
+          <InputBox>
+            {/* 내용 2 */}
+            {showPersonalUsers && (
+              <BtnBox>
+                <img src="/img/logo.png" alt="" style={{width:"100px"}}/>
+                <h2>Let's create <br /> a personal account</h2>
 
-              <WithEmailBtn>
-                <Link to="/account/create/personal-user">With Email</Link>
-                <p> or create account with </p>
-                <div>
-                  <button onClick={onGoogleLoginPU}>
-                    <img
-                      src="/img/google.png"
-                      alt="구글 로그인 버튼"
-                    />
-                  </button>
+                <WithEmailBtn>
+                  <Link to="/account/create/personal-user">With Email</Link>
+                  <p> or create account with </p>
+                  <div>
+                    <button onClick={onGoogleLoginPU}>
+                      <img
+                        src="/img/google.png"
+                        alt="구글 로그인 버튼"
+                      />
+                    </button>
 
-                  <button onClick={kakaoLoginPU}>
-                    <img
-                      src="/img/kakao.png"
-                      alt="카카오 로그인 버튼"
-                    />
-                  </button>
-                </div>
-              </WithEmailBtn>
-            </BtnBox>
-          )}
-          {/* 내용 3 */}
-          {showFinancialManagers && (
-            <BtnBox>
-              <img src="/img/logo.png" alt="" style={{width:"100px"}}/>
-              <h2>Let's create <br /> a financial account</h2>
-              
-              <WithEmailBtn>
-                <Link to ='/account/create/financial-manager'>With Email</Link>
-                <p> or create account with </p>
-                <div>
-                  <button onClick={onGoogleLoginFM}>
-                    <img
-                      src="/img/google.png"
-                      alt="구글 로그인 버튼"
-                    />
-                  </button>
+                    <button onClick={kakaoLoginPU}>
+                      <img
+                        src="/img/kakao.png"
+                        alt="카카오 로그인 버튼"
+                      />
+                    </button>
+                  </div>
+                </WithEmailBtn>
+              </BtnBox>
+            )}
+            {/* 내용 3 */}
+            {showFinancialManagers && (
+              <BtnBox>
+                <img src="/img/logo.png" alt="" style={{width:"100px"}}/>
+                <h2>Let's create <br /> a financial account</h2>
+                
+                <WithEmailBtn>
+                  <Link to ='/account/create/financial-manager'>With Email</Link>
+                  <p> or create account with </p>
+                  <div>
+                    <button onClick={onGoogleLoginFM}>
+                      <img
+                        src="/img/google.png"
+                        alt="구글 로그인 버튼"
+                      />
+                    </button>
 
-                  <button onClick={kakaoLoginFM}>
-                    <img
-                      src="/img/kakao.png"
-                      alt="카카오 로그인 버튼"
-                    />
-                  </button>
-                </div>
-              </WithEmailBtn>
-            </BtnBox>
-          )}
-        </InputBox>
-      ) : (
-        <InputBox>
-          <img src="/img/logo.png" alt="" style={{width:"100px"}}/>
-          <h2>WELCOME!</h2>
-          <div>
-            <SignupForm onClick={handlePU}>Personal User</SignupForm>
-          </div>
-          <div>
-            <SignupForm onClick={handleModalOpen}>Financial Manager</SignupForm>
-          </div>
-          {/* 모달창 수정필요 */}
-        {isModalOpen && (
-          <div style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}>
-            <div
-              style={{
-                backgroundColor: "white",
-                padding: "50px",
-              }}
-            > 
-              <label>초대코드를 입력하세요</label>
-              <br />
-              <input
-                type="text"
-                value={invitationCode}
-                onChange={handleInvitationCodeChange}
-              />
-              <br />
-              <button onClick={handleConfirmation}>확인</button>
-              <button onClick={handleModalClose}>취소</button>
+                    <button onClick={kakaoLoginFM}>
+                      <img
+                        src="/img/kakao.png"
+                        alt="카카오 로그인 버튼"
+                      />
+                    </button>
+                  </div>
+                </WithEmailBtn>
+              </BtnBox>
+            )}
+          </InputBox>
+        ) : (
+          <InputBox>
+            <img src="/img/logo.png" alt="" style={{width:"100px"}}/>
+            <h2>WELCOME!</h2>
+            <div>
+              <SignupForm onClick={handlePU}>Personal User</SignupForm>
             </div>
-          </div>
-          )}
-        </InputBox>
-      )}
+            <div>
+              <SignupForm onClick={handleModalOpen}>Financial Manager</SignupForm>
+            </div>
+            {/* 모달창 수정필요 */}
+          {isModalOpen && (
+            <div style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              <div
+                style={{
+                  backgroundColor: "white",
+                  padding: "50px",
+                }}
+              > 
+                <label>초대코드를 입력하세요</label>
+                <br />
+                <input
+                  type="text"
+                  value={invitationCode}
+                  onChange={handleInvitationCodeChange}
+                />
+                <br />
+                <button onClick={handleConfirmation}>확인</button>
+                <button onClick={handleModalClose}>취소</button>
+              </div>
+            </div>
+            )}
+          </InputBox>
+        )}
+      </div>
     </WrapForm>
   )
 }

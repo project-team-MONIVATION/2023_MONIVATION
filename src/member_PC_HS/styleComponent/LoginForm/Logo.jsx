@@ -1,18 +1,20 @@
 import React from "react";
 import styled from 'styled-components';
 
-const LogoImg = styled.h1`
-  color: white;
-  /* 글자 간격 */
-  letter-spacing: 5px;
+const LogoImg = styled.div`
+  background-image: url('img/logo_onlytext_white.png');
   position: absolute;
-  top: 0px;
-  left: 25px;
+  top: 28px;
+  left: 36px;
+  width: 185.171px;
+  height: 26px;
+  flex-shrink: 0;
+  background-size: cover;
   z-index: 100;
 `
 
-export default function Logo({ children,...rest }) {
+export default function Logo({ ...rest }) {
   return (
-      <LogoImg {...rest}>{children}</LogoImg>
+      <LogoImg {...rest}></LogoImg>
   );
 }

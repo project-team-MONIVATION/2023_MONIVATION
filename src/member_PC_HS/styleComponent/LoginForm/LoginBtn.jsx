@@ -2,23 +2,25 @@ import React from "react";
 import styled from "styled-components";
 
 const StyledLink = styled.span`
-  width: 275px;
-  height: 60px;
+  width: 300px;
+  height: 82px;
   z-index: 5;
-  background-color: #fff;
-  border-radius: 26px 26px 0px 0px;
+  background-color: transparent;
+  border-radius: 50px 50px 0px 0px;
 
   & > a {
     display: inline-block;
     color: #fff;
-    font-size: 20px;
+    font-family: 'Cafe24Ssurround';
+    font-size: 23px;
     text-decoration-line: none;
-    width: 275px;
-    height: 60px;
-    background-image: linear-gradient(to right, #21D6CC, #7D21CF);
-    border-radius: 26px 26px 0px 0px;
+    width: 300px;
+    height: 82px;
+    background-color: transparent;
+    // background-image: linear-gradient(to right, #21D6CC, #7D21CF);
+    border-radius: 50px 50px 0px 0px;
     /* 수직정렬 */
-    line-height: 63px;
+    line-height: 82px;
     z-index: 10;
   }
 
@@ -26,18 +28,20 @@ const StyledLink = styled.span`
 
   & > a:active {
     background-color: #fff;
-    width: 275px;
-    height: 60px;
-    border-radius: 26px 26px 0px 0px;
+    color: #8E8E8E;
+    width: 300px;
+    height: 82px;
+    border-radius: 50px 50px 0px 0px;
     z-index: 20;
 
   }
 
   & > a:focus {
     background-color: #fff;
-    width: 275px;
-    height: 60px;
-    border-radius: 26px 26px 0px 0px;
+    color: #8E8E8E;
+    width: 300px;
+    height: 82px;
+    border-radius: 50px 50px 0px 0px;
     z-index: 20;
   }
 `;

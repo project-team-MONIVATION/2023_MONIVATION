@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const FormBox = styled.div `
     position: absolute;
-    background-image: url('img/CreateBox.png');
+    background-image: url('img/LoginBox.png');
     width: 600px;
     height: 638px;
     top: 50%;
@@ -17,7 +17,7 @@ const FormBox = styled.div `
     z-index: 1;
 `
 
-export default function WrapForm({ children,...rest }) {
+export default function WrapFormLogin({ children,...rest }) {
   return (
     <FormBox {...rest}>{children}</FormBox>
   )

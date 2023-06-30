@@ -5,10 +5,11 @@ import { doc, getDoc, getDocs, query, where, collection } from 'firebase/firesto
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { userLogin } from '../slice/userSlice';
-import WrapForm from '../styleComponent/WrapForm';
 import InputBox2 from '../styleComponent/Login/InputBox2';
 import EmailWithPassword from '../styleComponent/Login/EmailWithPassword';
 import SocialBtn from '../styleComponent/Login/SocialBtn';
+import CreateBtn from '../styleComponent/LoginForm/CreateBtn';
+import WrapFormLogin from '../styleComponent/WramFomLogin';
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -225,7 +226,25 @@ export default function Login() {
   }
 
   return (
-        <WrapForm>
+        <WrapFormLogin>
+          <div
+            style={{
+              width: "600px",
+              height: "82px",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <CreateBtn onClick={()=>{navigate('/account/create')}}>Create Account</CreateBtn>
+            <CreateBtn onClick={()=>{navigate('/account/login')}}>Login</CreateBtn>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              height: "556px"
+            }}
+          >
             <InputBox2>
                 <img src="/img/logo.png" alt="" style={{width:"100px"}}/>
                 <h2>WELCOME BACK!</h2>
@@ -262,6 +281,7 @@ export default function Login() {
               </div>
             </SocialBtn>
             </InputBox2>
-        </WrapForm>
+          </div>
+        </WrapFormLogin>
   )
 }
