@@ -199,11 +199,12 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
       <div
         style = { {
           position: 'fixed',
-          top: '100px',
+          width: '580px',
+          height: '850px',
+          transform: "translateY(-50%)",
+          top: '50%',
           right: '90px',
           display: 'flex',
-          width: '600px',
-          height: '700px',
           backgroundColor: 'white',
           padding: '20px',
           borderRadius: '5px',

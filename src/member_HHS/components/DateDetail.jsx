@@ -303,7 +303,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               </h3>
             </div>
           </Accordion>
-</div>
+  </div>
           <MoneyList active={activeAccordion === 1}>
             <div>
               <h3>수입</h3>

@@ -267,6 +267,7 @@ export default function TotalStatComp() {
                   setModalIsOpen(true);
                   openModal(3);
                 }}
+                style={{cursor: "pointer"}}
               >
                 <tr className='tb-subtitle-totalresult'>
                   <td>현재 총 저금액</td>

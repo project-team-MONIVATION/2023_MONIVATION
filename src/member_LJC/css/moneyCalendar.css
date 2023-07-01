@@ -46,24 +46,20 @@
 }
 
 
-#MoneyCalendar .chart_component_container .content {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
-
 #MoneyCalendar .chart_component_container .chartbtn_container{
     width: 60px;
     height: 80px;
     background-color: #8E8E8E;
     border-radius: 15px;
+    position: relative;
+    margin-top: 10%;
+    margin-left: 7%;
 }
 
 #MoneyCalendar .chartbtn_container .btns {
-    position: relative;
+    position: absolute;
+    top: 0;
     width: inherit;
-    top: -29px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -73,8 +69,8 @@
 #MoneyCalendar .chartbtn_container .co_btn {
     box-sizing: border-box;
     width: 60px;
-    height: 30px;
-    padding-top: 3.5px;
+    height: 40px;
+    padding-top: 2px;
     background-color: transparent;
     border: 0;
     border-radius: 50px;
@@ -99,7 +95,6 @@
     width: 25%;
     height: 100%; 
     overflow:hidden; 
-    cursor: pointer;
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
 }
 

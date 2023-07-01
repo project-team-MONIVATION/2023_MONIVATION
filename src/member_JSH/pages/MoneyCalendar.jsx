@@ -119,13 +119,16 @@ export default function MoneyCalendar() {
             </div>
             
             {
-              open 
-              ? (
+              open === true &&
+              (
                 <div style={{position: "absolute", top:"50%", right:"6%", transform: "translate(0, -50%)"}}>
                   <SEcomp/>
                 </div>
               )
-              : (
+            }
+            {
+              open === false && 
+              (
                 <div style={{position: "absolute", top:"50%", right:"6%", transform: "translate(0, -50%)"}}>
                   <SIcomp/>
                 </div>

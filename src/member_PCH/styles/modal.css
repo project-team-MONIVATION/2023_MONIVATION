@@ -11,6 +11,7 @@
   color: #735BF3;
   font-weight: bold;
   font-size: 20px;
+  background-color: #FFFFFF;
 }
 
 #calendar_modal .content_container .content {
@@ -418,6 +419,7 @@
   font-size: 15px;
   top: calc(20px + 1.5%);
   right: calc(20px + 1.5%);
+  background-color: #FFFFFF;
 }
 
 #calendar_modal #input_form .input_content .date_modal .input_date .modal_calendar {
@@ -451,7 +453,8 @@
   font-size: 15px;
   top: calc(20px + 1.5%);
   right: calc(20px + 1.5%);
-}
+  background-color: #FFFFFF;
+  }
 
 #calendar_modal #input_form .input_content .period_modal .input_period .flex {
   display: flex;
