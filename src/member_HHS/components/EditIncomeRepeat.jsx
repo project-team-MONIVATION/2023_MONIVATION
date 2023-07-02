@@ -7,6 +7,12 @@ import Calendar from 'react-calendar';
 import moment from 'moment';
 
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
+import EditForm from '../styleComponent/DateDetail/EditForm';
+import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
+import { SelectDate, SelectPeriod } from '../../member_PCH/features/IconInModal';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 
 export default function EditIncomeRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate }) {
@@ -14,7 +20,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     const [date, setDate] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
-    const [cycle, setCycle] = useState("매일");
+    const [cycle, setCycle] = useState(null);
     const [editPrice, setEditPrice] = useState(price);
     const [editMemo, setEditMemo] = useState(memo);
     const [selectedCategory, setSelectedCategory] = useState(category);
@@ -23,6 +29,8 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     const [showCal, setShowCal] = useState(false); // 날짜 입력하는 캘린더 모달 state
     const [showPeriod, setShowPeriod] = useState(false); // 기간 입력하는 모달 state
 
+    // 반복주기 입력하는 커스텀 select state
+    const [cycleSelect, setCycleSelect] = useState(false);
 
     /** 파이어스토어에 업데이트 넘겨줌 */
     const handleSubmit = async (e) => {
@@ -94,6 +102,11 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
       setEndDate(newDate);
     };
       
+    // 반복주기 입력하는 커스텀 select on/off
+    const onClickCycleSelect = () => {
+      setCycleSelect((prev)=>!prev);
+    }
+
     // 캘린더 모달에서 입력한 값을 form에 보여주기 위한 변환 함수
     const changeDate = (newDate) => {
       const YYYY = String(newDate.getFullYear());
@@ -157,173 +170,252 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
 
 
     return (
-      <div
-        style = { {
-          position: 'fixed',
-          top: '100px',
-          right: '90px',
-          display: 'flex',
-          width: '600px',
-          height: '700px',
-          backgroundColor: 'white',
-          padding: '20px',
-          borderRadius: '5px',
-          border: 'solid 2px black '
-        } }
-      >
-        <form action="" onSubmit = { handleSubmit }>
-        <button
-            type = "button"
-            onClick = { handleClose }
-          >
-            닫기
-        </button>
-<br />      
-          <label>수입예정일</label>
-          <div>
-            <span>{ date && changeDate(date) }</span>
-            <button
-              onClick = { onClickCal }
-            >
-              달력
-            </button>
-          </div>
-          { showCal && (
-            <div>
-              <button
-                type = "button"
-                onClick = { () => setShowCal(false) }
-              >
-                X
-              </button>
-              <Calendar
-                value = { date }
-                onChange = { onClickDate }
-              />
-            </div>
-          ) }
+      <EditForm>
 
-          <label>기간</label>
-          <div>
-            <span>
-              { date && changeDate(date)} ~
-              { endDate ? changeDate(endDate) : '0000-00-00' } { cycle }
-            </span>
-            <button
-              onClick = { onClickPeriod } 
-            >
-              달력
-            </button>
-          </div>
-          { showPeriod && (
-            <div>
-              <button
-                type = "button"
-                onClick = { () => setShowPeriod(false) }
-              >
-                X
-              </button>
-              <div>
-                <p>종료일</p>
-                <Calendar 
-                  formatDay = { (locale, date) => moment(date).format('D') }
-                  onChange = { onClickEndDate } 
-                  value = { endDate } 
-                  minDate = { date }
+        <CloseBtn
+          type = "button"
+          onClick = { handleClose }
+        >
+          X
+        </CloseBtn>
+
+        <form className='edit_form' onSubmit = { handleSubmit }>
+
+          <div className='input_content'>
+
+            <div className='date'>
+              <p>수입예정일</p>
+              <div className='input_box'>
+                <span>{ date && changeDate(date) }</span>
+                <button onClick = { onClickCal }>
+                  <SelectDate showCal={showCal}/>
+                </button>
+              </div>
+              <div className='date_modal'>
+                { 
+                  showCal && (
+                    <div className='input_date'>
+                      <CloseBtn
+                        type = "button"
+                        onClick = { () => setShowCal(false) }
+                      >
+                        X
+                      </CloseBtn>
+                      <Calendar
+                        formatDay={(locale, date) => moment(date).format('D')}
+                        value = { date }
+                        onChange = { onClickDate }
+                        className='modal_calendar'
+                      />
+                    </div>
+                  )
+                }
+              </div>
+            </div>
+
+            <div className='period'>
+              <p>기간</p>
+              <div className='input_box'>
+                <span>
+                  { date && changeDate(date)} ~
+                  { endDate ? changeDate(endDate) : '0000-00-00' } { cycle }
+                </span>
+                <button onClick = { onClickPeriod }>
+                  <SelectPeriod showPeriod={showPeriod}/>
+                </button>
+              </div>
+              <div className='period_modal'>
+                { 
+                  showPeriod && (
+                    <div className='input_period'>
+                      <CloseBtn
+                        type = "button"
+                        onClick = { () => { setShowPeriod(false) } }
+                      >
+                        X
+                      </CloseBtn>  
+                      <div className='flex'>
+                        <div className='input_endDate'>
+                          <p>종료일</p>
+                          <Calendar 
+                            formatDay = { (locale, date) => moment(date).format('D') }
+                            onChange = { onClickEndDate } 
+                            value = { endDate } 
+                            minDate = { date }
+                            className='modal_calendar period'
+                          />
+                        </div>
+                        <div className='input_cycle'>
+                          <p>반복주기</p>
+                          <div className='select'>
+                            <div 
+                            className={
+                              'select_box' +
+                              (cycleSelect? ' active' : '')
+                            }>
+                              <button 
+                                type='button' 
+                                className={ 
+                                  'select_lable' +
+                                  (cycle !== null ? " active" : "")
+                                }
+                                onClick={onClickCycleSelect}
+                              >
+                                {cycle === null ? "필수선택" : cycle}
+                                <FontAwesomeIcon 
+                                  icon={faChevronDown} 
+                                  className='icon_chevron'
+                                  style={{
+                                    transform: cycleSelect ? "scaleY(-1)" : "",
+                                  }}
+                                />
+                              </button>
+                              <ul 
+                                className='option_list'
+                              >
+                                <li 
+                                  className='ontion_item'
+                                  onClick={(e)=>{
+                                    setCycle('매일')
+                                    setCycleSelect((prev)=>!prev)
+                                  }}
+                                >
+                                  매일
+                                </li>
+                                <li 
+                                  className='ontion_item'
+                                  onClick={(e)=>{
+                                    setCycle('매주')
+                                    setCycleSelect((prev)=>!prev);
+                                  }}
+                                >
+                                  매주
+                                </li>
+                                <li 
+                                  className='ontion_item'
+                                  onClick={(e)=>{
+                                    setCycle('매월')
+                                    setCycleSelect((prev)=>!prev);
+                                  }}
+                                >
+                                  매월
+                                </li>
+                                <li 
+                                  className='ontion_item'
+                                  onClick={(e)=>{
+                                    setCycle('매년')
+                                    setCycleSelect((prev)=>!prev);
+                                  }}
+                                >
+                                  매년
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <button
+                            type = "button"
+                            onClick = { () => setShowPeriod(false) }
+                            disabled={!endDate || !cycle}
+                            className= {
+                              'input_btn' +
+                              (!endDate || !cycle ? " disabled" : "")
+                            }
+                          >
+                            입력
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                }
+              </div>
+            </div>
+
+            <div className='price'>
+              <p>금액</p>
+              <div className='input_box'>
+                <input
+                  className='input_price'
+                  type = "text"
+                  value = { handleHyphen(editPrice) }
+                  onChange = { updatePrice }
+                  required
                 />
+                <span className='won'>₩</span>
               </div>
-              <div>
-                <label>반복주기</label>
-                <br />
-                <select
-                  name = "cycle"
-                  onChange = { updateCycle }
-                >
-                  <option value="value" selected disabled>필수선택</option>
-                  <option value="매일">매일</option>
-                  <option value="매주">매주</option>
-                  <option value="매월">매월</option>
-                  <option value="매년">매년</option>
-                </select>
-              </div>
-              <button
-                type = "button"
-                onClick = { () => setShowPeriod(false) }
-              >
-                입력
-              </button>
             </div>
-          )}
 
-          <label>금액</label>
-          <div>
+            <div className='category'>
+              <p>카테고리</p>
+              <div className='category_box'>
+                <CategoryBtn
+                  name = "반복수입"
+                  value = "월급"
+                  checked = { selectedCategory === "월급" }
+                  onChange = { updateCategory }
+                  selectedCategory ={selectedCategory}
+                >
+                  월급
+                </CategoryBtn>
+                <CategoryBtn
+                  name = "반복수입"
+                  value = "용돈"
+                  checked = { selectedCategory === "용돈" }
+                  onChange = { updateCategory }
+                  selectedCategory ={selectedCategory}
+                >
+                  용돈
+                </CategoryBtn>
+                <CategoryBtn
+                  name = "반복수입"
+                  value = "지원금"
+                  checked = { selectedCategory === "지원금" }
+                  onChange = { updateCategory }
+                  selectedCategory ={selectedCategory}
+                >
+                  지원금
+                </CategoryBtn>
+                <CategoryBtn
+                  name = "반복수입"
+                  value = "기타"
+                  checked = { selectedCategory === "기타" }
+                  onChange = { updateCategory }
+                  selectedCategory ={selectedCategory}
+                >
+                  기타
+                </CategoryBtn>
+              </div>
+            </div>
+
+            <div className='memo'>
+              <p>메모</p>
+              <div>
+                <textarea
+                  cols = "30"
+                  rows = "10"
+                  value = { editMemo }
+                  onChange = { updateMemo } />
+              </div>
+            </div>
+          </div>
+
+          <div className='input_btns'>
             <input
-              type = "text"
-              value = { handleHyphen(editPrice) }
-              onChange = { updatePrice }
-              required
+              type = "submit"
+              value = "수정"
+              onClick = { handleClickUpdate }
+              disabled = { !date || !startDate || !cycle || !editPrice || !selectedCategory }
             />
-            <span>₩</span>
+            <button
+              type = "button"
+              onClick = { deleteMoney }
+            >
+              삭제
+            </button>
           </div>
 
-          <label>카테고리</label>
-          <div>
-            <CategoryBtn
-              name = "반복수입"
-              value = "월급"
-              checked = { selectedCategory === "월급" }
-              onChange = { updateCategory }
-            >
-              월급
-            </CategoryBtn>
-            <CategoryBtn
-              name = "반복수입"
-              value = "용돈"
-              checked = { selectedCategory === "용돈" }
-              onChange = { updateCategory }
-            >
-              용돈
-            </CategoryBtn>
-            <CategoryBtn
-              name = "반복수입"
-              value = "지원금"
-              checked = { selectedCategory === "지원금" }
-              onChange = { updateCategory }
-            >
-              지원금
-            </CategoryBtn>
-            <CategoryBtn
-              name = "반복수입"
-              value = "기타"
-              checked = { selectedCategory === "기타" }
-              onChange = { updateCategory }
-            >
-              기타
-            </CategoryBtn>
-          </div>
-
-          <label>메모</label>
-          <div>
-            <textarea
-              cols = "30"
-              rows = "10"
-              value = { editMemo }
-              onChange = { updateMemo } />
-          </div>
-
-          <input
-            type = "submit"
-            value = "수정"
-            onClick = { handleClickUpdate }
-            disabled = { !date || !startDate || !cycle || !editPrice || !selectedCategory }
-          />
-          <button
-            type = "button"
-            onClick = { deleteMoney }
-          >
-            삭제
-          </button>
         </form>
-      </div>
+
+      </EditForm>
   );
 }

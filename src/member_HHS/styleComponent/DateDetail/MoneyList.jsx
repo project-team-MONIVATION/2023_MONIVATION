@@ -4,17 +4,14 @@ import styled from 'styled-components';
 const MoneyListPanel = styled.div`
     position: relative;
     top: 0px;
-    padding: 0 16px;
-    background-color: #fff;
+    background-color: rgb(255, 255, 255);
     max-height: ${({ active }) => (active ? '700px' : '0')};
     overflow: hidden;
-    transition: max-height 0.5s ease-out;
 
     & div {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 20px 40px;
         & h3 {
             font-size: 1.3rem;
             letter-spacing: 0.1em;

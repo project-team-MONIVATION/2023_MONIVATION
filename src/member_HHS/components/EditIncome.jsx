@@ -6,6 +6,10 @@ import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import Calendar from 'react-calendar';
 
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
+import EditForm from '../styleComponent/DateDetail/EditForm';
+import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
+import { SelectDate } from '../../member_PCH/features/IconInModal';
+import moment from 'moment';
 
 export default function EditIncome({ category, price, memo, closeSubModal, id, handleDataUpdate }) {  
     // form의 입력 값 state
@@ -130,124 +134,136 @@ export default function EditIncome({ category, price, memo, closeSubModal, id, h
 
 
     return (
-      <div
-        style = { {
-          position: 'fixed',
-          top: '100px',
-          right: '90px',
-          display: 'flex',
-          width: '600px',
-          height: '700px',
-          backgroundColor: 'white',
-          padding: '20px',
-          borderRadius: '5px',
-          border: 'solid 2px black'
-        } }
-      >
-        <form action = "" onSubmit = { handleSubmit }>
-          <button
-            type = "button"
-            onClick = { handleClose }
-          >
-            닫기
-          </button>
-<br />
-          <label>날짜</label>
-          <div>
-            <span>{ date && changeDate(date) }</span>
+      <EditForm>
+
+        <CloseBtn
+          type = "button"
+          onClick = { handleClose }
+        >
+          X
+        </CloseBtn>
+
+        <form className='edit_form' onSubmit = { handleSubmit }>
+
+          <div className='input_content'>
+            <div className='date'>
+              <p>날짜</p>
+              <div className='input_box'>
+                <span>{ date && changeDate(date) }</span>
+                <button onClick = { onClickCal }>
+                  <SelectDate showCal={showCal}/>
+                </button>
+              </div>
+              <div className='date_modal'>
+                {
+                  showCal && (
+                    <div className='input_date'>
+                      <button
+                        type = "button"
+                        onClick = { () => setShowCal(false) }
+                        className='close_btn'
+                      >
+                        X
+                      </button>
+                      <Calendar
+                        formatDay={(locale, date) => moment(date).format('D')}
+                        value = { date }
+                        onChange = { onClickDate }
+                        className='modal_calendar'
+                      />
+                    </div>
+                  )
+                }
+              </div>
+            </div>
+
+            <div className='price'>
+              <p>금액</p>
+              <div className='input_box'>
+                <input
+                  className='input_price'
+                  type = "text"
+                  value = { handleHyphen(editPrice) }
+                  onChange = { updatePrice }
+                  required
+                />
+                <span className='won'>₩</span>
+              </div>
+            </div>
+
+            <div className='category'>
+              <p>카테고리</p>
+              <div className='category_box'>
+                <CategoryBtn
+                  name = "일반수입"
+                  value = "보너스"
+                  checked = { selectedCategory === '보너스' }
+                  onChange = { updateCategory }
+                  selectedCategory ={selectedCategory}
+                >
+                  보너스
+                </CategoryBtn>
+                <CategoryBtn
+                  name = "일반수입"
+                  value = "용돈"
+                  checked = { selectedCategory === '용돈' }
+                  onChange = { updateCategory }
+                  selectedCategory ={selectedCategory}
+                >
+                  용돈
+                </CategoryBtn>
+                <CategoryBtn
+                  name = "일반수입"
+                  value = "재테크"
+                  checked = {selectedCategory === '재테크'}
+                  onChange = { updateCategory }
+                  selectedCategory ={selectedCategory}
+                >
+                  재테크
+                </CategoryBtn>
+                <CategoryBtn
+                  name = "일반수입"
+                  value = "기타"
+                  checked = {selectedCategory === '기타'}
+                  onChange = { updateCategory }
+                  selectedCategory ={selectedCategory}
+                >
+                  기타
+                </CategoryBtn>
+              </div>
+            </div>
+
+            <div>
+              <p>메모</p>
+              <div>
+                <textarea
+                  cols = "30"
+                  rows = "10"
+                  value = { editMemo }
+                  onChange = { updateMemo }
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className='input_btns'>
+            <input
+              type = "submit"
+              value = "수정"
+              onClick = { handleClickUpdate }
+              disabled = { !date || !editPrice || !selectedCategory }
+            />
             <button
-              onClick = { onClickCal }
+              type = "button"
+              onClick = { deleteMoney }
             >
-              달력
+              삭제
             </button>
           </div>
-          {
-            showCal && (
-              <div>
-              <button
-                type = "button"
-                onClick = { () => setShowCal(false) }
-              >
-                X
-              </button>
-              <Calendar
-                value = { date }
-                onChange = { onClickDate }
-              />
-            </div>
-          )}
 
-          <label>금액</label>
-          <div>
-            <input
-              type = "text"
-              value = { handleHyphen(editPrice) }
-              onChange = { updatePrice }
-              required
-            />
-            <span>₩</span>
-          </div>
-
-          <label>카테고리</label>
-          <div>
-            <CategoryBtn
-              name = "일반수입"
-              value = "보너스"
-              checked = { selectedCategory === '보너스' }
-              onChange = { updateCategory }
-            >
-              보너스
-            </CategoryBtn>
-            <CategoryBtn
-              name = "일반수입"
-              value = "용돈"
-              checked = { selectedCategory === '용돈' }
-              onChange = { updateCategory }
-            >
-              용돈
-            </CategoryBtn>
-            <CategoryBtn
-              name = "일반수입"
-              value = "재테크"
-              checked = {selectedCategory === '재테크'}
-              onChange = { updateCategory }
-            >
-              재테크
-            </CategoryBtn>
-            <CategoryBtn
-              name = "일반수입"
-              value = "기타"
-              checked = {selectedCategory === '기타'}
-              onChange = { updateCategory }
-            >
-              기타
-            </CategoryBtn>
-          </div>
-
-          <label>메모</label>
-          <div>
-            <textarea
-              cols = "30"
-              rows = "10"
-              value = { editMemo }
-              onChange = { updateMemo }
-            />
-          </div>
-
-          <input
-            type = "submit"
-            value = "수정"
-            onClick = { handleClickUpdate }
-            disabled = { !date || !editPrice || !selectedCategory }
-          />
-          <button
-            type = "button"
-            onClick = { deleteMoney }
-          >
-            삭제
-          </button>
         </form>
-      </div>
+
+      </EditForm>
 
     );
 }

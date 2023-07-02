@@ -4,9 +4,6 @@ import styled from 'styled-components'
 const CloseBtnStyled = styled.button.attrs(props => ({
     onClick: props.onClick,
 })) `
-    position: absolute;
-    top: 1%;
-    right: 1.5%;
     border: 0;
     background: none;
     color: #735BF3;

@@ -9,31 +9,28 @@ const AccordionBtn = styled.button `
         font-style: normal;
     }
 
-    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 45px;
     justify-content: space-between;
-    width: 500px;
-    height: 44px;
     flex-shrink: 0;
     border-radius: 50px;
     border: none;
-    background: #fff;
-    margin-left: 20px;
-    margin-right: 20px;
-    top: 40px;
-    transition: box-shadow 0.5s, 0.6s ease-in-out;
-    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.20);
+    border: 1px solid #CDCDCD;
+    padding: 0;
 
     & div {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        box-sizing: border-box;
+        padding: 0 25px;
         & h3 {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             letter-spacing: 0.1em;
-            margin: 0 25px;
+            padding-top: 3px;
         }
         & h3:nth-child(1) {
-            margin-top: 3px;
             & span {
                 color: #6717CD;
                 font-family: 'Cafe24Ssurround';
@@ -47,7 +44,6 @@ const AccordionBtn = styled.button `
     }
 
     :hover {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         background-color: #CDCDCD;
     }
 
