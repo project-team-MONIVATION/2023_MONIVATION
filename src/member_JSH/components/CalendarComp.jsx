@@ -166,7 +166,7 @@ export default function CalendarComp() {
         getExpense();
         getExpenseRepeat();
       }
-    }, [user, modalIsOpen]);
+    }, [user, modalIsOpen, isModalOpen2]);
 
     // 금액 천자리 콤마(,)
     const handleHyphen = (value) => {
@@ -244,7 +244,8 @@ export default function CalendarComp() {
 
       {isModalOpen2 && (
         <ModalWrap>
-          <div>
+          <div
+          >
             <DateDetail
               closeModal2 = { closeModal2 }
               selectedDate = { value }

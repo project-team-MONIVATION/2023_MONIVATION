@@ -180,12 +180,34 @@ export default function MoneyCalendar() {
                 </button>
                 {
                     activeModal === 1 && (
-                        <Modal isOpen={modalIsOpen}>
-                        <div>
-                            <h3>추가</h3>
-                            <button onClick={()=>setModalIsOpen(false)}>취소</button>
-                            <TargetAmountInputComp setModalIsOpen={setModalIsOpen}/>
-                        </div>
+                        <Modal 
+                          isOpen={modalIsOpen}
+                          style={{
+                            overlay: {
+                              position: 'fixed',
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              backgroundColor: 'rgba(0, 0, 0, 0.75)'
+                            },
+                            content: {
+                              boxSizing: 'border-box',
+                              width: '580px',
+                              height: '790px',
+                              top: '50%',
+                              left: '50%',
+                              transform: 'translate(-50%, -50%)',
+                              borderRadius: '50px',
+                              border: 0
+                            }
+                          }}
+                        >
+                          <div>
+                              <h3>추가</h3>
+                              <button onClick={()=>setModalIsOpen(false)}>취소</button>
+                              <TargetAmountInputComp setModalIsOpen={setModalIsOpen}/>
+                          </div>
                         </Modal>
                         
                     )
@@ -202,7 +224,29 @@ export default function MoneyCalendar() {
                 </button>
                 {
                     activeModal === 2 && (
-                        <Modal isOpen={modalIsOpen}>
+                        <Modal 
+                          isOpen={modalIsOpen}
+                          style={{
+                            overlay: {
+                              position: 'fixed',
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              backgroundColor: 'rgba(0, 0, 0, 0.75)'
+                            },
+                            content: {
+                              boxSizing: 'border-box',
+                              width: '580px',
+                              height: '790px',
+                              top: '50%',
+                              left: '50%',
+                              transform: 'translate(-50%, -50%)',
+                              borderRadius: '50px',
+                              border: 0
+                            }
+                          }}
+                        >
                         <div>
                             <h3>목표금액 수정,리스트 모달창</h3>
                             <button onClick={()=>setModalIsOpen(false)}>취소</button>
