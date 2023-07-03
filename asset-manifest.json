@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/2023_MONIVATION/static/css/main.ba564ea7.css",
-    "main.js": "/2023_MONIVATION/static/js/main.606bd258.js",
+    "main.js": "/2023_MONIVATION/static/js/main.d41e200e.js",
     "static/media/logo_onlyillust.png": "/2023_MONIVATION/static/media/logo_onlyillust.5449688a954860da4025.png",
     "static/media/noneImage.jpg": "/2023_MONIVATION/static/media/noneImage.6e456eb4cb79cc982555.jpg",
     "static/media/레버리지.jpg": "/2023_MONIVATION/static/media/레버리지.25d6982be349205aafc2.jpg",
@@ -22,10 +22,10 @@
     "static/media/slick.woff": "/2023_MONIVATION/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/2023_MONIVATION/index.html",
     "main.ba564ea7.css.map": "/2023_MONIVATION/static/css/main.ba564ea7.css.map",
-    "main.606bd258.js.map": "/2023_MONIVATION/static/js/main.606bd258.js.map"
+    "main.d41e200e.js.map": "/2023_MONIVATION/static/js/main.d41e200e.js.map"
   },
   "entrypoints": [
     "static/css/main.ba564ea7.css",
-    "static/js/main.606bd258.js"
+    "static/js/main.d41e200e.js"
   ]
 }
