@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const DateDetailBoxStyled = styled.div `
-    position: relative;
+  display: flex;
 `;
 
 export default function DateDetailBox({ children, ...rest }) {

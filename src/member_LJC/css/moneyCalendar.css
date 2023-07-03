@@ -10,9 +10,19 @@
 }
 
 
+#MoneyCalendar .title {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: left;
+    margin-top: 12px;
+    margin-left: 19px;
+}
+
 
 /* 통계차트 */
 #MoneyCalendar .chart_component_container {
+    box-sizing: border-box;
+    padding: 10px;
     border: 0px solid #8E8E8E;
     border-radius:50px;
     width: 25%;
@@ -21,6 +31,7 @@
     cursor: pointer;
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
     transition: .5s;
+    position: relative;
 }
 #MoneyCalendar .chart_component_container:hover {
     border: 0px solid #8E8E8E;
@@ -35,30 +46,20 @@
 }
 
 
-#MoneyCalendar .chart_component_container .title {
-    margin-top: 18px;
-    margin-right: 60%;
-    font-size: 15px;
-    font-weight: 600;
-}
-
-
 #MoneyCalendar .chart_component_container .chartbtn_container{
     width: 60px;
     height: 80px;
-    margin-right: 1px;
-    margin-left: 50px;
     background-color: #8E8E8E;
     border-radius: 15px;
-    margin-top : 30px;
+    position: relative;
+    margin-top: 10%;
+    margin-left: 7%;
 }
 
-
-
 #MoneyCalendar .chartbtn_container .btns {
-    position: relative;
+    position: absolute;
+    top: 0;
     width: inherit;
-    top: -29px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -68,8 +69,8 @@
 #MoneyCalendar .chartbtn_container .co_btn {
     box-sizing: border-box;
     width: 60px;
-    height: 30px;
-    padding-top: 3.5px;
+    height: 40px;
+    padding-top: 2px;
     background-color: transparent;
     border: 0;
     border-radius: 50px;
@@ -79,33 +80,24 @@
     font-size: 15px;
 }
 
+
+
 /* 통계 컴포넌트 */
-#secomp.secomp_container {
-    margin-left: 45%;
-}
-#secomp.secomp_container .piegp{
-    margin-top: -65%;
-}
 
 
 
 /* 할부금  */
 #MoneyCalendar .installment_component {
+    box-sizing: border-box;
+    padding: 10px;
     border: 0px solid #8E8E8E;
     border-radius:50px;
     width: 25%;
     height: 100%; 
     overflow:hidden; 
-    cursor: pointer;
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
 }
 
-#MoneyCalendar .installment_component .title {
-    margin-top: 18px;
-    margin-right: 60%;
-    font-size: 15px;
-    font-weight: 600;
-}
 
 #MoneyCalendar .installment_component .installment_total {
     margin-left: 70px;
@@ -130,6 +122,8 @@
 
 /* 첼린지 */
 #MoneyCalendar .challenge_component {
+    box-sizing: border-box;
+    padding: 10px;
     border: 0px solid #8E8E8E;
     border-radius:50px;
     width: 25%;
@@ -138,18 +132,13 @@
     cursor: pointer;
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
 }
-#MoneyCalendar .challenge_component .title {
-    margin-top: 18px;
-    margin-right: 60%;
-    font-size: 15px;
-    font-weight: 600;
-}
-
 
 
 
 /* 목표금액 */
 #MoneyCalendar .target_amount_component {
+    box-sizing: border-box;
+    padding: 10px;
     border: 0px solid #8E8E8E;
     border-radius:50px;
     width: 25%;
@@ -159,40 +148,27 @@
     box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
 }
 
-#MoneyCalendar .target_amount_component .title_container{
+
+#MoneyCalendar .target_amount_component .title_container {
     display: flex;
-    justify-content: space-around;
-    margin-top: 18px;
-    font-size: 15px;
-    font-weight: 600; 
-
-    /* width: 100%;
-    margin-right: 60%;*/
+    justify-content: space-between;
+    align-items: flex-end;
 }
-
-/* #MoneyCalendar .target_amount_component .title_container .title {
-    
-} */
 
 #MoneyCalendar .target_amount_component .title_container .title_btn {
     display: flex;
-    gap: 3px;
-    margin-top: -5px;
-    margin-left: 40px;
+    gap: 5px;
+    margin-right: 19px;
 }
 
-
-
-
-#MoneyCalendar .target_amount_component .title_container .title_btn .title_plusebtn {
-    border: 0;
-    background-color: #ECECEC;
-    border-radius: 100px;
-}
+#MoneyCalendar .target_amount_component .title_container .title_btn .title_plusebtn,
 #MoneyCalendar .target_amount_component .title_container .title_btn .title_changebtn {
     border: 0;
     background-color: #ECECEC;
-    border-radius: 100px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    line-height: 25px;
 }
 
 /* 목표금액 컴프 */

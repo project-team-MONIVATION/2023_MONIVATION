@@ -42,7 +42,7 @@ export default function MainNavComp() {
             ? (
               <nav className='main-nav onlongin'>
                 <ul>
-                  <div className='nav-logo'></div>
+                  <div className='nav-logo' onClick={()=>{window.location.replace('/')}}/>
                   <div className='nav-list'>
                     <li onClick={()=>{navigate('/calendar')}}>가계부</li>
                     <li onClick={()=>{navigate('/challenge')}}>챌린지</li>

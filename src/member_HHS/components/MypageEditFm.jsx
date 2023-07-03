@@ -3,11 +3,12 @@
 import { db } from '../../database/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 export default function MypageEditFm() {
   const [profile, setProfile] = useState();
   const params = useParams();
+  const navigate = useNavigate();
   const [selectedButtons, setSelectedButtons] = useState([]);
 
   /* 전문분야 버튼 3개 입력 */

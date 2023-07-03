@@ -145,14 +145,25 @@ export default function GoalBoxComp() {
 
             {taList.map((tmp) =>
                 <div>
-                    <div className='d-day-box'>
-                        <h3>{tmp.title}</h3>
-                        <h3>D-{Dday(tmp.endday, new Date())}<span>까지</span></h3>
-                        <h3>{tmp.amount}<span>&#8361;</span><p>모으면 돼요!</p> </h3>
-                    </div>
+                    <div
+                        style={{
+                            display: "flex",
+                            width: "90%",
+                            height: "200px",
+                            margin: "auto",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}
+                    >
+                        <div className='d-day-box'>
+                            <h3>{tmp.title}</h3>
+                            <h3>D-{Dday(tmp.endday, new Date())}<span>까지</span></h3>
+                            <h3>{tmp.amount}<span>&#8361;</span><p>모으면 돼요!</p> </h3>
+                        </div>
 
-                    <div style={{width:"140px", height:"140px"}} className='circular-bar-box'>
-                      <CircularProgressbar value={60} text={`60%`} />
+                        <div style={{width:"140px", height:"140px"}} className='circular-bar-box'>
+                            <CircularProgressbar value={60} text={`60%`} />
+                        </div>
                     </div>
 
                     <img src="/img/money-bag.png" alt="money-bag" />
