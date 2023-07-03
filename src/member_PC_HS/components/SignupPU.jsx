@@ -46,7 +46,7 @@ export default function SignupPU() {
   /* 이메일 인증링크 전송 */
   const sendVerificationEmail = () => {
     const actionCodeSettings = {
-      url: `http://localhost:3000/account/create/personal-user?email=${inputEmail}`,    
+      url: `https://project-team-monivation.github.io/2023_MONIVATION/account/create/personal-user?email=${inputEmail}`,    
       handleCodeInApp : true,
     };
 
