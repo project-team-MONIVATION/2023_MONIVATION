@@ -88,7 +88,7 @@ export default function Mypage() {
               { puQuerySnapshot.empty ? null : (
                 <div className='edit-btn-reservation'>
                   <Link to = {`/mypage/editpu/${data.id}`}>
-                    <img src = "/img/edit.png" alt = "edit-icon" />
+                    <img src = "img/edit.png" alt = "edit-icon" />
                   </Link>
                   <Link to = {`/mypage/reservationpu/${data.id}`}>상담예약 내역</Link>
                 </div>

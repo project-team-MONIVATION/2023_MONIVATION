@@ -308,7 +308,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
             </SearchDate>
             <div>
               {/* 수입 상세 출력 */}
-              <div style={{}}>
+              <div>
                 <Accordion 
                   active={activeAccordion === 1}
                   onClick={() => toggleAccordion(1)}
