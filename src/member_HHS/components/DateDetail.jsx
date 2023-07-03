@@ -11,7 +11,6 @@ import EditIncome from './EditIncome';
 import EditIncomeRepeat from './EditIncomeRepeat'
 import EditExpense from './EditExpense';
 import EditExpenseRepeat from './EditExpenseRepeat'
-import ModalWrap from '../styleComponent/DateDetail/ModalWrap';
 import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
 import DateDetailBox from '../styleComponent/DateDetail/DateDetailBox';
 import SearchDate from '../styleComponent/DateDetail/SearchDate';
@@ -309,7 +308,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
             </SearchDate>
             <div>
               {/* 수입 상세 출력 */}
-              <div style={{}}>
+              <div>
                 <Accordion 
                   active={activeAccordion === 1}
                   onClick={() => toggleAccordion(1)}

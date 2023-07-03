@@ -10,7 +10,6 @@ import "slick-carousel/slick/slick-theme.css";
 
 import ProgressBar from '../../member_LJC/components/ProgressBar';
 
-import ProgressBarCircle from './ProgressBarCircle';
 
 import { CircularProgressbar  } from 'react-circular-progressbar';
 import '../css/mypage.css'

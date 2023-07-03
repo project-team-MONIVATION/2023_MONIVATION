@@ -34,14 +34,43 @@ export default function MypageEditPu() {
     const [phoneNum, setPhoneNum] = useState('');
     const [checkPhone, setCheckPhone] = useState(false);
     const [otp, setOtp] = useState(''); // 인증번호 관리
+    const [isPhoneNumberVerified, setIsPhoneNumberVerified] = useState(false);
 
 
     /** form 실행 */
     const handleSubmit = async (e) => {
       e.preventDefault();
+
+      // 인증번호 발송 여부 확인
+      if (!isPhoneNumberVerified) {
+        alert("인증번호 발송을 먼저 진행해주세요.");
+        return;
+      }
+    
+      // 인증번호 입력 여부 확인
+      if (otp.length === 0) {
+        alert("인증번호를 입력해주세요.");
+        return;
+      }
+    
+      // 연락처 유효성 검사
+      if (phoneNum.length !== 11) {
+        alert("올바른 휴대폰 번호를 입력해주세요.");
+        return;
+      }
+
       const usersRef = doc(db, "personal_users", params.id);
       const usersSnap = await getDoc(usersRef);
       if (usersSnap.exists()) {
+            // 이미지 업로드
+    if (selectedImage) {
+      const file = await fetch(selectedImage).then((res) => res.blob());
+      const storageRef = ref(storage, file.name);
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      await updateDoc(usersRef, { photo: url });
+    }
+
         await updateDoc(usersRef, {
           nickname: nickname,
           birth: selectedYear + "년" + selectedMonth + "월" + selectedDay + "일",
@@ -76,9 +105,16 @@ export default function MypageEditPu() {
 
     // 수정 버튼 클릭 시 확인 대화상자 표시
     const handleClickUpdate = (e) => {
+
       const confirmed = window.confirm("수정 하시겠습니까?");
         if (confirmed) {
           handleSubmit(e);
+          if (selectedImage) {
+            handleSubmit(e);
+          } 
+        } else {
+          // 수정 취소 시 이미지 선택 초기화
+          setSelectedImage(null);
         }
     };
 
@@ -90,9 +126,16 @@ export default function MypageEditPu() {
     }
 
 
-    // 연락처 업데이트
+    // 연락처 업데이트 // 단계 1: 수정할 번호 입력
     const updatePhoneNum = (e) => {
-      setPhoneNum(e.target.value);
+      const newPhoneNum = e.target.value;
+  
+      // 연락처 길이 제한 (예: 11자리로 제한)
+      if (newPhoneNum.length > 11) {
+        return;
+      }
+    
+      setPhoneNum(newPhoneNum);
     }
 
 
@@ -107,17 +150,6 @@ export default function MypageEditPu() {
         alert("이미있는 값입니다!")
       } else {
         alert("사용가능한 값입니다!")
-      }
-    }
-
-    /** 비밀번호 특수문자 삭제 */  
-    const characterCheck = (e) => {
-    // 허용하고 싶은 특수문자가 있다면 여기서 삭제하면 됨
-      const regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi; 
-      if( regExp.test(e.target.value) ){
-        alert("특수문자는 입력하실수 없습니다.");
-        e.target.value = e.target.value.substring( 0 , e.target.value.length - 1 ); 
-        // 입력한 특수문자 한자리 지움
       }
     }
 
@@ -174,6 +206,18 @@ export default function MypageEditPu() {
       return days;
     };
 
+
+    /** 비밀번호 특수문자 삭제 */  
+    const characterCheck = (e) => {
+      // 허용하고 싶은 특수문자가 있다면 여기서 삭제하면 됨
+      const regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi; 
+        if( regExp.test(e.target.value) ){
+          alert("특수문자는 입력하실수 없습니다.");
+          e.target.value = e.target.value.substring( 0 , e.target.value.length - 1 ); 
+          // 입력한 특수문자 한자리 지움
+      }
+    }
+
     
     /** 휴대폰 인증 */
     // 번호 입력 - 인증 전송
@@ -187,9 +231,16 @@ export default function MypageEditPu() {
       }, auth);    
     }
   
+    // 단계 2: 번호 인증발송
     const onSignInSubmit = () => {
       onCaptchVerify()
       let formattedPhoneNum = phoneNum;
+
+      // 연락처 유효성 검사
+      if (phoneNum.length !== 11) {
+        alert("올바른 휴대폰 번호를 입력해주세요.");
+        return;
+      }
 
       // 대한민국 국번 변경
       if (phoneNum.startsWith('010') && phoneNum.length === 11) {
@@ -202,13 +253,14 @@ export default function MypageEditPu() {
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult;
         alert("메세지가 전송됐습니다")
+        setIsPhoneNumberVerified(true); // 인증번호 발송 후 상태 업데이트
       }).catch((error) => {
         console.log(error)
         alert("메세지가 전송되지 않았습니다.")
       });
     }
 
-    // 휴대폰 인증번호 확인
+    // 단계 3: 인증번호 입력하기
     function onOTPVerify() {
       if (!window.confirmationResult) {
         /* 인증안하고 otp입력하면 초기화하기 */
@@ -220,7 +272,10 @@ export default function MypageEditPu() {
         console.log(res)
         console.log(res.user)
         alert("인증이 완료되었습니다.")
-        setCheckPhone(!checkPhone);
+        // setCheckPhone(!checkPhone);
+
+        // 수정하기 호출
+        handleClickUpdate();
       }).catch((error)=>{
         console.log(error)
         setOtp("");
@@ -234,34 +289,35 @@ export default function MypageEditPu() {
       const file = e.target.files[0];
       setSelectedImage(URL.createObjectURL(file));
       
-      const storageRef = ref(storage, file.name);
+      // const storageRef = ref(storage, file.name);
       
-      uploadBytes(storageRef, file)
-        .then((snapshot) => {
-          console.log('Uploaded a file:', snapshot.metadata.name);
-          // 업로드한 파일의 다운로드 URL 가져오기
-          getDownloadURL(storageRef)
-            .then((url) => {
-              // 사용자 프로필 업데이트
-              const usersRef = doc(db, "personal_users", params.id);
-              updateDoc(usersRef, {
-                photo: url,
-              })
-                .then(() => {
-                  console.log('User profile updated successfully.');
-                  // 프로필 업데이트 후 필요한 작업 수행
-                })
-                .catch((error) => {
-                  console.log('Error updating user profile:', error);
-                });
-            })
-            .catch((error) => {
-              console.log('Error getting download URL:', error);
-            });
-        })
-        .catch((error) => {
-          console.log('Error uploading file:', error);
-        });
+      // uploadBytes(storageRef, file)
+      //   .then((snapshot) => {
+      //     console.log('Uploaded a file:', snapshot.metadata.name);
+      //     // 업로드한 파일의 다운로드 URL 가져오기
+      //     getDownloadURL(storageRef)
+      //       .then((url) => {
+      //         // 사용자 프로필 업데이트
+      //         const usersRef = doc(db, "personal_users", params.id);
+      //         updateDoc(usersRef, {
+      //           photo: url,
+      //         })
+      //           .then(() => {
+      //             console.log('User profile updated successfully.');
+      //             // 수정 완료 메시지 표시
+      //             alert('프로필이 수정되었습니다.');
+      //           })
+      //           .catch((error) => {
+      //             console.log('Error updating user profile:', error);
+      //           });
+      //       })
+      //       .catch((error) => {
+      //         console.log('Error getting download URL:', error);
+      //       });
+      //   })
+      //   .catch((error) => {
+      //     console.log('Error uploading file:', error);
+      //   });
     };
 
 
