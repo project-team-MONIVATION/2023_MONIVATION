@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const EmailBox = styled.div `
-    margin-top: 40px;
+  width: 100%;
 `
 
 export default function Email({ children,...rest }) {

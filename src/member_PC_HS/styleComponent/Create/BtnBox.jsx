@@ -6,9 +6,9 @@ const WrapBtnBox = styled.div `
   text-align: center;
   width: 550px;
   & > h2 {
-    font-family: 'SUITE-Regular';
-    margin: 5px 0 10px 0;
-    font-size: 1rem;
+    font-family: 'Cafe24SsurroundAir';
+    margin: 17px 0 24px 0;
+    font-size: 18px;
     font-weight: 300;
     letter-spacing: 1px;
   }
