@@ -77,9 +77,9 @@ export default function ChallengeList() {
         </ul>
         </div>
         <div id='challenge-create-btn'>
-          <button>
-            <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '4rem', color:"white"}}/>
-          </button>
+            <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '4rem', color:"white"}}>
+              <button />
+            </Link>
         </div>
       </div>
     </div>

@@ -10,7 +10,7 @@ import Modal from 'react-modal';
 import '../css/totalstat.css';
 
 
-export default function TotalStatComp() {
+export default function TotalStatComp({selectedDate, selectedMonth}) {
   
   // 저금 리스트 모달창
   const navigate = useNavigate();
@@ -21,10 +21,6 @@ export default function TotalStatComp() {
     const openModal = (modalId) => {
       setActiveModal(modalId);
     };
-
-
-  // 총 저금액 불러오기
-  const [totalamount, setTotalamount] = useState([]);
 
   const user = useSelector((state) => state.user.user);
 
@@ -38,15 +34,39 @@ export default function TotalStatComp() {
       getExpenseRepeatData();
   }, [user]);
 
+  useEffect(()=>{
+    console.log("현재 날짜 : ", selectedDate);
+  },[selectedDate])
 
-  // 총 일반 수입 불러오기
+  useEffect(()=>{
+    console.log("현재 월 : ", selectedMonth);
+    getIncomeData();
+    getIncomeRepeatData();
+    getExpenseData();
+    getExpenseRepeatData();
+  },[selectedMonth]);
+
+
+  // 이번 달 총 일반 수입 불러오기
   const [totalIncome, setTotalIncome] = useState('');
-  // 총 고정 수입 불러오기
+  // 총 일반 수입 불러오기
+  const [totalIncome2, setTotalIncome2] = useState('');
+
+  // 이번 달 총 고정 수입 불러오기
   const [totalIncomeRp, setTotalIncomeRp] = useState('');
-  // 총 일반 지출 불러오기
+  // 총 고정 수입 불러오기
+  const [totalIncomeRp2, setTotalIncomeRp2] = useState('');
+
+  // 이번 달 총 일반 지출 불러오기
   const [totalEx, setTotalEx] = useState('');
-  // 총 고정 지출 불러오기
+  // 총 일반 지출 불러오기
+  const [totalEx2, setTotalEx2] = useState('');
+
+  // 이번 달 총 고정 지출 불러오기
   const [totalExRp, setTotalExRp] = useState('');
+  // 총 고정 지출 불러오기
+  const [totalExRp2, setTotalExRp2] = useState('');
+
 
 
   // 데이터 불러오기
@@ -105,12 +125,21 @@ export default function TotalStatComp() {
         });
 
         let total = 0;
+        let total2 = 0;
         for (let i = 0; i < dataArray.length; i++) {
-          let money = dataArray[i].price;
-          total += money;
+          // 여기에 날짜 구분해서 달력 라이브러리의 현 날짜 상태에 연동시켜야함.
+          // if
+          if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth){
+            let money = dataArray[i].price;
+            total += money;
+          }
+          let money2 = dataArray[i].price;
+          total2 += money2;
         }
         const totalprice = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        const totalprice2 = total2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         setTotalIncome(totalprice);
+        setTotalIncome2(totalprice2);
       }
     } catch (error){
       console.log("실패했습니다", error);
@@ -137,12 +166,19 @@ export default function TotalStatComp() {
         });
 
         let total = 0;
+        let total2 = 0;
         for (let i = 0; i < dataArray.length; i++) {
-          let money = dataArray[i].price;
-          total += money;
+          if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth){
+            let money = dataArray[i].price;
+            total += money;
+          }
+          let money2 = dataArray[i].price;
+          total2 += money2;
         }
         const totalprice = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        const totalprice2 = total2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         setTotalIncomeRp(totalprice);
+        setTotalIncomeRp2(totalprice2);
       }
     } catch (error){
       console.log("실패했습니다", error);
@@ -168,12 +204,19 @@ export default function TotalStatComp() {
         });
 
         let total = 0;
+        let total2 = 0;
         for (let i = 0; i < dataArray.length; i++) {
-          let money = dataArray[i].price;
-          total += money;
+          if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth){
+            let money = dataArray[i].price;
+            total += money;
+          }
+          let money2 = dataArray[i].price;
+          total2 += money2;
         }
         const totalprice = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        const totalprice2 = total2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         setTotalEx(totalprice);
+        setTotalEx2(totalprice2);
       }
     } catch (error){
       console.log("실패했습니다", error);
@@ -200,12 +243,19 @@ export default function TotalStatComp() {
         });
 
         let total = 0;
+        let total2 = 0;
         for (let i = 0; i < dataArray.length; i++) {
-          let money = dataArray[i].price;
-          total += money;
+          if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth){
+            let money = dataArray[i].price;
+            total += money;
+          }
+          let money2 = dataArray[i].price;
+          total2 += money2;
         }
         const totalprice = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        const totalprice2 = total2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         setTotalExRp(totalprice);
+        setTotalExRp2(totalprice2);
       }
     } catch (error){
       console.log("실패했습니다", error);
@@ -216,7 +266,7 @@ export default function TotalStatComp() {
     <div id='total-stat-wrap'>
         <table>
           <tbody>
-            <th className='tb-title'>이번 달 총액</th>
+            <th className='tb-title'>이번 {selectedMonth}월 총액</th>
             <tr className='tb-subtitle'>
               <td>고정 수입</td>
             </tr>
@@ -241,13 +291,6 @@ export default function TotalStatComp() {
             <tr className='tb-money'>
               <td>- {totalEx ? totalEx : "0"}원</td>
             </tr>
-            <tr style={{backgroundColor:'white', height:"1vh"}}>
-              <td></td>
-            </tr>
-            {/** 총 자산 시작 */}
-            <tr className='tb-subtitle-totalresult'>
-              <td>현재 총 자산</td>
-            </tr>
             <tr className='tb-money' style={{backgroundColor:'#D1CAF8'}}>
               <td>
                 {
@@ -255,6 +298,23 @@ export default function TotalStatComp() {
                   + parseInt(totalIncomeRp.replace(/,/g, ''), 10)
                   - parseInt(totalEx.replace(/,/g, ''), 10)
                   - parseInt(totalExRp.replace(/,/g, ''), 10)
+                }원
+              </td>
+            </tr>
+            <tr style={{backgroundColor:'white', height:"1vh"}}>
+              <td></td>
+            </tr>
+            {/** 총 자산 시작 */}
+            <tr className='tb-subtitle-totalresult'>
+              <td>현재 총 자산</td>
+            </tr>
+            <tr className='tb-money' style={{backgroundColor:'#F4E8AE'}}>
+              <td>
+                {
+                  parseInt(totalIncome2.replace(/,/g, ''), 10)
+                  + parseInt(totalIncomeRp2.replace(/,/g, ''), 10)
+                  - parseInt(totalEx2.replace(/,/g, ''), 10)
+                  - parseInt(totalExRp2.replace(/,/g, ''), 10)
                 }원
               </td>
             </tr>

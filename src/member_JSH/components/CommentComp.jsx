@@ -44,43 +44,49 @@ export default function CommentComp() {
       imageInput.current.click();
     };
 
+    // 컬렉션의 값을 가져와서 사용
+    const getComments = async()=>{
+      const q = query(collection(db, "user_comments"));
+      const querySnapshot = await getDocs(q);
+      let dataArray = [];
+      querySnapshot.forEach((doc)=>{
+        let data = {
+          id : doc.id,
+          uid : doc.data().uid,
+          content : doc.data().content,
+          paramId : doc.data().paramId,
+          photo : doc.data().photo,
+          commentId : doc.data().commentId,
+          commentImg : doc.data().commentImg
+        }
+        dataArray.push(data)
+        //console.log(doc.id, " => ", doc.data());
+      });
+      setCommentArray(dataArray)
+    }
+
     const addUserComment = async(e) =>{
         e.preventDefault();
-        await addDoc(collection(db, "user_comments"), {
-          commentId : user.nickname,
-          content : comment,
-          paramId : params.id,
-          uid : user.uid,
-          photo : user.photo,
-          writeTime : new Date(),
-          commentImg : commentImg
-        })
-        setCommentArray((commentValueList)=>[comment, ...commentValueList]);
-        setComment("");
-      }
+        if(user && user.uid){
+          await addDoc(collection(db, "user_comments"), {
+            commentId : user.nickname,
+            content : comment,
+            paramId : params.id,
+            uid : user.uid,
+            photo : user.photo,
+            writeTime : new Date(),
+            commentImg : commentImg
+          });
+          getComments();
+          
+          setCommentArray((commentValueList)=>[comment, ...commentValueList]);
+          setComment("");
+        }
+      };
+
 
       useEffect(()=>{
         window.scrollTo({top: 0});
-        // 컬렉션의 값을 가져와서 사용
-        const getComments = async()=>{
-          const q = query(collection(db, "user_comments"));
-          const querySnapshot = await getDocs(q);
-          let dataArray = [];
-          querySnapshot.forEach((doc)=>{
-            let data = {
-              id : doc.id,
-              uid : doc.data().uid,
-              content : doc.data().content,
-              paramId : doc.data().paramId,
-              photo : doc.data().photo,
-              commentId : doc.data().commentId,
-              commentImg : doc.data().commentImg
-            }
-            dataArray.push(data)
-            //console.log(doc.id, " => ", doc.data());
-          });
-          setCommentArray(dataArray)
-        }
         getComments();
       },[])
 
