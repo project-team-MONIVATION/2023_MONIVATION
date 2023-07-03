@@ -50,11 +50,15 @@
     margin: auto;
     border-top: solid 1px black;
 }
-#asset .asset .btm { 
+#asset .asset tr { 
     border-bottom: 1px solid black;
 }
 #asset .asset tr td {
     padding: 10px 20px;
+    width: 25%;
+}
+#asset .asset tr td:first-child {
+    width: 10%;
 }
 #asset .asset td p {
     text-align: center;

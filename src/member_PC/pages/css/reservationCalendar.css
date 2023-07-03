@@ -1,5 +1,6 @@
 .reservation-calendar.react-calendar {
     width: 700px;
+    border-radius: 20px;
 }
 .reservation-calendar .react-calendar__navigation {
     display: flex;
