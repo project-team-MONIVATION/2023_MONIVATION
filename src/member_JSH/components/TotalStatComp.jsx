@@ -267,6 +267,7 @@ export default function TotalStatComp() {
                   setModalIsOpen(true);
                   openModal(3);
                 }}
+                style={{cursor: "pointer"}}
               >
                 <tr className='tb-subtitle-totalresult'>
                   <td>현재 총 저금액</td>
@@ -276,9 +277,36 @@ export default function TotalStatComp() {
                 </tr>
               </div>
               {activeModal === 3 && (
-                <Modal isOpen={modalIsOpen}>
-                  <div>
-                  <button onClick={()=>setModalIsOpen(false)}>x</button>
+                <Modal
+                  id='calendar_modal'
+                  isOpen={modalIsOpen}
+                  style={{
+                    overlay: {
+                      position: 'fixed',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      backgroundColor: 'rgba(0, 0, 0, 0.75)'
+                    },
+                    content: {
+                      boxSizing: 'border-box',
+                      width: '580px',
+                      height: '790px',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      borderRadius: '50px',
+                      border: 0
+                    }
+                  }}
+                >
+                  <div className='content_container'>
+                  <button 
+                    className='close_btn'
+                    onClick={()=>setModalIsOpen(false)}>
+                    x
+                  </button>
                   <SavingList setModalIsOpen={setModalIsOpen}/>
                   </div>
                 </Modal>

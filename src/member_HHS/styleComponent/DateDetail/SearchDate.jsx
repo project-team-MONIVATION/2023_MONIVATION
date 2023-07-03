@@ -5,37 +5,37 @@ const SearchDateStyled = styled.div `
     position: relative;
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 50px;
 
     & button {
-        width: 172px;
-        height: 39px;
+        width: 200px;
+        height: 45px;
         flex-shrink: 0;
         border-radius: 50px;
-        border: 1px solid var(--black-60, #8E8E8E);
+        border: 1px solid #CDCDCD;
         background: #FFF;
-        margin-top: 50px;
-        margin-left: 20px;
-        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0 15px;
+
         & > img {
             width: 17.5px;
-            position: absolute;
-            left: 20px;
-            top: 10px;
         }
 
         & > span {
             font-size: 1.05rem;
             color: #8A8A8A;
             letter-spacing: 0.1em;
-            position: absolute;
-            top: 11px;
+            padding-top: 3px;
         }
     }
 
     & h2 {
         font-size: 2.1rem;
-        margin-top: 56px;
-        margin-right: 20px;
+        padding-top: 8px;
     }
 `;
 

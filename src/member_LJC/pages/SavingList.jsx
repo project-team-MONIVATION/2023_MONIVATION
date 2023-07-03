@@ -161,25 +161,26 @@ export default function SavingList() {
 
 
     return (
-        <div>
+        <div className='content'>
+            <h1 className='saving'>저금내역</h1>
             <div>
                 {savingList.map((tmp) => 
                     <div key={tmp.id} className='saving-bord'
                         class="tooltip-link" data-tooltip={tmp.memo}
                     >
+                        <h2>{tmp.title}</h2>
+                        {/* list수정 컴포넌트 */}
+                        <SavingListModifyComp
+                            tmp={tmp}
+                            getSavingData={getSavingData}
+                        />
                         <button
                             onClick={()=> (deleteData(tmp.id))}
                         >
                             삭제
                         </button>
 
-                        {/* list수정 컴포넌트 */}
-                        <SavingListModifyComp
-                            tmp={tmp}
-                            getSavingData={getSavingData}
-                        />
 
-                        <h2>{tmp.title}</h2>
                         <div className='period-bord'>
                             기간 {tmp.startday} ~ {tmp.endday}
                         </div>

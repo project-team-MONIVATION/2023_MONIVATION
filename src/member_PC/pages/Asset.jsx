@@ -61,7 +61,7 @@ export default function Asset() {
       <div id='asset'>
         {/* 탭 바 */}
         <HeaderBox>
-          <h1 className='asset-header animated'>Best 자산관리사</h1>
+          <h1 className='asset-header'>Best 자산관리사</h1>
           <Link to='/asset/managerlist'><p style={{backgroundColor: "#D9D9D9", fontWeight: "bold", padding: "5px 15px", borderRadius: "20px"}}>전체보기</p></Link>
         </HeaderBox>
 
@@ -69,7 +69,7 @@ export default function Asset() {
         <Slider {...settings}>
           {
             bestFmList && bestFmList.map((fm)=>(
-              <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
+              <Link key={fm.id} className='animated' to={`/asset/managerlist/${fm.id}`}>
                 <AssetBox>
                   <AssetImage style={{backgroundImage: `url(${fm.photo})`}}></AssetImage>
                   <p style={{margin: "10px 0", fontWeight: "bold"}}>{fm.name}</p>
@@ -95,9 +95,9 @@ export default function Asset() {
         {/* 관련 정보 */}
         <div className='asset'>
           <div style={{display: 'flex'}}>
-            <h1 className='asset-header2 animated'>관련정보</h1>
+            <h1 className='asset-header2'>관련정보</h1>
           </div>
-          <table>
+          <table className='animated'>
             <tbody>
               <tr>
                 <td>

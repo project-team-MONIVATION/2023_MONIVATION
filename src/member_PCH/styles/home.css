@@ -526,6 +526,11 @@ main #section7 .click_icon {
   font-size: 1.5rem;
   font-family: 'Cafe24Ssurround';
   margin-left: 3%;
+  color: #FFFFFF;
+}
+
+#mainpage footer .title-sns .sns:visited {
+  color: #FFFFFF;
 }
 
 #mainpage footer .title-sns .sns:hover {

@@ -320,20 +320,6 @@ export default function InputExpenseComp({ handleSubmit }) {
                         }
                       </ul>
                     </div>
-
-
-                    {/**
-                    <select className='installment' name="installment" onChange={(e)=>setInstallment(e.target.value)}>
-                      <option value="일시불" selected>
-                        일시불
-                      </option>
-                      {
-                        num.map((i)=>(
-                          <option value={i} key={i}>{i}개월</option>
-                        ))
-                      }
-                    </select>
-                    */}
                   </div>
                 )
               }

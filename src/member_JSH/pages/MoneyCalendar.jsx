@@ -28,7 +28,7 @@ import '../../member_LJC/css/moneyCalendar.css';
 export default function MoneyCalendar() {
 
   // 수입 지출 컴프 바꾸기위한 버튼
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   // 창 이동 
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ export default function MoneyCalendar() {
   },[])
   
   return (
-    <div id='layout' style={{ position: "relative"}}>
+    <div id='layout' style={{ position: "relative", padding: "3vh"}}>
       <div
         style={{
           display: "flex", 
@@ -81,50 +81,60 @@ export default function MoneyCalendar() {
         
         <div 
         className='chart_component_container'
+        onClick={() => {navigate('/calendar/chart/expense')}} 
         >
           <div className='title'
-            onClick={() => {navigate('/calendar/chart/expense')}} 
           >
             통계
           </div>
-          <div className='chartbtn_container'>
-            <div 
-            className='back'
-            style={{
-              width: '60px',
-              height: '40px',
-              marginRight: "1px",
-              backgroundColor: '#735BF3',
-              transform: open ? 'translateY(0)' : 'translateY(40px)',
-              transition : 'all 0.3s',
-              borderRadius: '15px'
-            }}
-            />
-            <div className='btns'>
-              <button
-                onClick={() => {setOpen((e) => !e);}}
-                className='co_btn'
-              >지출
-              </button>
+          <div className='content'>
+            <div className='chartbtn_container'
+                onClick={(event) => {event.stopPropagation();}}
+            >
+              <div 
+              className='back'
+              style={{
+                width: '60px',
+                height: '40px',
+                marginRight: "1px",
+                backgroundColor: '#735BF3',
+                transform: open ? 'translateY(0)' : 'translateY(40px)',
+                transition : 'all 0.3s',
+                borderRadius: '15px'
+              }}
+              />
+              <div className='btns'>
+                <button
+                  onClick={() => {setOpen((e) => !e);}}
+                  className='co_btn'
+                >지출
+                </button>
 
-              <button
-                onClick={() => {setOpen((e) => !e);}}
-                className='co_btn'
-              >수입
-              </button>
+                <button
+                  onClick={() => {setOpen((e) => !e);}}
+                  className='co_btn'
+                >수입
+                </button>
+              </div>
             </div>
+            
+            {
+              open === true &&
+              (
+                <div style={{position: "absolute", top:"50%", right:"6%", transform: "translate(0, -50%)"}}>
+                  <SEcomp/>
+                </div>
+              )
+            }
+            {
+              open === false && 
+              (
+                <div style={{position: "absolute", top:"50%", right:"6%", transform: "translate(0, -50%)"}}>
+                  <SIcomp/>
+                </div>
+              )
+            }
           </div>
-          
-            {open && (
-            <div>
-              <SEcomp/>
-            </div>
-            )}
-            {! open && (
-            <div>
-              <SIcomp/>
-            </div>
-            )}
         </div>
 
         {/* 할부금 컴포넌트 */}
@@ -170,12 +180,34 @@ export default function MoneyCalendar() {
                 </button>
                 {
                     activeModal === 1 && (
-                        <Modal isOpen={modalIsOpen}>
-                        <div>
-                            <h3>추가</h3>
-                            <button onClick={()=>setModalIsOpen(false)}>취소</button>
-                            <TargetAmountInputComp setModalIsOpen={setModalIsOpen}/>
-                        </div>
+                        <Modal 
+                          isOpen={modalIsOpen}
+                          style={{
+                            overlay: {
+                              position: 'fixed',
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              backgroundColor: 'rgba(0, 0, 0, 0.75)'
+                            },
+                            content: {
+                              boxSizing: 'border-box',
+                              width: '580px',
+                              height: '790px',
+                              top: '50%',
+                              left: '50%',
+                              transform: 'translate(-50%, -50%)',
+                              borderRadius: '50px',
+                              border: 0
+                            }
+                          }}
+                        >
+                          <div>
+                              <h3>추가</h3>
+                              <button onClick={()=>setModalIsOpen(false)}>취소</button>
+                              <TargetAmountInputComp setModalIsOpen={setModalIsOpen}/>
+                          </div>
                         </Modal>
                         
                     )
@@ -192,7 +224,29 @@ export default function MoneyCalendar() {
                 </button>
                 {
                     activeModal === 2 && (
-                        <Modal isOpen={modalIsOpen}>
+                        <Modal 
+                          isOpen={modalIsOpen}
+                          style={{
+                            overlay: {
+                              position: 'fixed',
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              backgroundColor: 'rgba(0, 0, 0, 0.75)'
+                            },
+                            content: {
+                              boxSizing: 'border-box',
+                              width: '580px',
+                              height: '790px',
+                              top: '50%',
+                              left: '50%',
+                              transform: 'translate(-50%, -50%)',
+                              borderRadius: '50px',
+                              border: 0
+                            }
+                          }}
+                        >
                         <div>
                             <h3>목표금액 수정,리스트 모달창</h3>
                             <button onClick={()=>setModalIsOpen(false)}>취소</button>

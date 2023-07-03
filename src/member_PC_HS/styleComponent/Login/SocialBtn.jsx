@@ -16,11 +16,9 @@ const LoginWith = styled.div `
   }
 
   & div {
-    position: absolute;
-    top: 405px;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
+    justify-content: center;
+    margin-top: 10px;
   }
 
   & button {

@@ -16,7 +16,9 @@ import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
 import DateDetailBox from '../styleComponent/DateDetail/DateDetailBox';
 import SearchDate from '../styleComponent/DateDetail/SearchDate';
 import Accordion from '../styleComponent/DateDetail/Accordion';
+import MoneyList from '../styleComponent/DateDetail/MoneyList';
 
+import '../../member_PCH/styles/editForm.css'
 
 export default function DateDetail({ closeModal2, selectedDate }) {
     // state에서 user.user로 가져옴(현재 사용자 정보)
@@ -159,7 +161,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 
     useEffect(() => {
       updateData();
-    }, []);
+    }, [EditIncomeOpen, EditExpenseRepeatOpen, EditIncomeOpen, EditIncomeRepeatOpen]);
 
     // 콜백 함수 정의
     const handleDataUpdate = () => {
@@ -251,173 +253,275 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       return formattedValue;
     };
 
+    /** 아코디언 형식 출력 */
+    const [activeAccordion, setActiveAccordion] = useState(null);
+
+    const toggleAccordion = (index) => {
+      setActiveAccordion((prevIndex) => (prevIndex === index ? null : index));
+    };
+
 
     return (
       <DateDetailBox>
-        <div>
+        <div 
+          style={{
+            boxSizing: "border-box", 
+            padding: "20px",
+            width: "620px",
+            height: "850px",
+            background: "rgb(255, 255, 255)",
+            borderRadius: "50px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end"
+          }}
+        >
           <CloseBtn onClick = { closeModal2 }>X</CloseBtn>
-          <SearchDate> {/* 날짜검색 캘린더 모달 */}
-            <button onClick = { onClickCal }>
-              <img src="/img/calendar.png" alt="calendar" />
-              <span>날짜 검색</span>
-            </button>
-            <h2>{ selectedDate && changeDate(selectedDate) }</h2>
-    
-            { showCal && (
-              <div>
-                <button
-                  type = 'button'
-                  onClick = { () => { setShowCal(false) } }
-                >
-                  X
-                </button>
-                <Calendar
-                  onChange = { onClickDate }
-                  value = { date }
-                />
-              </div>
-            ) }
-          </SearchDate>
-<br />
-
-          {/* 수입 상세 출력 */}
-          <Accordion>
-            <h3>이 날의 수입은?</h3>
-            <h3>
-              { handleHyphen (
-                filteredIncome.reduce((total, item) => total + item.price, 0) +
-                filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
-              ) }
-              <span>&#8361;</span>
-            </h3>
-          </Accordion>
-<br />
-          <div>
-            <h4>수입</h4>
-            <h4>
-              {/* 선택한 날짜와 동일한 수입 값의 합 계산 */}
-              { handleHyphen ( 
-                filteredIncome.reduce((total, item) => total + item.price, 0)
-              ) }
-              <span>&#8361;</span>
-            </h4>
-          </div>
-<br />
-          <div>
-            {/* 선택한 날짜와 동일한 수입 값들 출력 */}
-            { filteredIncome.map((item, i) => ( 
-              <div key = {i}
-                onClick = { () => 
-                  openEditIncomeModal(item.category, item.price, item.memo, item.id) }
-              >
-                <span>{ item.category }</span>
-                <span>{ handleHyphen(item.price) }&#8361;</span>
-                <span>{ item.memo }</span>
-<hr />
-              </div>
-            ))}
-          </div>
-<br />
-          <div>
-            <h4>반복수입</h4>
-            <h4>
-              { handleHyphen(
-                filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
-              ) }
-              &#8361;
-            </h4>
-          </div>
-<br />
-          <div>
-            { filteredIncomeRepeat.map((item, i) => (
-              <div key = {i}
-                onClick = { () =>
-                  openEditIncomeRepeatModal(item.category, item.price, item.memo, item.id) }
-              >
-                <span>{ item.category }</span>
-                <span>{ handleHyphen(item.price) }&#8361;</span>
-                <span>{ item.memo }</span>
-<hr />
-              </div>
-            ))}
-          </div>
-
-<br />
-<br />
-          {/* 지출 */}
-          <div>
-            <h3>이 날의 지출은?</h3>
-            <h3>
-              { handleHyphen(
-                filteredExpense.reduce((total, item) => total + item.price, 0) +
-                filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
-              ) }
-              <span>&#8361;</span>
-            </h3>
-          </div>
-<br />
-          <div>
-            <h4>지출</h4>
-            <h4>
-              { handleHyphen(
-                filteredExpense.reduce((total, item) => total + item.price, 0)
-              ) }
-              <span>&#8361;</span>
-            </h4>
-          </div>
-<br />
-          <div>
-            { filteredExpense.map((item, i) => {
-              // 해당 expense에 매칭되는 installments 문서 찾기
-              const matchingInstallment = installments.find(
-                (r) => r.category === item.category && r.payment === item.payment && r.memo === item.memo
-              );
+          <div
+            style={{
+              boxSizing: "border-box",
+              width: "580px",
+              padding: "0 25px"
               
-              // matchingInstallment에 따라서 문서 id를 전달하거나, 해당 문서를 출력
-              const installmentId = matchingInstallment?.id;
-              
-              return (
-                <div key = {i}
-                  onClick = { () =>
-                    openEditExpenseModal( item.category, item.price, item.memo, item.id, installmentId )
-                  }
-                > 
-                  <span>{ item.category }</span>
-                  <span>{ item.price !== undefined ? handleHyphen(item.price) : '' }&#8361;</span>
-                  <span>{ item.installment }</span>
-                  <span>{ item.memo }</span>
-<hr />
+            }}
+          >
+            <SearchDate> {/* 날짜검색 캘린더 모달 */}
+              <button onClick = { onClickCal }>
+                <img src="img/calendar.png" alt="calendar" />
+                <span>날짜 검색</span>
+              </button>
+              <h2>{ selectedDate && changeDate(selectedDate) }</h2>
+      
+              { showCal && (
+                <div>
+                  <button
+                    type = 'button'
+                    onClick = { () => { setShowCal(false) } }
+                  >
+                    X
+                  </button>
+                  <Calendar
+                    onChange = { onClickDate }
+                    value = { date }
+                  />
                 </div>
-              );
-            }) }
-<br />
-          </div>
-          <div>
-            <h4>반복지출</h4>
-            <h4>
-              { handleHyphen(
-                filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
               ) }
-              <span>&#8361;</span>
-            </h4>
-          </div>
-<br />
-          <div>
-            { filteredExpenseRepeat.map((item, i) => (
-              <div key = {i}
-                onClick = {() =>
-                  openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id )
-                }
-              >
-                <span>{ item.category }</span>
-                <span>{ handleHyphen(item.price) }&#8361;</span>
-                <span>{ item.memo }</span>
-<hr />
+            </SearchDate>
+            <div>
+              {/* 수입 상세 출력 */}
+              <div style={{}}>
+                <Accordion 
+                  active={activeAccordion === 1}
+                  onClick={() => toggleAccordion(1)}
+                >
+                  <div 
+                    style={{
+                      backgroundColor : activeAccordion === 1 ? "#CDCDCD" : "#FFFFFF",
+                      boxSizing: "border-box",
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "50px"
+                    }}
+                  >
+                    <h3>이 날의 <span>수입</span>은?</h3>
+                    <h3>
+                      { handleHyphen (
+                        filteredIncome.reduce((total, item) => total + item.price, 0) +
+                        filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
+                      ) }
+                      <span> &#8361;</span>
+                    </h3>
+                  </div>
+                </Accordion>
+                <div style={{width: "90%", margin: "20px auto"}}>
+                  {
+                    activeAccordion === 1 && (
+                      <div>
+                        {/** 고정수입 */}
+                        <div style={{marginBottom: "20px"}}>
+                          <MoneyList active={activeAccordion === 1}>
+                            <div>
+                              <h3>고정수입</h3>
+                              <h3>
+                                { handleHyphen(
+                                  filteredIncomeRepeat.reduce((total, item) => total + item.price, 0)
+                                  ) }
+                                <span> &#8361;</span>
+                              </h3>
+                            </div>
+                          </MoneyList>
+
+                          <MoneyList active={activeAccordion === 1}>
+                            { filteredIncomeRepeat.map((item, i) => (
+                              <div 
+                                key = {i}
+                                onClick = { () => openEditIncomeRepeatModal(item.category, item.price, item.memo, item.id) }
+                                style={{ 
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  marginTop: "10px",
+                                }}
+                              >
+                                <span>{ item.category }</span>
+                                <span>{ handleHyphen(item.price) }&#8361;</span>
+                              </div>
+                            ))}
+                          </MoneyList>
+                        </div>
+                        {/** 수입 */}
+                        <div style={{marginBottom: "20px"}}>
+                          <MoneyList active={activeAccordion === 1}>
+                            <div>
+                              <h3>수입</h3>
+                              <h3>
+                                {/* 선택한 날짜와 동일한 수입 값의 합 계산 */}
+                                { handleHyphen ( 
+                                  filteredIncome.reduce((total, item) => total + item.price, 0)
+                                  ) }
+                                <span> &#8361;</span>
+                              </h3>
+                            </div>
+                          </MoneyList>
+
+                          <MoneyList active={activeAccordion === 1}>
+                            {/* 선택한 날짜와 동일한 수입 값들 출력 */}
+                            { filteredIncome.map((item, i) => ( 
+                              <div 
+                                key = {i}
+                                onClick = { () => openEditIncomeModal(item.category, item.price, item.memo, item.id) }
+                                style={{ 
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  marginTop: "10px",
+                                }}
+                              >
+                                <p>{ item.category }</p>
+                                <p>{ handleHyphen(item.price) }&#8361;</p>
+                              </div>
+                            ))}
+                          </MoneyList>
+                        </div>
+                      </div>
+                    )
+                  }
+                </div>
               </div>
-            ))}
+
+              {/* 지출 상세 출력 */}
+              <div style={{}}>
+                {/* 지출 */}
+                <Accordion
+                  active={activeAccordion === 2}
+                  onClick={() => toggleAccordion(2)}
+                >
+                  <div
+                    style={{
+                      backgroundColor : activeAccordion === 2 ? "#CDCDCD" : "#FFFFFF",
+                      boxSizing: "border-box",
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "50px"
+                    }}
+                  >
+                    <h3>이 날의 <span>지출</span>은?</h3>
+                    <h3>
+                      { handleHyphen(
+                        filteredExpense.reduce((total, item) => total + item.price, 0) +
+                        filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
+                      ) }
+                      <span> &#8361;</span>
+                    </h3>
+                  </div>
+                </Accordion>
+                <div style={{width: "90%", margin: "20px auto"}}>
+                  {
+                    activeAccordion === 2 && (
+                      <div>
+                        {/** 고정 지출 */}
+                        <div style={{marginBottom: "20px"}}>
+                          <MoneyList active={activeAccordion === 2}>
+                            <div>
+                              <h3>고정지출</h3>
+                              <h3>
+                                { handleHyphen(
+                                  filteredExpenseRepeat.reduce((total, item) => total + item.price, 0)
+                                ) }
+                                <span>&#8361;</span>
+                              </h3>              
+                            </div>
+
+                          </MoneyList>
+
+                          <MoneyList active={activeAccordion === 2}>
+                            { filteredExpenseRepeat.map((item, i) => (
+                              <div 
+                                key = {i}
+                                onClick = {() => openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id )}
+                                style={{ 
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  marginTop: "10px",
+                                }}
+                              >
+                                <span>{ item.category }</span>
+                                <span>{ handleHyphen(item.price) }&#8361;</span>
+                              </div>
+                            ))}
+                          </MoneyList>
+                        </div>
+                        {/** 지출 */}
+                        <div style={{marginBottom: "20px"}}>
+                          <MoneyList active={activeAccordion === 2}>
+                            <div>
+                              <h3>지출</h3>
+                              <h3>
+                                { handleHyphen(
+                                  filteredExpense.reduce((total, item) => total + item.price, 0)
+                                  ) }
+                                <span>&#8361;</span>
+                              </h3>
+                            </div>
+                          </MoneyList>
+
+                          <MoneyList active={activeAccordion === 2}>
+                            { filteredExpense.map((item, i) => {
+                              // 해당 expense에 매칭되는 installments 문서 찾기
+                              const matchingInstallment = installments.find(
+                                (r) => r.category === item.category && r.payment === item.payment && r.memo === item.memo
+                              );
+                              
+                              // matchingInstallment에 따라서 문서 id를 전달하거나, 해당 문서를 출력
+                              const installmentId = matchingInstallment?.id;
+                              
+                              return (
+                                <div 
+                                  key = {i}
+                                  onClick = { () => openEditExpenseModal( item.category, item.price, item.memo, item.id, installmentId ) }
+                                  style={{ 
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  marginTop: "10px",
+                                }}
+                                > 
+                                  <div>
+                                    <span>{ item.category }</span>
+                                    <span>{ item.payment == "카드" && `(${item.installment})` }</span>
+                                  </div>
+                                  <span>{ item.price !== undefined ? handleHyphen(item.price) : '' }&#8361;</span>
+                                </div>
+                              );
+                            }) }
+                          </MoneyList>
+                        </div>
+                      </div>
+                    )
+                  }
+                </div>
+              </div>
+            </div>
           </div>
-<br />
         </div>
+        <div id='edit_form_box'>
           {/** 서브 모달 컴포넌트 */}
           {/* EditIncome컴포넌트로 전달 */}
           { EditIncomeOpen && (
@@ -478,7 +582,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               handleDataUpdate = { handleDataUpdate }
             />
           )}
-
+        </div>
     </DateDetailBox>
   )
 } 
