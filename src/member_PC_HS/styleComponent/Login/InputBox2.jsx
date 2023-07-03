@@ -2,13 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 
 const WelcomeBackBox = styled.div `
-  display: inline-block;
-  text-align: center;
-  width: 550px;
-  padding-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  height: 556px;
+  padding: 59px;
   & h2 {
     font-family: 'SUITE-Regular';
-    margin: 5px 0 10px 0;
+    margin: 17px 0 23px 0;
     font-size: 1.7rem;
     font-weight: 300;
   }

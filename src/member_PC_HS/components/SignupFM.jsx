@@ -49,7 +49,7 @@ export default function SignupFM() {
   /* 이메일 인증링크 전송 */
   const sendVerificationEmail = () => {
     const actionCodeSettings = {
-      url: `http://localhost:3000/account/create/financial-manager?email=${inputEmail}`,    
+      url: `https://project-team-monivation.github.io/2023_MONIVATION/account/create/financial-manager?email=${inputEmail}`,    
       handleCodeInApp : true,
     };
 
@@ -345,237 +345,245 @@ export default function SignupFM() {
   return (
     <BackGround>
       <InnerDiv>
-        <Form id='signup-form' onSubmit={(e)=>{
-          e.preventDefault()
-          updateFirestoreDocument()
-        }}>
-          <h1 className='signup-h1'>자산관리사 회원가입</h1>
+        <div id='form_wrap'>
+          <Form id='signup-form' onSubmit={(e)=>{
+            e.preventDefault()
+            updateFirestoreDocument()
+          }}>
+            <h1 className='signup-h1'>자산관리사 회원가입</h1>
 
-          {/* 이메일 입력칸 */}
-          <Email>
-            <label htmlFor="">Email</label>
-            <br />
-            <InputSmall 
-              type="email" 
-              placeholder='이메일' 
-              value={(email || gotEmail) ? (email || gotEmail) : inputEmail} 
-              disabled={email || gotEmail} 
-              onChange={(e)=>{setInputEmail(e.target.value)}}
-              required
-              />
-            <InputBtn
-              type='button'
-              onClick={sendVerificationEmail}
-              disabled={email || gotEmail}
-              >인증코드 발송
-            </InputBtn>
-          </Email>
-          
-          {/* 비밀번호 입력칸 */}
-          <DivBox className='input-div'>
-            <label>Password</label>
-            <br />
-            <InputBig
-              type="password"
-              placeholder='비밀번호'
-              minLength={8}
-              maxLength={20}
-              onKeyUp={characterCheck} onKeyDown={characterCheck}
-              onChange={(e)=>{setPassword1(e.target.value)}}
-              disabled={email}
-              required
-              />
-            <p className='password-p'>
-              * 비밀번호는 영문 대소문자, 숫자를 혼합하여 8~20자로 입력해 주세요
-            </p>
-          </DivBox>
-
-          {/* 비밀번호 재확인칸 */}
-          <DivBox>
-            <InputBig
-              type="password"
-              placeholder='비밀번호 재확인' 
-              minLength={8}
-              maxLength={20}
-              onKeyUp={characterCheck} onKeyDown={characterCheck} 
-              onChange={(e)=>{setPassword2(e.target.value)}}
-              disabled={email}
-              required
-              />
-            <p className='password-p'>
-              {
-                password1 !== null && password1 === password2 ? "* 비밀번호가 일치합니다" : (<span style={{color: "red"}}>* 비밀번호가 일치하지 않습니다</span>)
-              }
-            </p>
-          </DivBox>
-
-          {/* 이름 입력 칸 */}
-          <DivBox className='input-div'>
-            <label htmlFor="">Name</label>
-            <br />
-            <InputBig
-              type="text" 
-              placeholder='이름' 
-              value={ name ? name : inputName} 
-              disabled={!!name}
-              onChange={(e)=>{setInputName(e.target.value)}}
-              minLength={2}
-              maxLength={5}
-              required
-            />
-          </DivBox>
-          
-          {/* 닉네임 입력 칸 */}
-          <DivBox className='input-div'>
-            <label htmlFor="">Nickname</label>
-            <br />
-            <InputSmall 
-              type="text" 
-              placeholder='닉네임'
-              value={nick} 
-              onChange={(e)=>{setNick(e.target.value)}} 
-              minLength={2}
-              maxLength={10}
-              required
-            />
-            <InputBtn type="button" onClick={onSearch}>중복확인</InputBtn>
-          </DivBox>
-
-          {/* 생년월일 입력칸 */}
-          <DivBox className='input-div'>
-            <label htmlFor="">Birth</label>
-            <br />
-            <BirthInput id="birth-year" value={selectedYear} onChange={onYearChange} required>
-              <option disabled value="">
-                출생연도
-              </option>
-              {createYearOptions()}
-            </BirthInput>
-            <BirthInput id="birth-month" value={selectedMonth} onChange={onMonthChange} required>
-              <option disabled value="">
-                월
-              </option>
-              {createMonthOptions()}
-            </BirthInput>
-            <BirthInput id="birth-day" value={selectedDay} onChange={onDayChange} required>
-              <option disabled value="">
-                일
-              </option>
-              {createDayOptions()}
-            </BirthInput>
-          </DivBox>
-
-          {/* 휴대전화 입력칸 */}
-          <DivBox className='input-div'>
-            <label htmlFor="">Phone</label>
-            <div style={{display: "flex", alignItems: "center"}}>
+            {/* 이메일 입력칸 */}
+            <Email>
+              <label htmlFor="">Email</label>
+              <br />
               <InputSmall 
-                type="number" 
-                placeholder='휴대전화'
-                onChange={(e)=>{setPhoneNum(e.target.value)}}
-                required 
+                type="email" 
+                placeholder='이메일' 
+                value={(email || gotEmail) ? (email || gotEmail) : inputEmail} 
+                disabled={email || gotEmail} 
+                onChange={(e)=>{setInputEmail(e.target.value)}}
+                required
+                />
+              <InputBtn
+                type='button'
+                onClick={sendVerificationEmail}
+                disabled={email || gotEmail}
+                >인증코드 발송
+              </InputBtn>
+            </Email>
+            
+            {/* 비밀번호 입력칸 */}
+            <DivBox className='input-div'>
+              <label>Password</label>
+              <br />
+              <InputBig
+                type="password"
+                placeholder='비밀번호'
+                minLength={8}
+                maxLength={20}
+                onKeyUp={characterCheck} onKeyDown={characterCheck}
+                onChange={(e)=>{setPassword1(e.target.value)}}
+                disabled={email}
+                required
+                />
+              <p className='password-p'>
+                * 비밀번호는 영문 대소문자, 숫자를 혼합하여 8~20자로 입력해 주세요
+              </p>
+            </DivBox>
+
+            {/* 비밀번호 재확인칸 */}
+            <DivBox className='continue'>
+              <InputBig
+                type="password"
+                placeholder='비밀번호 재확인' 
+                minLength={8}
+                maxLength={20}
+                onKeyUp={characterCheck} onKeyDown={characterCheck} 
+                onChange={(e)=>{setPassword2(e.target.value)}}
+                disabled={email}
+                required
+                />
+              <p className='password-p'>
+                {
+                  password1 !== null && password1 === password2 ? "* 비밀번호가 일치합니다" : (<span style={{color: "red"}}>* 비밀번호가 일치하지 않습니다</span>)
+                }
+              </p>
+            </DivBox>
+
+            {/* 이름 입력 칸 */}
+            <DivBox className='input-div'>
+              <label htmlFor="">Name</label>
+              <br />
+              <InputBig
+                type="text" 
+                placeholder='이름' 
+                value={ name ? name : inputName} 
+                disabled={!!name}
+                onChange={(e)=>{setInputName(e.target.value)}}
+                minLength={2}
+                maxLength={5}
+                required
               />
-              <InputBtn id="sign-in-button" type='button' onClick={onSignInSubmit}>인증번호 발송</InputBtn>
-            </div>
-          </DivBox>
+            </DivBox>
+            
+            {/* 닉네임 입력 칸 */}
+            <DivBox className='input-div'>
+              <label htmlFor="">Nickname</label>
+              <br />
+              <InputSmall 
+                type="text" 
+                placeholder='닉네임'
+                value={nick} 
+                onChange={(e)=>{setNick(e.target.value)}} 
+                minLength={2}
+                maxLength={10}
+                required
+              />
+              <InputBtn type="button" onClick={onSearch}>중복확인</InputBtn>
+            </DivBox>
 
-          {/* 휴대전화 인증번호 입력칸 */}
-          <DivBox>  
-            <InputSmall
-              type="number" 
-              placeholder='인증코드'
-              value={otp}
-              onChange={(e)=>{setOtp(e.target.value)}}
-              required
-            />
-            <InputBtn type='button' onClick={onOTPVerify}>인증코드 입력</InputBtn>
-          </DivBox>
-
-          {/* 자산관리사 전문분야 */}
-          <DivBox className='input-div'>
-            <label htmlFor="">Professional Field<span style={{fontSize : '0.8rem'}}> (최대 3개)</span></label>
-            <div>
-              {['#경제기초', '#기본세무', '#부동산', '#저축'].map((category) => (
-                <FieldBtns
-                  key={category}
-                  type="button"
-                  onClick={() => handleButtonClick(category)}
-                  className={isButtonSelected(category) ? 'selected' : ''}
-                  style={{ backgroundColor: isButtonSelected(category) ? 'gray' : '' }}
+            {/* 생년월일 입력칸 */}
+            <DivBox className='input-div'>
+              <label htmlFor="">Birth</label>
+              <div className='div-style'>
+                <BirthInput id="birth-year" value={selectedYear} onChange={onYearChange} required>
+                  <option disabled value="">
+                    출생연도
+                  </option>
+                  {createYearOptions()}
+                </BirthInput>
+                <BirthInput id="birth-month" value={selectedMonth} onChange={onMonthChange} required
+                  style={{margin: "0 2%"}}
                 >
-                  {category}
-                </FieldBtns>
-              ))}
-            </div>
-            <div>
-              {['#연말정산', '#노후계획', '#주식', '#코인'].map((category) => (
-                <FieldBtns
-                  key={category}
-                  type="button"
-                  onClick={() => handleButtonClick(category)}
-                  className={isButtonSelected(category) ? 'selected' : ''}
-                  style={{ backgroundColor: isButtonSelected(category) ? 'gray' : '' }}
-                >
-                  {category}
-                </FieldBtns>
-              ))}
-            </div>
-            <div>
-              {['#사업자', '#프리랜서', '#상속/증여', '#보험'].map((category) => (
-                <FieldBtns
-                  key={category}
-                  type="button"
-                  onClick={() => handleButtonClick(category)}
-                  className={isButtonSelected(category) ? 'selected' : ''}
-                  style={{ backgroundColor: isButtonSelected(category) ? 'gray' : '' }}
-                >
-                  {category}
-                </FieldBtns>
-              ))}
-            </div>
-          </DivBox>
+                  <option disabled value="">
+                    월
+                  </option>
+                  {createMonthOptions()}
+                </BirthInput>
+                <BirthInput id="birth-day" value={selectedDay} onChange={onDayChange} required>
+                  <option disabled value="">
+                    일
+                  </option>
+                  {createDayOptions()}
+                </BirthInput>
+              </div>
+            </DivBox>
 
-          {/* 자산관리사 자기소개 */}
-          <DivBox className='input-div'>
-            <label>Self - introduction</label>
-            <textarea
-              style={{backgroundColor: "#E6E6E6", borderRadius: "20px", border: "none", padding: "10px"}}
-              name="" 
-              id="" 
-              cols="48" 
-              rows="5"
-              placeholder='자산관리 페이지에서 보여지는 내용입니다'
-              value={textareaValue.join('\n')}
-              onChange={handleTextareaChange}
-            ></textarea>
-          </DivBox>
-          
-          {/* 이용동의 */}
-          <DivBox>
-            <div>
-              <input type='checkbox' required/>
-              <label style={{padding: "0 5px 0 10px"}}>(필수)서비스 이용동의</label>
-              <button type='button' onClick={() => openModal('modal1')}>보기</button>
-              {modals.modal1 && <Content1 onClose={() => closeModal('modal1')}/>}
-            </div>
-            <div>
-              <input type="checkbox" required/>
-              <label style={{padding: "0 5px 0 10px"}}>(필수)개인정보 수집 및 이용동의</label>
-              <button type='button' onClick={() => openModal('modal2')}>보기</button>
-              {modals.modal2 && <Content2 onClose={() => closeModal('modal2')}/>}
-            </div>
-            <div>
-              <input type="checkbox" />
-              <label style={{padding: "0 5px 0 10px"}}>(선택)이벤트 및 프로모션 알림 동의</label>
-              <button type='button' onClick={() => openModal('modal3')}>보기</button>
-              {modals.modal3 && <Content3 onClose={() => closeModal('modal3')}/>}
-            </div>  
-          </DivBox>
+            {/* 휴대전화 입력칸 */}
+            <DivBox className='input-div'>
+              <label htmlFor="">Phone</label>
+              <div style={{display: "flex", alignItems: "center"}}>
+                <InputSmall 
+                  type="number" 
+                  placeholder='휴대전화'
+                  onChange={(e)=>{setPhoneNum(e.target.value)}}
+                  required 
+                />
+                <InputBtn id="sign-in-button" type='button' onClick={onSignInSubmit}>인증번호 발송</InputBtn>
+              </div>
+            </DivBox>
 
-          <InputSubmit type="submit" value="회원가입 완료"></InputSubmit>
-        </Form>
-        
+            {/* 휴대전화 인증번호 입력칸 */}
+            <DivBox className='continue'>  
+              <InputSmall
+                type="number" 
+                placeholder='인증코드'
+                value={otp}
+                onChange={(e)=>{setOtp(e.target.value)}}
+                required
+              />
+              <InputBtn type='button' onClick={onOTPVerify}>인증코드 입력</InputBtn>
+            </DivBox>
+
+            {/* 자산관리사 전문분야 */}
+            <DivBox className='input-div'>
+              <label htmlFor="">Professional Field<span style={{fontSize : '0.8rem'}}> (최대 3개)</span></label>
+              <div className='div-style'>
+                {['#경제기초', '#기본세무', '#부동산', '#저축'].map((category) => (
+                  <FieldBtns
+                    key={category}
+                    type="button"
+                    onClick={() => handleButtonClick(category)}
+                    className={isButtonSelected(category) ? 'selected' : ''}
+                    style={{ backgroundColor: isButtonSelected(category) ? 'gray' : '' }}
+                  >
+                    {category}
+                  </FieldBtns>
+                ))}
+              </div>
+              <div>
+                {['#연말정산', '#노후계획', '#주식', '#코인'].map((category) => (
+                  <FieldBtns
+                    key={category}
+                    type="button"
+                    onClick={() => handleButtonClick(category)}
+                    className={isButtonSelected(category) ? 'selected' : ''}
+                    style={{ backgroundColor: isButtonSelected(category) ? 'gray' : '' }}
+                  >
+                    {category}
+                  </FieldBtns>
+                ))}
+              </div>
+              <div>
+                {['#사업자', '#프리랜서', '#상속/증여', '#보험'].map((category) => (
+                  <FieldBtns
+                    key={category}
+                    type="button"
+                    onClick={() => handleButtonClick(category)}
+                    className={isButtonSelected(category) ? 'selected' : ''}
+                    style={{ backgroundColor: isButtonSelected(category) ? 'gray' : '' }}
+                  >
+                    {category}
+                  </FieldBtns>
+                ))}
+              </div>
+            </DivBox>
+
+            {/* 자산관리사 자기소개 */}
+            <DivBox className='input-div'>
+              <label>Self - introduction</label>
+              <div className='div-style'>
+              <textarea
+                style={{backgroundColor: "#E6E6E6", borderRadius: "20px", border: "none", padding: "10px"}}
+                name="" 
+                id="" 
+                cols="48" 
+                rows="5"
+                placeholder='자산관리 페이지에서 보여지는 내용입니다'
+                value={textareaValue.join('\n')}
+                onChange={handleTextareaChange}
+              ></textarea>
+              </div>
+            </DivBox>
+            
+            {/* 이용동의 */}
+            <DivBox
+              style={{marginTop: "65px"}}
+            >
+              <div className='agree'>
+                <input type='checkbox' required/>
+                <span>(필수)서비스 이용동의</span>
+                <button type='button' onClick={() => openModal('modal1')}>보기</button>
+              </div>
+              <div className='agree'>
+                <input type="checkbox" required/>
+                <span>(필수)개인정보 수집 및 이용동의</span>
+                <button type='button' onClick={() => openModal('modal2')}>보기</button>
+              </div>
+              <div className='agree'>
+                <input type="checkbox" />
+                <span>(선택)이벤트 및 프로모션 알림 동의</span>
+                <button type='button' onClick={() => openModal('modal3')}>보기</button>
+              </div>  
+            </DivBox>
+
+            <InputSubmit type="submit" value="회원가입"></InputSubmit>
+          </Form>
+        </div>
       </InnerDiv>
+      {modals.modal1 && <Content1 onClose={() => closeModal('modal1')}/>}
+      {modals.modal2 && <Content2 onClose={() => closeModal('modal2')}/>}
+      {modals.modal3 && <Content3 onClose={() => closeModal('modal3')}/>}
     </BackGround>
   )
 }
