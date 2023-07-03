@@ -10,23 +10,23 @@ const Back = styled.div `
     overflow: hidden;
 `
 const BackgroundImage1 = styled.div`
-    background-size: 85vh;
+    background-size: 100vh;
     width: 200%;
-    height: 85vh;
-    background-image: url("img/back_pattern.png");
+    height: 100vh;
+    background-image: ${`url(${require('../../assets/img/back_pattern.png')})`};
     /* background-repeat: repeat-x; */
     background-position: -150px, -250px;
     display: inline-block;
     position: absolute;
-    top: -33vh;
-    left: 0;
+    top: -40vh;
+    left: 5vh;
 `;
 
 const BackgroundImage2 = styled.div`
     background-size: 100vh;
     width: 200%;
     height: 100vh;
-    background-image: url("img/back_pattern.png");
+    background-image:  ${`url(${require('../../assets/img/back_pattern.png')})`};
     /* background-repeat: repeat-x; */
     background-position: -150px, -250px;
     display: inline-block;

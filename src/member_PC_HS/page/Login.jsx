@@ -226,62 +226,89 @@ export default function Login() {
   }
 
   return (
-        <WrapFormLogin>
-          <div
-            style={{
-              width: "600px",
-              height: "82px",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <CreateBtn onClick={()=>{navigate('/account/create')}}>Create Account</CreateBtn>
-            <CreateBtn onClick={()=>{navigate('/account/login')}}>Login</CreateBtn>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              height: "556px"
-            }}
-          >
-            <InputBox2>
-                <img src="/img/logo.png" alt="" style={{width:"100px"}}/>
-                <h2>WELCOME BACK!</h2>
-                <EmailWithPassword
-                  onSubmit={(e)=>{
-                    e.preventDefault();
-                    onLogin();
-                  }}
-                >
-                  <input type="text" placeholder='Email' onChange={(e)=>{setEmail(e.target.value)}}/>
-                  <br />
-                  <input type="password" placeholder='Password' onChange={(e)=>{setPassword(e.target.value)}}/>
-                  <br />
-                  <input type='submit' value={`Let's start!`} />
-                </EmailWithPassword>
+    <div
+      style={{
+        width: "600px",
+        height: "638px",
+        position: "relative",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)"
+      }}
+    >
+      <WrapFormLogin>
+        <div
+          style={{
+            width: "600px",
+            height: "82px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
+          <CreateBtn onClick={()=>{navigate('/account/create')}}>
+            <a style={{color: '#FFFFFF'}}>Create Account</a>
+          </CreateBtn>
+          <CreateBtn onClick={()=>{navigate('/account/login')}}>
+            <a style={{color: '#8E8E8E'}}>Login</a>
+          </CreateBtn>
+        </div>
+        <InputBox2>
+            <img 
+              src={require('../../assets/MONIVATION_assets/logo_onlyillust.png')} 
+              alt="logo" 
+              style={{
+                width: "101px",
+                height: "97px",
+              }}
+            />
+            <h2>WELCOME BACK!</h2>
+            <EmailWithPassword
+              onSubmit={(e)=>{
+                e.preventDefault();
+                onLogin();
+              }}
+            >
+              <input type="text" placeholder='Email' onChange={(e)=>{setEmail(e.target.value)}}/>
+              <br />
+              <input type="password" placeholder='Password' onChange={(e)=>{setPassword(e.target.value)}}/>
+              <br />
+              <input type='submit' value={`Let's start!`} />
+            </EmailWithPassword>
 
-            {/* 쇼셜로그인 버튼 */}
-            <SocialBtn>
-              <p> or login with </p>
-              <div>
-                <button onClick={onGoogleLogin}>
-                  <img
-                    src="/img/google.png"
-                    alt="구글 로그인 버튼"
-                  />
-                </button>
+        {/* 쇼셜로그인 버튼 */}
+        <SocialBtn>
+          <p> or login with </p>
+          <div>
+            <button onClick={onGoogleLogin}>
+              <img
+                src={require('../../assets/icon/google.png')}
+                alt="구글 로그인 버튼"
+              />
+            </button>
 
-                <button onClick={kakaoLogin}>
-                  <img
-                    src="/img/kakao.png"
-                    alt="카카오 로그인 버튼"
-                    />
-                </button>
-              </div>
-            </SocialBtn>
-            </InputBox2>
+            <button onClick={kakaoLogin}>
+              <img
+                src={require('../../assets/icon/kakao.png')}
+                alt="카카오 로그인 버튼"
+                />
+            </button>
           </div>
-        </WrapFormLogin>
+        </SocialBtn>
+        </InputBox2>
+      </WrapFormLogin>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "600px",
+          height: "82px",
+          background: "linear-gradient(170deg, #21D6CC 10%, #7D21CF 90%)",
+          borderRadius: "50px 50px 0 0",
+          boxShadow: "0px 10px 20px 5px rgba(0, 0, 0, 0.15)"
+        }}
+      />
+    </div>
   )
 }
