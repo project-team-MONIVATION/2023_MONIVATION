@@ -2,7 +2,7 @@ import React from "react";
 import styled from 'styled-components';
 
 const LogoImg = styled.div`
-  background-image: url('img/logo_onlytext_white.png');
+  background-image: url(${require('../../../assets/MONIVATION_assets/logo_onlytext_white.png')});
   position: absolute;
   top: 28px;
   left: 36px;

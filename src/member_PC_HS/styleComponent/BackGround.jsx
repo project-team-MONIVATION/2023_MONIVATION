@@ -19,7 +19,7 @@ const BackgroundImage1 = styled.div`
     display: inline-block;
     position: absolute;
     top: -40vh;
-    left: 5vh;
+    left: 0;
 `;
 
 const BackgroundImage2 = styled.div`
