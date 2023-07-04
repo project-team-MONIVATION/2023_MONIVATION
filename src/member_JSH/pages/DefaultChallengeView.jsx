@@ -198,7 +198,18 @@ export default function DefaultChallengeView() {
         });
     };
 
-    
+    const copyUrl = () =>{
+        const currentUrl = window.location.href;
+
+        navigator.clipboard.writeText(currentUrl)
+            .then(()=>{
+                console.log('URL copied to clipboard:', currentUrl);
+            alert('주소가 복사되었습니다');
+            })
+            .catch((error)=>{
+                console.error('Failed to copy URL:', error);
+            })
+        }
     
 
     // 이미지를 넣을 떼 height를 설정해주지 않으면 디폴트로 height : 0이 들어가있기 때문에
@@ -221,7 +232,7 @@ export default function DefaultChallengeView() {
                             <label htmlFor="">획득 가능한 뱃지 </label>
                             <div style={{width : "50px", display : "inline-block", height : "50px", borderRadius : "20px",
                             backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
-                            backgroundImage : `url(/img/${challengeBoard && challengeBoard.badge})`}}></div>
+                            backgroundImage : `url(../../assets/img/${challengeBoard && challengeBoard.badge})`}}></div>
                         </li>
                     </ul>
                 {/** challenge 데이터에 user.nickname도 넣을 예정 */}
@@ -236,7 +247,7 @@ export default function DefaultChallengeView() {
                     </button> 
                     : <button>로그인 해주세요</button>
                 }
-                <button>공유</button>
+                <button onClick={copyUrl}>공유</button>
             </div>
             <div></div>
         </div>

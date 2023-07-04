@@ -2,10 +2,8 @@
     display: flex;
     justify-content: space-between;
     margin: auto;
+    animation: slide-up 0.5s ease-in-out forwards;
     width: 80%;
-}
-#manager-profile .calendar-box {
-    animation: showAnimation 0.5s forwards;
 }
 #manager-profile .profile-header {
     font-size: 1.8rem;

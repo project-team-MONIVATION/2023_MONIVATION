@@ -56,7 +56,7 @@ export default function Asset() {
   },[])
   
   return (
-    <div id='layout' style={{overflowY: 'hidden'}}>
+    <div id='layout' style={{overflow: 'hidden'}}>
       {isLoaded &&
       <div id='asset'>
         {/* 탭 바 */}
@@ -101,51 +101,45 @@ export default function Asset() {
             <tbody>
               <tr>
                 <td>
-                  <h1>관련서적</h1>
+                  <p>관련서적</p>
                 </td>
-                <td><img src="/img/coin.jpg" alt="사진" /></td>
-                <td><img src="/img/chart.jpg" alt="사진" /></td>
-                <td><img src="/img/money.jpg" alt="사진" /></td>
-                <td><img src="/img/man.jpg" alt="사진" /></td>
-              </tr>
-              <tr className='btm'>
-                <td></td>
                 <td>
+                  <img src={require('../../assets/img/coin.jpg')} alt="사진" />
                   <p>코인시장에서 하면 안될 3가지 행동</p>
                 </td>
                 <td>
+                  <img src={require('../../assets/img/chart.jpg')} alt="사진" />
                   <p>주식에서 중요한 10가지 법칙</p>
                 </td>
                 <td>
+                  <img src={require('../../assets/img/money.jpg')} alt="사진" />
                   <p>돈의 흐름</p>
                 </td>
                 <td>
+                  <img src={require('../../assets/img/man.jpg')} alt="사진" />
                   <p>멀리 내다보는 시야를 가지는게 중요한 이유</p>
                 </td>
               </tr>
               <tr>
                   <td>
-                    <h1>꿀팁영상</h1>
+                    <p>꿀팁영상</p>
                   </td>
                   <td>
                     <iframe src="https://www.youtube.com/embed/hikmv2mSVxo" title="3분30초만에 알아보는 자산관리방법 PICK 6" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                    <p>3분30초만에 알아보는 자산관리방법 PICK 6</p> 
                   </td>
                   <td>
                     <iframe src="https://www.youtube.com/embed/EnZpz8SgM4U" title="평범한 직장인으로 20억 자산까지 딱 10년!!! 누구의 도움없이도 가능한 돈에 대한 예의를 갖추자! (자산관리 1편)" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                    <p>평범한 직장인으로 20억 자산까지 딱 10년!</p>
                   </td>
                   <td>
                     <iframe src="https://www.youtube.com/embed/kQZSeJXq7lE" title="월급의 몇%를 저축하고 있나요? 사회 초년생 월급관리 10분 정리!" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                    <p>월급의 몇%를 저축하고 있나요? 사회 초년생 월급관리 10분 정리!</p>
                   </td>
                   <td>
                     <iframe src="https://www.youtube.com/embed/GJorguPKRTk" title="삼성전자 말고 &#39;이 주식&#39;을 사모으세요. 정말 유일합니다 (이종우)" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                    <p>삼성전자 말고 '이 주식'을 사모으세요</p>
                   </td>
-              </tr>
-              <tr className='btm'>
-                  <td></td>
-                  <td>3분30초만에 알아보는 자산관리방법 PICK 6</td>
-                  <td>평범한 직장인으로 20억 자산까지 딱 10년!!!</td>
-                  <td>월급의 몇%를 저축하고 있나요? 사회 초년생 월급관리 10분 정리!</td>
-                  <td>삼성전자 말고 '이 주식'을 사모으세요</td>
               </tr>
             </tbody>
           </table>

@@ -32,11 +32,13 @@
 #nav .nav_item {
   box-sizing: border-box;
   width: 133px;
-  height: inherit;
+  height: 6vh;
+  line-height: 6vh;
   margin-right: 15px;
 }
 
 #nav a {
+  display: block;
   color: #303030;
   font-size: 18px;
   font-weight: bold;
