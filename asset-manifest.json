@@ -1,9 +1,13 @@
 {
   "files": {
-    "main.css": "/2023_MONIVATION/static/css/main.cd478681.css",
-    "main.js": "/2023_MONIVATION/static/js/main.5d04a230.js",
+    "main.css": "/2023_MONIVATION/static/css/main.7db12133.css",
+    "main.js": "/2023_MONIVATION/static/js/main.42533efb.js",
     "static/media/money.jpg": "/2023_MONIVATION/static/media/money.b962bb15803ca7231b46.jpg",
     "static/media/logo_onlyillust.png": "/2023_MONIVATION/static/media/logo_onlyillust.5449688a954860da4025.png",
+    "static/media/badge3.png": "/2023_MONIVATION/static/media/badge3.fedaa18400e91ed65231.png",
+    "static/media/badge2.png": "/2023_MONIVATION/static/media/badge2.2b7e8591dd42ccd8679e.png",
+    "static/media/challenge1-img.png": "/2023_MONIVATION/static/media/challenge1-img.16139d7483d7f90f633c.png",
+    "static/media/badge1.png": "/2023_MONIVATION/static/media/badge1.3380fbec0fc53237bc56.png",
     "static/media/coin.jpg": "/2023_MONIVATION/static/media/coin.a84ea7595547dac99c57.jpg",
     "static/media/chart.jpg": "/2023_MONIVATION/static/media/chart.a759575a6cfe4f06d3ee.jpg",
     "static/media/noneImage.jpg": "/2023_MONIVATION/static/media/noneImage.6e456eb4cb79cc982555.jpg",
@@ -16,6 +20,7 @@
     "static/media/man.jpg": "/2023_MONIVATION/static/media/man.1da2f3567489eec95136.jpg",
     "static/media/부자아빠가난한아빠1.jpg": "/2023_MONIVATION/static/media/부자아빠가난한아빠1.478d7d02abd21d62cb75.jpg",
     "static/media/돈의속성.jpg": "/2023_MONIVATION/static/media/돈의속성.95b845a896045a628da2.jpg",
+    "static/media/badge4.png": "/2023_MONIVATION/static/media/badge4.7d8bcca201cd45fbeb48.png",
     "static/media/kakao.png": "/2023_MONIVATION/static/media/kakao.ac73cc8155c85b8642de.png",
     "static/media/부자의그릇.jpg": "/2023_MONIVATION/static/media/부자의그릇.99e5cf5e21a8b7713794.jpg",
     "static/media/돈은너로부터다.jpg": "/2023_MONIVATION/static/media/돈은너로부터다.ad7765cea5a2a659a584.jpg",
@@ -27,11 +32,11 @@
     "static/media/slick.ttf": "/2023_MONIVATION/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/2023_MONIVATION/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/2023_MONIVATION/index.html",
-    "main.cd478681.css.map": "/2023_MONIVATION/static/css/main.cd478681.css.map",
-    "main.5d04a230.js.map": "/2023_MONIVATION/static/js/main.5d04a230.js.map"
+    "main.7db12133.css.map": "/2023_MONIVATION/static/css/main.7db12133.css.map",
+    "main.42533efb.js.map": "/2023_MONIVATION/static/js/main.42533efb.js.map"
   },
   "entrypoints": [
-    "static/css/main.cd478681.css",
-    "static/js/main.5d04a230.js"
+    "static/css/main.7db12133.css",
+    "static/js/main.42533efb.js"
   ]
 }
