@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { auth, db, storage } from '../../database/firebase';
 import { collection, doc, getDoc, getDocs, query, updateDoc, where, Timestamp } from 'firebase/firestore';
-import { getAuth, sendSignInLinkToEmail, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, sendSignInLinkToEmail, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword, updatePassword, deleteUser } from 'firebase/auth'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 import '../css/mypageEditPu.css'
@@ -36,29 +36,16 @@ export default function MypageEditPu() {
     const [otp, setOtp] = useState(''); // 인증번호 관리
     const [isPhoneNumberVerified, setIsPhoneNumberVerified] = useState(false);
 
+    const [password1, setPassword1] = useState('');
+    const [password2, setPassword2] = useState('');
 
     /** form 실행 */
     const handleSubmit = async (e) => {
       e.preventDefault();
-
-      // 인증번호 발송 여부 확인
-      if (!isPhoneNumberVerified) {
-        alert("인증번호 발송을 먼저 진행해주세요.");
-        return;
-      }
-    
-      // 인증번호 입력 여부 확인
-      if (otp.length === 0) {
-        alert("인증번호를 입력해주세요.");
-        return;
-      }
-    
-      // 연락처 유효성 검사
-      if (phoneNum.length !== 11) {
-        alert("올바른 휴대폰 번호를 입력해주세요.");
-        return;
-      }
-
+    if(password1 !== password2) {
+      alert('비밀번호를 올바르게 입력하세요')
+    }
+    else {
       const usersRef = doc(db, "personal_users", params.id);
       const usersSnap = await getDoc(usersRef);
       if (usersSnap.exists()) {
@@ -71,13 +58,27 @@ export default function MypageEditPu() {
       await updateDoc(usersRef, { photo: url });
     }
 
-        await updateDoc(usersRef, {
-          nickname: nickname,
-          birth: selectedYear + "년" + selectedMonth + "월" + selectedDay + "일",
-          phone: phoneNum,
-        });
+      await updateDoc(usersRef, {
+        nickname: nickname,
+        birth: selectedYear + "년" + selectedMonth + "월" + selectedDay + "일",
+        phone: phoneNum,
+      });
+
+      updatePassword(auth.currentUser, password1)
+        .then(() => {
+          alert('비밀번호가 성공적으로 변경되었습니다')
+        })
+        .catch((error) => {
+          console.error('변경 실패', error)
+        })
+
+        
+
+
       }
       navigate('/mypage');
+
+    }
     };
     
     useEffect(() => {
@@ -104,19 +105,34 @@ export default function MypageEditPu() {
     }, [])
 
     // 수정 버튼 클릭 시 확인 대화상자 표시
-    const handleClickUpdate = (e) => {
+    // const handleClickUpdate = (e) => {
 
-      const confirmed = window.confirm("수정 하시겠습니까?");
-        if (confirmed) {
-          handleSubmit(e);
-          if (selectedImage) {
-            handleSubmit(e);
-          } 
-        } else {
-          // 수정 취소 시 이미지 선택 초기화
-          setSelectedImage(null);
-        }
-    };
+    //   const confirmed = window.confirm("수정 하시겠습니까?");
+    //     if (confirmed) {
+    //       handleSubmit(e);
+    //       if (selectedImage) {
+    //         handleSubmit(e);
+    //       } 
+    //     } else {
+    //       // 수정 취소 시 이미지 선택 초기화
+    //       setSelectedImage(null);
+    //     }
+    // };
+
+
+
+// 회원탈퇴
+const deleteBtn = () => {
+  const confirmed = window.confirm("탈퇴 하시겠습니까?");
+  if (confirmed) {
+  deleteUser(auth.currentUser).then(() => {
+  
+  }).catch((error) => {
+    // An error ocurred
+    // ...
+  }); }
+}
+
 
 
     /** form 입력 값 업데이트 */
@@ -218,6 +234,7 @@ export default function MypageEditPu() {
       }
     }
 
+
     
     /** 휴대폰 인증 */
     // 번호 입력 - 인증 전송
@@ -273,9 +290,6 @@ export default function MypageEditPu() {
         console.log(res.user)
         alert("인증이 완료되었습니다.")
         // setCheckPhone(!checkPhone);
-
-        // 수정하기 호출
-        handleClickUpdate();
       }).catch((error)=>{
         console.log(error)
         setOtp("");
@@ -348,7 +362,7 @@ export default function MypageEditPu() {
                 <p>회원구분 <span>개인회원</span></p>
                 <p>가입일 <span>{ startDate.getFullYear() }.{ startDate.getMonth() + 1 }.{ startDate.getDate() }</span></p>
               </div>
-              <div className = 'delete'>
+              <div className = 'delete' onClick={ deleteBtn }>
                 회원탈퇴
               </div>
             </div>
@@ -435,6 +449,7 @@ export default function MypageEditPu() {
                 maxLength = { 20 }
                 onKeyDown = { characterCheck }
                 disabled = { email }
+                onChange={(e)=>{setPassword1(e.target.value)}}
                 className='edit-input-long'
               />
             </div>
@@ -450,15 +465,16 @@ export default function MypageEditPu() {
               maxLength = { 20 }
               onKeyDown = { characterCheck } 
               disabled = { email }
+              onChange={(e)=>{setPassword2(e.target.value)}}
               className='edit-input-long'
 
             />
           </div>
-          {/*<div>
-            {/* {
-              password1 !== null && password1 === password2 ? "*  비밀번호가 일치합니다" : "* 비밀번호가 일치하지  않습니다"
-            } */}
-          {/*</div>*/}
+          <div style={{ position:"absolute", top:"300px"}}>
+            {
+              password1 !== null && password1 === password2 ? "*  비밀번호가 일치합니다" : <span style={{color:"red"}}>비밀번호가 일치하지  않습니다</span>
+            }
+          </div>
 
           {/* 연락처 수정 */}
           <div>
@@ -506,7 +522,7 @@ export default function MypageEditPu() {
           </div>
           </div>
           
-          <input type = "submit" value = "수정하기" onClick = { handleClickUpdate } className='form-submit'/>
+          <input type = "submit" value = "수정하기" className='form-submit'/>
         </form>
         </div>
 
