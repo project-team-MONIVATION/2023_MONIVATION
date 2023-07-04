@@ -10,7 +10,8 @@ const InputSubmitBtn = styled.input`
     height: 48px;
     border: none;
     color: #fff;
-    margin-bottom: 15px;
+    margin-top: 74px;
+    margin-bottom: 96px;
     font-size: 1rem;
     cursor: pointer;
 `

@@ -132,9 +132,9 @@ export default function AssetManagerProfile() {
       <div id='layout-in'>
       <div id="manager-profile">
         
-        <div className='top-box'>
-          {
-            profile &&
+        {
+          profile && (
+          <div className='top-box'>
             <div>
               <h1 className="profile-header">자산관리사 프로필</h1>
               <div className='profile-photo' style={{backgroundImage: `url(${profile.photo})`}}></div>
@@ -156,7 +156,7 @@ export default function AssetManagerProfile() {
                 </div>
               </div>
             </div> 
-          }
+            
 
           {/* 캘린더 */}
           <div className='calendar-box'>
@@ -169,7 +169,7 @@ export default function AssetManagerProfile() {
             </Link>
           </div>
         </div>
-
+        )}
 
           <div className='commentlist'>
           <h1>자문사 평가</h1>

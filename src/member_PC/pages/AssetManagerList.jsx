@@ -92,6 +92,7 @@ export default function AssetManagerList() {
         
         {/* 분야 필터 */}
         <div className='field-btn animated'>
+          <p>태그는 최대 3개까지 선택가능!</p>
           {field.map((f, i)=>(
             <button key={i} className='filter-button' style={{backgroundColor: filter.includes(f) ? "#735BF3" : "#D9D9D9", transition: "background-color 0.5s" }} onClick={()=>handleFilter(f)}>{f}</button>
           ))}

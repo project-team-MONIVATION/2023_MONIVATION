@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 const Box = styled.div `
     margin: 5px 0;
+    width: 100%;
 `
 
 export default function DivBox({ children,...rest }) {

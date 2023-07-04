@@ -3,12 +3,11 @@ import styled from 'styled-components'
 
 const FormBox = styled.div `
     position: absolute;
-    background-image: url('img/LoginBox.png');
+    background-image: ${`url(${require('../../assets/img/LoginBox.png')})`};
     width: 600px;
     height: 638px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
     box-shadow: 0px 10px 20px 5px rgba(0, 0, 0, 0.15);
     border-radius: 50px;
     display: flex;

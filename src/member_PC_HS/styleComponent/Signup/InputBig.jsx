@@ -6,6 +6,7 @@ const InputLarge = styled.input`
   border: none;
   border-radius : 20px;
   background-color : #E6E6E6;
+  margin-top: 10px;
 `
 
 export default function InputBig({children, ...rest}) {

@@ -7,6 +7,7 @@
 #asset-reservation .reservation-day {
     margin-bottom: 10px; 
     border: solid 1px gray; 
+    border-radius: 20px;
     padding: 10px;
 }
 #asset-reservation .reservation-header {
@@ -29,7 +30,7 @@
 #asset-reservation .reservation-div {
     border: solid 1px gray; 
     border-radius: 20px;
-    animation: showAnimation 0.5s forwards;
+    animation: showAnimation 0.8s forwards;
 }
 #asset-reservation .reservation-form .reservation-form-header {
     font-size: 1.2rem;

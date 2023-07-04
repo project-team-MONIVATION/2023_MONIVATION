@@ -3,15 +3,15 @@ import styled from 'styled-components'
 
 const SignupBtn = styled.button`
     display: inline-block;
-    border-radius: 26px;
-    background-image: linear-gradient(to right, #21D6CC, #7D21CF);
-    width: 330px;
-    height: 48px;
+    border-radius: 50px;
+    background-image: linear-gradient(170deg, #21D6CC 10%, #7D21CF 90%);
+    width: 350px;
+    height: 60px;
     border: none;
     color: #fff;
-    margin-bottom: 15px;
     font-family: 'Cafe24Ssurround';
-    font-size: 1rem;
+    font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
 `
 

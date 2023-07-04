@@ -122,7 +122,8 @@ export default function AssetReservation() {
             </div>
           </div>
 
-          <div className={`reservation-div ${show ? 'show' : ''}`}>
+          {show && (
+          <div className={`reservation-div`}>
             <form className='reservation-form' onSubmit={submitForm}>
               <h1 className='reservation-form-header'>상담신청</h1>
               <hr />
@@ -159,6 +160,7 @@ export default function AssetReservation() {
               <input type="submit" className='reservation-submit-btn' value= "예약 확정하기" />
             </form>
           </div>
+          )}
         </div>
       </div>
     </div>

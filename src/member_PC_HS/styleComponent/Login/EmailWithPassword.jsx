@@ -8,24 +8,26 @@ const LoginForm = styled.form `
     border-radius: 26px;
     background-color: #E6E6E6;
     font-family: 'SUITE-Regular';
-    width: 330px;
-    height: 44px;
+    box-sizing: border-box;
+    width: 350px;
+    height: 50px;
     border: none;
     margin-bottom: 15px;
     font-size: 1rem;
     padding: 0 30px;
-    margin-bottom: 7px;
+    margin-bottom: 10px;
 }
   & > input[type="submit"] {
-    border-radius: 26px;
-    width: 200px;
-    height: 48px;
-    margin-top: 10px;
-    background-image: linear-gradient(to right, #21D6CC, #7D21CF);
+    border-radius: 50px;
+    width: 350px;
+    height: 60px;
+    margin-top: 13px;
+    margin-bottom: 5px;
+    background-image: linear-gradient(170deg, #21D6CC 10%, #7D21CF 90%);
     border: none;
     color: #fff;
     font-family: 'Cafe24Ssurround';
-    font-size: 1.2rem;
+    font-size: 18px;
     cursor: pointer;
   }
 `
