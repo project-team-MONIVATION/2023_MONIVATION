@@ -102,9 +102,11 @@ export default function ChallengeSlick() {
                   }}
                 >
                   <Card.Body className="camp-slide-bar">
-                    <Card.Text style={{marginBottom : "0"}}>{board.name}</Card.Text>
+                    
                   </Card.Body>
                 </Card>
+                <br />
+                <Card.Text style={{marginBottom : "0"}}>{board.name}</Card.Text>
               </Link>
               ))
         }
