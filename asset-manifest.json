@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/2023_MONIVATION/static/css/main.ce7221e4.css",
-    "main.js": "/2023_MONIVATION/static/js/main.ccebac20.js",
+    "main.css": "/2023_MONIVATION/static/css/main.cd478681.css",
+    "main.js": "/2023_MONIVATION/static/js/main.5d04a230.js",
     "static/media/money.jpg": "/2023_MONIVATION/static/media/money.b962bb15803ca7231b46.jpg",
     "static/media/logo_onlyillust.png": "/2023_MONIVATION/static/media/logo_onlyillust.5449688a954860da4025.png",
     "static/media/coin.jpg": "/2023_MONIVATION/static/media/coin.a84ea7595547dac99c57.jpg",
@@ -27,11 +27,11 @@
     "static/media/slick.ttf": "/2023_MONIVATION/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/2023_MONIVATION/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/2023_MONIVATION/index.html",
-    "main.ce7221e4.css.map": "/2023_MONIVATION/static/css/main.ce7221e4.css.map",
-    "main.ccebac20.js.map": "/2023_MONIVATION/static/js/main.ccebac20.js.map"
+    "main.cd478681.css.map": "/2023_MONIVATION/static/css/main.cd478681.css.map",
+    "main.5d04a230.js.map": "/2023_MONIVATION/static/js/main.5d04a230.js.map"
   },
   "entrypoints": [
-    "static/css/main.ce7221e4.css",
-    "static/js/main.ccebac20.js"
+    "static/css/main.cd478681.css",
+    "static/js/main.5d04a230.js"
   ]
 }
