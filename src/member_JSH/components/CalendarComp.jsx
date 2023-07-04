@@ -19,7 +19,7 @@ import { db } from '../../database/firebase';
 import styled from 'styled-components';
 import ModalWrap from '../../member_HHS/styleComponent/DateDetail/ModalWrap';
 import { animate } from 'framer-motion';
-
+import TotalStatComp from './TotalStatComp';
 
 
 const InputBtn = styled.button`
@@ -33,7 +33,7 @@ const InputBtn = styled.button`
 `
 
 
-export default function CalendarComp() {
+export default function CalendarComp({ onMonthChange }) {
     /** 파이어스토어에서 값 가져오기 위함 HHS */
     const user = useSelector((state)=>state.user.user);
 
@@ -46,6 +46,9 @@ export default function CalendarComp() {
     // 현재 날짜
     const curDate = new Date();
     const [value, setValue] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+
 
     // 일반 수입 리덕스
     const implist = useSelector((state)=>(state.imp));
@@ -174,11 +177,31 @@ export default function CalendarComp() {
       return formattedValue;
     };
 
+    // 날짜가 바뀔때마다 현 comp의 날짜를 prop값으로 전달
+    const handleCalendarChange = (newValue) => {
+      setValue(newValue);
+      setSelectedDate(newValue);
+
+      const currentMonth = newValue.getMonth() + 1; // 월은 0부터 시작하므로 +1을 해줍니다.
+      onMonthChange(currentMonth);
+    };
+
+    const handleActiveStartDateChange = ({ activeStartDate }) => {
+      setSelectedMonth(activeStartDate.getMonth()+1);
+    };
+
 
   return (
+    <div style={{width:"100%", display:"flex", justifyContent : "center"}}>
+      <TotalStatComp selectedDate={selectedDate}
+        selectedMonth={selectedMonth}
+      />
+      
     <div style={{width : "77%"}}>
-      <div className='money-calendar-wrap' >
-      <Calendar onChange={setValue} value={value}
+      <div>
+      <Calendar onChange={handleCalendarChange}
+        onActiveStartDateChange={handleActiveStartDateChange}
+        value={value}
         className='main_calendar'
         formatDay={(locale, date) => moment(date).format('D')}
         showNeighboringMonth={true}
@@ -413,6 +436,7 @@ export default function CalendarComp() {
             </Modal>
           )
         }
+    </div>
     </div>
   )
 }
