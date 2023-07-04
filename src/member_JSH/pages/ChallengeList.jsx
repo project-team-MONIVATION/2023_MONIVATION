@@ -65,7 +65,7 @@ export default function ChallengeList() {
                   backgroundImage :`url(/img/${board.img})`,
                   backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}
                     className="challengeboard-card"
-                    src={board?.img && (board.img.length < 10 ? require(`../img/${board.img}`) : board.img)}
+                    src={board?.img && (board.img.length < 10 ? require(`../../assets/img/${board.img}`): board.img)}
                   >
                   </img>
                   <br></br>
@@ -77,9 +77,9 @@ export default function ChallengeList() {
         </ul>
         </div>
         <div id='challenge-create-btn'>
-          <button>
-            <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '4rem', color:"white"}}/>
-          </button>
+            <Link to='/challenge/create' style={{textDecoration : "none", fontSize : '4rem', color:"white"}}>
+              <button />
+            </Link>
         </div>
       </div>
     </div>

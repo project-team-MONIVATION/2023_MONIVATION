@@ -27,6 +27,9 @@ import '../../member_LJC/css/moneyCalendar.css';
 
 export default function MoneyCalendar() {
 
+  // 선택된 날짜
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   // 수입 지출 컴프 바꾸기위한 버튼
   const [open, setOpen] = useState(true);
 
@@ -45,6 +48,10 @@ export default function MoneyCalendar() {
   useEffect(()=>{
     window.scrollTo({top: 0})
   },[])
+
+  const handleDateChange = (newDate) => {
+    setSelectedDate(newDate);
+  };
   
   return (
     <div id='layout' style={{ position: "relative", padding: "3vh"}}>
@@ -68,10 +75,8 @@ export default function MoneyCalendar() {
           boxSizing: "border-box"
         }}
       >
-        <TotalStatComp />
-        <CalendarComp />
+        <CalendarComp onMonthChange={handleDateChange}/>
       </div>
-
 
       <div
         id='MoneyCalendar'
