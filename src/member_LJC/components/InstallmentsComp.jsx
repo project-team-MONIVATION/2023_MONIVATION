@@ -24,7 +24,7 @@ export default function InstallmentsComp() {
 
     // 데이터들 카테고리,가격 나열
     function samecategory(d) {
-        const filteredData = d.filter(obj => obj.installment !== null);
+        const filteredData = d.filter(obj => obj.installment !== "일시불");
         const prices = filteredData.map(obj => obj.price);
         // 할부금 리스트 
         // const filteredData
