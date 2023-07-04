@@ -232,7 +232,7 @@ export default function DefaultChallengeView() {
                             <label htmlFor="">획득 가능한 뱃지 </label>
                             <div style={{width : "50px", display : "inline-block", height : "50px", borderRadius : "20px",
                             backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
-                            backgroundImage : `url(/img/${challengeBoard && challengeBoard.badge})`}}></div>
+                            backgroundImage : `url(../../assets/img/${challengeBoard && challengeBoard.badge})`}}></div>
                         </li>
                     </ul>
                 {/** challenge 데이터에 user.nickname도 넣을 예정 */}

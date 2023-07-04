@@ -35,10 +35,6 @@ export default function TotalStatComp({selectedDate, selectedMonth}) {
   }, [user]);
 
   useEffect(()=>{
-    console.log("현재 날짜 : ", selectedDate);
-  },[selectedDate])
-
-  useEffect(()=>{
     console.log("현재 월 : ", selectedMonth);
     getIncomeData();
     getIncomeRepeatData();

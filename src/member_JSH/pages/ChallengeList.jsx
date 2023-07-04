@@ -65,7 +65,7 @@ export default function ChallengeList() {
                   backgroundImage :`url(/img/${board.img})`,
                   backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}
                     className="challengeboard-card"
-                    src={board?.img && (board.img.length < 10 ? `url(/img/${board.img})`: board.img)}
+                    src={board?.img && (board.img.length < 10 ? require(`../../assets/img/${board.img}`): board.img)}
                   >
                   </img>
                   <br></br>
