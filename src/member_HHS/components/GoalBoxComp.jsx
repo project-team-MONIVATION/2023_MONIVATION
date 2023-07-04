@@ -19,26 +19,19 @@ import 'react-circular-progressbar/dist/styles.css';
 
 export default function GoalBoxComp() {
     const [value, onChange] = useState(new Date());
-
     const navigate = useNavigate();
-    
     const user = useSelector((state) => state.user.user);
-
     const [taList , setTaList] = useState([]);
-
-
     const [activeModal, setActiveModal] = useState(null);
-
     const [hdpercent, setHdpercent] = useState('');
     const [nowpercent, setNowpercent] = useState('');
+
 
     // 오늘 날짜
     const YYYY = String(value.getFullYear())
     const MM = String(value.getMonth()+1).padStart(2,"0")
     const DD = String(value.getDate()).padStart(2,"0")
-    const valueDate = `${YYYY}-${MM}-${DD}`
-
-
+    const valueDate = `${YYYY}.${MM}.${DD}`
 
     const settings = {
         dots: true,
@@ -75,7 +68,7 @@ export default function GoalBoxComp() {
                 
             }
         } catch (error) {
-            console.log("실패했습니다", error);
+            console.log("데이터를 불러오지 못했습니다.", error);
         }
     };
 
@@ -90,7 +83,7 @@ export default function GoalBoxComp() {
         return result
     }
 
-    // 오늘 날짜, 시작날짜 , 끝나는 날짜
+    // 오늘 날짜, 시작날짜 , 끝나는 날짜에 따른 진행률 계산
     const getDateDiffNOWpercent = (d1, d2, d3) => {
         const date1 = d1
         const date2 = new Date(d2);
@@ -139,12 +132,24 @@ export default function GoalBoxComp() {
         return reasult
     }
 
+    const getProgressColor = () => {
+          return '#e74c3c'; // 빨간색
+      };
+
     return (
         <div id='goal-box'>
         <Slider {...settings}>
 
-            {taList.map((tmp) =>
-                <div>
+        {taList.map((tmp) => {
+                    const startDate = new Date(tmp.startday);
+                    const endDate = new Date(tmp.endday);
+                    const currentDate = new Date();
+
+        const progress = Math.round(((currentDate - startDate) / (endDate - startDate)) * 100);
+        const progressOffset = ((100 - progress) / 100) * (2 * Math.PI * 70); // 게이지의 반지름을 나타내는 값인 70을 조정
+
+        return (
+          <div>
                     <div
                         style={{
                             display: "flex",
@@ -161,21 +166,49 @@ export default function GoalBoxComp() {
                             <h3>{tmp.amount}<span>&#8361;</span><p>모으면 돼요!</p> </h3>
                         </div>
 
+
+
                         <div style={{width:"140px", height:"140px"}} className='circular-bar-box'>
-                            <CircularProgressbar value={60} text={`60%`} />
+                            <CircularProgressbar
+                                counterClockwise
+                                value={progress}
+                                text={`${progress}%`}
+                                styles={{
+                                    path: {
+                                        stroke: getProgressColor(progress),
+                                        strokeDasharray: `${2 * Math.PI * 70}`, // 게이지의 반지름을 나타내는 값인 70을 조정
+                                        strokeDashoffset: progressOffset,
+                                        
+                                        transformOrigin: "center center",
+                                        transition: "stroke-dashoffset 0.5s ease-in-out", // 애니메이션 효과를 위한 속성
+                                      },
+                                      trail: {
+                                        stroke: "#f2f2f2", // 게이지 뒷배경 색상
+                                      },
+                                      text: {
+                                        fill: "#333",
+                                        fontSize: "24px",
+                                        fontWeight: "bold",
+                                      },
+                                }}
+                            />
+                            {/* <CircularProgressbar value={60} text={`60%`} /> */}
                         </div>
                     </div>
 
-                    <img src="/img/money-bag.png" alt="money-bag" />
                     
                     <div className='bar-box'>
-                        <ProgressBar num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)} maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}/>
-                        {console.log(getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday))}
-                      <p>{tmp.endday}</p>                    
-                    </div>
+                        <ProgressBar
+                            num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)}
+                            maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}
+                        />
+                        <p>{tmp.endday}</p>
+                    </div>    
+
 
                 </div>
-            )}
+            );
+        })}
         </Slider>
         </div>
     )

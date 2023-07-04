@@ -45,12 +45,11 @@ export default function SignupPU() {
   
   /* 이메일 인증링크 전송 */
   const sendVerificationEmail = () => {
-    const encodedEmail = encodeURIComponent(inputEmail);
     const actionCodeSettings = {
-      url: `https://project-team-monivation.github.io/2023_MONIVATION/account/create/personal-user?email=${encodedEmail}`,
-      handleCodeInApp: true,
+      url: `http://localhost:3000/2023_MONIVATION/account/create/personal-user?email=${inputEmail}`,    
+      handleCodeInApp : true,
     };
-  
+
     sendSignInLinkToEmail(getAuth(), inputEmail, actionCodeSettings)
     .then(() => {
       window.localStorage.setItem('emailForSignIn', inputEmail);
