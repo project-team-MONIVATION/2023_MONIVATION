@@ -98,6 +98,7 @@ export default function ChallengeSlick() {
                     backgroundPosition : "center",
                     padding : "20px",
                     margin : "auto",
+                    backgroundImage : `../img/${board.img}`,
                   }}
                 >
                   <Card.Body className="camp-slide-bar">
