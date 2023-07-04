@@ -287,7 +287,7 @@ export default function TotalStatComp() {
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      backgroundColor: 'rgba(0, 0, 0, 0.75)'
+                      backgroundColor: 'rgba(0, 0, 0, 0.75)',
                     },
                     content: {
                       boxSizing: 'border-box',
@@ -297,7 +297,8 @@ export default function TotalStatComp() {
                       left: '50%',
                       transform: 'translate(-50%, -50%)',
                       borderRadius: '50px',
-                      border: 0
+                      border: 0,
+                      overflow: "hidden",
                     }
                   }}
                 >

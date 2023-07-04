@@ -181,15 +181,7 @@ export default function TargetAmountComp() {
                     <div className='targetA_bar'>
                         <div
                             className='A_bar_icon'
-                            style={{
-                                // width: '60px',
-                                // height: '40px',
-                                // marginRight: "1px",
-                                // backgroundColor: '#735BF3',
-                                // transform: `translateX(${dealt(tmp.startday, tmp.endday)*0.9}%)`,
-                                // transition : 'all 0.3s',
-                                // borderRadius: '15px'
-                            }}
+                            
                         >
                                 D-{Dday(tmp.endday, new Date())}&nbsp;  
                                 <FontAwesomeIcon icon={faCoins}/>

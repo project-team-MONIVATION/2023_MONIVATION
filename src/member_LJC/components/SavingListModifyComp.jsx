@@ -2,6 +2,9 @@ import React, { useState, } from 'react';
 import Calendar from 'react-calendar';
 import {  doc,  updateDoc, } from 'firebase/firestore';
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faGear, faCoins } from "@fortawesome/free-solid-svg-icons";
+
 
 import {db} from '../../database/firebase'
 
@@ -117,8 +120,9 @@ export default function SavingListModifyComp({tmp, getSavingData}) {
                     <button
                         type='button'
                         onClick={() => {setOpen((e) => !e);}}
+                        className='top_listchange'
                     >
-                    수정임티
+                        <FontAwesomeIcon icon={faGear} size="sm"/>
                     </button>
                     {open && (
                         <div>

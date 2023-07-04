@@ -177,6 +177,7 @@ export default function Saving({setModalIsOpen}) {
                                         value={value}
                                         onClickDay={(value, event) => {startperiod(value); setMaxdate(value);}}
                                         className='modal_calendar'
+                                        
                                     />
                                 </div>
                                 
@@ -218,7 +219,7 @@ export default function Saving({setModalIsOpen}) {
                                                     onChange={onChange} 
                                                     value={value}
                                                     onClickDay={(value, event) => {endperiod(value); setCheck3(false);}}
-                                                    minDate={mindate}
+                                                    minDate={new Date()}
                                                     className='modal_calendar period'
                                                 />
                                             </div>
