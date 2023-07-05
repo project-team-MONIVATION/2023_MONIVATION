@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/2023_MONIVATION/static/css/main.d789995a.css",
-    "main.js": "/2023_MONIVATION/static/js/main.c5279cc8.js",
+    "main.css": "/2023_MONIVATION/static/css/main.83a3574a.css",
+    "main.js": "/2023_MONIVATION/static/js/main.099d59e0.js",
     "static/media/7450343.psd": "/2023_MONIVATION/static/media/7450343.3f41eea9dca92f0fca52.psd",
     "static/media/7450182.psd": "/2023_MONIVATION/static/media/7450182.87aa221b97e47dfbd3ac.psd",
     "static/media/7450186.psd": "/2023_MONIVATION/static/media/7450186.fad4ef4a155842ce3d27.psd",
@@ -17,6 +17,7 @@
     "static/media/badge1.png": "/2023_MONIVATION/static/media/badge1.3380fbec0fc53237bc56.png",
     "static/media/coin.jpg": "/2023_MONIVATION/static/media/coin.a84ea7595547dac99c57.jpg",
     "static/media/chart.jpg": "/2023_MONIVATION/static/media/chart.a759575a6cfe4f06d3ee.jpg",
+    "static/media/challenge3-img.png": "/2023_MONIVATION/static/media/challenge3-img.534dc86d7c17b4ac8686.png",
     "static/media/noneImage.jpg": "/2023_MONIVATION/static/media/noneImage.6e456eb4cb79cc982555.jpg",
     "static/media/back_pattern.png": "/2023_MONIVATION/static/media/back_pattern.b0b0cfa5886e9695d24a.png",
     "static/media/레버리지.jpg": "/2023_MONIVATION/static/media/레버리지.25d6982be349205aafc2.jpg",
@@ -29,9 +30,11 @@
     "static/media/돈의속성.jpg": "/2023_MONIVATION/static/media/돈의속성.95b845a896045a628da2.jpg",
     "static/media/badge4.png": "/2023_MONIVATION/static/media/badge4.7d8bcca201cd45fbeb48.png",
     "static/media/kakao.png": "/2023_MONIVATION/static/media/kakao.ac73cc8155c85b8642de.png",
+    "static/media/challenge2-img.jpg": "/2023_MONIVATION/static/media/challenge2-img.99e1031d6f6b4e0ee6fd.jpg",
     "static/media/부자의그릇.jpg": "/2023_MONIVATION/static/media/부자의그릇.99e5cf5e21a8b7713794.jpg",
     "static/media/돈은너로부터다.jpg": "/2023_MONIVATION/static/media/돈은너로부터다.ad7765cea5a2a659a584.jpg",
     "static/media/img1.jpg": "/2023_MONIVATION/static/media/img1.8d3f133218e70249e9ea.jpg",
+    "static/media/challenge4-img.jpg": "/2023_MONIVATION/static/media/challenge4-img.4496df266f928d2d5592.jpg",
     "static/media/coin.png": "/2023_MONIVATION/static/media/coin.e9d7ff67eccdef325ddd.png",
     "static/media/img2.jpg": "/2023_MONIVATION/static/media/img2.e19ae80f836c001f78a7.jpg",
     "static/media/slick.svg": "/2023_MONIVATION/static/media/slick.2630a3e3eab21c607e21.svg",
@@ -39,11 +42,11 @@
     "static/media/slick.ttf": "/2023_MONIVATION/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/2023_MONIVATION/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/2023_MONIVATION/index.html",
-    "main.d789995a.css.map": "/2023_MONIVATION/static/css/main.d789995a.css.map",
-    "main.c5279cc8.js.map": "/2023_MONIVATION/static/js/main.c5279cc8.js.map"
+    "main.83a3574a.css.map": "/2023_MONIVATION/static/css/main.83a3574a.css.map",
+    "main.099d59e0.js.map": "/2023_MONIVATION/static/js/main.099d59e0.js.map"
   },
   "entrypoints": [
-    "static/css/main.d789995a.css",
-    "static/js/main.c5279cc8.js"
+    "static/css/main.83a3574a.css",
+    "static/js/main.099d59e0.js"
   ]
 }
