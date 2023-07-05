@@ -15,4 +15,7 @@
     margin: auto;
     width: 80%;
     height: 7vh;
+    text-align: left;
+    padding-left: 5%;
+    color: black;
 }
