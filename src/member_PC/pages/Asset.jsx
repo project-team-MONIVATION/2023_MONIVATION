@@ -101,7 +101,7 @@ export default function Asset() {
             <tbody>
               <tr>
                 <td>
-                  <p>관련서적</p>
+                  <h1>관련서적</h1>
                 </td>
                 <td>
                   <img src={require('../../assets/img/coin.jpg')} alt="사진" />
@@ -122,7 +122,7 @@ export default function Asset() {
               </tr>
               <tr>
                   <td>
-                    <p>꿀팁영상</p>
+                    <h1>꿀팁영상</h1>
                   </td>
                   <td>
                     <iframe src="https://www.youtube.com/embed/hikmv2mSVxo" title="3분30초만에 알아보는 자산관리방법 PICK 6" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
