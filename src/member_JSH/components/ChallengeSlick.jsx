@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useParams } from 'react-router-dom'
 import { db } from '../../database/firebase'
-import { getDoc, doc, query, collection, getDocs } from 'firebase/firestore';
+import { getDoc, doc, query, collection, getDocs, orderBy } from 'firebase/firestore';
 import '../css/challengelist.css'
 import {} from '@fortawesome/fontawesome-svg-core'
 import {faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons'
@@ -63,7 +63,7 @@ export default function ChallengeSlick() {
 
   // default_challenge 컬렉션의 값을 가져와서 사용
   const getDefaultChallenge = async()=>{
-    const q = query(collection(db, "default_challenge"));
+    const q = query(collection(db, "default_challenge"), orderBy("writetime", "desc"));
     const querySnapshot = await getDocs(q);
     let dataArray = [];
     querySnapshot.forEach((doc)=>{
@@ -91,20 +91,22 @@ export default function ChallengeSlick() {
               <Link to={`/challenge/${board.id}/defaultview`} key={challengeBoard.id}>
                 <Card
                   style={{
-                    backgroundColor : "gray",
+                    border : "solid 1px black",
                     width : "70%",
                     height: "200px",
                     backgroundSize : "cover",
-                    backgroundPosition : "center",
                     padding : "20px",
                     margin : "auto",
-                    backgroundImage : `../img/${board.img}`,
+                    backgroundImage : board.img && `url(${require(`../../assets/img/${board.img}`)})`,
+                    
                   }}
                 >
                   <Card.Body className="camp-slide-bar">
-                    <Card.Text style={{marginBottom : "0"}}>{board.name}</Card.Text>
+                    
                   </Card.Body>
                 </Card>
+                <br />
+                <Card.Text style={{marginBottom : "0"}}>{board.name}</Card.Text>
               </Link>
               ))
         }

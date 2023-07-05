@@ -101,7 +101,8 @@ export default function MyChallengeSlideComp() {
             period : doc.data().period,
             involve : doc.data().involve,
             challengeName : doc.data().challengeName,
-            uid : doc.data().uid
+            uid : doc.data().uid,
+            badge : doc.data().badge ? doc.data().badge : false
           }
           if(data.uid == user.uid) {
             dataArray.push(data);
@@ -132,14 +133,21 @@ export default function MyChallengeSlideComp() {
             <Slider {...settings}>
                 {challengeBoard.length > 0 && !challengeBoard.done &&
                     challengeBoard.map((board) => (
-                    <Link to={`/challenge/${board.challengeId}/view`} key={board.id}
+                    <Link to={board.badge ? `/challenge/${board.challengeId}/defaultview`:`/challenge/${board.challengeId}/view`} key={board.id}
                     >
                         <div>
-                          <div className='my-ch-slide-content'>
-                            <p>{board.challengeName}</p>
-                            <p>{board.period}</p>
+                          <div className='my-ch-slide-content'
+                            style={{backgroundImage : board?.img && (board.img.length < 20 ? require(`../../assets/img/${board.img}`) : board.img),
+                          backgroundPosition:"center"}}
+                          >
+                            <br />
+                            <ul>
+                              <li>챌린지 : {board.challengeName}</li>
+                              <li>기간 : {board.period}</li>
+                            </ul>
                           </div>
-                            <div style={{width:"20px", height:"20px", backgroundColor:"gray", margin : "5px"}}></div>
+                            <div style={{width:"20px", height:"15px", backgroundColor:"transparent", margin : "5px"}}>
+                            </div>
                             <ProgressBar num={getDateDiffNOWpercent(new Date(), board.startDate, board.endDate)} 
                             maxNum={getDateDiffHDpercent(board.endDate, board.startDate)}/>
                             {console.log("왜안나옴",board.startDate, board.endDate)}

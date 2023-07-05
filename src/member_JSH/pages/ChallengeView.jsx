@@ -243,7 +243,7 @@ export default function ChallengeView() {
             <ul className='challenge-info'>
               <li style={{fontSize : "2rem"}}>{challengeBoard && challengeBoard.name}</li>
               <li>기간 : {time}</li>
-              <li>등록자명 : {challengeBoard && challengeBoard.uid}</li>
+              <li>등록자명 : {challengeBoard && challengeBoard.nickname}</li>
             </ul>
           </div>
           <div className='badge-button-wrap'>
