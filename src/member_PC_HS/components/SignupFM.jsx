@@ -383,7 +383,7 @@ export default function SignupFM() {
                 maxLength={20}
                 onKeyUp={characterCheck} onKeyDown={characterCheck}
                 onChange={(e)=>{setPassword1(e.target.value)}}
-                disabled={gotEmail}
+                disabled={email}
                 required
                 />
               <p className='password-p'>
@@ -400,7 +400,7 @@ export default function SignupFM() {
                 maxLength={20}
                 onKeyUp={characterCheck} onKeyDown={characterCheck} 
                 onChange={(e)=>{setPassword2(e.target.value)}}
-                disabled={gotEmail}
+                disabled={email}
                 required
                 />
               <p className='password-p'>

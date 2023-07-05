@@ -152,8 +152,11 @@ export default function SEcomp() {
         // console.log("달첫 ",firstDay)
         // console.log("달막 ",lastDay)
 
-        const fmCollectionRef = collection(db, "money_expense");
-        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid), where('date', '>=', firstDay), where('date', '<=', lastDay)) 
+        const fmCollectionRef1 = collection(db, "money_expense");
+        const fmQuery1 = query(fmCollectionRef1, where('uid', '==', user.uid), where('date', '>=', firstDay), where('date', '<=', lastDay)) 
+
+        const fmCollectionRef2 = collection(db, "money_expense_repeat");
+        const fmQuery2 = query(fmCollectionRef2, where('uid', '==', user.uid), where('date', '>=', firstDay), where('date', '<=', lastDay)) 
         
     
         let dayFilterDateList = [];
@@ -161,9 +164,15 @@ export default function SEcomp() {
         
         try {
             // 전부 뽑아옴
-            const fmQuerySnapshot = await getDocs(fmQuery);
+            const fmQuerySnapshot1 = await getDocs(fmQuery1);
             
-            fmQuerySnapshot.forEach((doc) => {
+            fmQuerySnapshot1.forEach((doc) => {
+                dayFilterDateList.push(doc.data())
+            });
+
+            const fmQuerySnapshot2 = await getDocs(fmQuery2);
+            
+            fmQuerySnapshot2.forEach((doc) => {
                 dayFilterDateList.push(doc.data())
             });
 
