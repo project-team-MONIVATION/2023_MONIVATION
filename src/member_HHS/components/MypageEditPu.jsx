@@ -16,7 +16,7 @@ export default function MypageEditPu() {
     const navigate = useNavigate();
 
     const { name, email, uid } = location.state || "";
-    const [selectedImage, setSelectedImage] = useState(null); // storage 업로드 이미지 관리
+
 
     const [profile, setProfile] = useState();
     const [startDate, setStartDate] = useState('');
@@ -39,6 +39,9 @@ export default function MypageEditPu() {
     const [password1, setPassword1] = useState('');
     const [password2, setPassword2] = useState('');
 
+    const [selectedImage, setSelectedImage] = useState(null); // storage 업로드 이미지 관리
+    const [selectedFileName, setSelectedFileName] = useState(''); // 파일 이름 상태 변수 이름 변경
+
     /** form 실행 */
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -48,11 +51,24 @@ export default function MypageEditPu() {
     else {
       const usersRef = doc(db, "personal_users", params.id);
       const usersSnap = await getDoc(usersRef);
+      const storage = getStorage();
+
       if (usersSnap.exists()) {
             // 이미지 업로드
+    // if (selectedImage) {
+    //   const file = await fetch(selectedImage).then((res) => res.blob());
+    //   const storageRef = ref(storage, file.name);
+    //   await uploadBytes(storageRef, file);
+    //   const url = await getDownloadURL(storageRef);
+    //   await updateDoc(usersRef, { photo: url });
+    // }
+
+
+    // 이미지가 선택된 경우 실행
     if (selectedImage) {
       const file = await fetch(selectedImage).then((res) => res.blob());
-      const storageRef = ref(storage, file.name);
+      const storageRef = ref(storage, 'images/' + selectedFileName); // 비루트 참조로 변경하여 경로 생성// 변경된 파일 이름 사용
+
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
       await updateDoc(usersRef, { photo: url });
@@ -302,9 +318,30 @@ const deleteBtn = async () => {
 
 
     /** 프로필 이미지 수정 */
+    // const handleChangeProfile = (e) => {
+    //   const file = e.target.files[0];
+    //   setSelectedImage(URL.createObjectURL(file));
+    //   if (file) {
+    //     const fileName = file.name;
+    //     console.log(fileName); // 파일 이름 확인 (옵션)
+    //   }
+    // };
     const handleChangeProfile = (e) => {
       const file = e.target.files[0];
-      setSelectedImage(URL.createObjectURL(file));
+      if (file) {
+        const fileName = file.name; // 파일 이름 저장
+        setSelectedImage(URL.createObjectURL(file));
+        setSelectedFileName(fileName); // 파일 이름 상태 변수 변경
+    
+        console.log(fileName); // 파일 이름 확인 (옵션)
+      }
+    };
+    
+    
+    
+    // const handleChangeProfile = (e) => {
+    //   const file = e.target.files[0];
+    //   setSelectedImage(URL.createObjectURL(file));
       
       // const storageRef = ref(storage, file.name);
       
@@ -335,7 +372,7 @@ const deleteBtn = async () => {
       //   .catch((error) => {
       //     console.log('Error uploading file:', error);
       //   });
-    };
+    // };
 
 
     return (
@@ -454,6 +491,7 @@ const deleteBtn = async () => {
                 disabled = { email }
                 onChange={(e)=>{setPassword1(e.target.value)}}
                 className='edit-input-long'
+                required
               />
             </div>
           </div>
@@ -470,7 +508,7 @@ const deleteBtn = async () => {
               disabled = { email }
               onChange={(e)=>{setPassword2(e.target.value)}}
               className='edit-input-long'
-
+              required
             />
           </div>
           <div style={{ position:"absolute", top:"300px"}}>
