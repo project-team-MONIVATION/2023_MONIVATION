@@ -47,7 +47,7 @@ export default function CalendarComp({ onMonthChange }) {
     const curDate = new Date();
     const [value, setValue] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth()+1);
 
 
     // 일반 수입 리덕스
