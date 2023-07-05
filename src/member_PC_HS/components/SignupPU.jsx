@@ -45,10 +45,9 @@ export default function SignupPU() {
   
   /* 이메일 인증링크 전송 */
   const sendVerificationEmail = () => {
-    const encodedEmail = encodeURIComponent(inputEmail);
     const actionCodeSettings = {
-      url: `https://project-team-monivation.github.io/2023_MONIVATION/account/create/personal-user?email=${encodedEmail}`,
-      handleCodeInApp: true,
+      url: `http://localhost:3000/2023_MONIVATION/account/create/personal-user?email=${inputEmail}`,    
+      handleCodeInApp : true,
     };
   
     sendSignInLinkToEmail(getAuth(), inputEmail, actionCodeSettings)
@@ -380,7 +379,7 @@ export default function SignupPU() {
                 maxLength={20}
                 onKeyUp={characterCheck} onKeyDown={characterCheck}
                 onChange={(e)=>{setPassword1(e.target.value)}}
-                disabled={email}
+                disabled={gotEmail}
                 required
                 />
               <p className='password-p'>
@@ -397,7 +396,7 @@ export default function SignupPU() {
                 maxLength={20}
                 onKeyUp={characterCheck} onKeyDown={characterCheck} 
                 onChange={(e)=>{setPassword2(e.target.value)}}
-                disabled={email}
+                disabled={gotEmail}
                 required
               />
               <p className='password-p'>
