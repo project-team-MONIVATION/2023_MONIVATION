@@ -29,11 +29,20 @@ export default function ChallengeView() {
   // 필드 done을 true로 변경
   useEffect(()=>{
     const updateDocFieldDone = async()=>{
+      // user가 null 또는 undefined인 경우 예외 처리
+      if (!user || !user.uid) {
+        console.error('User information is missing.');
+        return;
+      }
       // query를 변수명으로 쓰면안됨
-      const q = query(collection(db, "my_challenge"), where("challengeId", "==", params.id), 
-      where("uid", "==", user.uid));
+      const q = query(collection(db, "my_challenge"), 
+      where("challengeId", "==", params.id), 
+      where("uid", "==", user.uid)
+      );
+
       const querySnapshot = await getDocs(q);
-      const now = new Date()
+      const now = new Date();
+
       querySnapshot.forEach((doc) => {
         const documentRef = doc.ref;
         const endDate = doc.data().endDate;
@@ -59,7 +68,7 @@ export default function ChallengeView() {
       });
     };
     updateDocFieldDone();
-  },[params.id]);
+  },[params.id, user]);
 
   // params.id가 바뀔때마다(챌린지 뷰 페이지 종류에 따라) 실행
   // 해당 챌린지를 challengeBoard에 push
@@ -73,7 +82,7 @@ export default function ChallengeView() {
       });
     }
     getChallenge();
-  },[params.id]);
+  },[params.id, user]);
 
   useEffect(()=>{
     const getInvolve = async()=>{
@@ -112,7 +121,7 @@ export default function ChallengeView() {
   }
     }
     getInvolve();
-  }, [params.id])
+  }, [params.id, user])
 
 
   // 현재 날짜 생성. 이 변수는 addChallenge에만 쓰여야한다! 반드시!
@@ -156,7 +165,8 @@ export default function ChallengeView() {
       done : false,
       endDate : futureDate,
       challengeName : challengeBoard.name,
-      uid : user.uid
+      uid : user.uid,
+      img : challengeBoard.img
     });
     
   };
