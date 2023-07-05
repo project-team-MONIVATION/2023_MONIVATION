@@ -49,7 +49,7 @@ export default function SignupPU() {
       url: `https://project-team-monivation.github.io/2023_MONIVATION/account/create/personal-user?email=${inputEmail}`,    
       handleCodeInApp : true,
     };
-  
+
     sendSignInLinkToEmail(getAuth(), inputEmail, actionCodeSettings)
     .then(() => {
       window.localStorage.setItem('emailForSignIn', inputEmail);

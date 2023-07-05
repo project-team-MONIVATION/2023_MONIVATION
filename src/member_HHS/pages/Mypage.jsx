@@ -88,7 +88,7 @@ export default function Mypage() {
               { puQuerySnapshot.empty ? null : (
                 <div className='edit-btn-reservation'>
                   <Link to = {`/mypage/editpu/${data.id}`}>
-                    <img src = "/img/edit.png" alt = "edit-icon" />
+                    <img src = "img/edit.png" alt = "edit-icon" />
                   </Link>
                   <Link to = {`/mypage/reservationpu/${data.id}`}>상담예약 내역</Link>
                 </div>
@@ -110,7 +110,7 @@ export default function Mypage() {
                     width = { 80 }
                     height = { 80 }
                     alt = "프로필"
-                    style = {{ borderRadius: "50%" , top : "17px", position:"absolute", left:"40px", border:"2px solid black"}}
+                    style = {{ borderRadius: "50%" , top : "17px", position:"absolute", left:"40px", border:"2px solid black", objectFit: "cover" }}
                   />
                   <div>
                     <p>{ data.nickname }</p>
