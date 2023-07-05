@@ -156,7 +156,8 @@ export default function ChallengeView() {
       done : false,
       endDate : futureDate,
       challengeName : challengeBoard.name,
-      uid : user.uid
+      uid : user.uid,
+      img : challengeBoard.img
     });
     
   };

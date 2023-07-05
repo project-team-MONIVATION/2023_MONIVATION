@@ -212,6 +212,7 @@
     letter-spacing : 0.1em;
     box-sizing: border-box;
     padding: 5px 15px 5px 0;
+    margin-right: 20px;
 }
 
 #goal-box .bar-box {
@@ -229,6 +230,7 @@
 #goal-box .d-day-box h3 {
     margin-bottom: 10px;
 }
+
 
 #goal-box .d-day-box h3:last-child {
     margin-bottom: 0;

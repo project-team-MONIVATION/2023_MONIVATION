@@ -110,7 +110,7 @@ export default function Mypage() {
                     width = { 80 }
                     height = { 80 }
                     alt = "프로필"
-                    style = {{ borderRadius: "50%" , top : "17px", position:"absolute", left:"40px", border:"2px solid black"}}
+                    style = {{ borderRadius: "50%" , top : "17px", position:"absolute", left:"40px", border:"2px solid black", objectFit: "cover" }}
                   />
                   <div>
                     <p>{ data.nickname }</p>

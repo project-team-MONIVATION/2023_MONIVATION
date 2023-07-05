@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { auth, db, storage } from '../../database/firebase';
-import { collection, doc, getDoc, getDocs, query, updateDoc, where, Timestamp } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, updateDoc, where, Timestamp, deleteDoc } from 'firebase/firestore';
 import { getAuth, sendSignInLinkToEmail, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword, updatePassword, deleteUser } from 'firebase/auth'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
@@ -122,16 +122,19 @@ export default function MypageEditPu() {
 
 
 // 회원탈퇴
-const deleteBtn = () => {
+const deleteBtn = async () => {
   const confirmed = window.confirm("탈퇴 하시겠습니까?");
   if (confirmed) {
-  deleteUser(auth.currentUser).then(() => {
-  
-  }).catch((error) => {
-    // An error ocurred
-    // ...
-  }); }
-}
+    try {
+      await deleteUser(auth.currentUser);
+      // 파이어스토어의 personal_users 컬렉션에서 해당 uid값을 가진 문서 삭제하기
+      await deleteDoc(doc(db, "personal_users", params.id));
+      navigate('/');
+    } catch (error) {
+      console.error('탈퇴 실패', error);
+    }
+  }
+};
 
 
 

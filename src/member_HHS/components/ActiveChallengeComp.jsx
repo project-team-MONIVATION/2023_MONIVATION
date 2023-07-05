@@ -6,10 +6,11 @@ import { collection, getDocs, query } from 'firebase/firestore';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ProgressBar from '../../member_LJC/components/ProgressBar';
 
-import ChallengeBox from '../styleComponent/Challenge/ChallengeBox';
 import ChallengeList from '../styleComponent/Challenge/ChallengeList';
+import ChallengeAdd from '../styleComponent/Challenge/ChallengeAdd';
+import { Link } from 'react-router-dom';
+import ChallengeProgressBar from './ChallengeProgressBar';
 
 export default function ActiveChallengeComp() {
   const user = useSelector((state) => state.user.user);
@@ -33,12 +34,12 @@ export default function ActiveChallengeComp() {
             involve: doc.data().involve,
             challengeName: doc.data().challengeName,
             uid: doc.data().uid,
-            badge: doc.data().badge
+            badge: doc.data().badge,
+            img: doc.data().img
           }
           if (data.uid === user.uid && data.done === false) {
             dataArray.push(data);
           }
-          console.log(doc.id, " => ", doc.data());
         });
         setActiveChallenge(dataArray);
       }
@@ -53,7 +54,6 @@ export default function ActiveChallengeComp() {
     const diffDate = date1.getTime() - date2.getTime();
 
     const result = Math.abs(diffDate / (1000 * 60 * 60 * 24));
-    console.log("백퍼샌트값", result);
     return result;
   }
 
@@ -82,41 +82,42 @@ export default function ActiveChallengeComp() {
 
   const settings = {
     dots: true,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
-    autoplay: true,
-    speed: 2000,
-    autoplaySpeed: 500,
+    infinite: false,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    speed: 1000,
   };
-
+  
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gridGap: "16px" }}>
-      {
-        Array.from({ length: 3 }).map((_, index) => {
-          const item = activeChallenge[index];
 
-          return (
-            <div key={index} style={{ marginTop: "100px", border: "1px solid black", padding: "16px" }}>
-              {item ? (
-                <>
-                  <li>{item.challengeName}</li>
-                  <li>
-                    <ProgressBar
-                      num={getDateDiffNOWpercent(new Date(), item.startDate, item.endDate)}
-                      maxNum={getDateDiffHDpercent(item.endDate, item.startDate)}
-                    />
-                    {console.log(getDateDiffNOWpercent(new Date(), item.startDate, item.endDate))}
-                  </li>
-                </>
-              ) : (
-                <a href="http://localhost:3000/2023_MONIVATION/challenge">이동</a>
-              )}
-            </div>
-          );
-        })
-      }
-    </div>
+      <Slider {...settings}>
+
+      {activeChallenge.map((item, index) => (
+          <div key={index} style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gridGap: "16px" }}>
+            <ChallengeList>
+            {item.img.startsWith("http") ? ( // 이미지 URL인 경우
+                <img src={item.img} alt={item.challengeName} />
+              ) : ( // 파일 경로/이름인 경우
+                <img src={require(`../../assets/img/${item.img}`)} alt={item.challengeName} />
+              )}              <p># {item.challengeName}</p>
+              <div>
+                <ChallengeProgressBar
+                  num={getDateDiffNOWpercent(new Date(), item.startDate, item.endDate)}
+                  maxNum={getDateDiffHDpercent(item.endDate, item.startDate)}
+                />
+              </div>
+            </ChallengeList>
+          </div>
+        ))}
+        <div>
+          <ChallengeAdd>
+            <Link to="http://localhost:3000/2023_MONIVATION/challenge">
+              <p>+</p>
+              <p><span>챌린지</span>를<br />추가해보세요!</p>
+            </Link>         
+          </ChallengeAdd>
+        </div>
+        
+      </Slider>
   )
 }

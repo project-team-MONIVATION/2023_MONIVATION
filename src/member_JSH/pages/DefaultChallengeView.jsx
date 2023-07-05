@@ -123,7 +123,8 @@ export default function DefaultChallengeView() {
             endDate : futureDate,
             challengeName : challengeBoard.name,
             uid : user.uid,
-            badge : challengeBoard.badge
+            badge : challengeBoard.badge,
+            img : challengeBoard.img
         });
     
     };

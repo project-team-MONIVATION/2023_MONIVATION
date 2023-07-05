@@ -15,6 +15,7 @@ import { CircularProgressbar  } from 'react-circular-progressbar';
 import '../css/mypage.css'
 
 import 'react-circular-progressbar/dist/styles.css';
+import GorlProgressBar from './GorlProgressBar';
 
 
 export default function GoalBoxComp() {
@@ -38,7 +39,7 @@ export default function GoalBoxComp() {
         fade: true,
         infinite: true,
         speed: 1000,
-        slidesToShow: 4,
+        slidesToShow: 1,
         slidesToScroll: 1,
     };
 
@@ -79,7 +80,6 @@ export default function GoalBoxComp() {
         const diffDate = date1.getTime() - date2.getTime();
         
         const result = Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
-        console.log("백퍼센트값",result)
         return result
     }
 
@@ -125,7 +125,6 @@ export default function GoalBoxComp() {
             reasult = Math.abs(diffDate / (1000 * 60 * 60 * 24)).toFixed(0); // 밀리세컨 * 초 * 분 * 시 = 일
         }
 
-        console.log("d-day",reasult)
 
         
         
@@ -161,12 +160,10 @@ export default function GoalBoxComp() {
                         }}
                     >
                         <div className='d-day-box'>
-                            <h3>{tmp.title}</h3>
+                            <h3>{tmp.title.length > 6 ? `${tmp.title.slice(0, 6)}...` : tmp.title}</h3>
                             <h3>D-{Dday(tmp.endday, new Date())}<span>까지</span></h3>
                             <h3>{tmp.amount}<span>&#8361;</span><p>모으면 돼요!</p> </h3>
                         </div>
-
-
 
                         <div style={{width:"140px", height:"140px"}} className='circular-bar-box'>
                             <CircularProgressbar
@@ -198,7 +195,7 @@ export default function GoalBoxComp() {
 
                     
                     <div className='bar-box'>
-                        <ProgressBar
+                        <GorlProgressBar
                             num={getDateDiffNOWpercent(new Date(), tmp.startday, tmp.endday)}
                             maxNum={getDateDiffHDpercent(tmp.endday, tmp.startday)}
                         />
