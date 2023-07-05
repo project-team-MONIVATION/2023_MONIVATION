@@ -76,7 +76,6 @@ export default function ChallengeCreate() {
     e.preventDefault();
     
     const file = uploadImg;
-
     const storageRef = ref(storage, file.name);
 
     uploadBytes(storageRef, file)
@@ -183,7 +182,7 @@ export default function ChallengeCreate() {
                       <img 
                         src={challengeImg} 
                         alt='Selected' 
-                        style={{display : "inline-block", width : "120px", height : "150px", 
+                        style={{display : "inline-block", width : "200px", height : "150px", 
                         borderRadius : "10px"}}
                         />}
                     </div>
