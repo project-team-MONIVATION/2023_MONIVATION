@@ -30,7 +30,7 @@
     margin-left: 2px;
 }
 #managerlist .field-btn {
-    width: 100%; 
+    width: 90%; 
     margin: 10px auto;
 }
 #managerlist .field-btn p {
@@ -43,6 +43,7 @@
     border-radius: 20px; 
     color: white;
 }
+
 #managerlist .field-btn .filter-button:hover {
     background-color: #735BF3;
 }
