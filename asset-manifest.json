@@ -1,7 +1,14 @@
 {
   "files": {
-    "main.css": "/2023_MONIVATION/static/css/main.7db12133.css",
-    "main.js": "/2023_MONIVATION/static/js/main.42533efb.js",
+    "main.css": "/2023_MONIVATION/static/css/main.1123b804.css",
+    "main.js": "/2023_MONIVATION/static/js/main.7772a0b9.js",
+    "static/media/7450343.psd": "/2023_MONIVATION/static/media/7450343.3f41eea9dca92f0fca52.psd",
+    "static/media/7450182.psd": "/2023_MONIVATION/static/media/7450182.87aa221b97e47dfbd3ac.psd",
+    "static/media/7450186.psd": "/2023_MONIVATION/static/media/7450186.fad4ef4a155842ce3d27.psd",
+    "static/media/done_challenge.png": "/2023_MONIVATION/static/media/done_challenge.a85f71c6cf56c2095b83.png",
+    "static/media/participate_challenge.png": "/2023_MONIVATION/static/media/participate_challenge.6e685aa946243a4afe1c.png",
+    "static/media/comment_challenge.png": "/2023_MONIVATION/static/media/comment_challenge.08818dffaf88b6c78e9e.png",
+    "static/media/create_challenge.png": "/2023_MONIVATION/static/media/create_challenge.de53f91e59b8f5329428.png",
     "static/media/money.jpg": "/2023_MONIVATION/static/media/money.b962bb15803ca7231b46.jpg",
     "static/media/logo_onlyillust.png": "/2023_MONIVATION/static/media/logo_onlyillust.5449688a954860da4025.png",
     "static/media/badge3.png": "/2023_MONIVATION/static/media/badge3.fedaa18400e91ed65231.png",
@@ -32,11 +39,11 @@
     "static/media/slick.ttf": "/2023_MONIVATION/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/2023_MONIVATION/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/2023_MONIVATION/index.html",
-    "main.7db12133.css.map": "/2023_MONIVATION/static/css/main.7db12133.css.map",
-    "main.42533efb.js.map": "/2023_MONIVATION/static/js/main.42533efb.js.map"
+    "main.1123b804.css.map": "/2023_MONIVATION/static/css/main.1123b804.css.map",
+    "main.7772a0b9.js.map": "/2023_MONIVATION/static/js/main.7772a0b9.js.map"
   },
   "entrypoints": [
-    "static/css/main.7db12133.css",
-    "static/js/main.42533efb.js"
+    "static/css/main.1123b804.css",
+    "static/js/main.7772a0b9.js"
   ]
 }
