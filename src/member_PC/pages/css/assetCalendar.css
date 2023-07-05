@@ -1,5 +1,6 @@
 .asset-calendar.react-calendar {
   width: 600px;
+  border-radius: 20px;
 }
 .asset-calendar .react-calendar__navigation {
   display: flex;
