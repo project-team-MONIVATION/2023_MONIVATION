@@ -7,7 +7,7 @@ const ImageBox = styled.div`
     width: 220px;
     height: 220px;
     margin: auto;
-    border-radius: 10px 10px 0 0;
+    border-radius: 20px 20px 0 0;
 `
 
 export default function AssetImage({children, ...rest}) {

@@ -49,7 +49,7 @@ export default function SignupFM() {
   /* 이메일 인증링크 전송 */
   const sendVerificationEmail = () => {
     const actionCodeSettings = {
-      url: `https://project-team-monivation.github.io/2023_MONIVATION/account/create/financial-manager?email=${inputEmail}`,    
+      url: `http://localhost:3000/2023_MONIVATION/account/create/financial-manager?email=${inputEmail}`,    
       handleCodeInApp : true,
     };
 
@@ -383,7 +383,7 @@ export default function SignupFM() {
                 maxLength={20}
                 onKeyUp={characterCheck} onKeyDown={characterCheck}
                 onChange={(e)=>{setPassword1(e.target.value)}}
-                disabled={email}
+                disabled={gotEmail}
                 required
                 />
               <p className='password-p'>
@@ -400,7 +400,7 @@ export default function SignupFM() {
                 maxLength={20}
                 onKeyUp={characterCheck} onKeyDown={characterCheck} 
                 onChange={(e)=>{setPassword2(e.target.value)}}
-                disabled={email}
+                disabled={gotEmail}
                 required
                 />
               <p className='password-p'>

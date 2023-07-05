@@ -14,9 +14,10 @@
     width: 400px; 
     height: 300px;
     background-color: gray;
-    margin: auto; 
     background-size: cover;
     background-position: center;
+    border-radius: 20px;
+    margin: auto; 
 }
 #manager-profile .profile-intro {
     display: flex;

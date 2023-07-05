@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { db,auth } from '../../database/firebase'
+import { db, storage } from '../../database/firebase'
 import { useSelector, useDispatch } from 'react-redux'
 import { doc, addDoc, getDocs, where, updateDoc, collection, Timestamp,whereField, getDoc, query } from 'firebase/firestore'
 import { signInWithEmailAndPassword, getAuth, onAuthStateChanged } from 'firebase/auth'
@@ -19,6 +19,8 @@ export default function CommentComp() {
     const [comment, setComment] = useState('');
     const [commentArray, setCommentArray] = useState([]);
     const [commentImg, setCommentImg] = useState(null);
+    const [uploadImg, setUploadImg]= useState();
+
     // useRef를 이용해 input태그에 접근한다.
     const imageInput = useRef();
 
@@ -35,9 +37,10 @@ export default function CommentComp() {
     }
 
     const onFileChanges = (event) => {
-      console.log(event.target.files);
+      //console.log(event.target.files);
       const file = event.target.files[0];
       setCommentImg(URL.createObjectURL(file));
+      setUploadImg(file);
     };
     // 버튼클릭시 input태그에 클릭이벤트를 걸어준다. 
     const onCickImageUpload = () => {
@@ -65,23 +68,72 @@ export default function CommentComp() {
       setCommentArray(dataArray)
     }
 
+    const addImg = () => {
+      //console.log(event.target.files);
+      const file = uploadImg;
+  
+      const storageRef = ref(storage, file.name);
+  
+      uploadBytes(storageRef, file)
+        .then((snapshot)=>{
+          console.log('Uploaded a file : ', snapshot.metadata.name);
+          // 이미지의 다운로드 URL 얻기
+          getDownloadURL(snapshot.ref)
+            .then((downloadURL)=>{
+              console.log('Download URL:', downloadURL);
+              setCommentImg(downloadURL);
+              // 여기서 다운로드 URL을 활용하여 저장하거나 출력하는
+              // 등의 작업을 수행할 수 있습니다.
+            })
+            .catch((error)=>{
+              console.log('Error getting download URL:', error);
+            });
+        })
+        .catch((error)=>{
+          console.log('Error uploading file : ', error);
+        })
+    };
+
     const addUserComment = async(e) =>{
         e.preventDefault();
-        if(user && user.uid){
-          await addDoc(collection(db, "user_comments"), {
-            commentId : user.nickname,
-            content : comment,
-            paramId : params.id,
-            uid : user.uid,
-            photo : user.photo,
-            writeTime : new Date(),
-            commentImg : commentImg
-          });
-          getComments();
-          
-          setCommentArray((commentValueList)=>[comment, ...commentValueList]);
-          setComment("");
-        }
+
+        const file = uploadImg;
+        const storageRef = ref(storage, file.name);
+
+        uploadBytes(storageRef, file)
+          .then((snapshot)=>{
+            console.log('Uploaded a file : ', snapshot.metadata.name);
+            // 이미지의 다운로드 URL 얻기
+            getDownloadURL(snapshot.ref)
+              .then(async(downloadURL)=>{
+                console.log('Download URL:', downloadURL);
+
+                if(user && user.uid){
+                  await addDoc(collection(db, "user_comments"), {
+                    commentId : user.nickname,
+                    content : comment,
+                    paramId : params.id,
+                    uid : user.uid,
+                    photo : user.photo,
+                    writeTime : new Date(),
+                    commentImg : downloadURL
+                  });
+                  getComments();
+                  
+                  setCommentArray((commentValueList)=>[comment, ...commentValueList]);
+                  setComment("");
+                }
+                
+              })
+              .catch((error)=>{
+                console.log('Error getting download URL:', error);
+              });
+          })
+          .catch((error)=>{
+            console.log('Error uploading file : ', error);
+          })
+
+        
       };
 
 
