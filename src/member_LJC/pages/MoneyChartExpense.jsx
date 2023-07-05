@@ -325,8 +325,11 @@ export default function MoneyChartExpense() {
         
 
 
-        const fmCollectionRef = collection(db, "money_expense");
-        const fmQuery = query(fmCollectionRef, where('uid', '==', user.uid), where('date', '>=', startday), where('date', '<=', e)) 
+        const fmCollectionRef1 = collection(db, "money_expense");
+        const fmQuery1 = query(fmCollectionRef1, where('uid', '==', user.uid), where('date', '>=', startday), where('date', '<=', e)) 
+
+        const fmCollectionRef2 = collection(db, "money_expense_repeat");
+        const fmQuery2 = query(fmCollectionRef2, where('uid', '==', user.uid), where('date', '>=', startday), where('date', '<=', e)) 
         
     
         let dayFilterDateList = [];
@@ -334,9 +337,13 @@ export default function MoneyChartExpense() {
         
         try {
             // 전부 뽑아옴
-            const fmQuerySnapshot = await getDocs(fmQuery);
+            const fmQuerySnapshot1 = await getDocs(fmQuery1);
+            fmQuerySnapshot1.forEach((doc) => {
+                dayFilterDateList.push(doc.data())
+            });
             
-            fmQuerySnapshot.forEach((doc) => {
+            const fmQuerySnapshot2 = await getDocs(fmQuery2);
+            fmQuerySnapshot2.forEach((doc) => {
                 dayFilterDateList.push(doc.data())
             });
 
