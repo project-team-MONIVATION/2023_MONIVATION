@@ -271,7 +271,7 @@ export default function TotalStatComp({selectedYear, selectedMonth}) {
     <div id='total-stat-wrap'>
         <table>
           <tbody>
-            <th className='tb-title'>이번 {selectedMonth && selectedMonth}월 총액</th>
+            <th className='tb-title'>이번 달 총액</th>
             <tr className='tb-subtitle'>
               <td>고정 수입</td>
             </tr>
