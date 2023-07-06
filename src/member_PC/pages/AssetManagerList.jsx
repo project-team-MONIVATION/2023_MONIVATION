@@ -115,10 +115,10 @@ export default function AssetManagerList() {
                 </AssetField>
                 <FontAwesomeIcon
                     icon={faHeart}
-                    fontSize={15}
+                    fontSize={10}
                     style={{ color: "red" }}
                 />
-                <FieldSpan>:{fm.likeNum}</FieldSpan>
+                <FieldSpan style={{paddingLeft: "3px" }}>{fm.likeNum}</FieldSpan>
               </AssetBox>
               </Link>
             ))
