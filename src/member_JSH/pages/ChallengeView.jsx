@@ -252,7 +252,7 @@ export default function ChallengeView() {
           <div></div>
           {/** 업로드해서 넣은 이미지 url과 그냥 imgId만 넣은 파일을 구분해서 들고와야함 */}
           <img src={challengeBoard?.img && (challengeBoard.img.length < 10 ? require(`../img/${challengeBoard.img}`) : challengeBoard.img)}
-            style={{width : "100%", height : "200px", borderRadius : "20px", display : 'inline-block', border : "solid black 1px"}}
+            style={{width : "100%", height : "200px", borderRadius : "20px", display : 'inline-block', border : "solid black 1px", objectFit: "cover"}}
           alt="" />
           <div challengeName='challenge-info-wrap'>
             <ul className='challenge-info'>
