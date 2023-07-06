@@ -197,6 +197,8 @@ export default function CalendarComp({ onMonthChange }) {
     <div style={{width:"100%", display:"flex", justifyContent : "center"}}>
       <TotalStatComp selectedYear={selectedYear}
         selectedMonth={selectedMonth}
+        isModalOpen2={isModalOpen2}
+        modalIsOpen2={modalIsOpen}
       />
       
     <div style={{width : "77%"}}>
