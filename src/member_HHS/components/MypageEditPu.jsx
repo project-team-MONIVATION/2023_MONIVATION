@@ -12,16 +12,15 @@ import '../css/mypageEditPu.css'
 
 export default function MypageEditPu() {
     const params = useParams();
-    const location = useLocation();
     const navigate = useNavigate();
 
-    const { name, email, uid } = location.state || "";
-
+    const [login, setLogin] = useState('');
     const [profile, setProfile] = useState();
     const [startDate, setStartDate] = useState('');
 
     // 닉네임 관리
     const [nickname, setNickname] = useState(''); // 닉네임 상태변수 설정
+    const [nickname2, setNickname2] = useState('');
     const [birth, setBirth] = useState('');
 
     // 생년월일 관리
@@ -31,8 +30,8 @@ export default function MypageEditPu() {
 
     // 연락처 관리
     const [phoneNum, setPhoneNum] = useState('');
-    const [checkPhone, setCheckPhone] = useState(false);
     const [otp, setOtp] = useState(''); // 인증번호 관리
+    const [checkPhone, setCheckPhone] = useState(false);
     const [isPhoneNumberVerified, setIsPhoneNumberVerified] = useState(false);
 
     const [password1, setPassword1] = useState('');
@@ -41,49 +40,7 @@ export default function MypageEditPu() {
     const [selectedImage, setSelectedImage] = useState(null); // storage 업로드 이미지 관리
     const [selectedFileName, setSelectedFileName] = useState(''); // 파일 이름 상태 변수 이름 변경
 
-    /** form 실행 */
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-    if(password1 !== password2) {
-      alert('비밀번호를 올바르게 입력하세요')
-    }
-    else {
-      const usersRef = doc(db, "personal_users", params.id);
-      const usersSnap = await getDoc(usersRef);
-      const storage = getStorage();
-
-      if (usersSnap.exists()) {
-
-    // 이미지가 선택된 경우 실행
-    if (selectedImage) {
-      const file = await fetch(selectedImage).then((res) => res.blob());
-      const storageRef = ref(storage, 'images/' + selectedFileName); // 비루트 참조로 변경하여 경로 생성// 변경된 파일 이름 사용
-
-      await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(storageRef);
-      await updateDoc(usersRef, { photo: url });
-    }
-
-      await updateDoc(usersRef, {
-        nickname: nickname,
-        birth: selectedYear + "년" + selectedMonth + "월" + selectedDay + "일",
-        phone: phoneNum,
-      });
-
-      updatePassword(auth.currentUser, password1)
-        .then(() => {
-          alert('비밀번호가 성공적으로 변경되었습니다')
-        })
-        .catch((error) => {
-          console.error('변경 실패', error)
-        })
-
-      }
-      navigate('/mypage');
-
-    }
-    };
-    
+     // 개인정보 값 받아오기
     useEffect(() => {
       const getProfile = async() => {
         const docSnap = await getDoc( doc(db, "personal_users", params.id) );
@@ -91,9 +48,11 @@ export default function MypageEditPu() {
 
         setProfile(data);
         setNickname(data.nickname);
+        setNickname2(data.nickname);
         setBirth(data.birth);
         setPhoneNum(data.phone);
         setStartDate(data.startDate.toDate());
+        setLogin(data.login);
         
         // 출생연도 값 설정
         const birthArray = data.birth.split('년');
@@ -107,22 +66,52 @@ export default function MypageEditPu() {
       getProfile();
     }, [])
 
-    // 수정 버튼 클릭 시 확인 대화상자 표시
-    // const handleClickUpdate = (e) => {
+    /** form 실행 */
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+    const confirmed = window.confirm("수정 하시겠습니까?");
+    if(confirmed) {
+      if(password1 !== password2) {
+        alert('비밀번호를 올바르게 입력하세요')
+      }
+      else if(password1 || password2 === null) {
+        alert('비밀번호를 입력하세요')
+      }
+      else {
+        const usersRef = doc(db, "personal_users", params.id);
+        const usersSnap = await getDoc(usersRef);
+        const storage = getStorage();
 
-    //   const confirmed = window.confirm("수정 하시겠습니까?");
-    //     if (confirmed) {
-    //       handleSubmit(e);
-    //       if (selectedImage) {
-    //         handleSubmit(e);
-    //       } 
-    //     } else {
-    //       // 수정 취소 시 이미지 선택 초기화
-    //       setSelectedImage(null);
-    //     }
-    // };
+        if (usersSnap.exists()) {
 
+        // 이미지가 선택된 경우 실행
+        if (selectedImage) {
+          const file = await fetch(selectedImage).then((res) => res.blob());
+          const storageRef = ref(storage, 'images/' + selectedFileName); // 비루트 참조로 변경하여 경로 생성// 변경된 파일 이름 사용
 
+          await uploadBytes(storageRef, file);
+          const url = await getDownloadURL(storageRef);
+          await updateDoc(usersRef, { photo: url });
+        }
+
+          await updateDoc(usersRef, {
+            nickname: nickname,
+            birth: selectedYear + "년" + selectedMonth + "월" + selectedDay + "일",
+            phone: phoneNum,
+          });
+
+          updatePassword(auth.currentUser, password1)
+            .then(() => {
+              alert('개인정보가 수정되었습니다')
+            })
+            .catch((error) => {
+              console.error('변경 실패', error)
+            })
+          }
+          navigate('/mypage');
+        }
+      }
+    };
 
     /** 회원탈퇴 */
     const deleteBtn = async () => {
@@ -141,35 +130,37 @@ export default function MypageEditPu() {
 
 
     /** form 입력 값 업데이트 */
-    // 닉네임 업데이트
-    const updateNickname = (e) => {
-      setNickname(e.target.value);
-    }
 
     // 연락처 업데이트 // 단계 1: 수정할 번호 입력
     const updatePhoneNum = (e) => {
       const newPhoneNum = e.target.value;
-  
       // 연락처 길이 제한 (예: 11자리로 제한)
       if (newPhoneNum.length > 11) {
         return;
       }
-    
       setPhoneNum(newPhoneNum);
     }
 
+     // 닉네임 업데이트
+    const updateNickname = (e) => {
+      setNickname(e.target.value);
+    }
 
     /** 닉네임 중복 확인 */
     const onSearch = async() => {
-      const q = query(collection(db, "personal_users"), 
-        where("nickname", "==", nickname)
-      );
-      
-      const querySnapshot = await getDocs(q);
-      if(!querySnapshot.empty) {
-        alert("이미있는 값입니다!")
-      } else {
-        alert("사용가능한 값입니다!")
+      if(nickname === nickname2) {
+        alert('기존 닉네임입니다!')
+      } else {  
+        const q = query(collection(db, "personal_users"), 
+          where("nickname", "==", nickname)
+        );
+        const querySnapshot = await getDocs(q);
+        if(!querySnapshot.empty) {
+          alert("이미있는 값입니다!")
+          setNickname('');
+        } else {
+          alert("사용가능한 값입니다!")
+        }
       }
     }
 
@@ -243,7 +234,7 @@ export default function MypageEditPu() {
     // 번호 입력 - 인증 전송
     auth.languageCode = 'ko';
     function onCaptchVerify () {
-      window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
+      window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button2', {
         'size': 'invisible',
         'callback': (response) => {
           onSignInSubmit()
@@ -419,7 +410,7 @@ export default function MypageEditPu() {
                 minLength = { 8 }
                 maxLength = { 20 }
                 onKeyDown = { characterCheck }
-                disabled = { email }
+                disabled = {login !== 'email'}
                 onChange = {(e)=>{setPassword1(e.target.value)}}
                 className = 'edit-input-long'
                 required
@@ -434,7 +425,7 @@ export default function MypageEditPu() {
               minLength = { 8 }
               maxLength = { 20 }
               onKeyDown = { characterCheck } 
-              disabled = { email }
+              disabled = {login !== 'email'}
               onChange = {(e)=>{setPassword2(e.target.value)}}
               className = 'edit-input-long'
               required
@@ -442,7 +433,7 @@ export default function MypageEditPu() {
           </div>
           <div style = {{ position:"absolute", top:"283px", left:"50px", fontSize:"0.9rem"}}>
             {
-              password1 !== null && password1 === password2 ? "*  비밀번호가 일치합니다" : <span style = {{color:"red"}}>* 비밀번호가 일치하지  않습니다</span>
+              login !== 'email' ? "* 소셜 로그인 계정은 비밀번호가 필요없습니다" : (password1 !== null && password1 === password2 ? "*  비밀번호가 일치합니다" : <span style = {{color:"red"}}>* 비밀번호가 일치하지  않습니다</span>)
             }
           </div>
 
@@ -455,13 +446,16 @@ export default function MypageEditPu() {
                 value = { phoneNum }
                 onChange = { updatePhoneNum }
                 className = 'edit-input-short'
+                minLength={11}
+                disabled
               />
               <button
-                // id = "sign-in-button"
+                // id = "sign-in-button2"
                 type = "button"
                 onClick = { onSignInSubmit }
                 onChange = { (e) => { setPhoneNum(e.target.value) } }
                 className = 'btn'
+                disabled
               >
                 인증번호 발송
               </button>
@@ -477,11 +471,13 @@ export default function MypageEditPu() {
               value = { otp }
               onChange = { (e) => { setOtp(e.target.value) } }
               className = 'edit-input-short'
+              disabled
             />
             <button
               type = "button"
               onClick = { onOTPVerify }
               className='btn'
+              disabled
             >
               인증번호 확인
             </button>

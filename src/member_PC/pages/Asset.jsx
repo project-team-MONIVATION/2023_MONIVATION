@@ -69,7 +69,7 @@ export default function Asset() {
         <Slider {...settings}>
           {
             bestFmList && bestFmList.map((fm)=>(
-              <Link key={fm.id} className='animated' to={`/asset/managerlist/${fm.id}`}>
+              <Link key={fm.id} to={`/asset/managerlist/${fm.id}`}>
                 <AssetBox>
                   <AssetImage style={{backgroundImage: `url(${fm.photo})`}}></AssetImage>
                   <p style={{margin: "10px 0 3px 0", fontWeight: "bold"}}>{fm.name}</p>
@@ -97,7 +97,7 @@ export default function Asset() {
           <div style={{display: 'flex', width: "90%", margin: "auto"}}>
             <h1 className='asset-header2'>관련정보</h1>
           </div>
-          <table className='animated'>
+          <table>
             <tbody>
               <tr>
                 <td>

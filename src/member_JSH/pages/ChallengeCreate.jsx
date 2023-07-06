@@ -74,17 +74,25 @@ export default function ChallengeCreate() {
 
   const addUserChallenge = async(e) =>{
     e.preventDefault();
-    
+
+    if(uploadImg){
     const file = uploadImg;
     const storageRef = ref(storage, file.name);
 
     uploadBytes(storageRef, file)
       .then((snapshot)=>{
-        console.log('Uploaded a file : ', snapshot.metadata.name);
         // 이미지의 다운로드 URL 얻기
         getDownloadURL(snapshot.ref)
           .then( async(downloadURL)=>{
-            console.log('Download URL:', downloadURL);
+            console.log('Download URL:', {
+              uid : user.uid,
+              name : challengeName,
+              time : challengeTime,
+              content : challengeContent,
+              img : downloadURL,
+              writeTime : new Date(),
+              nickname : user.nickname
+            });
             // 여기서 다운로드 URL을 활용하여 저장하거나 출력하는
             // 등의 작업을 수행할 수 있습니다.
             await addDoc(collection(db, "user_challenge"), {
@@ -106,6 +114,21 @@ export default function ChallengeCreate() {
       .catch((error)=>{
         console.log('Error uploading file : ', error);
       })
+
+    }
+    else {
+      await addDoc(collection(db, "user_challenge"), {
+        uid : user.uid,
+        name : challengeName,
+        time : challengeTime,
+        content : challengeContent,
+        img : challengeImg,
+        writeTime : new Date(),
+        nickname : user.nickname
+      })
+      navigate('/challenge');
+    }
+    
 
     
     

@@ -96,42 +96,61 @@ export default function CommentComp() {
 
     const addUserComment = async(e) =>{
         e.preventDefault();
+        if(uploadImg){
+          const file = uploadImg;
+          const storageRef = ref(storage, file.name);
 
-        const file = uploadImg;
-        const storageRef = ref(storage, file.name);
+          uploadBytes(storageRef, file)
+            .then((snapshot)=>{
+              console.log('Uploaded a file : ', snapshot.metadata.name);
+              // 이미지의 다운로드 URL 얻기
+              getDownloadURL(snapshot.ref)
+                .then(async(downloadURL)=>{
+                  console.log('Download URL:', downloadURL);
 
-        uploadBytes(storageRef, file)
-          .then((snapshot)=>{
-            console.log('Uploaded a file : ', snapshot.metadata.name);
-            // 이미지의 다운로드 URL 얻기
-            getDownloadURL(snapshot.ref)
-              .then(async(downloadURL)=>{
-                console.log('Download URL:', downloadURL);
-
-                if(user && user.uid){
-                  await addDoc(collection(db, "user_comments"), {
-                    commentId : user.nickname,
-                    content : comment,
-                    paramId : params.id,
-                    uid : user.uid,
-                    photo : user.photo,
-                    writeTime : new Date(),
-                    commentImg : downloadURL
-                  });
-                  getComments();
+                  if(user && user.uid){
+                    await addDoc(collection(db, "user_comments"), {
+                      commentId : user.nickname,
+                      content : comment,
+                      paramId : params.id,
+                      uid : user.uid,
+                      photo : user.photo,
+                      writeTime : new Date(),
+                      commentImg : downloadURL
+                    });
+                    getComments();
+                    
+                    setCommentArray((commentValueList)=>[comment, ...commentValueList]);
+                    setComment("");
+                  }
                   
-                  setCommentArray((commentValueList)=>[comment, ...commentValueList]);
-                  setComment("");
-                }
-                
-              })
-              .catch((error)=>{
-                console.log('Error getting download URL:', error);
-              });
-          })
-          .catch((error)=>{
-            console.log('Error uploading file : ', error);
-          })
+                })
+                .catch((error)=>{
+                  console.log('Error getting download URL:', error);
+                });
+            })
+            .catch((error)=>{
+              console.log('Error uploading file : ', error);
+            })
+        }else{
+
+          if(user && user.uid){
+            await addDoc(collection(db, "user_comments"), {
+              commentId : user.nickname,
+              content : comment,
+              paramId : params.id,
+              uid : user.uid,
+              photo : user.photo,
+              writeTime : new Date(),
+              commentImg : commentImg
+            });
+            getComments();
+            
+            setCommentArray((commentValueList)=>[comment, ...commentValueList]);
+            setComment("");
+          }
+        }
+        
 
         
       };
