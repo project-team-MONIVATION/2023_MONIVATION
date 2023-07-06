@@ -201,6 +201,25 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
           X
         </CloseBtn>
 
+        <div style={{
+            marginRight:"190px",
+            width: "150px",
+            height: "50px",
+            backgroundColor: "#735BF3",
+            border: "0",
+            borderRadius: "50px",
+
+        }}>
+          <h3 style={{  
+            color: "#FFFFFF",
+            fontFamily: 'Cafe24Ssurround',
+            fontSize: "23px",
+            paddingTop:"15px"
+          }}>
+            고정지출
+          </h3>
+        </div>
+
         <form className='edit_form' onSubmit = { handleSubmit } >
         
           <div className='input_content'>

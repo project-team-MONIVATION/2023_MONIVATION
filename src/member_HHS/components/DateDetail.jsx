@@ -285,10 +285,10 @@ export default function DateDetail({ closeModal2, selectedDate }) {
             }}
           >
             <SearchDate> {/* 날짜검색 캘린더 모달 */}
-              <button onClick = { onClickCal }>
+              {/* <button onClick = { onClickCal }>
                 <img src="img/calendar.png" alt="calendar" />
                 <span>날짜 검색</span>
-              </button>
+              </button> */}
               <h2>{ selectedDate && changeDate(selectedDate) }</h2>
       
               { showCal && (
