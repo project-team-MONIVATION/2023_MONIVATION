@@ -24,8 +24,8 @@ export default function BadgeBoxComp() {
           // 생성된 챌린지의 문서id를 mychallenge에서는 챌린지Id로 할당했음.
           challengeId : doc.data().challengeId,
           done : doc.data().done,
-          endDate : doc.data().endDate.toDate(),
-          startDate : doc.data().startDate.toDate(),
+          endDate : doc.data().endDate && doc.data().endDate.toDate(),
+          startDate : doc.data().startDate && doc.data().startDate.toDate(),
           period : doc.data().period,
           involve : doc.data().involve,
           challengeName : doc.data().challengeName,
