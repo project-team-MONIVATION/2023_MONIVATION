@@ -301,7 +301,8 @@ export default function DateDetail({ closeModal2, selectedDate }) {
                   </button>
                   <Calendar
                     onChange = { onClickDate }
-                    value = { date }
+                    value = { date } 
+                    // 수정창 수정하기
                   />
                 </div>
               ) }
