@@ -10,7 +10,7 @@ import Modal from 'react-modal';
 import '../css/totalstat.css';
 
 
-export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2, isModalOpen2}) {
+export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2, isModalOpen2, selectedDay}) {
   
   // 저금 리스트 모달창
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
     getIncomeRepeatData();
     getExpenseData();
     getExpenseRepeatData();
-  },[selectedMonth,modalIsOpen2,isModalOpen2]);
+  },[selectedMonth,selectedYear,modalIsOpen2,isModalOpen2]);
 
 
   // 이번 달 총 일반 수입 불러오기
@@ -123,17 +123,27 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
 
         let total = 0;
         let total2 = 0;
+        let total3 = 0;
+        const currentDate = new Date();
         for (let i = 0; i < dataArray.length; i++) {
-          // 여기에 날짜 구분해서 달력 라이브러리의 현 날짜 상태에 연동시켜야함.
-          // if
+          const dataMonth = dataArray[i].date.toDate().getMonth() + 1;
+          const dataYear = dataArray[i].date.toDate().getFullYear();
+
           if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth
             && dataArray[i].date.toDate().getFullYear() == selectedYear
           ){
             let money = dataArray[i].price;
             total += money;
           }
-          let money2 = dataArray[i].price;
-          total2 += money2;
+          if(dataMonth <= currentDate.getMonth()+1
+          && dataYear <= currentDate.getFullYear()){
+            let money2 = dataArray[i].price;
+            total2 += money2;
+          } else {
+            let money3 = dataArray[i].price;
+            total3 += money3;
+          }
+          
         }
         const totalprice = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         const totalprice2 = total2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -166,15 +176,26 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
 
         let total = 0;
         let total2 = 0;
+        let total3 = 0;
+        const currentDate = new Date();
         for (let i = 0; i < dataArray.length; i++) {
+          const dataMonth = dataArray[i].date.toDate().getMonth() + 1;
+          const dataYear = dataArray[i].date.toDate().getFullYear();
           if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth
-          && dataArray[i].date.toDate().getFullYear() == selectedYear
+            && dataArray[i].date.toDate().getFullYear() == selectedYear
           ){
             let money = dataArray[i].price;
             total += money;
           }
-          let money2 = dataArray[i].price;
-          total2 += money2;
+          if(dataMonth <= currentDate.getMonth()+1
+          && dataYear <= currentDate.getFullYear()){
+            let money2 = dataArray[i].price;
+            total2 += money2;
+          } else {
+            let money3 = dataArray[i].price;
+            total3 += money3;
+          }
+          
         }
         const totalprice = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         const totalprice2 = total2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -187,6 +208,8 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
   }
 
   // 일반 지출
+  // if문 쓸때 조심. else를 함부로 쓰면 포함되어야할 데이터가 이전 조건때문에 
+  // 제외되거나 들어오지말아야할 데이터가 포함될 수 있음.
   const getExpenseData = async () => {
     try{
       const fmCollectionRef = collection(db, "money_expense");
@@ -206,15 +229,26 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
 
         let total = 0;
         let total2 = 0;
+        let total3 = 0;
+        const currentDate = new Date();
         for (let i = 0; i < dataArray.length; i++) {
+          const dataMonth = dataArray[i].date.toDate().getMonth() + 1;
+          const dataYear = dataArray[i].date.toDate().getFullYear();
           if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth
-          && dataArray[i].date.toDate().getFullYear() == selectedYear
+            && dataArray[i].date.toDate().getFullYear() == selectedYear
           ){
             let money = dataArray[i].price;
             total += money;
           }
-          let money2 = dataArray[i].price;
-          total2 += money2;
+          if(dataMonth <= currentDate.getMonth()+1
+          && dataYear <= currentDate.getFullYear()){
+            let money2 = dataArray[i].price;
+            total2 += money2;
+          } else {
+            let money3 = dataArray[i].price;
+            total3 += money3;
+          }
+          
         }
         const totalprice = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         const totalprice2 = total2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -247,15 +281,27 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
 
         let total = 0;
         let total2 = 0;
+        let total3 = 0;
+        const currentDate = new Date();
         for (let i = 0; i < dataArray.length; i++) {
+          const dataMonth = dataArray[i].date.toDate().getMonth() + 1;
+          const dataYear = dataArray[i].date.toDate().getFullYear();
           if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth
-          && dataArray[i].date.toDate().getFullYear() == selectedYear
+            && dataArray[i].date.toDate().getFullYear() == selectedYear
           ){
             let money = dataArray[i].price;
             total += money;
           }
-          let money2 = dataArray[i].price;
-          total2 += money2;
+          
+          if(dataMonth <= currentDate.getMonth()+1
+          && dataYear <= currentDate.getFullYear()){
+            let money2 = dataArray[i].price;
+            total2 += money2;
+          } else {
+            let money3 = dataArray[i].price;
+            total3 += money3;
+          }
+          
         }
         const totalprice = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         const totalprice2 = total2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
