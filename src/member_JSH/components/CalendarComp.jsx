@@ -49,6 +49,7 @@ export default function CalendarComp({ onMonthChange }) {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth()+1);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [selectedDay, setSelectedDay] = useState(new Date().getDate());
 
 
     // 일반 수입 리덕스
@@ -188,6 +189,7 @@ export default function CalendarComp({ onMonthChange }) {
     };
 
     const handleActiveStartDateChange = ({ activeStartDate }) => {
+      setSelectedDay(activeStartDate.getDate());
       setSelectedMonth(activeStartDate.getMonth()+1);
       setSelectedYear(activeStartDate.getFullYear());
     };
@@ -197,6 +199,7 @@ export default function CalendarComp({ onMonthChange }) {
     <div style={{width:"100%", display:"flex", justifyContent : "center"}}>
       <TotalStatComp selectedYear={selectedYear}
         selectedMonth={selectedMonth}
+        selectedDay={selectedDay}
       />
       
     <div style={{width : "77%"}}>
