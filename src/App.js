@@ -41,6 +41,7 @@ import './styles/style.css';
 import './App.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import ChallengeEdit from './member_JSH/pages/ChallengeEdit';
 
 
 function App() {
@@ -80,6 +81,7 @@ function App() {
           <Route path='/challenge/create' element={<ChallengeCreate/>}/>
           <Route path='/challenge/:id/view' element={<ChallengeView/>}/>
           <Route path='/challenge/:id/defaultview' element={<DefaultChallengeView />}/>
+          <Route path='/challenge/edit/:id' element={<ChallengeEdit />}/>
 
           <Route path='/asset' element={<Asset/>}/>
           <Route path='/asset/managerlist' element={<AssetManagerList/>}/>
