@@ -117,31 +117,43 @@ export default function ChallengeCreate() {
 
     const handleEdit = async (e) => {
         e.preventDefault();
-        const file = uploadImg;
+
+        if(uploadImg){
+            const file = uploadImg;
         
-        if (!file) {
-        console.error('이미지를 선택해주세요.');
-        return;
+            if (!file) {
+            console.error('이미지를 선택해주세요.');
+            return;
+            }
+        
+            try {
+            const storageRef = ref(storage, file.name);
+            await uploadBytes(storageRef, file);
+            
+            const downloadURL = await getDownloadURL(storageRef);
+            
+            await updateDoc(doc(db, "user_challenge", params.id), {
+                name: challengeName,
+                time: challengeTime,
+                content: challengeContent,
+                img: downloadURL,
+            });
+            
+            console.log('챌린지가 성공적으로 수정되었습니다.');
+            navigate(`/challenge/${params.id}`);
+            } catch (error) {
+            console.error('챌린지 수정 중 오류가 발생했습니다:', error);
+            }
+        }else{
+            await updateDoc(doc(db, "user_challenge", params.id), {
+                name: challengeName,
+                time: challengeTime,
+                content: challengeContent,
+                img: challengeImg,
+            });
+            navigate(`/challenge/${params.id}/view`);
         }
-    
-        try {
-        const storageRef = ref(storage, file.name);
-        await uploadBytes(storageRef, file);
         
-        const downloadURL = await getDownloadURL(storageRef);
-        
-        await updateDoc(doc(db, "user_challenge", params.id), {
-            name: challengeName,
-            time: challengeTime,
-            content: challengeContent,
-            img: downloadURL,
-        });
-        
-        console.log('챌린지가 성공적으로 수정되었습니다.');
-        navigate(`/challenge/${params.id}`);
-        } catch (error) {
-        console.error('챌린지 수정 중 오류가 발생했습니다:', error);
-        }
     };
     return (
         <div id='layout'>

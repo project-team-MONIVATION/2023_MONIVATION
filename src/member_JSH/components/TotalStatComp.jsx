@@ -41,7 +41,7 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
     getIncomeRepeatData();
     getExpenseData();
     getExpenseRepeatData();
-  },[selectedMonth,modalIsOpen2,isModalOpen2]);
+  },[selectedMonth,selectedYear,modalIsOpen2,isModalOpen2]);
 
 
   // 이번 달 총 일반 수입 불러오기
@@ -126,16 +126,16 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
         let total3 = 0;
         const currentDate = new Date();
         for (let i = 0; i < dataArray.length; i++) {
-          const dataDay = dataArray[i].date.toDate().getDate();
           const dataMonth = dataArray[i].date.toDate().getMonth() + 1;
           const dataYear = dataArray[i].date.toDate().getFullYear();
+
           if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth
             && dataArray[i].date.toDate().getFullYear() == selectedYear
           ){
             let money = dataArray[i].price;
             total += money;
           }
-          if(dataDay <= currentDate.getDate() && dataMonth <= currentDate.getMonth()+1
+          if(dataMonth <= currentDate.getMonth()+1
           && dataYear <= currentDate.getFullYear()){
             let money2 = dataArray[i].price;
             total2 += money2;
@@ -179,7 +179,6 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
         let total3 = 0;
         const currentDate = new Date();
         for (let i = 0; i < dataArray.length; i++) {
-          const dataDay = dataArray[i].date.toDate().getDate();
           const dataMonth = dataArray[i].date.toDate().getMonth() + 1;
           const dataYear = dataArray[i].date.toDate().getFullYear();
           if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth
@@ -188,7 +187,7 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
             let money = dataArray[i].price;
             total += money;
           }
-          if(dataDay <= currentDate.getDate() && dataMonth <= currentDate.getMonth()+1
+          if(dataMonth <= currentDate.getMonth()+1
           && dataYear <= currentDate.getFullYear()){
             let money2 = dataArray[i].price;
             total2 += money2;
@@ -233,7 +232,6 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
         let total3 = 0;
         const currentDate = new Date();
         for (let i = 0; i < dataArray.length; i++) {
-          const dataDay = dataArray[i].date.toDate().getDate();
           const dataMonth = dataArray[i].date.toDate().getMonth() + 1;
           const dataYear = dataArray[i].date.toDate().getFullYear();
           if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth
@@ -242,7 +240,7 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
             let money = dataArray[i].price;
             total += money;
           }
-          if(dataDay <= currentDate.getDate() && dataMonth <= currentDate.getMonth()+1
+          if(dataMonth <= currentDate.getMonth()+1
           && dataYear <= currentDate.getFullYear()){
             let money2 = dataArray[i].price;
             total2 += money2;
@@ -286,7 +284,6 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
         let total3 = 0;
         const currentDate = new Date();
         for (let i = 0; i < dataArray.length; i++) {
-          const dataDay = dataArray[i].date.toDate().getDate();
           const dataMonth = dataArray[i].date.toDate().getMonth() + 1;
           const dataYear = dataArray[i].date.toDate().getFullYear();
           if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth
@@ -296,7 +293,7 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
             total += money;
           }
           
-          if(dataDay <= currentDate.getDate() && dataMonth <= currentDate.getMonth()+1
+          if(dataMonth <= currentDate.getMonth()+1
           && dataYear <= currentDate.getFullYear()){
             let money2 = dataArray[i].price;
             total2 += money2;
