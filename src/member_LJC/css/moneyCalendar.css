@@ -100,8 +100,11 @@
 
 
 #MoneyCalendar .installment_component .installment_total {
-    margin-left: 70px;
-    margin-top: 50px;
+    margin: 0 20px;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* 할부금 컴프 */
@@ -116,6 +119,7 @@
 #installment.total_price .T_price{
     font-size: 30px;
     font-weight: 600;
+    margin-left: 5px;
 }
 
 

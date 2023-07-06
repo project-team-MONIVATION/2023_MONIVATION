@@ -64,3 +64,7 @@
     font-weight: bold;
     border-bottom: solid 2px lightgray;
 }
+
+#total-stat-wrap .tb-saving:hover{
+    background-color: #ffc559;
+}

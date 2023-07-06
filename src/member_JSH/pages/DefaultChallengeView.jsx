@@ -123,7 +123,8 @@ export default function DefaultChallengeView() {
             endDate : futureDate,
             challengeName : challengeBoard.name,
             uid : user.uid,
-            badge : challengeBoard.badge
+            badge : challengeBoard.badge,
+            img : challengeBoard.img
         });
     
     };
@@ -220,8 +221,9 @@ export default function DefaultChallengeView() {
             <div className='challenge-wrap'>
                 <div></div>
             {/** 업로드해서 넣은 이미지 url과 그냥 imgId만 넣은 파일을 구분해서 들고와야함 */}
-            <img src={challengeBoard?.img && (challengeBoard.img.length < 10 ? require(`../img/${challengeBoard.img}`) : challengeBoard.img)}
-                style={{width : "100%", height : "200px", borderRadius : "20px", display : 'inline-block', border : "solid black 1px"}}
+            <img src={challengeBoard?.img && (challengeBoard.img.length < 20 ? require(`../../assets/img/${challengeBoard.img}`) : challengeBoard.img)}
+                style={{width : "100%", height : "200px", borderRadius : "20px", display : 'inline-block', overflow : 'hidden', 
+                backgroundSize: 'cover', border : "solid black 1px", backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}
             alt="" />
             <div className='challenge-info-wrap'>
                     <ul className='challenge-info'>
@@ -230,9 +232,14 @@ export default function DefaultChallengeView() {
                         <li>등록자명 : Monivation</li>
                         <li style={{display:'flex', alignItems:'center'}}>
                             <label htmlFor="">획득 가능한 뱃지 </label>
+                            {/** challengeBoard && 는 url안에 넣으면 안된다. require가 너무 빨리 처리해
+                             * challengeBoard가 아직 값을 불러오지 않은 undefined나 null 상태일때 처리해버려서
+                             * 오류가 난다.
+                             * 코드가 맞는데 자꾸 오류가 날때는 코드 순서도 다시 정밀하게 체크하는게 중요.
+                             */}
                             <div style={{width : "50px", display : "inline-block", height : "50px", borderRadius : "20px",
                             backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
-                            backgroundImage : `url(../../assets/img/${challengeBoard && challengeBoard.badge})`}}></div>
+                            backgroundImage : challengeBoard && `url(${require(`../../assets/img/${challengeBoard.badge}`)})`}}></div>
                         </li>
                     </ul>
                 {/** challenge 데이터에 user.nickname도 넣을 예정 */}

@@ -85,14 +85,14 @@ export default function AssetManagerList() {
         <HeaderBox>
           <h1 className='managerlist-h1'>자산관리사 목록</h1>
           <div className='search-bar'>
-            <input type="text" value={searchTerm} onChange={handleInputChange}/>
+            <input type="text" value={searchTerm} placeholder='이름을 입력하세요.' onChange={handleInputChange}/>
             <button onClick={handleSearch}>검색</button>
           </div>
         </HeaderBox>
         
         {/* 분야 필터 */}
         <div className='field-btn animated'>
-          <p>태그는 최대 3개까지 선택가능!</p>
+          <p>*태그는 최대 3개까지 선택가능!</p>
           {field.map((f, i)=>(
             <button key={i} className='filter-button' style={{backgroundColor: filter.includes(f) ? "#735BF3" : "#D9D9D9", transition: "background-color 0.5s" }} onClick={()=>handleFilter(f)}>{f}</button>
           ))}

@@ -72,7 +72,7 @@ export default function Asset() {
               <Link key={fm.id} className='animated' to={`/asset/managerlist/${fm.id}`}>
                 <AssetBox>
                   <AssetImage style={{backgroundImage: `url(${fm.photo})`}}></AssetImage>
-                  <p style={{margin: "10px 0", fontWeight: "bold"}}>{fm.name}</p>
+                  <p style={{margin: "10px 0 3px 0", fontWeight: "bold"}}>{fm.name}</p>
                   <AssetField> 
                     <div>
                       <FieldSpan>{fm.field && fm.field[0]}</FieldSpan>
@@ -82,10 +82,10 @@ export default function Asset() {
                   </AssetField>
                   <FontAwesomeIcon 
                     icon={faHeart}
-                    fontSize={15}
+                    fontSize={10}
                     style={{ color: "red" }}
                   />
-                  <FieldSpan>:{fm.likeNum}</FieldSpan>
+                  <FieldSpan style={{paddingLeft: "3px" }}>{fm.likeNum}</FieldSpan>
                 </AssetBox>
               </Link>
             ))
@@ -94,14 +94,14 @@ export default function Asset() {
       
         {/* 관련 정보 */}
         <div className='asset'>
-          <div style={{display: 'flex'}}>
+          <div style={{display: 'flex', width: "90%", margin: "auto"}}>
             <h1 className='asset-header2'>관련정보</h1>
           </div>
           <table className='animated'>
             <tbody>
               <tr>
                 <td>
-                  <p>관련서적</p>
+                  <h1>관련서적</h1>
                 </td>
                 <td>
                   <img src={require('../../assets/img/coin.jpg')} alt="사진" />
@@ -122,7 +122,7 @@ export default function Asset() {
               </tr>
               <tr>
                   <td>
-                    <p>꿀팁영상</p>
+                    <h1>꿀팁영상</h1>
                   </td>
                   <td>
                     <iframe src="https://www.youtube.com/embed/hikmv2mSVxo" title="3분30초만에 알아보는 자산관리방법 PICK 6" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>

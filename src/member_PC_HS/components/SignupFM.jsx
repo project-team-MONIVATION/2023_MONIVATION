@@ -49,7 +49,7 @@ export default function SignupFM() {
   /* 이메일 인증링크 전송 */
   const sendVerificationEmail = () => {
     const actionCodeSettings = {
-      url: `https://project-team-monivation.github.io/2023_MONIVATION/account/create/financial-manager?email=${inputEmail}`,    
+      url: `http://localhost:3000/2023_MONIVATION/account/create/financial-manager?email=${inputEmail}`,    
       handleCodeInApp : true,
     };
 

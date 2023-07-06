@@ -48,7 +48,8 @@ export default function CalendarComp({ onMonthChange }) {
     const curDate = new Date();
     const [value, setValue] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth()+1);
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
 
     // 일반 수입 리덕스
@@ -191,15 +192,16 @@ export default function CalendarComp({ onMonthChange }) {
 
     const handleActiveStartDateChange = ({ activeStartDate }) => {
       setSelectedMonth(activeStartDate.getMonth()+1);
-      // 리덕스에 담기 화면상의 달
-      dispatch(Month_Calender(activeStartDate.getMonth()))
+      setSelectedYear(activeStartDate.getFullYear());
     };
 
 
   return (
     <div style={{width:"100%", display:"flex", justifyContent : "center"}}>
-      <TotalStatComp selectedDate={selectedDate}
+      <TotalStatComp selectedYear={selectedYear}
         selectedMonth={selectedMonth}
+        isModalOpen2={isModalOpen2}
+        modalIsOpen2={modalIsOpen}
       />
       {console.log("화면의 달", selectedMonth)}
 
@@ -221,6 +223,7 @@ export default function CalendarComp({ onMonthChange }) {
         onClickDay={(value, event)=> {openModal2(value)}}
 
         tileContent={({ date }) => {
+          // 날짜에 대한 컨텐츠를 반환
           const formattedDate = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
           
           // 포맷된 날짜에 따라 데이터를 필터링

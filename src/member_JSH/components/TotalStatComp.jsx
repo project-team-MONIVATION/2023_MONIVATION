@@ -11,7 +11,7 @@ import '../css/totalstat.css';
 
 import SavingListContainer from '../../member_LJC/components/SavingListContainer';
 
-export default function TotalStatComp({selectedDate, selectedMonth}) {
+export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2, isModalOpen2}) {
   
   // 저금 리스트 모달창
   const navigate = useNavigate();
@@ -35,12 +35,13 @@ export default function TotalStatComp({selectedDate, selectedMonth}) {
   }, [user]);
 
   useEffect(()=>{
+    console.log("현재 년도 :", selectedYear );
     console.log("현재 월 : ", selectedMonth);
     getIncomeData();
     getIncomeRepeatData();
     getExpenseData();
     getExpenseRepeatData();
-  },[selectedMonth]);
+  },[selectedMonth,modalIsOpen2,isModalOpen2]);
 
 
   // 이번 달 총 일반 수입 불러오기
@@ -125,7 +126,9 @@ export default function TotalStatComp({selectedDate, selectedMonth}) {
         for (let i = 0; i < dataArray.length; i++) {
           // 여기에 날짜 구분해서 달력 라이브러리의 현 날짜 상태에 연동시켜야함.
           // if
-          if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth){
+          if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth
+            && dataArray[i].date.toDate().getFullYear() == selectedYear
+          ){
             let money = dataArray[i].price;
             total += money;
           }
@@ -164,7 +167,9 @@ export default function TotalStatComp({selectedDate, selectedMonth}) {
         let total = 0;
         let total2 = 0;
         for (let i = 0; i < dataArray.length; i++) {
-          if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth){
+          if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth
+          && dataArray[i].date.toDate().getFullYear() == selectedYear
+          ){
             let money = dataArray[i].price;
             total += money;
           }
@@ -202,7 +207,9 @@ export default function TotalStatComp({selectedDate, selectedMonth}) {
         let total = 0;
         let total2 = 0;
         for (let i = 0; i < dataArray.length; i++) {
-          if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth){
+          if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth
+          && dataArray[i].date.toDate().getFullYear() == selectedYear
+          ){
             let money = dataArray[i].price;
             total += money;
           }
@@ -241,7 +248,9 @@ export default function TotalStatComp({selectedDate, selectedMonth}) {
         let total = 0;
         let total2 = 0;
         for (let i = 0; i < dataArray.length; i++) {
-          if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth){
+          if(dataArray[i].date.toDate().getMonth()+1 == selectedMonth
+          && dataArray[i].date.toDate().getFullYear() == selectedYear
+          ){
             let money = dataArray[i].price;
             total += money;
           }
@@ -268,7 +277,7 @@ export default function TotalStatComp({selectedDate, selectedMonth}) {
     <div id='total-stat-wrap'>
         <table>
           <tbody>
-            <th className='tb-title'>이번 {selectedMonth}월 총액</th>
+            <th className='tb-title'>이번 달 총액</th>
             <tr className='tb-subtitle'>
               <td>고정 수입</td>
             </tr>
@@ -333,7 +342,8 @@ export default function TotalStatComp({selectedDate, selectedMonth}) {
                 <tr className='tb-subtitle-totalresult'>
                   <td>현재 총 저금액</td>
                 </tr>
-                <tr style={{backgroundColor:'#F4E8AE', textAlign:'right'}}>
+                <tr className='tb-saving' 
+                style={{backgroundColor:'#F4E8AE', textAlign:'right'}}>
                   <td>{savingList}원</td>
                 </tr>
               </div>

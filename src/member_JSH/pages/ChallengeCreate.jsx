@@ -28,6 +28,8 @@ export default function ChallengeCreate() {
   const [challengeContent, setChallengeContent] = useState();
   // 챌린지 이미지 파일
   const [challengeImg, setChallengeImg] = useState(null);
+  // 챌린지 업로드 이미지 파일
+  const [uploadImg, setUploadImg]= useState();
 
   // 체크 여부 결정하는 함수
   const isImageSelected = (imageId) => {
@@ -38,11 +40,15 @@ export default function ChallengeCreate() {
     setChallengeImg(imageId);
   };
 
-
-  const onFileChanges = (event) => {
-    //console.log(event.target.files);
+  const onFileChange = (event) => {
     const file = event.target.files[0];
-    //setChallengeImg(URL.createObjectURL(file));
+    setChallengeImg(URL.createObjectURL(file));
+    setUploadImg(file);
+  }
+
+  const addImg = () => {
+    //console.log(event.target.files);
+    const file = uploadImg;
 
     const storageRef = ref(storage, file.name);
 
@@ -53,6 +59,7 @@ export default function ChallengeCreate() {
         getDownloadURL(snapshot.ref)
           .then((downloadURL)=>{
             console.log('Download URL:', downloadURL);
+            setChallengeImg(downloadURL);
             // 여기서 다운로드 URL을 활용하여 저장하거나 출력하는
             // 등의 작업을 수행할 수 있습니다.
           })
@@ -67,16 +74,41 @@ export default function ChallengeCreate() {
 
   const addUserChallenge = async(e) =>{
     e.preventDefault();
-    await addDoc(collection(db, "user_challenge"), {
-      uid : user.uid,
-      name : challengeName,
-      time : challengeTime,
-      content : challengeContent,
-      img : challengeImg,
-      writeTime : new Date(),
-    })
-    // 해당 유저 문서의 챌린지 리스트 필드에 챌린지 값 넣기
-    navigate('/challenge');
+    
+    const file = uploadImg;
+    const storageRef = ref(storage, file.name);
+
+    uploadBytes(storageRef, file)
+      .then((snapshot)=>{
+        console.log('Uploaded a file : ', snapshot.metadata.name);
+        // 이미지의 다운로드 URL 얻기
+        getDownloadURL(snapshot.ref)
+          .then( async(downloadURL)=>{
+            console.log('Download URL:', downloadURL);
+            // 여기서 다운로드 URL을 활용하여 저장하거나 출력하는
+            // 등의 작업을 수행할 수 있습니다.
+            await addDoc(collection(db, "user_challenge"), {
+              uid : user.uid,
+              name : challengeName,
+              time : challengeTime,
+              content : challengeContent,
+              img : downloadURL,
+              writeTime : new Date(),
+              nickname : user.nickname
+            })
+            // 해당 유저 문서의 챌린지 리스트 필드에 챌린지 값 넣기
+            navigate('/challenge');
+          })
+          .catch((error)=>{
+            console.log('Error getting download URL:', error);
+          });
+      })
+      .catch((error)=>{
+        console.log('Error uploading file : ', error);
+      })
+
+    
+    
   }
 
   // 버튼클릭시 input태그에 클릭이벤트를 걸어준다. 
@@ -140,7 +172,7 @@ export default function ChallengeCreate() {
                     {/** + 버튼에 이미지불러오기/불러온이미지를 데이터에 할당하는 작업필요 */}
                     {/** input태그는 display:"none" 을 이용해 안보이게 숨겨준다. */}
                     <input type="file" style={{ display: "none" }} ref={imageInput} 
-                      accept=".jpeg, .jpg, .png" onChange={onFileChanges}
+                      accept=".jpeg, .jpg, .png" onChange={onFileChange}
                     />
                     <div style={{display : "inline-block", width : "200px", 
                     background : "white", height : "150px", borderRadius : "10px",
@@ -150,7 +182,7 @@ export default function ChallengeCreate() {
                       <img 
                         src={challengeImg} 
                         alt='Selected' 
-                        style={{display : "inline-block", width : "120px", height : "150px", 
+                        style={{display : "inline-block", width : "200px", height : "150px", 
                         borderRadius : "10px"}}
                         />}
                     </div>

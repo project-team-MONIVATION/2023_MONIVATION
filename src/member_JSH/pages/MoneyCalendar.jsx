@@ -41,6 +41,7 @@ export default function MoneyCalendar() {
 
   const [activeModal, setActiveModal] = useState(null);
 
+
   const openModal = (modalId) => {
     setActiveModal(modalId);
 };

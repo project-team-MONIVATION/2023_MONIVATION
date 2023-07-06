@@ -145,7 +145,7 @@ export default function AssetManagerProfile() {
                     <p key={i}>{intro}</p>
                   ))}
                 </div>
-                <div>
+                <div style={{borderRadius: '10px'}}>
                   <FontAwesomeIcon
                     icon={faHeart}
                     fontSize={20}

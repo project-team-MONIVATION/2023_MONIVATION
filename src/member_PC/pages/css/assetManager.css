@@ -30,8 +30,11 @@
     margin-left: 2px;
 }
 #managerlist .field-btn {
-    width: 100%; 
-    margin: 20px auto;
+    width: 90%; 
+    margin: 10px auto;
+}
+#managerlist .field-btn p {
+    margin: 10px;
 }
 #managerlist .field-btn .filter-button {
     margin: 5px 10px;
@@ -40,12 +43,13 @@
     border-radius: 20px; 
     color: white;
 }
+
 #managerlist .field-btn .filter-button:hover {
     background-color: #735BF3;
 }
 
 #managerlist .container-box {
-    width: 95%;
+    width: 85%;
     margin: auto;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
