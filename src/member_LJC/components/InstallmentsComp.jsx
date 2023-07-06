@@ -12,6 +12,7 @@ import '../css/moneyCalendar.css'
 export default function InstallmentsComp() {
 
     const user = useSelector((state) => state.user.user);
+    const monthCalendar = useSelector((state) => state.month.month);
 
     const [totalinstallments, setTotalinstallments] = useState('');
 
@@ -31,11 +32,14 @@ export default function InstallmentsComp() {
         return prices;
     }
 
-    
+    useEffect(() => {
+        getinstallmentsData()
+    },[monthCalendar])
 
 
     const getinstallmentsData = async () => {
         var date = new Date();
+        date.setMonth(monthCalendar?monthCalendar:date.getMonth())
 
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 1);

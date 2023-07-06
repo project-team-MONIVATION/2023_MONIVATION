@@ -1,0 +1,51 @@
+#targetinput_container.content {
+    text-align: center;
+    padding: 50px 0;
+}
+
+#targetinput_container.content .title {
+    box-sizing: border-box;
+    width: 150px;
+    height: 40px;
+    margin: auto;
+    padding-top: 10px;
+    border-radius: 50px;
+    background-color: #735BF3;
+    color: #FFFFFF;
+    font-family: 'Cafe24Ssurround';
+    font-size: 23px;
+}
+/* .period_modal .input_period {
+    box-sizing: border-box;
+    position: absolute;
+    width: 500px;
+    height: 400px;
+    padding: 20px;
+    left: 50%;
+    transform: translate(-50%, -10px);
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.25);
+}
+.input_period .close_btn {
+    font-size: 15px;
+    top: calc(20px + 1.5%);
+    right: calc(20px + 1.5%);
+    background-color: #FFFFFF;
+} */
+
+
+
+.flex_targetinput {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+.modal_calendar_targetinput {
+    border: 0;
+}
+.input_endDate_targetinput .modal_calendar_targetinput.period_targetinput {
+    width: 400px;
+    border: 0;
+}

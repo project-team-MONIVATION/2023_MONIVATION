@@ -9,18 +9,18 @@ import {db} from '../../database/firebase'
 import Modal from 'react-modal';
 import '../css/totalstat.css';
 
+import SavingListContainer from '../../member_LJC/components/SavingListContainer';
 
 export default function TotalStatComp({selectedDate, selectedMonth}) {
   
   // 저금 리스트 모달창
   const navigate = useNavigate();
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
   const [activeModal, setActiveModal] = useState(null);
-    const openModal = (modalId) => {
+
+  const openModal = (modalId) => {
       setActiveModal(modalId);
-    };
+  };
 
   const user = useSelector((state) => state.user.user);
 
@@ -257,6 +257,12 @@ export default function TotalStatComp({selectedDate, selectedMonth}) {
       console.log("실패했습니다", error);
     }
   }
+
+  // 모달을 닫기 위한 이벤트 핸들러 함수
+  const closeSavingListContainerModal = () => {
+    setActiveModal(null)
+  };
+
   
   return (
     <div id='total-stat-wrap'>
@@ -320,7 +326,6 @@ export default function TotalStatComp({selectedDate, selectedMonth}) {
             {/* 총 저금액 시작*/}
               <div
                 onClick={()=>{
-                  setModalIsOpen(true);
                   openModal(3);
                 }}
                 style={{cursor: "pointer"}}
@@ -333,40 +338,43 @@ export default function TotalStatComp({selectedDate, selectedMonth}) {
                 </tr>
               </div>
               {activeModal === 3 && (
-                <Modal
-                  id='calendar_modal'
-                  isOpen={modalIsOpen}
-                  style={{
-                    overlay: {
-                      position: 'fixed',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundColor: 'rgba(0, 0, 0, 0.75)',
-                    },
-                    content: {
-                      boxSizing: 'border-box',
-                      width: '580px',
-                      height: '790px',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      borderRadius: '50px',
-                      border: 0,
-                      overflow: "hidden",
-                    }
-                  }}
-                >
-                  <div className='content_container'>
-                  <button 
-                    className='close_btn'
-                    onClick={()=>setModalIsOpen(false)}>
-                    x
-                  </button>
-                  <SavingList setModalIsOpen={setModalIsOpen}/>
-                  </div>
-                </Modal>
+                
+                <SavingListContainer
+                  modalIsopen = {closeSavingListContainerModal}
+                />
+                // <Modal
+                //   id='calendar_modal'
+                //   style={{
+                //     overlay: {
+                //       position: 'fixed',
+                //       top: 0,
+                //       left: 0,
+                //       right: 0,
+                //       bottom: 0,
+                //       backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                //     },
+                //     content: {
+                //       boxSizing: 'border-box',
+                //       width: '580px',
+                //       height: '790px',
+                //       top: '50%',
+                //       left: '50%',
+                //       transform: 'translate(-50%, -50%)',
+                //       borderRadius: '50px',
+                //       border: 0,
+                //       overflow: "hidden",
+                //     }
+                //   }}
+                // >
+                //   <div className='content_container'>
+                //   <button 
+                //     className='close_btn'
+                //     onClick={()=>setActiveModal(null)}>
+                //     X
+                //   </button>
+                //     <SavingList setModalIsOpen={setActiveModal}/>
+                //   </div>
+                // </Modal>
               )}
           {/* 총 저금액 끝 */}
           </tbody>

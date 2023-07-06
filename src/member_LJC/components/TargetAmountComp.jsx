@@ -159,7 +159,7 @@ export default function TargetAmountComp() {
     const dealt = (d1, d2) => { 
         let maxnum = getDateDiffHDpercent(d2, d1);
         let num = getDateDiffNOWpercent(new Date(), d1, d2)
-        console.log("몇필셀?" ,Math.floor((num / maxnum) * 100))
+        // console.log("몇필셀?" ,Math.floor((num / maxnum) * 100))
         return Math.floor((num / maxnum) * 100); 
     }
 

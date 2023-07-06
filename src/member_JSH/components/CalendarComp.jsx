@@ -20,6 +20,7 @@ import styled from 'styled-components';
 import ModalWrap from '../../member_HHS/styleComponent/DateDetail/ModalWrap';
 import { animate } from 'framer-motion';
 import TotalStatComp from './TotalStatComp';
+import { Month_Calender } from '../../member_LJC/slices/monthSliece';
 
 
 const InputBtn = styled.button`
@@ -83,6 +84,8 @@ export default function CalendarComp({ onMonthChange }) {
 
     // input버튼 열기 닫기
     const [InputBtns, setInputBtns] = useState(false);
+
+    
 
     const pulsebtn = () => {
       setInputBtns(!InputBtns)
@@ -188,6 +191,8 @@ export default function CalendarComp({ onMonthChange }) {
 
     const handleActiveStartDateChange = ({ activeStartDate }) => {
       setSelectedMonth(activeStartDate.getMonth()+1);
+      // 리덕스에 담기 화면상의 달
+      dispatch(Month_Calender(activeStartDate.getMonth()))
     };
 
 
@@ -196,7 +201,8 @@ export default function CalendarComp({ onMonthChange }) {
       <TotalStatComp selectedDate={selectedDate}
         selectedMonth={selectedMonth}
       />
-      
+      {console.log("화면의 달", selectedMonth)}
+
     <div style={{width : "77%"}}>
       <div>
       <Calendar onChange={handleCalendarChange}

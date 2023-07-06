@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 import {db} from '../../database/firebase'
 
+import Modal from 'react-modal';
+
 // 폰트어썸
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faGear, faCoins, faDeleteLeft, faX } from "@fortawesome/free-solid-svg-icons";
@@ -12,13 +14,21 @@ import { faPlus, faGear, faCoins, faDeleteLeft, faX } from "@fortawesome/free-so
 import SavingListModifyComp from '../components/SavingListModifyComp';
 import '../css/saving.css'
 
-export default function SavingList() {
+import DateDetailBox from '../../member_HHS/styleComponent/DateDetail/DateDetailBox';
+
+export default function SavingList({setAlltmp, setModifyCompOpen}) {
     const [value, onChange] = useState(new Date());
     const navigate = useNavigate();
     
     const user = useSelector((state) => state.user.user);
 
     const [savingList , setSavingList] = useState([]);
+
+    // tmp 수정 모달로 옮기기
+    // const [alltmp, setAlltmp] = useState([]);
+    // 수정 모달 열기/닫기
+    // const [modifyCompOpen, setModifyCompOpen] = useState(false);
+
 
     useEffect(() => {
         getSavingData();
@@ -65,6 +75,19 @@ export default function SavingList() {
             return ""
         }
     }
+
+    // ModifyComp (수정 모달창)에 전달할 값
+    const openModifyComp  = (tmp) => {
+        setAlltmp(tmp);
+        setModifyCompOpen(true);
+    }
+    // 모달을 닫기 위한 이벤트 핸들러 함수
+    // const closeSubModal = () => {
+    //     setModifyCompOpen(false);
+    // };
+
+
+
 
     // total값 
     // 돈 예정일, 오늘 날짜, 금액, 기간타입, 기간마지막날
@@ -165,74 +188,92 @@ export default function SavingList() {
 
 
     return (
-        <div id='savinglist_container' 
-            className='content'>
-            <h1 className='title'>저금내역</h1>
-            <div className='list_container scrollbar'>
-                {savingList.map((tmp) => 
-                    <div key={tmp.id} 
-                        className='tooltip-link'
-                        data-tooltip={tmp.memo}
-                    >
-                        <div className='top_wrap'>
-                            <div className='top_title'>
-                                {tmp.title}
-                            </div>
-                            <div className='top_btns'>
-                                {/* 수정버튼 */}
-                                <div >
-                                    <SavingListModifyComp
-                                        tmp={tmp}
-                                        getSavingData={getSavingData}
-                                    />
+        // <DateDetailBox>
+        <div>
+            <div id='savinglist_container' 
+                className='content'>
+                <h1 className='title'>저금내역</h1>
+                <div className='list_container scrollbar'>
+                    {savingList.map((tmp) => 
+                        <div key={tmp.id} 
+                            className='tooltip-link'
+                            data-tooltip={tmp.memo}
+                        >
+                            <div className='top_wrap'>
+                                <div className='top_title'>
+                                    {tmp.title}
                                 </div>
-                                {/* 삭제버튼 */}
-                                
+                                <div className='top_btns'>
+                                    {/* 수정버튼 */}
+                                    <button
+                                        key={tmp.id}
+                                        type='button'
+                                        onClick={() => {openModifyComp(tmp)}}
+                                        className='top_listchange'
+                                        >
+                                        <FontAwesomeIcon icon={faGear} size="sm"/>
+                                    </button>
+
+                                    {/* 삭제버튼 */}
                                     <button
                                         onClick={()=> (deleteData(tmp.id))}
                                         className='top_listdelete'
                                     >
                                         <FontAwesomeIcon icon={faX} size="sm"/>
                                     </button>
+                                    
+                                </div>
+                            </div>
+
+                            <div className='middle_wrap'>
+                                <div className='middle_period'>
+                                    <div className='period_content'>
+                                        기간 
+                                    </div>
+                                    <div className='period_date'>
+                                        {tmp.startday} ~ {tmp.endday}
+                                    </div>
+                                </div>
+
+                                <div className='middle_select_price'>
+                                    <div className='periodunit_letter'>
+                                        {tmp.periodunit}
+                                    </div>
+                                    {tmp.amount}₩
+                                </div>
+                                <div className='middle_total_price'>
+                                    <div className='total_letter'>
+                                        Total
+                                    </div>
+                                    <div className='total_price'>
+                                        {dateCondition(new Date(tmp.clickday),new Date(value),tmp.amount,tmp.periodunit,new Date(tmp.endday)) ? dateCondition(new Date(tmp.clickday),new Date(value),tmp.amount,tmp.periodunit,new Date(tmp.endday)) : 0}
+                                        ₩
+                                    </div>
+                                </div>
                                 
                             </div>
-                        </div>
-
-                        <div className='middle_wrap'>
-                            <div className='middle_period'>
-                                <div className='period_content'>
-                                    기간 
-                                </div>
-                                <div className='period_date'>
-                                    {tmp.startday} ~ {tmp.endday}
-                                </div>
-                            </div>
-
-                            <div className='middle_select_price'>
-                                <div className='periodunit_letter'>
-                                    {tmp.periodunit}
-                                </div>
-                                {tmp.amount}₩
-                            </div>
-                            <div className='middle_total_price'>
-                                <div className='total_letter'>
-                                    Total
-                                </div>
-                                <div className='total_price'>
-                                    {dateCondition(new Date(tmp.clickday),new Date(value),tmp.amount,tmp.periodunit,new Date(tmp.endday)) ? dateCondition(new Date(tmp.clickday),new Date(value),tmp.amount,tmp.periodunit,new Date(tmp.endday)) : 0}
-                                    ₩
-                                </div>
-                            </div>
                             
+                            
+                            
+                            {/* <p>지정날짜{tmp.clickday}</p> */}
+                            {/* <p>{checkCondition(new Date(value),new Date(tmp.endday))}</p> */}
                         </div>
-                        
-                        
-                        
-                        {/* <p>지정날짜{tmp.clickday}</p> */}
-                        {/* <p>{checkCondition(new Date(value),new Date(tmp.endday))}</p> */}
-                    </div>
-                )}
+                    )}
+                </div>
+            </div>
+            <div>
+                {/* {modifyCompOpen && (
+                    <SavingListModifyComp
+                        tmp={alltmp}
+                        getSavingData={getSavingData}
+                        closeSubModal = {closeSubModal}
+                    />
+                )} */}
             </div>
         </div>
+        // </DateDetailBox>
     )
+
+
+
 }

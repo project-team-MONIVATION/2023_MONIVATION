@@ -291,8 +291,6 @@ export default function Saving({setModalIsOpen}) {
                                 value={memo}
                                 onChange={e => setMemo(e.target.value)}
                             />
-
-                            
                         </div>
                     </div>
                 </div>

@@ -36,10 +36,11 @@ export default function SIcomp() {
     const navigate = useNavigate();
     const user = useSelector((state) => state.user.user);
     const inputRef = useRef([]);
+    const monthCalendar = useSelector((state) => state.month.month);
 
     useEffect(() => {
         if(user){
-            getSavingData(); 
+            getIncomeData(); 
         }
     }, [user]); 
     // [user] 가바뀔떄마다 돈다
@@ -141,12 +142,15 @@ export default function SIcomp() {
         }
         return totalAmount
     }
+    useEffect(() => {
+        getIncomeData()
+    },[monthCalendar])
 
 
 
-    const getSavingData = async () => {
+    const getIncomeData = async () => {
         var date = new Date();
-
+        date.setMonth(monthCalendar?monthCalendar:date.getMonth())
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 

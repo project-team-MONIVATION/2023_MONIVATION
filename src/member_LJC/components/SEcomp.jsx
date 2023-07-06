@@ -35,10 +35,12 @@ export const options = {
 export default function SEcomp() {
     const navigate = useNavigate();
     const user = useSelector((state) => state.user.user);
+    const monthCalendar = useSelector((state) => state.month.month);
+
     const inputRef = useRef([]);
 
     useEffect(() => {
-        getSavingData(); 
+        getExpenseData(); 
     }, [user]); // [user] 가바뀔떄마다 돈다
 
     
@@ -138,14 +140,19 @@ export default function SEcomp() {
         }
         return totalAmount
     }
+    useEffect(() => {
+        getExpenseData()
+    },[monthCalendar])
 
-
-
-    const getSavingData = async () => {
-        var date = new Date();
-
-        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    
+    const getExpenseData = async () => {
+        //세션스토리지에서 가져온 달 값
+        
+        let date = new Date();
+        date.setMonth(monthCalendar?monthCalendar:date.getMonth())
+        // console.log("gg", monthCalendar)
+        let  firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
 
         
