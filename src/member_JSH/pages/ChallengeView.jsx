@@ -239,6 +239,11 @@ export default function ChallengeView() {
       cancleChallenge();
     }
   }
+
+  const handleEdit = () => {
+    // 수정할 챌린지 정보를 전달하고, 수정 페이지로 이동합니다.
+    navigate(`/challenge/edit/${params.id}`);
+  };
   
   return (
     <div id='layout'>
@@ -276,7 +281,7 @@ export default function ChallengeView() {
           <div style={{backgroundColor : "transparent", padding: "30px"}}>
             <div className='content-button'>
               {
-                user && challengeBoard && challengeBoard.uid === user.uid ? <button>수정</button> : null
+                user && challengeBoard && challengeBoard.uid === user.uid ? <button onClick={handleEdit}>수정</button> : null
               }
               {
                 user && challengeBoard && challengeBoard.uid === user.uid ? 
