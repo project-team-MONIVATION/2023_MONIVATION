@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { db, auth } from '../../database/firebase';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { db, auth } from '../../database/firebase';
 import { collection, getDocs, query } from 'firebase/firestore';
 
 import Slider from "react-slick";
@@ -9,7 +10,6 @@ import "slick-carousel/slick/slick-theme.css";
 
 import ChallengeList from '../styleComponent/Challenge/ChallengeList';
 import ChallengeAdd from '../styleComponent/Challenge/ChallengeAdd';
-import { Link } from 'react-router-dom';
 import ChallengeProgressBar from './ChallengeProgressBar';
 
 export default function ActiveChallengeComp() {

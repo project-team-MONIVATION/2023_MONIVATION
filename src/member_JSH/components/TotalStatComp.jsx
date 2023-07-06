@@ -10,7 +10,7 @@ import Modal from 'react-modal';
 import '../css/totalstat.css';
 
 
-export default function TotalStatComp({selectedYear, selectedMonth, selectedDay}) {
+export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2, isModalOpen2, selectedDay}) {
   
   // 저금 리스트 모달창
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ export default function TotalStatComp({selectedYear, selectedMonth, selectedDay}
     getIncomeRepeatData();
     getExpenseData();
     getExpenseRepeatData();
-  },[selectedMonth]);
+  },[selectedMonth,modalIsOpen2,isModalOpen2]);
 
 
   // 이번 달 총 일반 수입 불러오기
@@ -320,7 +320,7 @@ export default function TotalStatComp({selectedYear, selectedMonth, selectedDay}
     <div id='total-stat-wrap'>
         <table>
           <tbody>
-            <th className='tb-title'>이번 {selectedMonth && selectedMonth}월 총액</th>
+            <th className='tb-title'>이번 달 총액</th>
             <tr className='tb-subtitle'>
               <td>고정 수입</td>
             </tr>

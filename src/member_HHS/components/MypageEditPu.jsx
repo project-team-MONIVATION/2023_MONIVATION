@@ -16,7 +16,6 @@ export default function MypageEditPu() {
     const navigate = useNavigate();
 
     const { name, email, uid } = location.state || "";
-    const [selectedImage, setSelectedImage] = useState(null); // storage 업로드 이미지 관리
 
     const [profile, setProfile] = useState();
     const [startDate, setStartDate] = useState('');
@@ -39,6 +38,9 @@ export default function MypageEditPu() {
     const [password1, setPassword1] = useState('');
     const [password2, setPassword2] = useState('');
 
+    const [selectedImage, setSelectedImage] = useState(null); // storage 업로드 이미지 관리
+    const [selectedFileName, setSelectedFileName] = useState(''); // 파일 이름 상태 변수 이름 변경
+
     /** form 실행 */
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -48,11 +50,15 @@ export default function MypageEditPu() {
     else {
       const usersRef = doc(db, "personal_users", params.id);
       const usersSnap = await getDoc(usersRef);
+      const storage = getStorage();
+
       if (usersSnap.exists()) {
-            // 이미지 업로드
+
+    // 이미지가 선택된 경우 실행
     if (selectedImage) {
       const file = await fetch(selectedImage).then((res) => res.blob());
-      const storageRef = ref(storage, file.name);
+      const storageRef = ref(storage, 'images/' + selectedFileName); // 비루트 참조로 변경하여 경로 생성// 변경된 파일 이름 사용
+
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
       await updateDoc(usersRef, { photo: url });
@@ -71,9 +77,6 @@ export default function MypageEditPu() {
         .catch((error) => {
           console.error('변경 실패', error)
         })
-
-        
-
 
       }
       navigate('/mypage');
@@ -121,21 +124,20 @@ export default function MypageEditPu() {
 
 
 
-// 회원탈퇴
-const deleteBtn = async () => {
-  const confirmed = window.confirm("탈퇴 하시겠습니까?");
-  if (confirmed) {
-    try {
-      await deleteUser(auth.currentUser);
-      // 파이어스토어의 personal_users 컬렉션에서 해당 uid값을 가진 문서 삭제하기
-      await deleteDoc(doc(db, "personal_users", params.id));
-      navigate('/');
-    } catch (error) {
-      console.error('탈퇴 실패', error);
-    }
-  }
-};
-
+    /** 회원탈퇴 */
+    const deleteBtn = async () => {
+      const confirmed = window.confirm("탈퇴 하시겠습니까?");
+      if (confirmed) {
+        try {
+          await deleteUser(auth.currentUser);
+          // 파이어스토어의 personal_users 컬렉션에서 해당 uid값을 가진 문서 삭제하기
+          await deleteDoc(doc(db, "personal_users", params.id));
+          navigate('/');
+        } catch (error) {
+          console.error('탈퇴 실패', error);
+        }
+      }
+    };
 
 
     /** form 입력 값 업데이트 */
@@ -143,7 +145,6 @@ const deleteBtn = async () => {
     const updateNickname = (e) => {
       setNickname(e.target.value);
     }
-
 
     // 연락처 업데이트 // 단계 1: 수정할 번호 입력
     const updatePhoneNum = (e) => {
@@ -237,7 +238,6 @@ const deleteBtn = async () => {
       }
     }
 
-
     
     /** 휴대폰 인증 */
     // 번호 입력 - 인증 전송
@@ -304,40 +304,16 @@ const deleteBtn = async () => {
     /** 프로필 이미지 수정 */
     const handleChangeProfile = (e) => {
       const file = e.target.files[0];
-      setSelectedImage(URL.createObjectURL(file));
-      
-      // const storageRef = ref(storage, file.name);
-      
-      // uploadBytes(storageRef, file)
-      //   .then((snapshot) => {
-      //     console.log('Uploaded a file:', snapshot.metadata.name);
-      //     // 업로드한 파일의 다운로드 URL 가져오기
-      //     getDownloadURL(storageRef)
-      //       .then((url) => {
-      //         // 사용자 프로필 업데이트
-      //         const usersRef = doc(db, "personal_users", params.id);
-      //         updateDoc(usersRef, {
-      //           photo: url,
-      //         })
-      //           .then(() => {
-      //             console.log('User profile updated successfully.');
-      //             // 수정 완료 메시지 표시
-      //             alert('프로필이 수정되었습니다.');
-      //           })
-      //           .catch((error) => {
-      //             console.log('Error updating user profile:', error);
-      //           });
-      //       })
-      //       .catch((error) => {
-      //         console.log('Error getting download URL:', error);
-      //       });
-      //   })
-      //   .catch((error) => {
-      //     console.log('Error uploading file:', error);
-      //   });
+      if (file) {
+        const fileName = file.name; // 파일 이름 저장
+        setSelectedImage(URL.createObjectURL(file));
+        setSelectedFileName(fileName); // 파일 이름 상태 변수 변경
+    
+        console.log(fileName); // 파일 이름 확인 (옵션)
+      }
     };
 
-
+    
     return (
       <div id = "layout" style = {{ overflow: 'hidden' }}>
         <div id = 'mypage-edit-pu'>
@@ -347,8 +323,6 @@ const deleteBtn = async () => {
                 <label htmlFor = "profile-image">
                   <img
                     src = { selectedImage || (profile.photo !== "없음" ? profile.photo : "/img/defaultProfile.jpg") }
-                    width = { 130 }
-                    height = { 130 }
                     alt = "프로필"
                   />
                 </label>
@@ -370,16 +344,12 @@ const deleteBtn = async () => {
               </div>
             </div>
           }
-        
-<br />
 
-        <div className='edit'>
-
+        <div className = 'edit'>
         <form onSubmit = { handleSubmit }>
-          {/*<h2>회원정보 수정</h2>*/}
           <div className='grid'>
           {/* 닉네임 수정 */}
-          <div style={{display:'inline'}}>
+          <div style = {{display:'inline'}}>
             <label>닉네임</label>
             <div className = 'nickname-input'>
               <input
@@ -402,9 +372,7 @@ const deleteBtn = async () => {
           </div>
 
           {/* 출생일 수정 */}
-          <div
-            className='birth-wrap'
-          >
+          <div className='birth-wrap' >
           <label>출생</label>
             <select
               value = { selectedYear }
@@ -452,14 +420,13 @@ const deleteBtn = async () => {
                 maxLength = { 20 }
                 onKeyDown = { characterCheck }
                 disabled = { email }
-                onChange={(e)=>{setPassword1(e.target.value)}}
-                className='edit-input-long'
+                onChange = {(e)=>{setPassword1(e.target.value)}}
+                className = 'edit-input-long'
+                required
               />
             </div>
           </div>
-          <div 
-            className='edit-div'
-          >
+          <div className = 'edit-div'>
             <label>비밀번호 확인</label>
             <input
               type = "password"
@@ -468,34 +435,33 @@ const deleteBtn = async () => {
               maxLength = { 20 }
               onKeyDown = { characterCheck } 
               disabled = { email }
-              onChange={(e)=>{setPassword2(e.target.value)}}
-              className='edit-input-long'
-
+              onChange = {(e)=>{setPassword2(e.target.value)}}
+              className = 'edit-input-long'
+              required
             />
           </div>
-          <div style={{ position:"absolute", top:"300px"}}>
+          <div style = {{ position:"absolute", top:"283px", left:"50px", fontSize:"0.9rem"}}>
             {
-              password1 !== null && password1 === password2 ? "*  비밀번호가 일치합니다" : <span style={{color:"red"}}>비밀번호가 일치하지  않습니다</span>
+              password1 !== null && password1 === password2 ? "*  비밀번호가 일치합니다" : <span style = {{color:"red"}}>* 비밀번호가 일치하지  않습니다</span>
             }
           </div>
 
           {/* 연락처 수정 */}
           <div>
             <label>연락처</label>
-            <div className='phone-input'>
+            <div className = 'phone-input'>
               <input
                 type = "number"
                 value = { phoneNum }
                 onChange = { updatePhoneNum }
-                className='edit-input-short'
-
+                className = 'edit-input-short'
               />
               <button
-                id = "sign-in-button"
+                // id = "sign-in-button"
                 type = "button"
                 onClick = { onSignInSubmit }
-                onChange={ (e) => { setPhoneNum(e.target.value) } }
-                className='btn'
+                onChange = { (e) => { setPhoneNum(e.target.value) } }
+                className = 'btn'
               >
                 인증번호 발송
               </button>
@@ -503,29 +469,26 @@ const deleteBtn = async () => {
           </div>
 
           {/* 연락처 인증번호 */}
-          <div
-            className='edit-div'
-          >
+          <div className='edit-div'>
             <label>인증번호</label>
             <input
               type = "number"
               placeholder = "인증번호"
               value = { otp }
               onChange = { (e) => { setOtp(e.target.value) } }
-              className='edit-input-short'
+              className = 'edit-input-short'
             />
             <button
               type = "button"
               onClick = { onOTPVerify }
               className='btn'
-
             >
               인증번호 확인
             </button>
           </div>
           </div>
           
-          <input type = "submit" value = "수정하기" className='form-submit'/>
+          <input type = "submit" value = "수정하기" className = 'form-submit'/>
         </form>
         </div>
 

@@ -200,6 +200,8 @@ export default function CalendarComp({ onMonthChange }) {
       <TotalStatComp selectedYear={selectedYear}
         selectedMonth={selectedMonth}
         selectedDay={selectedDay}
+        isModalOpen2={isModalOpen2}
+        modalIsOpen2={modalIsOpen}
       />
       
     <div style={{width : "77%"}}>
@@ -220,6 +222,7 @@ export default function CalendarComp({ onMonthChange }) {
         onClickDay={(value, event)=> {openModal2(value)}}
 
         tileContent={({ date }) => {
+          // 날짜에 대한 컨텐츠를 반환
           const formattedDate = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
           
           // 포맷된 날짜에 따라 데이터를 필터링
