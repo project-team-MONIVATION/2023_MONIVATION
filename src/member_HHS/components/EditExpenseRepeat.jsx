@@ -14,6 +14,9 @@ import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
+import Moneyedit from '../styleComponent/DateDetail/Moneyedit';
+
+
 export default function EditExpenseRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate }) {
     // form의 입력 값 state
     const [date, setDate] = useState(new Date());
@@ -511,7 +514,7 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
             </div>
           </div>
 
-          <div className='input_btns'>
+          <Moneyedit>
             <input 
               type = "submit" 
               value = "수정"
@@ -524,7 +527,7 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
             >
               삭제
             </button>
-          </div>
+          </Moneyedit>
 
         </form>
       </EditForm>

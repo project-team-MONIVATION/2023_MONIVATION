@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { db } from '../../database/firebase';
-import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, deleteDoc, query, collection, where, getDocs, documentId, setDoc } from 'firebase/firestore';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 
@@ -10,12 +10,15 @@ import CategoryBtn from '../../member_PCH/features/CategoryBtn';
 import EditForm from '../styleComponent/DateDetail/EditForm';
 import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
 import { SelectDate, SelectPeriod } from '../../member_PCH/features/IconInModal';
+import Moneyedit from '../styleComponent/DateDetail/Moneyedit';
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 
-export default function EditIncomeRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate }) {
+
+export default function EditIncomeRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate, incomeRepeatListId }) {
     // form의 입력 값 state
     const [date, setDate] = useState(null);
     const [startDate, setStartDate] = useState(null);
@@ -32,28 +35,56 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     // 반복주기 입력하는 커스텀 select state
     const [cycleSelect, setCycleSelect] = useState(false);
 
-    /** 파이어스토어에 업데이트 넘겨줌 */
-    const handleSubmit = async (e) => {
-      e.preventDefault();
 
-      const incomeRef = doc(db, "money_income_repeat", id);
-      const incomeSnap = await getDoc(incomeRef);
-      if (incomeSnap.exists()) {
-        await updateDoc(incomeRef, {
-          date: date,
-          startDate: date,
-          endDate: endDate,
-          price: editPrice,
-          cycle: cycle,
-          category: selectedCategory,
-          memo: editMemo,
-        });
-      }
 
-      closeSubModal();
-      // 데이터 업데이트 후 상위 컴포넌트의 fetchData 함수 호출
-      handleDataUpdate();
-    };
+
+
+
+    
+    /** 업데이트 */
+ /** 업데이트 */
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  // money_income_repeat 컬렉션에서 해당 문서를 찾습니다.
+  const incomeRepeatRef = doc(db, "money_income_repeat", id);
+  const incomeRepeatSnap = await getDoc(incomeRepeatRef);
+
+  if (incomeRepeatSnap.exists()) {
+    // money_income_repeat 컬렉션의 해당 문서를 업데이트합니다.
+    await updateDoc(incomeRepeatRef, {
+      date: date,
+      price: editPrice,
+      cycle: cycle,
+      category: selectedCategory,
+      memo: editMemo,
+    });
+
+    // money_income_repeat_list 컬렉션에서 해당 docid와 일치하는 모든 문서를 찾아 업데이트합니다.
+    const incomeRepeatListQuery = query(
+      collection(db, "money_income_repeat"),
+      where("docid", "==", incomeRepeatListId)
+    );
+    const incomeRepeatListSnapshot = await getDocs(incomeRepeatListQuery);
+
+    incomeRepeatListSnapshot.forEach(async (incomeRepeatListDoc) => {
+      // money_income_repeat_list 컬렉션의 해당 문서를 업데이트합니다.
+      await updateDoc(incomeRepeatListDoc.ref, {
+        price: editPrice,
+        cycle: cycle,
+        category: selectedCategory,
+        memo: editMemo,
+      });
+    });
+  }
+
+  closeSubModal();
+  handleDataUpdate();
+};
+
+    
+    
+
 
 
     // 고정수입 목록 클릭할 때마다 해당 내용으로 출력
@@ -152,14 +183,34 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     };
 
     // 해당 데이터 삭제
-    const deleteMoney = async() => {
-      const confirmed = window.confirm("삭제하시겠습니까?");
-      if (confirmed) {
-        await deleteDoc(doc(db, "money_income_repeat", id));
-        handleDataUpdate();
-        closeSubModal();
-      }
-    }
+    // const deleteMoney = async() => {
+    //   const confirmed = window.confirm("삭제하시겠습니까?");
+    //   if (confirmed) {
+    //     await deleteDoc(doc(db, "money_income_repeat", id));
+    //     handleDataUpdate();
+    //     closeSubModal();
+    //   }
+    // }
+        // 해당 데이터 삭제
+        const deleteMoney = async () => {
+          if (incomeRepeatListId != null) {
+            // "money_income_repeat_list" 컬렉션에서 문서 삭제
+            const querySnapshot = await getDocs(query(collection(db, "money_income_repeat"), where("docid", "==", incomeRepeatListId)));
+            
+                // 찾은 문서들을 순회하며 삭제
+                querySnapshot.forEach(async (doc) => {
+                  // 문서 삭제
+                  await deleteDoc(doc.ref);
+                });
+                // "money_installments" 컬렉션에서 "installmentId"와 일치하는 문서 삭제
+                  await deleteDoc(doc(db, "money_income_repeat_list", incomeRepeatListId));
+              } else{
+                await deleteDoc(doc(db, "money_income_repeat", id));
+              }
+                
+              handleDataUpdate();
+              closeSubModal();
+            };
 
 
     /** 금액 천자리 콤마(,) */
@@ -420,7 +471,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
             </div>
           </div>
 
-          <div className='input_btns'>
+          <Moneyedit>
             <input
               type = "submit"
               value = "수정"
@@ -433,7 +484,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
             >
               삭제
             </button>
-          </div>
+          </Moneyedit>
 
         </form>
 

@@ -12,6 +12,9 @@ import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
 import { SelectDate } from '../../member_PCH/features/IconInModal';
 import moment from 'moment';
 
+import Moneyedit from '../styleComponent/DateDetail/Moneyedit';
+
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
@@ -450,18 +453,40 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
             </div>
           </div>
 
-          <div>
+          <div style={{display:"flex"}}>
             <input 
               type = "submit" 
               value = "수정" 
               onClick = { handleClickUpdate }
               disabled = { !date || !editPrice || !selectedCategory || !(payment !== "카드" || (payment === "카드" && installment === "일시불")) }
-              style = { { display: isEditable ? 'block' : 'none' } }
+              style = { { display: isEditable ? 'block' : 'none' ,
+            
+              
+                marginRight: "10px",
+                backgroundColor:   "  rgb(115, 91, 243)",
+                border: "none",
+                borderRadius: "50px",
+                width:" 150px",
+                height: "50px",
+                color: "#fff",
+                fontSize: "23px",
+                fontFamily: 'Cafe24Ssurround'}}
+              
             />
 
             <button
               type = "button"
               onClick = { deleteMoney }
+              style={{
+                marginRight: "10px",
+                backgroundColor:   "  rgb(115, 91, 243)",
+                border: "none",
+                borderRadius: "50px",
+                width:" 150px",
+                height: "50px",
+                color: "#fff",
+                fontSize: "23px",
+                fontFamily: 'Cafe24Ssurround'}}
             >
               삭제
             </button>
