@@ -289,7 +289,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
 
 
 
-          <div className='payment'>
+          <div>
 
             <p>결제수단</p>
             <div className='input'>
@@ -297,8 +297,21 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               value = { payment }
               onChange = { updatePayment }
               disabled = { payment === "카드" && installment !== "일시불" }
+              style={{
+                boxSizing: "border-box",
+                width: "350px",
+                height: "45px",
+                padding: "0 15px",
+                backgroundColor:" #D9D9D9",
+                border: "0",
+                borderRadius: "15px",
+                fontSize: "16px",
+                marginBottom:"14px",
+                transition: "all 0.1s ease",
+
+              }}  
             >
-              <option value = "현금">현금</option>
+              <option style={{borderRadius: "15px",}} value = "현금">현금</option>
               <option value = "카드">카드</option>
               <option value = "이체">이체</option>
             </select>
@@ -310,6 +323,17 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
                   name = "installment"
                   onChange = { onInputInstallment }
                   value = { installment }
+                  style={{
+                    boxSizing: "border-box",
+                    width: "350px",
+                    height: "45px",
+                    padding: "0 15px",
+                    backgroundColor:" #D9D9D9",
+                    border: "0",
+                    borderRadius: "15px",
+                    fontSize: "16px",
+                    marginBottom:"14px",
+                  }}  
                 >
                   <option value = "일시불">일시불</option>
                 </select>

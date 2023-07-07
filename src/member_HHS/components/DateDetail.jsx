@@ -50,6 +50,8 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     const [incomeRepeatList, setIncomeRepeatList] = useState([]); // 고정수입 반복
     const [selectedIncomeRepeatListId, setSelectedIncomeRepeatListId] = useState('');
 
+    const [expenseRepeatList, setExpenseRepeatList] = useState([]); // 고정지출 반복
+    const [selectedExpenseRepeatListId, setSelectedExpenseRepeatListId] = useState(''); 
 
     
     // 캘린더 모달
@@ -89,12 +91,12 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     }
 
     // 고정지출 수정 모달창
-    const openEditExpenseRepeatModal = (category, price, memo, id, ) => {
+    const openEditExpenseRepeatModal = (category, price, memo, id, expenseRepeatListId ) => {
       setSelectedCategory(category);
       setSelectedPrice(price);
       setSelectedMemo(memo);
       setSelectedId(id);
-
+      setSelectedExpenseRepeatListId(expenseRepeatListId); // installmentId 값을 설정합니다.
       setEditExpenseRepeatOpen(true);
     }
 
@@ -156,6 +158,9 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     };
 
     // 고정지출 - 반복 데이터 가져오기
+    const getExpenseRepeatList = () => {
+      fetchData("money_expense_repeat_list", setExpenseRepeatList);
+    };
 
     // 고정수입 - 반복 데이터 가져오기
     const getIncomeRepeatList = () => {
@@ -171,6 +176,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       getExpenseRepeat();
       getInstallments();
       getIncomeRepeatList();
+      getExpenseRepeatList();
     }, []);
 
     // 업데이트된 데이터를 가져오는 함수
@@ -181,6 +187,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       getExpenseRepeat();
       getInstallments();
       getIncomeRepeatList();
+      getExpenseRepeatList();
     };
 
     useEffect(() => {
@@ -193,6 +200,9 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       fetchData("money_income_repeat", setIncomeRepeat);
       fetchData("money_expense", setExpense);
       fetchData("money_expense_repeat", setExpenseRepeat);
+      // fetchData("money_expense_repeat_list", setExpenseRepeatList);
+      // fetchData("money_income_repeat_list", setIncomeRepeatList);
+      // fetchData("money_installments", setInstallments);
     };
 
 
@@ -474,7 +484,44 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 
                           </MoneyList>
 
-                          <MoneyList active={activeAccordion === 2}>
+
+                          {/* 고정지출 작성해볼게요 */}
+                        <MoneyList active = {activeAccordion === 2}>
+                          { filteredExpenseRepeat.map((item, i) => {
+                            console.log(filteredExpenseRepeat);
+                            // 해당 ExpenseRepeat에 매칭되는 Expense_repeat_list 문서 찾기
+                            const matchingExpenseRepeatList = expenseRepeatList.find(
+                              (r) => r.category === item.category && r.price === item.price && r.memo === item.memo
+                            );
+                            
+                            // matchingExpenseRepeatList 따라서 문서 id를 전달하거나, 해당 문서를 출력
+                            const expenseRepeatListId = matchingExpenseRepeatList?.id;
+                            
+                            return (
+                              <div 
+                                key = {i}
+                                onClick = { () => openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id, expenseRepeatListId ) }
+                                style={{ 
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginTop: "10px",
+                              }}
+                              > 
+                                <div>
+                                  <span>{ item.category }</span>
+                                  {/* <span>{(item.cycle === "매일" || item.cycle === "매주" || item.cycle === "매월" || item.cycle === "매년") && `(${item.incomeRepeatList})`}</span> */}
+
+                                  {item.expenseRepeatList && <span>({item.expenseRepeatList})</span>}
+
+                                </div>
+                                <span>{ item.price !== undefined ? handleHyphen(item.price) : '' }&#8361;</span>
+                              </div>
+                            );
+                          }) }
+                        </MoneyList>
+                        {/* 고정수입 작성 end */}
+
+                          {/* <MoneyList active={activeAccordion === 2}>
                             { filteredExpenseRepeat.map((item, i) => (
                               <div 
                                 key = {i}
@@ -489,7 +536,12 @@ export default function DateDetail({ closeModal2, selectedDate }) {
                                 <span>{ handleHyphen(item.price) }&#8361;</span>
                               </div>
                             ))}
-                          </MoneyList>
+                          </MoneyList> */}
+
+
+
+
+
                         </div>
                         {/** 지출 */}
                         <div style={{marginBottom: "20px"}}>
@@ -604,6 +656,9 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               endDate = { endDate }
               date = { date }
               handleDataUpdate = { handleDataUpdate }
+              docid = { docid }
+              expenseRepeatListId = { selectedExpenseRepeatListId } // money_expense_repeat_list 컬렉션의 문서 ID 전달
+
             />
           )}
         </div>

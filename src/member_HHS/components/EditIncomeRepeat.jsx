@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { db } from '../../database/firebase';
-import { doc, getDoc, updateDoc, deleteDoc, query, collection, where, getDocs, documentId, setDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, deleteDoc, query, collection, where, getDocs } from 'firebase/firestore';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 
@@ -23,7 +23,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     const [date, setDate] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
-    const [cycle, setCycle] = useState(null);
+    const [cycle, setCycle] = useState("매일");
     const [editPrice, setEditPrice] = useState(price);
     const [editMemo, setEditMemo] = useState(memo);
     const [selectedCategory, setSelectedCategory] = useState(category);
@@ -96,9 +96,10 @@ const handleSubmit = async (e) => {
         const incomeRepeatData = incomeRepeatSnap.data();
           setSelectedCategory(incomeRepeatData.category);
           setCycle(incomeRepeatData.cycle);
-          setDate(incomeRepeatData.date.toDate()); // date 변수의 초기값 설정
-          setStartDate(incomeRepeatData.date.toDate());
-          setEndDate(incomeRepeatData.endDate.toDate());
+          console.log(incomeRepeatData.cycle); // cycle 필드의 값 출력 
+          setDate(incomeRepeatData.date ? incomeRepeatData.date.toDate() : null);
+          setStartDate(incomeRepeatData.startDate ? incomeRepeatData.startDate.toDate() : null);
+          setEndDate(incomeRepeatData.endDate ? incomeRepeatData.endDate.toDate() : null);
           setEditMemo(incomeRepeatData.memo);
           setEditPrice(incomeRepeatData.price);
           console.log(setDate);
@@ -134,8 +135,10 @@ const handleSubmit = async (e) => {
     };
       
     // 반복주기 입력하는 커스텀 select on/off
-    const onClickCycleSelect = () => {
-      setCycleSelect((prev)=>!prev);
+    const onClickCycleSelect = (e) => {
+      const selectedCycle = e.target.dataset.cycle;
+      setCycle(selectedCycle);
+      setCycleSelect((prev) => !prev);
     }
 
     // 캘린더 모달에서 입력한 값을 form에 보여주기 위한 변환 함수
@@ -193,6 +196,8 @@ const handleSubmit = async (e) => {
     // }
         // 해당 데이터 삭제
         const deleteMoney = async () => {
+          const confirmed = window.confirm("삭제하시겠습니까?");
+          if (confirmed) {
           if (incomeRepeatListId != null) {
             // "money_income_repeat_list" 컬렉션에서 문서 삭제
             const querySnapshot = await getDocs(query(collection(db, "money_income_repeat"), where("docid", "==", incomeRepeatListId)));
@@ -210,6 +215,7 @@ const handleSubmit = async (e) => {
                 
               handleDataUpdate();
               closeSubModal();
+            }
             };
 
 
@@ -289,8 +295,8 @@ const handleSubmit = async (e) => {
               <p>기간</p>
               <div className='input_box'>
                 <span>
-                  { date && changeDate(date)} ~
-                  { endDate ? changeDate(endDate) : '0000-00-00' } { cycle }
+                  { startDate && changeDate(startDate)} ~ 
+                  { endDate ? changeDate(endDate) : '0000-00-00' }  {cycle !== null ? cycle : ''}
                 </span>
                 <button onClick = { onClickPeriod }>
                   <SelectPeriod showPeriod={showPeriod}/>
@@ -331,8 +337,10 @@ const handleSubmit = async (e) => {
                                   'select_lable' +
                                   (cycle !== null ? " active" : "")
                                 }
+                                data-cycle={cycle}
+
                                 onClick={onClickCycleSelect}
-                              >
+                                >
                                 {cycle === null ? "필수선택" : cycle}
                                 <FontAwesomeIcon 
                                   icon={faChevronDown} 
@@ -360,6 +368,7 @@ const handleSubmit = async (e) => {
                                     setCycle('매주')
                                     setCycleSelect((prev)=>!prev);
                                   }}
+
                                 >
                                   매주
                                 </li>
@@ -369,6 +378,7 @@ const handleSubmit = async (e) => {
                                     setCycle('매월')
                                     setCycleSelect((prev)=>!prev);
                                   }}
+
                                 >
                                   매월
                                 </li>
@@ -378,6 +388,7 @@ const handleSubmit = async (e) => {
                                     setCycle('매년')
                                     setCycleSelect((prev)=>!prev);
                                   }}
+
                                 >
                                   매년
                                 </li>
@@ -476,7 +487,7 @@ const handleSubmit = async (e) => {
               type = "submit"
               value = "수정"
               onClick = { handleClickUpdate }
-              disabled = { !date || !startDate || !cycle || !editPrice || !selectedCategory }
+              disabled = { !date || !endDate || !cycle || !editPrice || !selectedCategory }
             />
             <button
               type = "button"
