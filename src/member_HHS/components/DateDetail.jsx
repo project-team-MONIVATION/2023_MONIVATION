@@ -662,6 +662,6 @@ export default function DateDetail({ closeModal2, selectedDate }) {
             />
           )}
         </div>
-    </DateDetailBox>
+      </DateDetailBox>
   )
 }

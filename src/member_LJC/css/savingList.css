@@ -1,0 +1,368 @@
+#savingListModifycomp.modify_container {
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+    position: absolute;
+    z-index: 100000;
+    
+    /* width: 340px;
+    height: 400px; */
+    left: 0%;
+
+    
+    text-align: center;
+
+    width: 350px;
+    height: 560px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+#savingListModifycomp.modify_container p {
+    box-sizing: border-box;
+    width: 350px;
+    text-align: left;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    font-family: 'Cafe24Ssurround';
+    font-size: 20px;
+}    
+
+
+#savingListModifycomp.modify_container .input_box {
+    box-sizing: border-box;
+    width: 300px;
+    height: 40px;
+    background-color: #D9D9D9;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+#savingListModifycomp.modify_container .input_box span {
+    width: 300px;
+    padding-top: 2px;
+}
+#savingListModifycomp.modify_container .input_box button {
+    border: 0;
+    background-color: inherit;
+    padding: 0;
+}
+#savingListModifycomp.modify_container .input_box button:hover .icon_calendar_plus {
+    background-image: url('../../assets/icon/calendar-plus-hover.png');
+    width: 20px;
+    height: 20px;
+}
+
+
+
+
+
+#savingListModifycomp.modify_container .date_modal {
+    position: relative;
+    z-index: 2;
+}
+#savingListModifycomp.modify_container .date_modal .input_date {
+    box-sizing: border-box;
+    position: absolute;
+    width: 350px;
+    height: 400px;
+    padding: 20px;
+    transform: translateY(-10px);
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.25);
+}
+
+
+#savingListModifycomp.modify_container .date_modal .input_date .close_btn {
+    font-size: 15px;
+    top: calc(20px + 1.5%);
+    right: calc(20px + 1.5%);
+    background-color: #FFFFFF;
+}
+
+#savingListModifycomp.modify_container .input_date .modal_calendar {
+    border: 0;
+}
+
+#modi #input_form .input_content .period_modal .input_period {
+    box-sizing: border-box;
+    position: absolute;
+    width: 500px;
+    height: 400px;
+    padding: 20px;
+    left: 50%;
+    transform: translate(-50%, -10px);
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.25);
+}
+
+
+#savingListModifycomp.modify_container .period_modal .input_period .flex .input_cycle .select {
+    position: absolute;
+    height: 50px;
+}
+
+#savingListModifycomp.modify_container .period_modal .input_period .flex .input_cycle .select_box {
+    position: relative;
+    cursor: pointer;
+}
+
+#savingListModifycomp.modify_containert .period_modal .input_period .flex .input_cycle .select_box::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    background-color: #FFFFFF;
+    transition: all 0.2s ease-in;
+    z-index: -10;
+}
+
+#modi.content{
+    text-align: center;
+    padding: 50px 0;
+    box-sizing: border-box;
+    width: 580px;
+    height: 850px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 50px;
+    border: 0;
+    margin-left: 20px; 
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#modi.content .saving {
+    /* 저금 모달창 타이틀 */
+    box-sizing: border-box;
+    width: 150px;
+    height: 40px;
+    margin: auto;
+    padding-top: 10px;
+    border-radius: 50px;
+    background-color: #735BF3;
+    color: #FFFFFF;
+    font-family: 'Cafe24Ssurround';
+    font-size: 23px;
+}
+
+#modi #input_form .input_content {
+    width: 440px;
+    height: 600px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#modi#input_form .input_content p {
+    box-sizing: border-box;
+    width: 350px;
+    text-align: left;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    font-family: 'Cafe24Ssurround';
+    font-size: 20px;
+}
+
+#modi #input_form .input_content .input_box {
+    box-sizing: border-box;
+    width: 350px;
+    height: 45px;
+    background-color: #D9D9D9;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+
+#modi #input_form .input_content .input_box span {
+    width: 300px;
+    padding-top: 2px;
+}
+
+#modi #input_form .input_content .input_box button {
+    border: 0;
+    background-color: inherit;
+    padding: 0;
+}
+
+#modi #input_form .input_content .input_box button:hover .icon_calendar_plus {
+    background-image: url('../../assets/icon/calendar-plus-hover.png');
+    width: 20px;
+    height: 20px;
+}
+
+#modi #input_form .input_content .date_modal {
+    position: relative;
+    z-index: 2;
+}
+
+#modi #input_form .input_content .date_modal .input_date {
+    box-sizing: border-box;
+    position: absolute;
+    width: 350px;
+    height: 400px;
+    padding: 20px;
+    transform: translateY(-10px);
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.25);
+}
+#modi.content .close_btn {
+    position: absolute;
+    top: 1.5%;
+    right: 1.5%;
+    border: 0;
+    color: #735BF3;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: #FFFFFF;
+}
+
+#modi #input_form .input_content .date_modal .input_date .close_btn {
+    font-size: 15px;
+    top: calc(20px + 1.5%);
+    right: calc(20px + 1.5%);
+    background-color: #FFFFFF;
+}
+#modi #input_form .input_content .period_modal .input_period .close_btn {
+    font-size: 15px;
+    top: calc(20px + 1.5%);
+    right: calc(20px + 1.5%);
+    background-color: #FFFFFF;
+}
+
+
+#modi #input_form .input_content .period_modal {
+    position: relative;
+    z-index: 2;
+}
+
+#modi #input_form .input_content .period_modal p {
+    width: 150px;
+}
+
+
+/* 커스텀 반복주기 select */
+#modi #input_form .input_content .period_modal .input_period .flex .input_cycle .select {
+    height: 180px;
+}
+
+#modi #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box {
+    position: relative;
+    cursor: pointer;
+}
+
+#modi #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    background-color: #FFFFFF;
+    transition: all 0.2s ease-in;
+    z-index: -10;
+}
+
+#modi #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box button {
+    width: 130px;
+    height: 35px;
+    background-color: #D9D9D9;
+    color: #303030;
+    border: 0;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+}
+
+#modi #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box button.active {
+    background-color: #F3DD73;
+}
+
+#modi #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box .option_list {
+    position: absolute;
+    width: 130px;
+    height: 0;
+    top: 40px;
+    left: 0;
+    background-color: #D9D9D9;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: 0s;
+}
+
+#modi #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box.active .option_list {
+    width: 130px;
+    height: 120px;
+    transition: all 0.2s ease-in;
+}
+
+#modi #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box li {
+    box-sizing: border-box;
+    display: block;
+    height: 30px;
+    transition: all 0.2s ease-in;
+    cursor: pointer;
+    font-size: 13px;
+    border-bottom: 0.3px solid #FFFFFF;
+    padding-top: 9px;
+}
+
+#modi #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box li:last-child {
+    border-bottom: 0;
+}
+
+#modi #input_form .input_content .period_modal .input_period .flex .input_cycle .select_box li:hover {
+    background-color: #bbbbbb;
+}
+/* 커스텀 반복주기 select 끝 */
+
+#modi #input_form .input_content .input_box .input_price {
+    width: 300px;
+    background: inherit;
+    border: 0;
+    text-align: center;
+    font-size: 16px;
+}
+
+#modi #input_form .input_content .input_box .won {
+    width: 20px;
+    height: 20px;
+    padding-top: 8px;
+    font-size: 18px;
+}
+
+#modi #input_form .submit_btn {
+    width: 150px;
+    height: 50px;
+    background-color: #735BF3;
+    border: 0;
+    border-radius: 50px;
+    color: #FFFFFF;
+    font-family: 'Cafe24Ssurround';
+    font-size: 23px;
+    margin-right: 100px;
+}
+
+#modi #input_form .input_content .date_modal .input_date .modal_calendar {
+    margin-top: 7%;
+    border: 0;
+}
+
+#modi #input_form .input_content .period_modal .input_period .flex .input_endDate .modal_calendar.period {
+    width: 350px;
+    /* margin-left: 22px; */
+    border: 0;
+}

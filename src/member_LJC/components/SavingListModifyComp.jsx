@@ -2,21 +2,32 @@ import React, { useState, } from 'react';
 import Calendar from 'react-calendar';
 import {  doc,  updateDoc, } from 'firebase/firestore';
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faGear, faCoins } from "@fortawesome/free-solid-svg-icons";
+
+import EditForm from '../../member_HHS/styleComponent/DateDetail/EditForm';
 
 import {db} from '../../database/firebase'
 
-import '../css/saving.css'
+import { SelectDate, SelectPeriod } from '../../member_PCH/features/IconInModal';
+import CloseBtn from '../../member_HHS/styleComponent/DateDetail/CloseBtn';
+// import '../css/saving.css'
+import '../css/savingList.css'
 
-export default function SavingListModifyComp({tmp, getSavingData}) {
+
+
+export default function SavingListModifyComp({tmp, getSavingData, closeSubModal}) {
     
 
     const [open, setOpen] = useState(false);
     const [value, onChange] = useState(new Date());
 
     // 열기 닫기
-        const [isCheck, setCheck] = useState(false);
+        const [showCal, setCheck] = useState(false);
 
         const [modal, setModal] = useState(false);
+
+        const [showPeriod, setShowPeriod] = useState(false);
 
         // (기간)시작날짜
         const [ischeck2, setCheck2] = useState(true);
@@ -97,160 +108,201 @@ export default function SavingListModifyComp({tmp, getSavingData}) {
             amount : correctionamount,
             memo : correctionmemo
         });
-        getSavingData()
+        getSavingData();
+        closeSubModal();
     }
+
+    /** 모달창 닫기/수정/삭제 */
+    // 수정 모달창 닫기
+    const handleClose = () => {
+        closeSubModal();
+    };  
 
 
 
     return (
-
-        <div>
-            <form
-            onSubmit={(e) => {
-                e.preventDefault();
-                updateData(tmp.id);
-                setOpen(false)
-                }
-            }
+        // <EditForm>
+            <div id='modi'
+                className='content'
             >
-                <div>
-                    <button
-                        type='button'
-                        onClick={() => {setOpen((e) => !e);}}
-                    >
-                    수정임티
-                    </button>
-                    {open && (
-                        <div>
-                            <label htmlFor="">제목</label>
-                            <input type="text"
-                                required
-                                value={correctiontitle}
-                                onChange={(e) => setCorrectiontitle(e.target.value)}
-                            />
-        <br />
-                            <label>저금예정일</label>
-                            <input type="text" 
-                                required
-                                value={correctionclickday}
-                            />
-                            <div>
-                            <button
-                                type='button'
-                                onClick={() => {setCheck((e) => !e); setModal(false);}}
-                            >
-                            {isCheck ? "닫힘" : "열림"}
-                            </button>
-                            {isCheck && (
-                                <div className='modal-cal modal-cal2'>
-                                    <Calendar 
-                                        onChange={onChange} 
-                                        value={value}
-                                        onClickDay={(value, event) => gu(value)}
-                                    />
+                <CloseBtn
+                    type = "button"
+                    onClick = { handleClose }
+                    style= {{
+                        marginBottom:"-0px"
+                    }}
+                >
+                    X
+                </CloseBtn>
+                <h1 className='saving'>저금수정</h1>
+        
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    updateData(tmp.id);
+                    // setOpen(false)
+                    }
+                }
+                id='input_form'
+            >
+                <div className='input_content'>
+                            <div className='date'>
+                                <p>저금예정일</p>
+                                <div className='input_box'>
+                                    <span>{correctionclickday}</span>
+                                    <button
+                                        onClick={() => {setCheck((e) => !e); setModal(false);}}
+                                        type='button'
+                                    >
+                                        <SelectDate showCal={showCal}/>
+                                    </button>
                                 </div>
-                                
-                            )}
+                                <div className='date_modal'>
+                                    {showCal && (
+                                        <div className='input_date'>
+                                            <button 
+                                                type='button' 
+                                                onClick={()=>{setCheck(false)}}
+                                                className='close_btn'
+                                            >
+                                                X
+                                            </button>
+                                            <Calendar 
+                                                onChange={onChange} 
+                                                value={value}
+                                                onClickDay={(value, event) => gu(value)}
+                                                className='modal_calendar'
+                                            />
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-        <br />
+
+
                             {/* 기간 바꾸기 시작 */}
-                                <label htmlFor="">기간(달력포함)</label>
-                                <input type="text"
-                                    value={correctionstart}
-                                />
-                                ~
-                                <input type="text"
-                                    value={correctionend}
-                                />
-                                {/* 달력버튼 */}
-                                <button 
-                                    type='button'
-                                    onClick={() => {setModal((e) => !e);}}
-                                >
-                                    달력버튼
-                                </button>
+                            <div className='period'>
+                                <p>기간</p>
+
+                                <div className='input_box'>
+                                    <span>{correctionstart} ~ {correctionend} </span>
+                                    {/* 달력버튼 */}
+                                    <button 
+                                        type='button'
+                                        onClick={() => {setModal((e) => !e);}}
+                                        >
+                                        <SelectPeriod showPeriod={showPeriod}/>
+                                    </button>
+                                </div>
+                                <div className='period_modal'>
                                 {/* 기간선택 모달창 */}
                                         {modal && (
-                                        <div className='saving-period'>
-                                            {/* 시작일 */}
-                                            <button
-                                                type='button'
-                                                onClick={() => {setCheck2((e) => !e); }}
-                                            >
-                                            <p style={{ color: ischeck2 ? "#BB363F" : "#000" }}>시작일</p>
-                                            </button>
-                                            {ischeck2 && (
-                                                <div className='modal-cal'>
-                                                    <Calendar 
-                                                        onChange={onChange}
-                                                        value={value}
-                                                        onClickDay={(value, event) => {startperiod(value); setCheck2(false); setCheck3(true); setMindate(value);}}
-                                                    />
-                                                </div>
-                                            )}
-
+                                        <div className='input_period'>
                                             {/* 종료일 */}
                                             <button
                                                 type='button'
-                                                onClick={() => {setCheck3((e) => !e);} }
+                                                onClick={() => {setModal((e) => !e);} }
+                                                className='close_btn'
                                             >
-                                            <p style={{ color: ischeck3 ? "#BB363F" : "#000" }}>종료일</p>
+                                                X
                                             </button>
-                                            {ischeck3 && (
-                                                <div className='modal-cal'>
+                                            <div className='flex'>
+                                                <div className='input_endDate'>
+                                                    <p>종료일</p>
                                                     <Calendar 
                                                         onChange={onChange} 
                                                         value={value}
                                                         onClickDay={(value, event) => {endperiod(value); setCheck3(false);}}
-                                                        minDate={mindate}
+                                                        minDate={new Date()}
+                                                        className='modal_calendar period'
                                                     />
                                                 </div>
-                                            )}
+                                                
+                                                <div className='input_cycle'>
+                                                    <p>반복주기</p>
+                                                    <div className='select'>
+                                                        <select 
+                                                            name='cycle'
+                                                            value={correctionperiodunit}
+                                                            onChange={(e) => setCorrectionperiodunit(e.target.value)}
+                                                            className={ correctionperiodunit !== null ? "active" : ""}
+                                                        >
+                                                            <option value="value" selected disabled>
+                                                                필수선택
+                                                            </option>
+                                                            <option value="매일">매일</option>
+                                                            <option value="매주">매주</option>
+                                                            <option value="매월">매월</option>
+                                                            <option value="매년">매년</option>
+                                                        </select>
+                                                    </div>
+                                                    {/* <button
+                                                    type='button' 
+                                                    onClick={()=>{setCorrectionperiodunit(false)}}
+                                                    disabled={!endday || !periodunit}
+                                                    className= {!endday || !periodunit ? "disabled" : ""}
+                                                    >
+                                                        입력
+                                                    </button> */}
+                                                    </div>
+                            
                                             </div>
-                                        )}
-                            {/* 기간 바꾸기 끝 */}
-        <br />
-
-
-
-                            <label htmlFor="">매월,매주,매일</label>
-                            <select 
-                                    value={correctionperiodunit}
-                                    onChange={(e) => setCorrectionperiodunit(e.target.value)}
-                                >
-                                    <option value="value" selected disabled>
-                                        기간을 선택해주세요.
-                                    </option>
-                                    <option value="day">매일</option>
-                                    <option value="week">매주</option>
-                                    <option value="month">매월</option>
-                                    <option value="year">매년</option>
-                                </select>
-        <br />
-
-                            <label htmlFor="">금액</label>
-                            <input type="text"
-                                onInput={handleHyphen}
-                                value={correctionamount}
-                                onChange={e => setCorrectionamount(e.target.value)}
-                            />
-        <br />
-                            <label htmlFor="">메모</label>
-                            <input type="text"
-                                value={correctionmemo}
-                                onChange={e => setCorrectionmemo(e.target.value)}
-                            />
-        <br />
+                                        </div>
+                                )}
+                                </div>
+                            </div>
+        
+        
+                            <div className='price'>
+                                <p>금액</p>
+                                <div className='input_box'>
+                                <input 
+                                    className='input_price'
+                                    type="text"
+                                    required
+                                    onInput={handleHyphen}
+                                    value={correctionamount}
+                                    onChange={e => setCorrectionamount(e.target.value)}
+                                />
+                                <span className='won'>₩</span>
+                                </div>
+                            </div>
+        
+                            <div className='title'>
+                                <p>제목</p>
+                                <div className='input_box'>
+                                    <input
+                                        className='input_price' 
+                                        type="text"
+                                        required
+                                        value={correctiontitle}
+                                        onChange={(e) => setCorrectiontitle(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                                            
+    
+                            <div className='memo'>
+                                <p>메모</p>
+                                <div>
+                                <textarea 
+                                    type="text"
+                                    value={correctionmemo}
+                                    onChange={e => setCorrectionmemo(e.target.value)}
+                                />
+                                </div>
+                            </div>
+                        </div>
+        
+                                            
                             <button
                                 type='sumbit'
-                                
-                            >수정값입력
+                                className='submit_btn'
+                            >입력
                             </button>
-                                            
-                        </div>
-                    )}
-                </div>
+                        
+                    {/* )} */}
             </form>
-        </div>
+            </div>
+        // </EditForm>
     )
 }
