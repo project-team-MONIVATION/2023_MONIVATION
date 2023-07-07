@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { db } from '../../database/firebase';
-import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, deleteDoc, query, collection, where, getDocs } from 'firebase/firestore';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 
@@ -14,7 +14,10 @@ import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
-export default function EditExpenseRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate }) {
+import Moneyedit from '../styleComponent/DateDetail/Moneyedit';
+
+
+export default function EditExpenseRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate, expenseRepeatListId }) {
     // form의 입력 값 state
     const [date, setDate] = useState(new Date());
     const [startDate, setStartDate] = useState(null);
@@ -41,16 +44,20 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
       setPaymentSelect((prev)=>!prev);
     }
 
-    /** 파이어스토어에 업데이트 넘겨줌 */
-    const handleSubmit = async (e) => {
-      e.preventDefault();
 
-      // 파이어스토어에서 해당 문서를 가져옴
-      const expenseRepeatRef = doc(db, "money_expense_repeat", id);
-      const expenseRepeatSnap = await getDoc(expenseRepeatRef);
-      if (expenseRepeatSnap.exists()) {
-        await updateDoc(expenseRepeatRef, {
-          date: date,
+
+ /** 업데이트 */
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  // money_income_repeat 컬렉션에서 해당 문서를 찾습니다.
+  const expenseRepeatRef = doc(db, "money_expense_repeat", id);
+  const expenseRepeatSnap = await getDoc(expenseRepeatRef);
+
+  if (expenseRepeatSnap.exists()) {
+    // money_income_repeat 컬렉션의 해당 문서를 업데이트합니다.
+    await updateDoc(expenseRepeatRef, {
+             date: date,
           startDate: date,
           category: selectedCategory,
           cycle: cycle,
@@ -59,14 +66,63 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
           memo: editMemo,
           payment: payment,
           price: editPrice,
-        });
-      }
+    });
 
-      closeSubModal();
+    // money_income_repeat_list 컬렉션에서 해당 docid와 일치하는 모든 문서를 찾아 업데이트합니다.
+    const expenseRepeatListQuery = query(
+      collection(db, "money_expense_repeat"),
+      where("docid", "==", expenseRepeatListId)
+    );
+    const expenseRepeatListSnapshot = await getDocs(expenseRepeatListQuery);
 
-      // 데이터 업데이트 후 상위 컴포넌트의 fetchData 함수 호출
-      handleDataUpdate();
-    };
+    expenseRepeatListSnapshot.forEach(async (expenseRepeatListDoc) => {
+      // money_income_repeat_list 컬렉션의 해당 문서를 업데이트합니다.
+      await updateDoc(expenseRepeatListDoc.ref, {
+        date: date,
+          startDate: date,
+          category: selectedCategory,
+          cycle: cycle,
+          endDate: endDate,
+          installment: payment === "카드" ? installment : null, // 결제 방법이 "카드"가 아닌 다른 방법으로 변경되면 installment값을 null로 초기화
+          memo: editMemo,
+          payment: payment,
+          price: editPrice,
+      });
+    });
+  }
+
+  closeSubModal();
+  handleDataUpdate();
+};
+
+    /** 파이어스토어에 업데이트 넘겨줌 */
+    // const handleSubmit = async (e) => {
+    //   e.preventDefault();
+
+    //   // 파이어스토어에서 해당 문서를 가져옴
+    //   const expenseRepeatRef = doc(db, "money_expense_repeat", id);
+    //   const expenseRepeatSnap = await getDoc(expenseRepeatRef);
+    //   if (expenseRepeatSnap.exists()) {
+    //     await updateDoc(expenseRepeatRef, {
+    //       date: date,
+    //       startDate: date,
+    //       category: selectedCategory,
+    //       cycle: cycle,
+    //       endDate: endDate,
+    //       installment: payment === "카드" ? installment : null, // 결제 방법이 "카드"가 아닌 다른 방법으로 변경되면 installment값을 null로 초기화
+    //       memo: editMemo,
+    //       payment: payment,
+    //       price: editPrice,
+    //     });
+    //   }
+
+    //   closeSubModal();
+
+    //   // 데이터 업데이트 후 상위 컴포넌트의 fetchData 함수 호출
+    //   handleDataUpdate();
+    // };
+
+
 
     // 고정지출 목록 클릭할 때마다 해당 내용으로 출력
     useEffect(() => {
@@ -173,15 +229,41 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
       }
     };
 
-    // 해당 데이터 삭제
-    const deleteMoney = async() => {
-      const confirmed = window.confirm("삭제하시겠습니까?");
-      if (confirmed) {
+    // // 해당 데이터 삭제
+    // const deleteMoney = async() => {
+    //   const confirmed = window.confirm("삭제하시겠습니까?");
+    //   if (confirmed) {
+    //     await deleteDoc(doc(db, "money_expense_repeat", id));
+    //     handleDataUpdate();
+    //     closeSubModal();
+    //   }
+    // }
+
+ // 해당 데이터 삭제
+ const deleteMoney = async () => {
+  const confirmed = window.confirm("삭제하시겠습니까?");
+    if (confirmed) {
+
+  if (expenseRepeatListId != null) {
+    // "money_income_repeat_list" 컬렉션에서 문서 삭제
+    const querySnapshot = await getDocs(query(collection(db, "money_expense_repeat"), where("docid", "==", expenseRepeatListId)));
+    
+        // 찾은 문서들을 순회하며 삭제
+        querySnapshot.forEach(async (doc) => {
+          // 문서 삭제
+          await deleteDoc(doc.ref);
+        });
+        // "money_installments" 컬렉션에서 "installmentId"와 일치하는 문서 삭제
+          await deleteDoc(doc(db, "money_expense_repeat_list", expenseRepeatListId));
+      } else{
         await deleteDoc(doc(db, "money_expense_repeat", id));
-        handleDataUpdate();
-        closeSubModal();
       }
+        
+      handleDataUpdate();
+      closeSubModal();
     }
+    };
+
 
 
     /** 금액 천자리 콤마(,) */
@@ -200,6 +282,25 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
         >
           X
         </CloseBtn>
+
+        <div style={{
+            marginRight:"190px",
+            width: "150px",
+            height: "50px",
+            backgroundColor: "#735BF3",
+            border: "0",
+            borderRadius: "50px",
+
+        }}>
+          <h3 style={{  
+            color: "#FFFFFF",
+            fontFamily: 'Cafe24Ssurround',
+            fontSize: "23px",
+            paddingTop:"15px"
+          }}>
+            고정지출
+          </h3>
+        </div>
 
         <form className='edit_form' onSubmit = { handleSubmit } >
         
@@ -492,7 +593,7 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
             </div>
           </div>
 
-          <div className='input_btns'>
+          <Moneyedit>
             <input 
               type = "submit" 
               value = "수정"
@@ -505,7 +606,7 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
             >
               삭제
             </button>
-          </div>
+          </Moneyedit>
 
         </form>
       </EditForm>

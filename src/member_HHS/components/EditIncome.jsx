@@ -11,6 +11,9 @@ import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
 import { SelectDate } from '../../member_PCH/features/IconInModal';
 import moment from 'moment';
 
+import Moneyedit from '../styleComponent/DateDetail/Moneyedit';
+
+
 export default function EditIncome({ category, price, memo, closeSubModal, id, handleDataUpdate }) {  
     // form의 입력 값 state
     const [date, setDate] = useState(new Date());
@@ -143,7 +146,29 @@ export default function EditIncome({ category, price, memo, closeSubModal, id, h
           X
         </CloseBtn>
 
+        <div style={{
+          marginTop:"40px",
+            marginRight:"190px",
+            marginBottom: "50px",
+            width: "150px",
+            height: "50px",
+            backgroundColor: "#735BF3",
+            border: "0",
+            borderRadius: "50px",
+
+        }}>
+          <h3 style={{  
+            color: "#FFFFFF",
+            fontFamily: 'Cafe24Ssurround',
+            fontSize: "23px",
+            paddingTop:"15px"
+          }}>
+            일반수입
+          </h3>
+        </div>
+
         <form className='edit_form' onSubmit = { handleSubmit }>
+
 
           <div className='input_content'>
             <div className='date'>
@@ -246,7 +271,7 @@ export default function EditIncome({ category, price, memo, closeSubModal, id, h
             </div>
           </div>
 
-          <div className='input_btns'>
+          <Moneyedit>
             <input
               type = "submit"
               value = "수정"
@@ -259,7 +284,7 @@ export default function EditIncome({ category, price, memo, closeSubModal, id, h
             >
               삭제
             </button>
-          </div>
+          </Moneyedit>
 
         </form>
 

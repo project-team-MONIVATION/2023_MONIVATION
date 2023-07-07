@@ -6,13 +6,18 @@ import { doc, getDoc, getDocs, updateDoc, deleteDoc, collection, query, where } 
 import Calendar from 'react-calendar';
 
 import CategoryBtn from '../../member_PCH/features/CategoryBtn';
+
 import EditForm from '../styleComponent/DateDetail/EditForm';
 import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
 import { SelectDate } from '../../member_PCH/features/IconInModal';
 import moment from 'moment';
 
+import Moneyedit from '../styleComponent/DateDetail/Moneyedit';
+
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+
 
 
 export default function EditExpense({ category, price, memo, closeSubModal, installmentId, id, handleDataUpdate }) {
@@ -26,14 +31,6 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
     // 캘린더 모달 state
     const [showCal, setShowCal] = useState(false); // 날짜 입력하는 캘린더 모달 state
 
-    // 결제수단 입력하는 커스텀 select state
-    const [paymentSelect, setPaymentSelect] = useState(false);
-
-    // 지불방법 입력하는 커스텀 select state
-    const [installmentSelect, setInstallmentSelect] = useState(false);
-
-    // 할부 개월 수 select에서 사용할 배열
-    const num = Array(58).fill().map((v,i)=> i+2);
 
     /** 파이어스토어에 업데이트 넘겨줌 */
     const handleSubmit = async (e) => {
@@ -137,19 +134,6 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
       }
     };
 
-
-    // 결제수단 입력하는 커스텀 select on/off
-  const onClickPaymentSelect = () => {
-    setPaymentSelect((prev)=>!prev);
-    setInstallmentSelect(false);
-  }
-
-    // 지불방법 입력하는 커스텀 select state on/off 
-  const onClickInstallmentSelect = () => {
-    setInstallmentSelect((prev)=>!prev);
-    setPaymentSelect(false);
-  }
-
     // 결제수단 옵션 생성
     let paymentOptions = [];
     if (payment === "카드") {
@@ -225,13 +209,33 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
     
     return (
       <EditForm>
-
         <CloseBtn
           type = "button"
           onClick = { handleClose }
         >
           X
         </CloseBtn>
+
+        <div style={{
+          marginTop:"40px",
+            marginRight:"190px",
+            marginBottom: "50px",
+            width: "150px",
+            height: "50px",
+            backgroundColor: "#735BF3",
+            border: "0",
+            borderRadius: "50px",
+
+        }}>
+          <h3 style={{  
+            color: "#FFFFFF",
+            fontFamily: 'Cafe24Ssurround',
+            fontSize: "23px",
+            paddingTop:"15px"
+          }}>
+            일반지출
+          </h3>
+        </div>
 
         <form className='edit_form' onSubmit = { handleSubmit }>
 
@@ -241,6 +245,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               <div className='input_box'>
                 <span> { date && changeDate(date) }</span>
                 <button onClick = { onClickCal }>
+                {/* 달력 */}
                   <SelectDate showCal={showCal}/>
                 </button>
               </div>
@@ -282,253 +287,236 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               </div>
             </div>
 
-            <div className='payment'>
-              <p>결제수단</p>
-              <div className='input'>
-                <div className='input_payment'>
-                  <div 
-                    className={
-                      'select_box' +
-                      (paymentSelect ? ' active' : '') +
-                      (payment === "카드" ? ' card' : '')
-                    }
-                  >
-                    <button
-                      type='button'
-                      onClick={onClickPaymentSelect}
-                    >
-                      {payment ? payment : "필수선택"}
-                      <FontAwesomeIcon 
-                        icon={faChevronDown} 
-                        className='icon_chevron'
-                        style={{
-                          transform: paymentSelect ? "scaleY(-1)" : "",
-                          top: "16px",
-                          right: "20px"
-                        }}
-                      />
-                    </button>
-                    <ul
-                      className='option_list'
-                    >
-                      <li
-                        className='option_item'
-                        onClick={()=>{
-                          setPayment('현금')
-                          setPaymentSelect((prev)=>!prev)
-                          setInstallmentSelect(false)
-                        }}
-                      >현금</li>
-                      <li
-                        className='option_item'
-                        onClick={()=>{
-                          setPayment('카드')
-                          setPaymentSelect((prev)=>!prev)
-                        }}
-                      >카드</li>
-                      <li
-                        className='option_item'
-                        onClick={()=>{
-                          setPayment('이체')
-                          setPaymentSelect((prev)=>!prev)
-                          setInstallmentSelect(false)
-                        }}
-                      >이체</li>
-                    </ul>
-                  </div>
-                </div>
-                {
-                  payment && payment === "카드" && (
-                    <div className='input_installment'>
-                      <div 
-                        className={
-                          'select_box' +
-                          (installmentSelect ? ' active' : '')
-                        }
-                      >
-                        <button
-                          type='button'
-                          onClick={onClickInstallmentSelect}
-                        >
-                          <p>
-                            {installment
-                            ? (installment === '일시불' ? installment : `${installment}개월`)
-                            : "필수선택"}
-                            <FontAwesomeIcon 
-                              icon={faChevronDown} 
-                              className='icon_chevron'
-                              style={{
-                                transform: installmentSelect ? "scaleY(-1)" : "",
-                                top: "16px",
-                                right: "20px"
-                              }}
-                            />
-                          </p>
-                        </button>
-                        <ul className='option_list'>
-                          <li 
-                            className='option_item'
-                            onClick={()=>{
-                              setInstallment('일시불')
-                              setInstallmentSelect((prev)=>!prev)
-                            }}
-                          >일시불</li>
-                          {
-                            num.map((i)=>(
-                              <li 
-                                key={i}
-                                className='option_item'
-                                onClick={()=>{
-                                  setInstallment(i)
-                                  setInstallmentSelect((prev)=>!prev)
-                                }}
-                              >
-                                {i}개월
-                              </li>
-                            ))
-                          }
-                        </ul>
-                      </div>
-                    </div>
-                  )
-                }
+
+
+          <div>
+
+            <p>결제수단</p>
+            <div className='input'>
+            <select
+              value = { payment }
+              onChange = { updatePayment }
+              disabled = { payment === "카드" && installment !== "일시불" }
+              style={{
+                boxSizing: "border-box",
+                width: "350px",
+                height: "45px",
+                padding: "0 15px",
+                backgroundColor:" #D9D9D9",
+                border: "0",
+                borderRadius: "15px",
+                fontSize: "16px",
+                marginBottom:"14px",
+                transition: "all 0.1s ease",
+
+              }}  
+            >
+              <option style={{borderRadius: "15px",}} value = "현금">현금</option>
+              <option value = "카드">카드</option>
+              <option value = "이체">이체</option>
+            </select>
+
+            {payment === "카드" && installment === "일시불" && (
+              <div>
+                <select
+                  className = "installment"
+                  name = "installment"
+                  onChange = { onInputInstallment }
+                  value = { installment }
+                  style={{
+                    boxSizing: "border-box",
+                    width: "350px",
+                    height: "45px",
+                    padding: "0 15px",
+                    backgroundColor:" #D9D9D9",
+                    border: "0",
+                    borderRadius: "15px",
+                    fontSize: "16px",
+                    marginBottom:"14px",
+                  }}  
+                >
+                  <option value = "일시불">일시불</option>
+                </select>
               </div>
-            </div>
+            )}
+          </div>
+          </div>
+
+
+
+
 
             <div className='category'>
               <p>카테고리</p>
-              <div className='category_box'>
-                <CategoryBtn
-                  name = "일반지출"
-                  value = "카페"
-                  checked = { selectedCategory === "카페" }
-                  onChange = { updateCategory }
-                  selectedCategory ={selectedCategory}
-                >
-                  카페
-                </CategoryBtn>
-                <CategoryBtn
-                  name = "일반지출"
-                  value = "외식"
-                  checked = { selectedCategory === "외식" }
-                  onChange = { updateCategory }
-                  selectedCategory ={selectedCategory}
-                >
-                  외식
-                </CategoryBtn>
-                <CategoryBtn
-                  name = "일반지출"
-                  value = "음주"
-                  checked = { selectedCategory === "음주" } 
-                  onChange = { updateCategory }
-                  selectedCategory ={selectedCategory}
-                >
-                  음주
-                </CategoryBtn>
-                <CategoryBtn
-                  name = "일반지출"
-                  value = "식료/잡화"
-                  checked = { selectedCategory === "식료/잡화" }
-                  onChange = { updateCategory }
-                  selectedCategory ={selectedCategory}
-                >
-                  식료/잡화
-                </CategoryBtn>
-                <CategoryBtn
-                  name = "일반지출"
-                  value = "교통"
-                  checked = { selectedCategory === "교통" } 
-                  onChange = { updateCategory }
-                  selectedCategory ={selectedCategory}
-                >
-                  교통
-                </CategoryBtn>
-                <CategoryBtn
-                  name = "일반지출"
-                  value = "차량"
-                  checked = { selectedCategory === "차량" } 
-                  onChange = { updateCategory }
-                  selectedCategory ={selectedCategory}
-                >
-                  차량
-                </CategoryBtn>
-                <CategoryBtn
-                  name = "일반지출"
-                  value = "쇼핑"
-                  checked = { selectedCategory === "쇼핑" } 
-                  onChange = { updateCategory }
-                  selectedCategory ={selectedCategory}
-                >
-                  쇼핑
-                </CategoryBtn>
-                <CategoryBtn
-                  name = "일반지출"
-                  value = "문화생활"
-                  checked = { selectedCategory === "문화생활" } 
-                  onChange = { updateCategory }
-                  selectedCategory ={selectedCategory}
-                >
-                  문화생활
-                </CategoryBtn>
-                <CategoryBtn
-                  name = "일반지출"
-                  value = "경조사"
-                  checked = { selectedCategory === "경조사" } 
-                  onChange = { updateCategory }
-                  selectedCategory ={selectedCategory}
-                >
-                  경조사
-                </CategoryBtn>
-                <CategoryBtn
-                  name = "일반지출"
-                  value = "의료"
-                  checked = { selectedCategory === "의료" } 
-                  onChange = { updateCategory }
-                  selectedCategory ={selectedCategory}
-                >
-                  의료
-                </CategoryBtn>
-                <CategoryBtn
-                  name = "일반지출"
-                  value = "기타"
-                  checked = { selectedCategory === "기타" } 
-                  onChange = { updateCategory }
-                  selectedCategory ={selectedCategory}
-                >
-                  기타
-                </CategoryBtn>
-              </div>
-            </div>
+          <div className='category_box'>
+            <CategoryBtn
+              name = "일반지출"
+              value = "카페"
+              checked = { selectedCategory === "카페" }
+              onChange = { updateCategory }
+              selectedCategory ={selectedCategory}
 
-            <div className='memo'>
+            >
+              ☕ 카페
+            </CategoryBtn>
+            <CategoryBtn
+              name = "일반지출"
+              value = "외식"
+              checked = { selectedCategory === "외식" }
+              onChange = { updateCategory }
+              selectedCategory ={selectedCategory}
+
+            >
+              🍜 외식
+            </CategoryBtn>
+            <CategoryBtn
+              name = "일반지출"
+              value = "음주"
+              checked = { selectedCategory === "음주" } 
+              onChange = { updateCategory }
+              selectedCategory ={selectedCategory}
+
+            >
+              🍻 음주
+            </CategoryBtn>
+            <CategoryBtn
+              name = "일반지출"
+              value = "식료/잡화"
+              checked = { selectedCategory === "식료/잡화" }
+              onChange = { updateCategory }
+              selectedCategory ={selectedCategory}
+
+            >
+              🛒 식료/잡화
+            </CategoryBtn>
+            <CategoryBtn
+              name = "일반지출"
+              value = "교통"
+              checked = { selectedCategory === "교통" } 
+              onChange = { updateCategory }
+              selectedCategory ={selectedCategory}
+
+            >
+              🚉 교통
+            </CategoryBtn>
+            <CategoryBtn
+              name = "일반지출"
+              value = "차량"
+              checked = { selectedCategory === "차량" } 
+              onChange = { updateCategory }
+              selectedCategory ={selectedCategory}
+
+            >
+              🚗 차량
+            </CategoryBtn>
+            <CategoryBtn
+              name = "일반지출"
+              value = "쇼핑"
+              checked = { selectedCategory === "쇼핑" } 
+              onChange = { updateCategory }
+              selectedCategory ={selectedCategory}
+
+            >
+              🛍 쇼핑
+            </CategoryBtn>
+            <CategoryBtn
+              name = "일반지출"
+              value = "문화생활"
+              checked = { selectedCategory === "문화생활" } 
+              onChange = { updateCategory }
+              selectedCategory ={selectedCategory}
+
+            >
+              🎨 문화생활
+            </CategoryBtn>
+            <CategoryBtn
+              name = "일반지출"
+              value = "경조사"
+              checked = { selectedCategory === "경조사" } 
+              onChange = { updateCategory }
+              selectedCategory ={selectedCategory}
+
+            >
+              🩹 경조사
+            </CategoryBtn>
+            <CategoryBtn
+              name = "일반지출"
+              value = "의료"
+              checked = { selectedCategory === "의료" } 
+              onChange = { updateCategory }
+              selectedCategory ={selectedCategory}
+
+            >
+              🤧 의료
+            </CategoryBtn>
+            <CategoryBtn
+              name = "일반지출"
+              value = "기타"
+              checked = { selectedCategory === "기타" } 
+              onChange = { updateCategory }
+              selectedCategory ={selectedCategory}
+
+            >
+              💡 기타
+            </CategoryBtn>
+          </div>
+          </div>
+
+
+          <div className='memo'>
               <p>메모</p>
-              <div>
-                <textarea
-                  cols = "30"
-                  rows = "10"
-                  value = { editMemo }
-                  onChange = { updateMemo }
-                  disabled = { isDisabled }
-                />
+          <div>
+            <textarea
+              cols = "30"
+              rows = "10"
+              value = { editMemo }
+              onChange = { updateMemo }
+              disabled = { isDisabled }
+            />
               </div>
             </div>
           </div>
 
-          <div className='input_btns'>
+          <div style={{display:"flex"}}>
             <input 
               type = "submit" 
               value = "수정" 
               onClick = { handleClickUpdate }
               disabled = { !date || !editPrice || !selectedCategory || !(payment !== "카드" || (payment === "카드" && installment === "일시불")) }
-              style = { { display: isEditable ? 'block' : 'none' } }
+              style = { { display: isEditable ? 'block' : 'none' ,
+            
+              
+                marginRight: "10px",
+                backgroundColor:   "  rgb(115, 91, 243)",
+                border: "none",
+                borderRadius: "50px",
+                width:" 150px",
+                height: "50px",
+                color: "#fff",
+                fontSize: "23px",
+                fontFamily: 'Cafe24Ssurround'}}
+              
             />
+
             <button
               type = "button"
               onClick = { deleteMoney }
+              style={{
+                marginRight: "10px",
+                backgroundColor:   "  rgb(115, 91, 243)",
+                border: "none",
+                borderRadius: "50px",
+                width:" 150px",
+                height: "50px",
+                color: "#fff",
+                fontSize: "23px",
+                fontFamily: 'Cafe24Ssurround'}}
             >
               삭제
             </button>
           </div>
+
+
         </form>
       </EditForm>
     )
