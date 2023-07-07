@@ -14,6 +14,8 @@ import CloseBtn from '../../member_HHS/styleComponent/DateDetail/CloseBtn';
 // import '../css/saving.css'
 import '../css/savingList.css'
 
+
+
 export default function SavingListModifyComp({tmp, getSavingData, closeSubModal}) {
     
 
@@ -119,44 +121,40 @@ export default function SavingListModifyComp({tmp, getSavingData, closeSubModal}
 
 
     return (
-        <EditForm>
-            <CloseBtn
-                type = "button"
-                onClick = { handleClose }
+        // <EditForm>
+            <div id='modi'
+                className='content'
             >
-                Xdfasdfsdfs
-            </CloseBtn>
+                <CloseBtn
+                    type = "button"
+                    onClick = { handleClose }
+                    style= {{
+                        marginBottom:"-0px"
+                    }}
+                >
+                    X
+                </CloseBtn>
+                <h1 className='saving'>저금수정</h1>
         
             <form
-            onSubmit={(e) => {
-                e.preventDefault();
-                updateData(tmp.id);
-                // setOpen(false)
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    updateData(tmp.id);
+                    // setOpen(false)
+                    }
                 }
-            }
+                id='input_form'
             >
-                <div>
-                    {/* {open && ( */}
-                        <div 
-                            id='savingListModifycomp'
-                            className='modify_container'>
-                            
-                            
+                <div className='input_content'>
                             <div className='date'>
                                 <p>저금예정일</p>
                                 <div className='input_box'>
-                                    {/* <input type="text" 
-                                        required
-                                        value={correctionclickday}
-                                    /> */}
-                                    
                                     <span>{correctionclickday}</span>
                                     <button
-                                        type='button'
                                         onClick={() => {setCheck((e) => !e); setModal(false);}}
+                                        type='button'
                                     >
                                         <SelectDate showCal={showCal}/>
-                                        
                                     </button>
                                 </div>
                                 <div className='date_modal'>
@@ -181,9 +179,6 @@ export default function SavingListModifyComp({tmp, getSavingData, closeSubModal}
                             </div>
 
 
-
-
-                            
                             {/* 기간 바꾸기 시작 */}
                             <div className='period'>
                                 <p>기간</p>
@@ -240,48 +235,74 @@ export default function SavingListModifyComp({tmp, getSavingData, closeSubModal}
                                                             <option value="매년">매년</option>
                                                         </select>
                                                     </div>
-                                                </div>
+                                                    {/* <button
+                                                    type='button' 
+                                                    onClick={()=>{setCorrectionperiodunit(false)}}
+                                                    disabled={!endday || !periodunit}
+                                                    className= {!endday || !periodunit ? "disabled" : ""}
+                                                    >
+                                                        입력
+                                                    </button> */}
+                                                    </div>
                             
                                             </div>
                                         </div>
                                 )}
                                 </div>
                             </div>
-        <br />
         
-                                <label htmlFor="">제목</label>
-                                <input type="text"
+        
+                            <div className='price'>
+                                <p>금액</p>
+                                <div className='input_box'>
+                                <input 
+                                    className='input_price'
+                                    type="text"
                                     required
-                                    value={correctiontitle}
-                                    onChange={(e) => setCorrectiontitle(e.target.value)}
+                                    onInput={handleHyphen}
+                                    value={correctionamount}
+                                    onChange={e => setCorrectionamount(e.target.value)}
                                 />
-        <br />
-
-
-                            <label htmlFor="">금액</label>
-                            <input type="text"
-                                onInput={handleHyphen}
-                                value={correctionamount}
-                                onChange={e => setCorrectionamount(e.target.value)}
-                            />
-        <br />
-                            <label htmlFor="">메모</label>
-                            <input type="text"
-                                value={correctionmemo}
-                                onChange={e => setCorrectionmemo(e.target.value)}
-                            />
-        <br />
+                                <span className='won'>₩</span>
+                                </div>
+                            </div>
+        
+                            <div className='title'>
+                                <p>제목</p>
+                                <div className='input_box'>
+                                    <input
+                                        className='input_price' 
+                                        type="text"
+                                        required
+                                        value={correctiontitle}
+                                        onChange={(e) => setCorrectiontitle(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                                            
+    
+                            <div className='memo'>
+                                <p>메모</p>
+                                <div>
+                                <textarea 
+                                    type="text"
+                                    value={correctionmemo}
+                                    onChange={e => setCorrectionmemo(e.target.value)}
+                                />
+                                </div>
+                            </div>
+                        </div>
+        
                                             
                             <button
                                 type='sumbit'
-                                
-                            >수정값입력
+                                className='submit_btn'
+                            >입력
                             </button>
-                        </div>
+                        
                     {/* )} */}
-                </div>
             </form>
-        
-        </EditForm>
+            </div>
+        // </EditForm>
     )
 }

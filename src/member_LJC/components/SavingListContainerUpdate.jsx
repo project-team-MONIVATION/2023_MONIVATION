@@ -17,7 +17,7 @@ import '../../member_PCH/styles/editForm.css'
 
 import ModalWrap from '../../member_HHS/styleComponent/DateDetail/ModalWrap';
 
-export default function SavingListContainer({closeSavingListContainerModal}, openmodal) {
+export default function SavingListContainerUpdate({closeSavingListContainerModal}, openmodal) {
 
     const [alltmp, setAlltmp] = useState([]);
     const navigate = useNavigate();
@@ -65,7 +65,7 @@ export default function SavingListContainer({closeSavingListContainerModal}, ope
 
     return (
         
-            <DateDetailBox>
+            
                 <div>
                 <Modal
                     id='calendar_modal'
@@ -81,50 +81,71 @@ export default function SavingListContainer({closeSavingListContainerModal}, ope
                         zIndex: 20,
                         },
                         content: {
-                        boxSizing: 'border-box',
-                        width: '580px',
-                        height: '790px',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        borderRadius: '50px',
-                        border: 0,
-                        overflow: "hidden",
+                            position:"absolute",
+                            inset: "40px",
+                            border: "none",
+                            background: "transparent",
+                            overflow: "auto",
+                            borderRadius: "none",
+                            outline: "none",
+                            padding: "0px"
                         }
                     }}
                     >
-                    <div className='content_container'>
-                    <button 
-                        className='close_btn'
-                        onClick={handleClose}
-                    >
-                        X
-                    </button>
-                        <SavingList 
-                            setAlltmp ={setAlltmp}
-                            alltmp = {alltmp}
-                            setModifyCompOpen = {setModifyCompOpen}
+                    <DateDetailBox
+                        style={{
+                            justifyContent:"center"
 
-                        />
+                        }}
+                    >
+                    <div
+                        style={{
+                            boxSizing: 'border-box',
+                            width: '580px',
+                            height: '790px',
+                            
+                            // transform: 'translate(-50%, -50%)',
+                            borderRadius: '50px',
+                            backgroundColor: 'white',
+                            overflow: "hidden",
+                            }}
+                    >
+                        <div className='content_container'
+                            
+                        >
+                        <button 
+                            className='close_btn'
+                            onClick={handleClose}
+                            style={{
+                                marginTop: '25px',
+                                marginRight: '25px',
+                            }}
+                        >
+                            X
+                        </button>
+                            <SavingList 
+                                setAlltmp ={setAlltmp}
+                                alltmp = {alltmp}
+                                setModifyCompOpen = {setModifyCompOpen}
+
+                            />
+                        </div>
                     </div>
+                    <div>
+                        {modifyCompOpen && (
+                            <SavingListModifyComp
+                                tmp={alltmp}
+                                getSavingData={getSavingData}
+                                closeSubModal = {closeSubModal}
+                                style={{zIndex:50 , backgroundColor:"red"}}
+                            />
+                        )}
+                    </div>
+                    </DateDetailBox>
                 </Modal>
                 </div>
 
-                <div>
-                {modifyCompOpen && (
-                    // <ModalWrap>
-                    // <div>
-                    <SavingListModifyComp
-                        tmp={alltmp}
-                        getSavingData={getSavingData}
-                        closeSubModal = {closeSubModal}
-                        style={{zIndex:50 , backgroundColor:"red"}}
-                    />
-                    // </div>
-                    // </ModalWrap>
-                )}
-                </div>
-            </DateDetailBox>
+            
         
 
 

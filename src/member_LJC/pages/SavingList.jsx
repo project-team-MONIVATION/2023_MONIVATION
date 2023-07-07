@@ -255,8 +255,7 @@ export default function SavingList({setAlltmp, setModifyCompOpen}) {
                             
                             
                             
-                            {/* <p>지정날짜{tmp.clickday}</p> */}
-                            {/* <p>{checkCondition(new Date(value),new Date(tmp.endday))}</p> */}
+                            
                         </div>
                     )}
                 </div>

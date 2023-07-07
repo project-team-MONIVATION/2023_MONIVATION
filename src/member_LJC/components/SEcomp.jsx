@@ -150,7 +150,7 @@ export default function SEcomp() {
         
         let date = new Date();
         date.setMonth(monthCalendar?monthCalendar:date.getMonth())
-        // console.log("gg", monthCalendar)
+        console.log("gg", monthCalendar)
         let  firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 

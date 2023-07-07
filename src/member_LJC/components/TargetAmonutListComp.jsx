@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import {db} from '../../database/firebase'
 
 import TargetAmountModifyComp from './TargetAmountModifyComp';
+import '../css/saving.css'
 
 export default function TargetAmonutListComp() {
     const navigate = useNavigate();
@@ -57,11 +58,15 @@ export default function TargetAmonutListComp() {
 
     return (
         <div>
-            <div>
+            <div id='savinglist_container' 
+                className='content'>
+                <h1 className='title'>목표금액내역</h1>
+                <div className='list_container scrollbar'>
                 {taList.map((tmp) =>
                     <div 
-                        key={tmp.id}
-                        style={{border: "2px solid red", width: "25%"}}
+                        key={tmp.id} 
+                        className='tooltip-link'
+                        data-tooltip={tmp.memo}
                     >
                         <button
                             onClick={()=> (deleteData(tmp.id))}
@@ -69,19 +74,23 @@ export default function TargetAmonutListComp() {
                             삭제
                         </button>
 
-                        {/* list수정 컴포넌트 */}
-                        <TargetAmountModifyComp
-                            tmp={tmp}
-                            getTargetAmountData={getTargetAmountData}
-                        />
 
                         <h2>{tmp.title}</h2>
                         <p>{tmp.startday}~{tmp.endday}</p>
                         <p>{tmp.amount}</p>
-                        <br />
+                        
+
+
+
+                        {/* list수정 컴포넌트 */}
+                        {/* <TargetAmountModifyComp
+                            tmp={tmp}
+                            getTargetAmountData={getTargetAmountData}
+                        /> */}
                     </div>
                 )}
             </div>
+        </div>
         </div>
     )
 }

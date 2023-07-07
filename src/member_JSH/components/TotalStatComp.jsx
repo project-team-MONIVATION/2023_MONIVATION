@@ -8,14 +8,16 @@ import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, query, where, T
 import {db} from '../../database/firebase'
 import Modal from 'react-modal';
 import '../css/totalstat.css';
-
+import ModalWrap from '../../member_HHS/styleComponent/DateDetail/ModalWrap';
 import SavingListContainer from '../../member_LJC/components/SavingListContainer';
+import SavingListContainerUpdate from '../../member_LJC/components/SavingListContainerUpdate';
 
 export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2, isModalOpen2}) {
   
   // 저금 리스트 모달창
   const navigate = useNavigate();
 
+  const [openmodal , setOpenmodal] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
 
   const openModal = (modalId) => {
@@ -336,8 +338,10 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
               <div
                 onClick={()=>{
                   openModal(3);
+                  setOpenmodal(true);
                 }}
                 style={{cursor: "pointer"}}
+                
               >
                 <tr className='tb-subtitle-totalresult'>
                   <td>현재 총 저금액</td>
@@ -346,45 +350,18 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
                 style={{backgroundColor:'#F4E8AE', textAlign:'right'}}>
                   <td>{savingList}원</td>
                 </tr>
+              
               </div>
               {activeModal === 3 && (
+                <ModalWrap>
+                  <div>
+                  <SavingListContainerUpdate
+                    closeSavingListContainerModal = {closeSavingListContainerModal}
+                    openmodal = {openmodal}
+                  />
+                  </div>
+                </ModalWrap>
                 
-                <SavingListContainer
-                  modalIsopen = {closeSavingListContainerModal}
-                />
-                // <Modal
-                //   id='calendar_modal'
-                //   style={{
-                //     overlay: {
-                //       position: 'fixed',
-                //       top: 0,
-                //       left: 0,
-                //       right: 0,
-                //       bottom: 0,
-                //       backgroundColor: 'rgba(0, 0, 0, 0.75)',
-                //     },
-                //     content: {
-                //       boxSizing: 'border-box',
-                //       width: '580px',
-                //       height: '790px',
-                //       top: '50%',
-                //       left: '50%',
-                //       transform: 'translate(-50%, -50%)',
-                //       borderRadius: '50px',
-                //       border: 0,
-                //       overflow: "hidden",
-                //     }
-                //   }}
-                // >
-                //   <div className='content_container'>
-                //   <button 
-                //     className='close_btn'
-                //     onClick={()=>setActiveModal(null)}>
-                //     X
-                //   </button>
-                //     <SavingList setModalIsOpen={setActiveModal}/>
-                //   </div>
-                // </Modal>
               )}
           {/* 총 저금액 끝 */}
           </tbody>
