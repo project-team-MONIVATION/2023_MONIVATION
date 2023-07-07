@@ -23,7 +23,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
     const [date, setDate] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
-    const [cycle, setCycle] = useState("매일");
+    const [cycle, setCycle] = useState(null);
     const [editPrice, setEditPrice] = useState(price);
     const [editMemo, setEditMemo] = useState(memo);
     const [selectedCategory, setSelectedCategory] = useState(category);
@@ -47,7 +47,7 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   // money_income_repeat 컬렉션에서 해당 문서를 찾습니다.
-  const incomeRepeatRef = doc(db, "money_income_repeat", id);
+  const incomeRepeatRef = doc(db, "money_income_repeat_list", incomeRepeatListId);
   const incomeRepeatSnap = await getDoc(incomeRepeatRef);
 
   if (incomeRepeatSnap.exists()) {
@@ -80,7 +80,7 @@ const handleSubmit = async (e) => {
 
   closeSubModal();
   handleDataUpdate();
-};
+}; 
 
     
     
@@ -294,7 +294,7 @@ const handleSubmit = async (e) => {
             <div className='period'>
               <p>기간</p>
               <div className='input_box'>
-                <span>
+                <span >
                   { startDate && changeDate(startDate)} ~ 
                   { endDate ? changeDate(endDate) : '0000-00-00' }  {cycle !== null ? cycle : ''}
                 </span>

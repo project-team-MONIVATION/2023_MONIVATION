@@ -47,28 +47,24 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
 
 
  /** 업데이트 */
-const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
 
-  // money_income_repeat 컬렉션에서 해당 문서를 찾습니다.
-  const expenseRepeatRef = doc(db, "money_expense_repeat", id);
+  // money_expense_repeat 컬렉션에서 해당 문서를 찾습니다.
+  const expenseRepeatRef = doc(db, "money_expense_repeat_list", expenseRepeatListId);
   const expenseRepeatSnap = await getDoc(expenseRepeatRef);
 
   if (expenseRepeatSnap.exists()) {
-    // money_income_repeat 컬렉션의 해당 문서를 업데이트합니다.
+    // money_expense_repeat 컬렉션의 해당 문서를 업데이트합니다.
     await updateDoc(expenseRepeatRef, {
-             date: date,
-          startDate: date,
-          category: selectedCategory,
-          cycle: cycle,
-          endDate: endDate,
-          installment: payment === "카드" ? installment : null, // 결제 방법이 "카드"가 아닌 다른 방법으로 변경되면 installment값을 null로 초기화
-          memo: editMemo,
-          payment: payment,
-          price: editPrice,
+      date: date,
+      price: editPrice,
+      cycle: cycle,
+      category: selectedCategory,
+      memo: editMemo,
     });
 
-    // money_income_repeat_list 컬렉션에서 해당 docid와 일치하는 모든 문서를 찾아 업데이트합니다.
+    // money_expense_repeat_list 컬렉션에서 해당 docid와 일치하는 모든 문서를 찾아 업데이트합니다.
     const expenseRepeatListQuery = query(
       collection(db, "money_expense_repeat"),
       where("docid", "==", expenseRepeatListId)
@@ -76,51 +72,19 @@ const handleSubmit = async (e) => {
     const expenseRepeatListSnapshot = await getDocs(expenseRepeatListQuery);
 
     expenseRepeatListSnapshot.forEach(async (expenseRepeatListDoc) => {
-      // money_income_repeat_list 컬렉션의 해당 문서를 업데이트합니다.
-      await updateDoc(expenseRepeatListDoc.ref, {
-        date: date,
-          startDate: date,
-          category: selectedCategory,
-          cycle: cycle,
-          endDate: endDate,
-          installment: payment === "카드" ? installment : null, // 결제 방법이 "카드"가 아닌 다른 방법으로 변경되면 installment값을 null로 초기화
-          memo: editMemo,
-          payment: payment,
-          price: editPrice,
+        // money_expense_repeat_list 컬렉션의 해당 문서를 업데이트합니다.
+        await updateDoc(expenseRepeatListDoc.ref, {
+        price: editPrice,
+        cycle: cycle,
+        category: selectedCategory,
+        memo: editMemo,
       });
     });
   }
 
   closeSubModal();
   handleDataUpdate();
-};
-
-    /** 파이어스토어에 업데이트 넘겨줌 */
-    // const handleSubmit = async (e) => {
-    //   e.preventDefault();
-
-    //   // 파이어스토어에서 해당 문서를 가져옴
-    //   const expenseRepeatRef = doc(db, "money_expense_repeat", id);
-    //   const expenseRepeatSnap = await getDoc(expenseRepeatRef);
-    //   if (expenseRepeatSnap.exists()) {
-    //     await updateDoc(expenseRepeatRef, {
-    //       date: date,
-    //       startDate: date,
-    //       category: selectedCategory,
-    //       cycle: cycle,
-    //       endDate: endDate,
-    //       installment: payment === "카드" ? installment : null, // 결제 방법이 "카드"가 아닌 다른 방법으로 변경되면 installment값을 null로 초기화
-    //       memo: editMemo,
-    //       payment: payment,
-    //       price: editPrice,
-    //     });
-    //   }
-
-    //   closeSubModal();
-
-    //   // 데이터 업데이트 후 상위 컴포넌트의 fetchData 함수 호출
-    //   handleDataUpdate();
-    // };
+}; 
 
 
 
@@ -229,15 +193,7 @@ const handleSubmit = async (e) => {
       }
     };
 
-    // // 해당 데이터 삭제
-    // const deleteMoney = async() => {
-    //   const confirmed = window.confirm("삭제하시겠습니까?");
-    //   if (confirmed) {
-    //     await deleteDoc(doc(db, "money_expense_repeat", id));
-    //     handleDataUpdate();
-    //     closeSubModal();
-    //   }
-    // }
+
 
  // 해당 데이터 삭제
  const deleteMoney = async () => {
@@ -245,7 +201,7 @@ const handleSubmit = async (e) => {
     if (confirmed) {
 
   if (expenseRepeatListId != null) {
-    // "money_income_repeat_list" 컬렉션에서 문서 삭제
+    // "money_expens_repeat_list" 컬렉션에서 문서 삭제
     const querySnapshot = await getDocs(query(collection(db, "money_expense_repeat"), where("docid", "==", expenseRepeatListId)));
     
         // 찾은 문서들을 순회하며 삭제
@@ -367,85 +323,6 @@ const handleSubmit = async (e) => {
                           minDate = { date }
                           className='modal_calendar period'
                         />
-                      </div>
-                      <div className='input_cycle'>
-                        <p>반복주기</p>
-                        <div className='select'>
-                              <div 
-                              className={
-                                'select_box' +
-                                (cycleSelect? ' active' : '')
-                              }>
-                                <button 
-                                  type='button' 
-                                  className={ 
-                                    'select_lable' +
-                                    (cycle !== null ? " active" : "")
-                                  }
-                                  onClick={onClickCycleSelect}
-                                >
-                                  {cycle === null ? "필수선택" : cycle}
-                                  <FontAwesomeIcon 
-                                    icon={faChevronDown} 
-                                    className='icon_chevron'
-                                    style={{
-                                      transform: cycleSelect ? "scaleY(-1)" : "",
-                                    }}
-                                  />
-                                </button>
-                                <ul 
-                                  className='option_list'
-                                >
-                                  <li 
-                                    className='ontion_item'
-                                    onClick={(e)=>{
-                                      setCycle('매일')
-                                      setCycleSelect((prev)=>!prev)
-                                    }}
-                                  >
-                                    매일
-                                  </li>
-                                  <li 
-                                    className='ontion_item'
-                                    onClick={(e)=>{
-                                      setCycle('매주')
-                                      setCycleSelect((prev)=>!prev);
-                                    }}
-                                  >
-                                    매주
-                                  </li>
-                                  <li 
-                                    className='ontion_item'
-                                    onClick={(e)=>{
-                                      setCycle('매월')
-                                      setCycleSelect((prev)=>!prev);
-                                    }}
-                                  >
-                                    매월
-                                  </li>
-                                  <li 
-                                    className='ontion_item'
-                                    onClick={(e)=>{
-                                      setCycle('매년')
-                                      setCycleSelect((prev)=>!prev);
-                                    }}
-                                  >
-                                    매년
-                                  </li>
-                                </ul>
-                              </div>
-                        </div>
-                        <button
-                          type = "button"
-                          onClick = { () => setShowPeriod(false) }
-                          disabled={!endDate || !cycle}
-                          className= {
-                            'input_btn' +
-                            (!endDate || !cycle ? " disabled" : "")
-                          }
-                        >
-                          입력
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -598,7 +475,7 @@ const handleSubmit = async (e) => {
               type = "submit" 
               value = "수정"
               onClick = { handleClickUpdate }
-              disabled = { !date || !startDate || !cycle || !editPrice || !selectedCategory }
+              disabled = { !editPrice || !selectedCategory }
             />
             <button
               type = "button"

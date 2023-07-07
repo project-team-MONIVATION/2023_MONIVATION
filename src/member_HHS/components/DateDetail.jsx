@@ -375,7 +375,10 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     return (
       <div 
         key = {i}
-        onClick = { () => openEditIncomeRepeatModal( item.category, item.price, item.memo, item.id, incomeRepeatListId ) }
+        onClick = { () => { 
+          openEditIncomeRepeatModal( item.category, item.price, item.memo, item.id, incomeRepeatListId)
+          console.log(incomeRepeatListId)
+        } }
         style={{ 
         display: "flex",
         justifyContent: "space-between",
@@ -384,10 +387,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       > 
         <div>
           <span>{ item.category }</span>
-          {/* <span>{(item.cycle === "매일" || item.cycle === "매주" || item.cycle === "매월" || item.cycle === "매년") && `(${item.incomeRepeatList})`}</span> */}
-
           {item.incomeRepeatList && <span>({item.incomeRepeatList})</span>}
-
         </div>
         <span>{ item.price !== undefined ? handleHyphen(item.price) : '' }&#8361;</span>
       </div>
@@ -509,35 +509,13 @@ export default function DateDetail({ closeModal2, selectedDate }) {
                               > 
                                 <div>
                                   <span>{ item.category }</span>
-                                  {/* <span>{(item.cycle === "매일" || item.cycle === "매주" || item.cycle === "매월" || item.cycle === "매년") && `(${item.incomeRepeatList})`}</span> */}
-
                                   {item.expenseRepeatList && <span>({item.expenseRepeatList})</span>}
-
                                 </div>
                                 <span>{ item.price !== undefined ? handleHyphen(item.price) : '' }&#8361;</span>
                               </div>
                             );
                           }) }
                         </MoneyList>
-                        {/* 고정수입 작성 end */}
-
-                          {/* <MoneyList active={activeAccordion === 2}>
-                            { filteredExpenseRepeat.map((item, i) => (
-                              <div 
-                                key = {i}
-                                onClick = {() => openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id )}
-                                style={{ 
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  marginTop: "10px",
-                                }}
-                              >
-                                <span>{ item.category }</span>
-                                <span>{ handleHyphen(item.price) }&#8361;</span>
-                              </div>
-                            ))}
-                          </MoneyList> */}
-
 
 
 
