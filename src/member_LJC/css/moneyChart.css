@@ -78,16 +78,22 @@
     width:100px; 
     height:45px; 
     line-height:30px; 
-    border:1px #735BF3 solid;
+    border:0px #735BF3 solid;
     border-radius: 15px;
     margin:1px auto; 
-    background-color:#725bf3;  
+    background-color:#492cf1;  
     text-align:center; 
     cursor: pointer;  
     font-size: 15px;
     font-weight: 550;
     
     transition:all 0.9s, color 0.3s;  
+}
+
+#moneychart_page .btnin a {
+    font-size: 17px;
+    font-weight: 400;
+    color: white;
 }
 
 #moneychart_page .btnex {
@@ -95,29 +101,32 @@
     width:100px; 
     height:45px; 
     line-height:30px; 
-    border:1px #735BF3 solid;
+    border:0px #735BF3 solid;
     border-radius: 15px;
     margin:1px auto; 
-    background-color:#725bf3;  
+    background-color:#725bf3; 
     text-align:center; 
     cursor: pointer;  
     font-size: 15px;
     font-weight: 550;
     
+
     transition:all 0.9s, color 0.3s;  
 }
 
 #moneychart_page .btnex a {
+    font-size: 17px;
+    font-weight: 400;
     color: white;
 }
 
-#moneychart_page .btnin .btnex:hover{color:#fff;}
 
-
-#moneychart_page .hover3{
-    box-shadow: 0 80px 0 0  rgba(0,0,0,0.25) inset, 
-                0 -80px 0 0 rgba(0,0,0,0.25) inset;
+#moneychart_page .btnin .btnex:hover{
+    color:#fff;
 }
+
+
+
 
 
 
@@ -259,14 +268,6 @@
     /* background-color: rgba(0,0,0,0.8); */
 }
 
-#moneychart_page .check_button {
-    width: 100px;
-    height: 50px;
-    margin-left: 10px;
-    margin-top: 0em;
-    
-}
-
 #moneychart_page .searchbutton {
     /* display: block; */
     position: relative;
@@ -348,22 +349,24 @@
 } */
 
 #moneychart_page .check_button {
-    display: flex;
-    justify-content: flex-end;
     width: 50px;
     height: 45px;
-    border: 1px solid black;
     cursor: pointer;
-    border-radius: 100%;
-    margin-left: 12px;
-    padding: 1px;
+    border-radius: 10px;
+    margin-left: 40px;
+    
+    background-color: #F4D750;
+    box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.479);
 }
 
 #moneychart_page .check_button:hover {
-    background-color: #00000034;
+    background-color: #ffc400;
     transition: all 0.3s;
 }
 
+#moneychart_page .check_button .icon {
+    margin-top: 10px;
+}
 
 
 

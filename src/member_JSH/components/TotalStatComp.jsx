@@ -273,6 +273,7 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
   const closeSavingListContainerModal = () => {
     setActiveModal(null)
   };
+  
 
   
   return (
@@ -335,12 +336,15 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
               <td></td>
             </tr>
             {/* 총 저금액 시작*/}
-              <div
+              <div className='savingList'
                 onClick={()=>{
                   openModal(3);
                   setOpenmodal(true);
                 }}
-                style={{cursor: "pointer"}}
+                style={{
+                  cursor: "pointer"
+
+                }}
                 
               >
                 <tr className='tb-subtitle-totalresult'>

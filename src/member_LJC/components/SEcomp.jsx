@@ -103,7 +103,7 @@ export default function SEcomp() {
                 date: `${year}-${month}-${day}`
             };
             });
-            console.log("date도 나옴>?",dataList)
+            // console.log("date도 나옴>?",dataList)
             return dataList;
     }
 
@@ -150,7 +150,7 @@ export default function SEcomp() {
         
         let date = new Date();
         date.setMonth(monthCalendar?monthCalendar:date.getMonth())
-        console.log("gg", monthCalendar)
+        // console.log("섹션스토리지", monthCalendar)
         let  firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 

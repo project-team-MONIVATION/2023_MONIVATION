@@ -113,22 +113,22 @@ export default function SavingListContainerUpdate({closeSavingListContainerModal
                         <div className='content_container'
                             
                         >
-                        <button 
-                            className='close_btn'
-                            onClick={handleClose}
-                            style={{
-                                marginTop: '25px',
-                                marginRight: '25px',
-                            }}
-                        >
-                            X
-                        </button>
-                            <SavingList 
-                                setAlltmp ={setAlltmp}
-                                alltmp = {alltmp}
-                                setModifyCompOpen = {setModifyCompOpen}
+                            <button 
+                                className='close_btn'
+                                onClick={handleClose}
+                                style={{
+                                    marginTop: '25px',
+                                    marginRight: '25px',
+                                }}
+                            >
+                                X
+                            </button>
+                                <SavingList 
+                                    setAlltmp ={setAlltmp}
+                                    alltmp = {alltmp}
+                                    setModifyCompOpen = {setModifyCompOpen}
 
-                            />
+                                />
                         </div>
                     </div>
                     <div>

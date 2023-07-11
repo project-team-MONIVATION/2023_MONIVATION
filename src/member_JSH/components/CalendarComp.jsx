@@ -193,6 +193,7 @@ export default function CalendarComp({ onMonthChange }) {
     const handleActiveStartDateChange = ({ activeStartDate }) => {
       setSelectedMonth(activeStartDate.getMonth()+1);
       setSelectedYear(activeStartDate.getFullYear());
+      dispatch(Month_Calender(activeStartDate.getMonth()));
     };
 
 

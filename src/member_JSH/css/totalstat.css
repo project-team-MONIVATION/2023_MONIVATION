@@ -68,3 +68,10 @@
 #total-stat-wrap .tb-saving:hover{
     background-color: #ffc559;
 }
+#total-stat-wrap .savingList{
+    transition: 0.3s;
+}
+#total-stat-wrap .savingList:hover {
+    box-shadow: 0 0 5px 3px rgba(0,0,0,0.2);
+    transition: 0.3s;
+} 
