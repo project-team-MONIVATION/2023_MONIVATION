@@ -174,7 +174,7 @@ export default function TargetAmountInputComp({setModalIsOpen}) {
                     
                     </div>
                     <div className='input_title'>
-                        <p>너가 사고싶은거</p>
+                        <p>제목</p>
                         <div className='input_box'>
                             <input
                                 className='input_price'
@@ -187,7 +187,7 @@ export default function TargetAmountInputComp({setModalIsOpen}) {
                     </div>
         
                     <div className='price'>
-                        <p>너가 사고싶은거의 금액</p>
+                        <p>금액</p>
                         <div className='input_box'>
                             <input 
                                 className='input_price'

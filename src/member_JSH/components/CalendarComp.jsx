@@ -195,6 +195,7 @@ export default function CalendarComp({ onMonthChange }) {
       setSelectedDay(activeStartDate.getDate());
       setSelectedMonth(activeStartDate.getMonth()+1);
       setSelectedYear(activeStartDate.getFullYear());
+      dispatch(Month_Calender(activeStartDate.getMonth()));
     };
 
 
