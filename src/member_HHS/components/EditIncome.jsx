@@ -12,6 +12,7 @@ import { SelectDate } from '../../member_PCH/features/IconInModal';
 import moment from 'moment';
 
 import Moneyedit from '../styleComponent/DateDetail/Moneyedit';
+import CloseBtnEdit from '../styleComponent/DateDetail/CloseBtnEdit';
 
 
 export default function EditIncome({ category, price, memo, closeSubModal, id, handleDataUpdate }) {  
@@ -183,13 +184,13 @@ export default function EditIncome({ category, price, memo, closeSubModal, id, h
                 {
                   showCal && (
                     <div className='input_date'>
-                      <button
+                      <CloseBtnEdit
                         type = "button"
                         onClick = { () => setShowCal(false) }
                         className='close_btn'
                       >
                         X
-                      </button>
+                      </CloseBtnEdit>
                       <Calendar
                         formatDay={(locale, date) => moment(date).format('D')}
                         value = { date }

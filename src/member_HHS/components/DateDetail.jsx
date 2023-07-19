@@ -46,6 +46,8 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     const [selectedInstallmentId, setSelectedInstallmentId] = useState('');
     const [docid, setDocid] = useState('');
 
+    const [selectedPayment, setSelectedPayment] = useState('');
+
     
     const [incomeRepeatList, setIncomeRepeatList] = useState([]); // 고정수입 반복
     const [selectedIncomeRepeatListId, setSelectedIncomeRepeatListId] = useState('');
@@ -91,12 +93,13 @@ export default function DateDetail({ closeModal2, selectedDate }) {
     }
 
     // 고정지출 수정 모달창
-    const openEditExpenseRepeatModal = (category, price, memo, id, expenseRepeatListId ) => {
+    const openEditExpenseRepeatModal = (category, price, memo, id, expenseRepeatListId, payment ) => {
       setSelectedCategory(category);
       setSelectedPrice(price);
       setSelectedMemo(memo);
       setSelectedId(id);
       setSelectedExpenseRepeatListId(expenseRepeatListId); // installmentId 값을 설정합니다.
+      setSelectedPayment(payment); // payment 값을 업데이트합니다.
       setEditExpenseRepeatOpen(true);
     }
 
@@ -177,6 +180,9 @@ export default function DateDetail({ closeModal2, selectedDate }) {
       getInstallments();
       getIncomeRepeatList();
       getExpenseRepeatList();
+
+      // 지출 수정 모달창에서 선택한 payment 값을 초기화
+      setSelectedPayment('');
     }, []);
 
     // 업데이트된 데이터를 가져오는 함수
@@ -486,7 +492,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
 
 
                           {/* 고정지출 작성해볼게요 */}
-                        <MoneyList active = {activeAccordion === 2}>
+                          <MoneyList active = {activeAccordion === 2}>
                           { filteredExpenseRepeat.map((item, i) => {
                             console.log(filteredExpenseRepeat);
                             // 해당 ExpenseRepeat에 매칭되는 Expense_repeat_list 문서 찾기
@@ -496,11 +502,12 @@ export default function DateDetail({ closeModal2, selectedDate }) {
                             
                             // matchingExpenseRepeatList 따라서 문서 id를 전달하거나, 해당 문서를 출력
                             const expenseRepeatListId = matchingExpenseRepeatList?.id;
+                            const payment = matchingExpenseRepeatList?.payment; // payment 필드 값 가져오기
                             
                             return (
                               <div 
                                 key = {i}
-                                onClick = { () => openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id, expenseRepeatListId ) }
+                                onClick = { () => openEditExpenseRepeatModal( item.category, item.price, item.memo, item.id, expenseRepeatListId, payment ) }
                                 style={{ 
                                 display: "flex",
                                 justifyContent: "space-between",
@@ -516,6 +523,7 @@ export default function DateDetail({ closeModal2, selectedDate }) {
                             );
                           }) }
                         </MoneyList>
+
 
 
 
@@ -636,10 +644,11 @@ export default function DateDetail({ closeModal2, selectedDate }) {
               handleDataUpdate = { handleDataUpdate }
               docid = { docid }
               expenseRepeatListId = { selectedExpenseRepeatListId } // money_expense_repeat_list 컬렉션의 문서 ID 전달
+              payment={selectedPayment} // selectedPayment 값을 EditExpenseRepeat 컴포넌트로 전달합니다.
 
             />
           )}
         </div>
-      </DateDetailBox>
+    </DateDetailBox>
   )
 }

@@ -11,13 +11,11 @@ import EditForm from '../styleComponent/DateDetail/EditForm';
 import CloseBtn from '../styleComponent/DateDetail/CloseBtn';
 import { SelectDate } from '../../member_PCH/features/IconInModal';
 import moment from 'moment';
-
-import Moneyedit from '../styleComponent/DateDetail/Moneyedit';
-
+import CloseBtnEdit from '../styleComponent/DateDetail/CloseBtnEdit';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-
+import Moneyedit from '../styleComponent/DateDetail/Moneyedit';
 
 
 export default function EditExpense({ category, price, memo, closeSubModal, installmentId, id, handleDataUpdate }) {
@@ -30,6 +28,12 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
     const [editMemo, setEditMemo] = useState(memo);
     // 캘린더 모달 state
     const [showCal, setShowCal] = useState(false); // 날짜 입력하는 캘린더 모달 state
+
+
+    const [paymentSelect, setPaymentSelect] = useState(false);
+    const [installmentSelect, setInstallmentSelect] = useState(false);
+    
+    const num = [3, 6, 9, 12]; // 필요한 값들을 포함한 배열
 
 
     /** 파이어스토어에 업데이트 넘겨줌 */
@@ -134,17 +138,30 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
       }
     };
 
-    // 결제수단 옵션 생성
-    let paymentOptions = [];
-    if (payment === "카드") {
-      paymentOptions = [{ label: "카드", value: "카드" }];
-    } else {
-      paymentOptions = [
-        { label: "현금", value: "현금" },
-        { label: "카드", value: "카드" },
-        { label: "이체", value: "이체" },
-      ];
-    }
+    // // 결제수단 옵션 생성
+    // let paymentOptions = [];
+    // if (payment === "카드") {
+    //   paymentOptions = [{ label: "카드", value: "카드" }];
+    // } else {
+    //   paymentOptions = [
+    //     { label: "현금", value: "현금" },
+    //     { label: "카드", value: "카드" },
+    //     { label: "이체", value: "이체" },
+    //   ];
+    // }
+// 결제수단 옵션 생성
+let paymentOptions = [];
+if (payment === "카드" && installment !== "일시불") {
+  paymentOptions = [{ label: "카드", value: "카드" }];
+} else {
+  paymentOptions = [
+    { label: "현금", value: "현금" },
+    { label: "카드", value: "카드" },
+    { label: "이체", value: "이체" },
+  ];
+}
+
+
 
     useEffect(() => {
       // 컴포넌트가 처음 실행될 때 실행되는 로직
@@ -171,15 +188,31 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
     };  
     
     // 수정 버튼 클릭 시 확인 대화상자 표시
+    // const handleClickUpdate = () => {
+    //   const confirmed = window.confirm("수정 하시겠습니까?");
+    //   if (confirmed) {
+    //     handleDataUpdate();
+    //   }
+    // };
+
     const handleClickUpdate = () => {
-      const confirmed = window.confirm("수정 하시겠습니까?");
-      if (confirmed) {
-        handleDataUpdate();
+      if (payment === "카드" && installment !== "일시불") {
+        alert("할부는 삭제만 가능합니다");
+      } else {
+        const confirmed = window.confirm("수정 하시겠습니까?");
+        if (confirmed) {
+          handleDataUpdate();
+        }
       }
     };
+    
+
+
 
     // 해당 데이터 삭제
     const deleteMoney = async () => {
+      const confirmed = window.confirm("삭제하시겠습니까?");
+      if (confirmed) {
       if(installmentId != null) {
         // "money_expense" 컬렉션에서 "docid" 필드가 "installmentId"와 일치하는 문서를 찾기 위한 쿼리 생성
         const querySnapshot = await getDocs(query(collection(db, "money_expense"), where("docid", "==", installmentId)));
@@ -197,6 +230,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
         
       handleDataUpdate();
       closeSubModal();
+    }
     };
 
 
@@ -207,6 +241,15 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
     };
 
     
+    const onClickPaymentSelect = () => {
+      setPaymentSelect(prev => !prev);
+    };
+    
+    const onClickInstallmentSelect = () => {
+      setInstallmentSelect(prev => !prev);
+    };
+    
+
     return (
       <EditForm>
         <CloseBtn
@@ -217,15 +260,12 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
         </CloseBtn>
 
         <div style={{
-          marginTop:"40px",
             marginRight:"190px",
-            marginBottom: "50px",
             width: "150px",
             height: "50px",
             backgroundColor: "#735BF3",
             border: "0",
             borderRadius: "50px",
-
         }}>
           <h3 style={{  
             color: "#FFFFFF",
@@ -253,13 +293,13 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
                 {
                   showCal && (
                     <div className='input_date'>
-                      <button
+                      <CloseBtnEdit
                         type = "button"
                         onClick = { () => setShowCal(false) }
                         className='close_btn'
                       >
                         X
-                      </button>
+                      </CloseBtnEdit>
                       <Calendar
                         formatDay={(locale, date) => moment(date).format('D')}
                         value = { date }
@@ -289,58 +329,71 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
 
 
 
-          <div>
 
-            <p>결제수단</p>
-            <div className='input'>
-            <select
-              value = { payment }
-              onChange = { updatePayment }
-              disabled = { payment === "카드" && installment !== "일시불" }
-              style={{
-                boxSizing: "border-box",
-                width: "350px",
-                height: "45px",
-                padding: "0 15px",
-                backgroundColor:" #D9D9D9",
-                border: "0",
-                borderRadius: "15px",
-                fontSize: "16px",
-                marginBottom:"14px",
-                transition: "all 0.1s ease",
 
-              }}  
+            <div className='payment'>
+  <p>결제수단</p>
+  <div className='input'>
+    <div className='input_payment'>
+      <div
+        className={
+          'select_box' +
+          (paymentSelect ? ' active' : '') +
+          (payment === "카드" ? ' card' : '')
+        }
+      >
+        <button type='button' onClick={onClickPaymentSelect}>
+          {payment ? payment : "필수선택"}
+          <FontAwesomeIcon
+            icon={faChevronDown}
+            className='icon_chevron'
+            style={{
+              transform: paymentSelect ? "scaleY(-1)" : "",
+              top: "16px",
+              right: "20px"
+            }}
+          />
+        </button>
+        <ul className='option_list'>
+          {paymentOptions.map(option => (
+            <li
+              className='option_item'
+              onClick={() => {
+                setPayment(option.value);
+                setPaymentSelect((prev) => !prev);
+                setInstallmentSelect(false);
+              }}
+              key={option.value}
             >
-              <option style={{borderRadius: "15px",}} value = "현금">현금</option>
-              <option value = "카드">카드</option>
-              <option value = "이체">이체</option>
-            </select>
+              {option.label}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    {payment && payment === "카드" && (
+      <div className='input_installment'>
+        <div
+          className={
+            'select_box' +
+            (installmentSelect ? ' active' : '')
+          }
+        >
+          <button type='button'>
+            <p>
+              {installment}
+              
+            </p>
+          </button>
 
-            {payment === "카드" && installment === "일시불" && (
-              <div>
-                <select
-                  className = "installment"
-                  name = "installment"
-                  onChange = { onInputInstallment }
-                  value = { installment }
-                  style={{
-                    boxSizing: "border-box",
-                    width: "350px",
-                    height: "45px",
-                    padding: "0 15px",
-                    backgroundColor:" #D9D9D9",
-                    border: "0",
-                    borderRadius: "15px",
-                    fontSize: "16px",
-                    marginBottom:"14px",
-                  }}  
-                >
-                  <option value = "일시불">일시불</option>
-                </select>
-              </div>
-            )}
-          </div>
-          </div>
+
+            
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+
 
 
 
@@ -357,7 +410,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               selectedCategory ={selectedCategory}
 
             >
-              ☕ 카페
+              카페
             </CategoryBtn>
             <CategoryBtn
               name = "일반지출"
@@ -367,7 +420,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               selectedCategory ={selectedCategory}
 
             >
-              🍜 외식
+              외식
             </CategoryBtn>
             <CategoryBtn
               name = "일반지출"
@@ -377,7 +430,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               selectedCategory ={selectedCategory}
 
             >
-              🍻 음주
+              음주
             </CategoryBtn>
             <CategoryBtn
               name = "일반지출"
@@ -387,7 +440,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               selectedCategory ={selectedCategory}
 
             >
-              🛒 식료/잡화
+              식료/잡화
             </CategoryBtn>
             <CategoryBtn
               name = "일반지출"
@@ -397,7 +450,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               selectedCategory ={selectedCategory}
 
             >
-              🚉 교통
+              교통
             </CategoryBtn>
             <CategoryBtn
               name = "일반지출"
@@ -407,7 +460,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               selectedCategory ={selectedCategory}
 
             >
-              🚗 차량
+              차량
             </CategoryBtn>
             <CategoryBtn
               name = "일반지출"
@@ -417,7 +470,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               selectedCategory ={selectedCategory}
 
             >
-              🛍 쇼핑
+              쇼핑
             </CategoryBtn>
             <CategoryBtn
               name = "일반지출"
@@ -427,7 +480,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               selectedCategory ={selectedCategory}
 
             >
-              🎨 문화생활
+              문화생활
             </CategoryBtn>
             <CategoryBtn
               name = "일반지출"
@@ -437,7 +490,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               selectedCategory ={selectedCategory}
 
             >
-              🩹 경조사
+              경조사
             </CategoryBtn>
             <CategoryBtn
               name = "일반지출"
@@ -447,7 +500,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               selectedCategory ={selectedCategory}
 
             >
-              🤧 의료
+              의료
             </CategoryBtn>
             <CategoryBtn
               name = "일반지출"
@@ -457,7 +510,7 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
               selectedCategory ={selectedCategory}
 
             >
-              💡 기타
+              기타
             </CategoryBtn>
           </div>
           </div>
@@ -477,44 +530,25 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
             </div>
           </div>
 
-          <div style={{display:"flex"}}>
+
+
+          <Moneyedit>
             <input 
               type = "submit" 
               value = "수정" 
               onClick = { handleClickUpdate }
               disabled = { !date || !editPrice || !selectedCategory || !(payment !== "카드" || (payment === "카드" && installment === "일시불")) }
-              style = { { display: isEditable ? 'block' : 'none' ,
-            
-              
-                marginRight: "10px",
-                backgroundColor:   "  rgb(115, 91, 243)",
-                border: "none",
-                borderRadius: "50px",
-                width:" 150px",
-                height: "50px",
-                color: "#fff",
-                fontSize: "23px",
-                fontFamily: 'Cafe24Ssurround'}}
-              
+
             />
 
             <button
               type = "button"
               onClick = { deleteMoney }
-              style={{
-                marginRight: "10px",
-                backgroundColor:   "  rgb(115, 91, 243)",
-                border: "none",
-                borderRadius: "50px",
-                width:" 150px",
-                height: "50px",
-                color: "#fff",
-                fontSize: "23px",
-                fontFamily: 'Cafe24Ssurround'}}
+
             >
               삭제
             </button>
-          </div>
+          </Moneyedit>
 
 
         </form>

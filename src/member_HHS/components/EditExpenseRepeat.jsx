@@ -17,33 +17,32 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import Moneyedit from '../styleComponent/DateDetail/Moneyedit';
 
 
-export default function EditExpenseRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate, expenseRepeatListId }) {
+export default function EditExpenseRepeat({ category, price, memo, closeSubModal, id, handleDataUpdate, expenseRepeatListId, payment }) {
     // form의 입력 값 state
     const [date, setDate] = useState(new Date());
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
-    const [cycle, setCycle] = useState("매일");
     const [editPrice, setEditPrice] = useState(price);
-    const [payment, setPayment] = useState("현금");
+    const [editPayment, setEditPayment] = useState(payment);
     const [installment, setInstallment] = useState();
     const [selectedCategory, setSelectedCategory] = useState(category);
     const [editMemo, setEditMemo] = useState(memo);
 
-    // 캘린더 모달 state
-    const [showCal, setShowCal] = useState(false); // 날짜 입력하는 캘린더 모달 state
-    const [showPeriod, setShowPeriod] = useState(false); // 기간 입력하는 모달 state
-
-    // 반복주기 입력하는 커스텀 select state
-    const [cycleSelect, setCycleSelect] = useState(false);
-
     // 결제수단 입력하는 커스텀 select state
     const [paymentSelect, setPaymentSelect] = useState(false);
 
-    // 결제수단 입력하는 커스텀 select on/off
-    const onClickPaymentSelect = () => {
-      setPaymentSelect((prev)=>!prev);
-    }
+    // // 결제수단 입력하는 커스텀 select on/off
+    // const onClickPaymentSelect = () => {
+    //   setPaymentSelect((prev)=>!prev);
+    // }
+// 결제수단 입력하는 커스텀 select on/off
+const onClickPaymentSelect = (value) => {
+  setEditPayment(value);
+  // setPaymentSelect((prev) => !prev);
+  setPaymentSelect(false); // 선택한 값을 업데이트하고 select 박스를 닫습니다.
 
+};
+    
 
 
  /** 업데이트 */
@@ -59,7 +58,6 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
     await updateDoc(expenseRepeatRef, {
       date: date,
       price: editPrice,
-      cycle: cycle,
       category: selectedCategory,
       memo: editMemo,
     });
@@ -75,9 +73,9 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
         // money_expense_repeat_list 컬렉션의 해당 문서를 업데이트합니다.
         await updateDoc(expenseRepeatListDoc.ref, {
         price: editPrice,
-        cycle: cycle,
         category: selectedCategory,
         memo: editMemo,
+        payment: editPayment,
       });
     });
   }
@@ -96,13 +94,12 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
       if (expenseRepeatSnap.exists()) {
         const expenseRepeatData = expenseRepeatSnap.data();
           setSelectedCategory(expenseRepeatData.category);
-          setCycle(expenseRepeatData.cycle);
           setDate(expenseRepeatData.date.toDate());
           setStartDate(expenseRepeatData.startDate.toDate());
           setEndDate(expenseRepeatData.endDate.toDate());
           setEditMemo(expenseRepeatData.memo);
           setEditPrice(expenseRepeatData.price);
-          setPayment(expenseRepeatData.payment);
+          setEditPayment(expenseRepeatData.payment);
           setInstallment(expenseRepeatData.installment);
           console.log(setDate);
         }
@@ -112,36 +109,7 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
     }, [id]);
 
 
-    /** 캘린더 모달 관리 */
-    // 날짜 입력하는 캘린더 모달 on
-    const onClickCal = (e) => {
-      e.preventDefault();
-      setShowCal(true);
-    };
-
-    // 날짜 입력하는 캘린더 모달에서 날짜 클릭 시 date 값 입력
-    const onClickDate = (newDate) => {
-      setDate(newDate);
-      setShowCal(false);
-    };
-
-    // 기간 입력하는 모달 on
-    const onClickPeriod = (e) => {
-      e.preventDefault();
-      setShowPeriod(true);
-    };
-
-    // endDate 값 입력
-    const onClickEndDate = (newDate) => {
-      setEndDate(newDate);
-    };
-
-    // 반복주기 입력하는 커스텀 select on/off
-    const onClickCycleSelect = () => {
-      setCycleSelect((prev)=>!prev);
-    }
-
-    // 캘린더 모달에서 입력한 값을 form에 보여주기 위한 변환 함수
+  /** 변환 함수 */
     const changeDate = (newDate) => {
       const YYYY = String(newDate.getFullYear());
       const MM = String(newDate.getMonth()+1).padStart(2,"0");
@@ -158,20 +126,33 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
     }
     
 
-    // 반복주기 업데이트
-    const updateCycle = (e) => {
-      setCycle(e.target.value);
-    }
 
     // 카테고리 업데이트
     const updateCategory = (e) => {
       setSelectedCategory(e.target.value);
     };
 
-    // 결제수단 업데이트
-    const updatePayment = (e) => {
-      setPayment(e.target.value);
-    }
+    // // 결제수단 업데이트
+    // const updatePayment = (e) => {
+    //   setEditPayment(e.target.value);
+    // }
+
+// 결제수단 업데이트
+// const updatePayment = (value) => {
+//   setEditPayment(value);
+// };
+// // 결제수단 업데이트
+// const updatePayment = (value) => {
+//   setEditPayment(value);
+// };
+// 결제수단 업데이트
+const updatePayment = (value) => {
+  setEditPayment(value);
+  setPaymentSelect(false); // 선택한 값을 업데이트하고 select 박스를 닫습니다.
+
+};
+
+
 
     // 메모 업데이트
     const updateMemo = (e) => {
@@ -266,29 +247,6 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
               <p>지출예정일</p>
               <div className='input_box'>
                 <span>{ date && changeDate(date) }</span>
-                <button onClick = { onClickCal }>
-                  <SelectDate showCal={showCal}/>
-                </button>
-              </div>
-              <div className='date_modal'>
-                {
-                  showCal && (
-                    <div className='input_date'>
-                      <CloseBtn
-                        type = "button"
-                        onClick = { () => setShowCal(false) }
-                      >
-                        X
-                      </CloseBtn>
-                      <Calendar
-                        formatDay={(locale, date) => moment(date).format('D')}
-                        value = { date }
-                        onChange = { onClickDate }
-                        className='modal_calendar'
-                      />
-                    </div>
-                  )
-                }
               </div>
             </div>
 
@@ -297,38 +255,9 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
               <div className='input_box'>
                 <span>
                   { date && changeDate(date) } ~
-                  { endDate ? changeDate(endDate) : "0000-00-00" } {cycle}
+                  { endDate ? changeDate(endDate) : "0000-00-00" }
                 </span>
-                <button onClick = { onClickPeriod }>
-                  <SelectPeriod showPeriod={showPeriod}/>
-                </button>
               </div>
-              <div className='period_modal'>
-                {
-                  showPeriod && (
-                    <div className='input_period'>
-                      <CloseBtn
-                        type = "button"
-                        onClick = { () => { setShowPeriod(false) } }
-                      >
-                        X
-                      </CloseBtn>                      
-                    <div className='flex'>
-                      <div className='input_endDate'>
-                        <p>종료일</p>
-                        <Calendar 
-                          formatDay = { (locale, date) => moment(date).format('D') }
-                          onChange = { onClickEndDate } 
-                          value = { endDate } 
-                          minDate = { date }
-                          className='modal_calendar period'
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )
-              }
-            </div>
             </div>
 
             <div className='price'>
@@ -356,9 +285,14 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
               >
                 <button
                   type='button'
-                  onClick={onClickPaymentSelect}
+                  // onClick={onClickPaymentSelect}
+                  onClick={() => setPaymentSelect((prev) => !prev)}
+
                 >
-                  {payment ? payment : "필수선택"}
+                    {/* {payment ? payment : "필수선택"} */}
+                    {/* {editPayment ? editPayment : "필수선택"} */}
+                    {editPayment ? editPayment : payment ? payment : "필수선택"}
+                    
                   <FontAwesomeIcon 
                     icon={faChevronDown} 
                     className='icon_chevron'
@@ -374,29 +308,25 @@ export default function EditExpenseRepeat({ category, price, memo, closeSubModal
                 >
                   <li
                     className='option_item'
-                    onClick={()=>{
-                      setPayment('현금')
-                      setPaymentSelect((prev)=>!prev)
-                    }}
+                    onClick={() => updatePayment("현금")}
+
                   >현금</li>
                   <li
                     className='option_item'
-                    onClick={()=>{
-                      setPayment('카드')
-                      setPaymentSelect((prev)=>!prev)
-                    }}
+                    onClick={() => updatePayment("카드")}
+
                   >카드</li>
                   <li
                     className='option_item'
-                    onClick={()=>{
-                      setPayment('이체')
-                      setPaymentSelect((prev)=>!prev)
-                    }}
+                    onClick={() => updatePayment("이체")}
+
                   >이체</li>
                 </ul>
               </div>
               </div>
             </div>
+
+
 
             <div className='category'>
               <p>카테고리</p>
