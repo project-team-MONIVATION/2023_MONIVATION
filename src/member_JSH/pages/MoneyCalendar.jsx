@@ -187,6 +187,7 @@ export default function MoneyCalendar() {
                 {
                     activeModal === 1 && (
                         <Modal 
+                          id='calendar_modal'
                           isOpen={modalIsOpen}
                           style={{
                             overlay: {
@@ -205,13 +206,17 @@ export default function MoneyCalendar() {
                               left: '50%',
                               transform: 'translate(-50%, -50%)',
                               borderRadius: '50px',
-                              border: 0
+                              border: 0,
+                              overflow: "hidden",
                             }
                           }}
                         >
-                          <div>
-                              <h3>추가</h3>
-                              <button onClick={()=>setModalIsOpen(false)}>취소</button>
+                          <div className='content_container'>
+                              <button 
+                                className='close_btn'
+                                onClick={()=>setModalIsOpen(false)}>
+                                X
+                              </button>
                               <TargetAmountInputComp setModalIsOpen={setModalIsOpen}/>
                           </div>
                         </Modal>
@@ -231,6 +236,7 @@ export default function MoneyCalendar() {
                 {
                     activeModal === 2 && (
                         <Modal 
+                        id='calendar_modal'
                           isOpen={modalIsOpen}
                           style={{
                             overlay: {
@@ -249,13 +255,19 @@ export default function MoneyCalendar() {
                               left: '50%',
                               transform: 'translate(-50%, -50%)',
                               borderRadius: '50px',
-                              border: 0
+                              border: 0,
+                              overflow: "hidden",
+                              
+
                             }
                           }}
                         >
-                        <div>
-                            <h3>목표금액 수정,리스트 모달창</h3>
-                            <button onClick={()=>setModalIsOpen(false)}>취소</button>
+                        <div className='content_container'>
+                            <button 
+                              className='close_btn'
+                              onClick={()=>setModalIsOpen(false)}>
+                                X
+                            </button>
                             <TargetAmonutListComp setModalIsOpen={setModalIsOpen}/>
                         </div>
                         </Modal>

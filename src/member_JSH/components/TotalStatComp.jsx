@@ -8,19 +8,21 @@ import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, query, where, T
 import {db} from '../../database/firebase'
 import Modal from 'react-modal';
 import '../css/totalstat.css';
-
+import ModalWrap from '../../member_HHS/styleComponent/DateDetail/ModalWrap';
+import SavingListContainer from '../../member_LJC/components/SavingListContainer';
+import SavingListContainerUpdate from '../../member_LJC/components/SavingListContainerUpdate';
 
 export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2, isModalOpen2, selectedDay}) {
   
   // 저금 리스트 모달창
   const navigate = useNavigate();
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
+  const [openmodal , setOpenmodal] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
-    const openModal = (modalId) => {
+
+  const openModal = (modalId) => {
       setActiveModal(modalId);
-    };
+  };
 
   const user = useSelector((state) => state.user.user);
 
@@ -312,6 +314,13 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
       console.log("실패했습니다", error);
     }
   }
+
+  // 모달을 닫기 위한 이벤트 핸들러 함수
+  const closeSavingListContainerModal = () => {
+    setActiveModal(null)
+  };
+  
+
   
   return (
     <div id='total-stat-wrap'>
@@ -373,12 +382,16 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
               <td></td>
             </tr>
             {/* 총 저금액 시작*/}
-              <div
+              <div className='savingList'
                 onClick={()=>{
-                  setModalIsOpen(true);
                   openModal(3);
+                  setOpenmodal(true);
                 }}
-                style={{cursor: "pointer"}}
+                style={{
+                  cursor: "pointer"
+
+                }}
+                
               >
                 <tr className='tb-subtitle-totalresult'>
                   <td>현재 총 저금액</td>
@@ -387,41 +400,18 @@ export default function TotalStatComp({selectedYear, selectedMonth, modalIsOpen2
                 style={{backgroundColor:'#F4E8AE', textAlign:'right'}}>
                   <td>{savingList}원</td>
                 </tr>
+              
               </div>
               {activeModal === 3 && (
-                <Modal
-                  id='calendar_modal'
-                  isOpen={modalIsOpen}
-                  style={{
-                    overlay: {
-                      position: 'fixed',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundColor: 'rgba(0, 0, 0, 0.75)'
-                    },
-                    content: {
-                      boxSizing: 'border-box',
-                      width: '580px',
-                      height: '790px',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      borderRadius: '50px',
-                      border: 0
-                    }
-                  }}
-                >
-                  <div className='content_container'>
-                  <button 
-                    className='close_btn'
-                    onClick={()=>setModalIsOpen(false)}>
-                    x
-                  </button>
-                  <SavingList setModalIsOpen={setModalIsOpen}/>
+                <ModalWrap>
+                  <div>
+                  <SavingListContainerUpdate
+                    closeSavingListContainerModal = {closeSavingListContainerModal}
+                    openmodal = {openmodal}
+                  />
                   </div>
-                </Modal>
+                </ModalWrap>
+                
               )}
           {/* 총 저금액 끝 */}
           </tbody>

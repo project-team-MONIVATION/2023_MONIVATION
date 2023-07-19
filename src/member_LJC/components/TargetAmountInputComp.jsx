@@ -5,6 +5,10 @@ import { addDoc, collection, Timestamp, } from 'firebase/firestore';
 
 import {db} from '../../database/firebase'
 
+import { SelectDatem, SelectPeriod } from '../../member_PCH/features/IconInModal';
+
+import '../css/targetAmountinputcss.css'
+
 export default function TargetAmountInputComp({setModalIsOpen}) {
     const [value, onChange] = useState(new Date());
     const user = useSelector((state) => state.user.user);
@@ -19,6 +23,9 @@ export default function TargetAmountInputComp({setModalIsOpen}) {
     const [title, setTitle] = useState('');
     // 금액
     const [amount, setAmount] = useState('');
+
+    // 열기 닫기
+    const [showPeriod, setShowPeriod] = useState(false);
 
     // 달력 열기 접기 //
         // (기간)시작날짜
@@ -98,41 +105,62 @@ export default function TargetAmountInputComp({setModalIsOpen}) {
     }
     
     return (
-        <div>
+        <div id ='targetinput_container'
+            className='content'>
+            <h1 className='title'>목표금액</h1>
             <form
-            onSubmit={addDocData}
+                id='input_form'
+                onSubmit={addDocData}
             >
-                <h2>너가 사고싶은거</h2>
-                    <div>
-                        <input
-                            type='text'
-                            required
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
-                        />
-                    </div>
-        <br />
-
-                <h2>너가 사고싶은거의 금액</h2>
-                    <div>
-                        <input 
-                            required
-                            onInput={handleHyphen} 
-                            type="text"
-                            onChange={e => setAmount(e.target.value)}
-                        />
-                    </div>
-        <br />        
-                <h2>언제까지 돈 모을꺼야</h2>
-                {startday}~{endday}
-                {/* 시작일 */}
-                <button
-                    onClick={() => {setCheck2((e) => !e);}}
-                    type='button'
-                >
-                <p style={{ color: ischeck2 ? "#BB363F" : "#000" }}>시작일</p>
-                </button>
+                <div className='input_content'>
+                    
                 
+                    <div className='period'>
+                        <p>기간</p>
+                        <div className='input_box'>
+                            <span>{startday}~{endday}</span>
+                            <button
+                                onClick={() => {setShowPeriod((e) => !e);}}
+                                type='button'
+                            >
+                                <SelectPeriod showPeriod={showPeriod}/>
+                            </button>
+                        </div>
+
+                        <div className='period_modal'>
+                        {/* 종료일 */}
+                            {showPeriod && (
+                                <div className='input_period'>
+                                    <button 
+                                        type='button' 
+                                        onClick={()=>{setShowPeriod(false)}}
+                                        className='close_btn'
+                                        >
+                                            X
+                                    </button>
+                                    <div className='flex_targetinput'>
+                                        <div className='input_endDate_targetinput'>
+                                            <p>종료일</p>
+                                            <Calendar 
+                                                onChange={onChange} 
+                                                value={value}
+                                                onClickDay={(value, event) => {endperiod(value); setCheck3(false);}}
+                                                minDate={mindate}
+                                                className='modal_calendar_targetinput period_targetinput'
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        
+                        {/* 시작일 */}
+                        {/* <button
+                            onClick={() => {setCheck2((e) => !e);}}
+                            type='button'
+                        >
+                        <p style={{ color: ischeck2 ? "#BB363F" : "#000" }}>시작일</p>
+                        </button>
                         {ischeck2 && (
                             <div className='modal-cal'>
                                 <Calendar 
@@ -142,27 +170,38 @@ export default function TargetAmountInputComp({setModalIsOpen}) {
                                     
                                 />
                             </div>
-                        )}
+                        )} */}
+                    
+                    </div>
+                    <div className='input_title'>
+                        <p>제목</p>
+                        <div className='input_box'>
+                            <input
+                                className='input_price'
+                                type='text'
+                                required
+                                value={title}
+                                onChange={e => setTitle(e.target.value)}
+                            />
+                        </div>
+                    </div>
+        
+                    <div className='price'>
+                        <p>금액</p>
+                        <div className='input_box'>
+                            <input 
+                                className='input_price'
+                                required
+                                onInput={handleHyphen} 
+                                type="text"
+                                onChange={e => setAmount(e.target.value)}
+                            />
+                            <span className='won'>₩</span>
+                        </div>
+                    </div>
 
-                        {/* 종료일 */}
-                        <button
-                            onClick={() => {setCheck3((e) => !e);} }
-                            type='button'
-                        >
-                        <p style={{ color: ischeck3 ? "#BB363F" : "#000" }}>종료일</p>
-                        </button>
-                        {ischeck3 && (
-                            <div className='modal-cal'>
-                                <Calendar 
-                                    onChange={onChange} 
-                                    value={value}
-                                    onClickDay={(value, event) => {endperiod(value); setCheck3(false);}}
-                                    minDate={mindate}
-                                />
-                            </div>
-                        )}
-                        <br />
-                        <button type='sumbit' >추가</button>
+                </div>
+                <button className='submit_btn' type='sumbit' >추가</button>
             </form>
         </div>
     )

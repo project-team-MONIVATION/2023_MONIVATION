@@ -5,7 +5,12 @@ import { useNavigate } from 'react-router-dom';
 
 import {db} from '../../database/firebase'
 
+// 폰트어썸
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faGear, faCoins, faDeleteLeft, faX } from "@fortawesome/free-solid-svg-icons";
+
 import TargetAmountModifyComp from './TargetAmountModifyComp';
+import '../css/saving.css'
 
 export default function TargetAmonutListComp() {
     const navigate = useNavigate();
@@ -57,31 +62,63 @@ export default function TargetAmonutListComp() {
 
     return (
         <div>
-            <div>
+            <div id='savinglist_container' 
+                className='content'>
+                <h1 className='title'>목표금액내역</h1>
+                <div className='list_container scrollbar'>
                 {taList.map((tmp) =>
                     <div 
-                        key={tmp.id}
-                        style={{border: "2px solid red", width: "25%"}}
-                    >
-                        <button
-                            onClick={()=> (deleteData(tmp.id))}
-                        >
-                            삭제
-                        </button>
+                        key={tmp.id} 
+                        className='tooltip-link'
+                        data-tooltip={tmp.memo}
+                    >   
+                        <div className='top_wrap'>
+                            <div className='top_title'>
+                                {tmp.title}
+                            </div>
+                            <div className='top_btns'>
+                                <button
+                                    onClick={()=> (deleteData(tmp.id))}
+                                    className='top_listdelete'
+                                >
+                                    <FontAwesomeIcon icon={faX} size="sm"/>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className='middle_wrap'>
+                            <div className='middle_period'>
+                                <div className='period_content'>
+                                    기간
+                                </div>
+                                <div className='period_date'>
+                                    {tmp.startday}~{tmp.endday}
+                                </div>
+                            </div>
+                        
+
+                            <div className='middle_total_price'>
+                                <div className='total_letter'>
+                                    TargetAmount
+                                </div>
+                                <div className='total_price'>
+                                    {tmp.amount}₩
+                                </div>
+                            </div>
+                        </div>
+                        
+
+
 
                         {/* list수정 컴포넌트 */}
-                        <TargetAmountModifyComp
+                        {/* <TargetAmountModifyComp
                             tmp={tmp}
                             getTargetAmountData={getTargetAmountData}
-                        />
-
-                        <h2>{tmp.title}</h2>
-                        <p>{tmp.startday}~{tmp.endday}</p>
-                        <p>{tmp.amount}</p>
-                        <br />
+                        /> */}
                     </div>
                 )}
             </div>
+        </div>
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState, MouseEvent} from 'react'
+import React, {useEffect, useRef, useState, } from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,21 +6,22 @@ import { Link } from 'react-router-dom'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale,PointElement,LineElement, 
         Title, Filler,    } from 'chart.js';
         
-import { Line, Pie, getElementAtEvent } from 'react-chartjs-2'; // 원하는 차트 종류를 가져오세요.
+import { Line, Pie, } from 'react-chartjs-2'; // 원하는 차트 종류를 가져오세요.
 
 import Calendar from 'react-calendar'
 
 
-import { Timestamp, collection, deleteDoc, doc, getDocs, query, where, } from 'firebase/firestore';
+import { collection, getDocs, query, where, } from 'firebase/firestore';
 import {db} from '../../database/firebase'
 
 import '../css/moneyChart.css'
 import '../css/select.css';
 
-import SelcectComp from '../components/SelcectComp';
 import { SelectDate } from '../../member_PCH/features/IconInModal';
 
-
+// 폰트어썸
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 
 ChartJS.register(
@@ -90,8 +91,6 @@ export default function MoneyChartExpense() {
     const [value, onChange] = useState(new Date());
     const user = useSelector((state) => state.user.user);
 
-    // 오늘 날짜
-    const  today = new Date
     // 최솟값 날짜
     const [mindate, setMindate] = useState('');
     
@@ -126,8 +125,6 @@ export default function MoneyChartExpense() {
     //pie 그래프 금액
     const [ priceList, setPriceList] = useState();
 
-    // line 그래프 카테고리
-    const [linecategoryList, setLinecategoryList] = useState();
     // line 그래프 금액
     const [linepriceList, setLinepriceList] = useState();
     // line 그래프 날짜
@@ -136,15 +133,6 @@ export default function MoneyChartExpense() {
     // 기간에 맞는 들어있는
         // 총 금액
         const [ptotal, setPtotal]=  useState();
-
-        // 날짜
-        const [pdate, setPdate] = useState();
-
-        // 카테고리
-        const [pcategory, setPcategory] =useState();
-
-        // 각 카테고리의 금액
-        const [pamount, setPamount] = useState();
 
     const [list, setList] = useState([]);
 
@@ -394,36 +382,9 @@ export default function MoneyChartExpense() {
                 lineallprice.push(price);
                 dates.push(date);
             }
-            
             setLinepriceList(lineallprice);
             setLinedateList(dates);
 
-            // 달이 다른게 있으면 월 라인으로 넣기
-
-
-
-
-            // 년이 다른게 있으면 년 라인으로 넣기
-            // 날짜 카테고리 가격 넣기
-            // let Pprice = [];
-            // let Pdates= [];
-            // let Pcategory= [];
-
-            // for(let i=0; i<ctpicdtList.length; i++){
-                
-            //     let price = ctpicdtList[i].price;
-            //     let date = ctpicdtList[i].date;
-            //     let category = ctpicdtList[i].category;
-                
-                
-            //     Pprice.push(price);
-            //     Pdates.push(date);
-            //     Pcategory.push(category)
-            // }
-            
-            // setPdate(Pdates);
-            // setPcategory(Pcategory);
-            // setPamount(Pprice);
 
             console.log("실행확인",s,e)
         } 
@@ -456,7 +417,6 @@ export default function MoneyChartExpense() {
     },[nowmonthfirstday,nowmonthlastday])
     
     useEffect(() => {    
-        chageDateOneMonth(); 
         if(user){
             let date = new Date();
             getexpensechoiseData(new Date(date.getFullYear(), date.getMonth(), 1), new Date(date.getFullYear(), date.getMonth() + 1, 0));
@@ -481,35 +441,7 @@ export default function MoneyChartExpense() {
         return valueDate;
     }
     
-    // 1개월 누르면 그 현재 월 첫일 ~ 현재 월 마직막 일
-    const chageDateOneMonth = () => {
-        var date = new Date();
-        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-        setNowmonthfirstday(firstDay);
-        setNowmonthlastday(lastDay);
-    }
-
-    // 2개월 누르면 그 2개월 전 첫일 ~ 현재 월 마지막 일
-    const chageDateTwoMonth = () => {
-        var date = new Date();
-        var firstDay = new Date(date.getFullYear(), date.getMonth() - 1, 1);
-        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-
-        setNowmonthfirstday(firstDay);
-        setNowmonthlastday(lastDay);
-    }
-
-    // 3개월 누르면 그 3개월 전 첫일 ~ 현재 월 마지막 일
-    const chageDateTreeMonth = () => {
-        var date = new Date();
-        var firstDay = new Date(date.getFullYear(), date.getMonth() - 2, 1);
-        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-
-        setNowmonthfirstday(firstDay);
-        setNowmonthlastday(lastDay);
-    }
 
     // 클릭한 일 input value에 담기
     const handleTest = () => {
@@ -539,7 +471,6 @@ export default function MoneyChartExpense() {
                 fill: true,
                 label: '금액',
                 data: linepriceList,
-                // .map((data) => data*100),
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
             },
@@ -577,34 +508,20 @@ export default function MoneyChartExpense() {
         ],
     };
 
-    // select에 필요한것들
-    const [selectedOption, setSelectedOption] = useState('1개월');
-    const [isActive, setIsActive] = useState(false);
-
-    const handleSelect = (item) => {
-        
-        setSelectedOption(item);
-        setIsActive(false);
-    };
-
-    const toggleOptions = () => {
-        setIsActive(!isActive);
-    };
-
-
+    
     return (
         <div id='layout' className='pull_container'>
                 <div id='moneychart_page' className='container_wrap'>
                     <div className='wrap'>
                         <div className='income_expenditure_btn'>
                             <button
-                                className='btnin hover2'
+                                className='btnex hover2'
                             >
                                 <Link to="/calendar/chart/income">수입</Link>
                             </button>
 
                             <button
-                                className='btnex hover3'
+                                className='btnin hover3'
                             >
                                 <Link to="/calendar/chart/expense">지출</Link>
                             </button>
@@ -674,65 +591,15 @@ export default function MoneyChartExpense() {
                                 </div>
                             </div>
             
-                            {/* 일별  */}
-                            {/* <button 
-                                onClick={() => {setCheck((e) => !e);}}
-                            >
-                                {isCheck ? "일" : "일"}
-                            </button>
-                            {isCheck && (
-                                <div className='modal-cal modal-cal2'>
-                                    <Calendar 
-                                        onChange={onChange} 
-                                        value={value}
-                                        onClickDay={(value, event) => {setOnClickDay(value); setCheck(false);}}
-                                    />
-                                </div>
-                            )} */}
-                            <div className='selectBoxWrap'>
-                                <div className={`selectBox2 ${isActive ? 'active' : ''}`}>
-                                    <button className="label" onClick={toggleOptions}>
-                                        {selectedOption}
-                                    </button>
-                                    {/* 1개월 */}
-                                    <ul className={`optionList ${isActive ? 'active' : ''}`}>
-                                        <li onClick={() => {chageDateOneMonth(); handleSelect('1개월')}}
-                                            className="optionItem"
-                                        >
-                                            1개월
-                                        </li>
-                                        
-                                        {/* 2개월 */}
-                                        <li className="optionItem"
-                                            onClick={() => {chageDateTwoMonth(); handleSelect('2개월')}}
-                                        >
-                                            2개월
-                                        </li>
-                                        
-                                        {/* 3개월 */}
-                                        <li className="optionItem"
-                                            onClick={() => {chageDateTreeMonth(); handleSelect('3개월')}}
-                                        >
-                                            3개월
-                                        </li>
-                                    </ul>
-                                    
-                                </div>
-                            </div>
+
                         </div>
                         
                         <div className='check_button '
-                        onClick={() => getexpensechoiseData()}>
-                            {/* <button
-                                className='searchbutton btnPush btnBlueGreen'
-                                
-                                > */}
-                                <img src="/img/search.png" 
-                                    className='imgindex'
-                                    style={{width:"30px", height:"30px" }}
-                                    
-                                />
-                            {/* </button> */}
+                            onClick={() => getexpensechoiseData()}
+                        >
+                            <div className='icon'>
+                                <FontAwesomeIcon icon={faMagnifyingGlass} size="xl"/>
+                            </div>
                         </div>
                     </div>            
                     <div className='charts_wrap'>
@@ -756,7 +623,6 @@ export default function MoneyChartExpense() {
                                     className='piegp'
                                     data={Linedata} 
                                     options={lineoptions} 
-                                    // style={{ position: "relative", height: "40vh", width:"100vh" }}
                                     width="300%" height="100%"
                                 />
                             </div>
@@ -793,10 +659,6 @@ export default function MoneyChartExpense() {
                     </div>                        
                                     
                 </div>
-
-
-
-
 
         </div>
     )
