@@ -36,6 +36,10 @@ export default function EditExpense({ category, price, memo, closeSubModal, inst
     const num = [3, 6, 9, 12]; // 필요한 값들을 포함한 배열
 
 
+    const [showEditButton, setShowEditButton] = useState(true);
+
+
+
     /** 파이어스토어에 업데이트 넘겨줌 */
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -163,22 +167,68 @@ if (payment === "카드" && installment !== "일시불") {
 
 
 
+    // useEffect(() => {
+    //   // 컴포넌트가 처음 실행될 때 실행되는 로직
+
+    //   // 선택된 결제수단과 할부 정보를 가져옴
+    //   const selectedPaymentMethod = payment;
+    //   const selectedInstallment = installment;
+
+    //   // 조건에 따라 옵션을 설정
+    //   if (selectedPaymentMethod === '카드' && selectedInstallment !== '일시불') {
+    //     setPayment("카드");
+    //     setInstallment("");
+    //   } else {
+    //     setPayment("카드");
+    //     setInstallment("일시불");
+    //   }
+    // }, []);
+
+
+
+    // useEffect(() => {
+    //   // 컴포넌트가 처음 실행될 때 실행되는 로직
+    
+    //   // 선택된 결제수단과 할부 정보를 가져옴
+    //   const selectedPaymentMethod = payment;
+    //   const selectedInstallment = installment;
+    
+    //   // 조건에 따라 옵션을 설정
+    //   if (selectedPaymentMethod === '카드' && selectedInstallment === '일시불') {
+    //     setPayment("카드");
+    //     setInstallment("일시불");
+    //     setShowEditButton(true); // "수정" 버튼을 보여줌
+    //   } else {
+    //     setPayment(selectedPaymentMethod); // 선택된 결제수단 설정
+    //     setInstallment(selectedInstallment); // 선택된 할부 정보 설정
+    //     setShowEditButton(false); // "수정" 버튼을 숨김
+    //   }
+    // }, [payment, installment]);
+    
+    
+
+
     useEffect(() => {
       // 컴포넌트가 처음 실행될 때 실행되는 로직
-
+    
       // 선택된 결제수단과 할부 정보를 가져옴
       const selectedPaymentMethod = payment;
       const selectedInstallment = installment;
-
+    
       // 조건에 따라 옵션을 설정
       if (selectedPaymentMethod === '카드' && selectedInstallment !== '일시불') {
         setPayment("카드");
         setInstallment("");
+        setShowEditButton(false); // "수정" 버튼을 숨김
       } else {
         setPayment("카드");
         setInstallment("일시불");
+        setShowEditButton(true); // "수정" 버튼을 보여줌
       }
     }, []);
+    
+
+
 
 
     /** 모달창 닫기/수정/삭제 */
@@ -188,23 +238,23 @@ if (payment === "카드" && installment !== "일시불") {
     };  
     
     // 수정 버튼 클릭 시 확인 대화상자 표시
-    // const handleClickUpdate = () => {
-    //   const confirmed = window.confirm("수정 하시겠습니까?");
-    //   if (confirmed) {
-    //     handleDataUpdate();
-    //   }
-    // };
-
     const handleClickUpdate = () => {
-      if (payment === "카드" && installment !== "일시불") {
-        alert("할부는 삭제만 가능합니다");
-      } else {
-        const confirmed = window.confirm("수정 하시겠습니까?");
-        if (confirmed) {
-          handleDataUpdate();
-        }
+      const confirmed = window.confirm("수정 하시겠습니까?");
+      if (confirmed) {
+        handleDataUpdate();
       }
     };
+
+    // const handleClickUpdate = () => {
+    //   if (payment === "카드" && installment !== "일시불") {
+    //     alert("할부는 삭제만 가능합니다");
+    //   } else {
+    //     const confirmed = window.confirm("수정 하시겠습니까?");
+    //     if (confirmed) {
+    //       handleDataUpdate();
+    //     }
+    //   }
+    // };
     
 
 
@@ -532,23 +582,34 @@ if (payment === "카드" && installment !== "일시불") {
 
 
 
-          <Moneyedit>
-            <input 
-              type = "submit" 
-              value = "수정" 
-              onClick = { handleClickUpdate }
-              disabled = { !date || !editPrice || !selectedCategory || !(payment !== "카드" || (payment === "카드" && installment === "일시불")) }
+           {/* Moneyedit 컴포넌트를 렌더링하는 위치에 showEditButton 상태 변수를 이용한 조건부 렌더링을 적용합니다. */}
+           <Moneyedit>
+              {payment === '카드' && installment !== '일시불' ? (
+                <button
+                  type="button"
+                  onClick={deleteMoney}
+                >
+                  삭제
+                </button>
+              ) : (
+                <>
+                  <input 
+                    type="submit" 
+                    value="수정" 
+                    onClick={handleClickUpdate}
+                    disabled={!date || !editPrice || !selectedCategory || !(payment !== "카드" || (payment === "카드" && installment === "일시불"))}
+                  />
+                  <button
+                    type="button"
+                    onClick={deleteMoney}
+                  >
+                    삭제
+                  </button>
+                </>
+              )}
+            </Moneyedit>
+              
 
-            />
-
-            <button
-              type = "button"
-              onClick = { deleteMoney }
-
-            >
-              삭제
-            </button>
-          </Moneyedit>
 
 
         </form>
