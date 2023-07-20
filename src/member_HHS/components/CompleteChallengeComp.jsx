@@ -122,7 +122,7 @@ export default function ActiveChallengeComp() {
         ))}
         <div>
           <ChallengeAdd>
-            <Link to="http://localhost:3000/2023_MONIVATION/challenge">
+            <Link to = {"/challenge"}>
               <p>+</p>
               <p><span>챌린지</span>를<br />추가해보세요!</p>
             </Link>
