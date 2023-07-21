@@ -188,6 +188,20 @@
     position: absolute;
     top: 20px;
     left: 20px;
+    display: flex;
+    gap: 20px;
+    margin-left: 20px;
+}
+
+.badges img {
+    width: 95px;
+    height: 95px;
+    object-fit: cover;
+}
+
+.badges p {
+    font-size: 0.8rem;
+    margin-top: 8px;
 }
 
 

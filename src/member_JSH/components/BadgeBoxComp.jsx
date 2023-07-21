@@ -30,7 +30,8 @@ export default function BadgeBoxComp() {
           involve : doc.data().involve,
           challengeName : doc.data().challengeName,
           uid : doc.data().uid,
-          badge : doc.data().badge
+          badge : doc.data().badge,
+          badgeName : doc.data().badgeName
         }
         // 완료된 챌린지 필터링
         if(data.uid == user.uid && data.done == true) {
@@ -44,21 +45,26 @@ export default function BadgeBoxComp() {
     getChallenge();
   },[user])
   return (
-    <div>
-        <h2 className='div-short'>내가 모은 뱃지</h2>
-        <div className='badges-box'>
-          <ul className='badges'>
-            {challengeBoard.length > 0 &&
-                    challengeBoard.map((board) => (
-                      <div style={{display:"flex", flexDirection: "column"}}>
-                        <div style={{width : "100px", display : "inline-block", height : "100px",
-                        backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
-                        backgroundImage : `url(/img/${board.badge ? board.badge : null})`}}></div>
-                        <p style={{fontSize:"0.8rem"}}>식사는 거를 수 없지</p> {/* 임의로 넣어준 텍스트 */}
-                      </div>
-              ))}
-          </ul>
-        </div>
+  <div>
+    <h2 className='div-short'>내가 모은 뱃지</h2>
+    <div className='badges-box'>
+      <ul className='badges'>
+        {challengeBoard.length > 0 &&
+          challengeBoard.map((board) => (
+            <div key={board.id}>
+              <img
+                src={`img/${board.badge ? board.badge : 'default-badge.png'}`}
+                alt="뱃지"
+                onError={(e) => {
+                  console.log('이미지 로드 오류:', e);
+                }}
+              />
+              <p>{board.badgeName}</p>
+            </div>
+          ))}
+      </ul>
     </div>
+  </div>
+
   )
 }
