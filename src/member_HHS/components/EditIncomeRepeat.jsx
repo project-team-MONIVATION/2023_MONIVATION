@@ -158,7 +158,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
       >
         X
       </CloseBtn>
-      <div style={{
+      <div style = {{
         marginTop:"30px",
         marginRight:"190px",
         marginBottom: "30px",
@@ -168,7 +168,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
         border: "0",
         borderRadius: "50px",
       }}>
-        <h3 style={{  
+        <h3 style = {{  
           color: "#FFFFFF",
           fontFamily: 'Cafe24Ssurround',
           fontSize: "23px",
@@ -177,47 +177,47 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
           고정수입
         </h3>
       </div>
-      <form className='edit_form' onSubmit = { handleSubmit }>
-        <div className='input_content'>
-          <div className='date'>
+      <form className = 'edit_form' onSubmit = { handleSubmit }>
+        <div className = 'input_content'>
+          <div className = 'date'>
             <p>수입예정일</p>
-            <div className='input_box'>
+            <div className = 'input_box'>
               <span>{ date && changeDate(date) }</span>
             </div>
-            <div className='date_modal'>                
+            <div className = 'date_modal'>                
             </div>
           </div>
-          <div className='period'>
+          <div className = 'period'>
             <p>기간</p>
-            <div className='input_box'>
+            <div className = 'input_box'>
               <span >
                 { startDate && changeDate(startDate)} ~ 
                 { endDate ? changeDate(endDate) : '0000-00-00' }
               </span>
             </div>
           </div>
-          <div className='price'>
+          <div className = 'price'>
             <p>금액</p>
-            <div className='input_box'>
+            <div className = 'input_box'>
               <input
-                className='input_price'
+                className = 'input_price'
                 type = "text"
                 value = { handleHyphen(editPrice) }
                 onChange = { updatePrice }
                 required
               />
-              <span className='won'>₩</span>
+              <span className = 'won'>₩</span>
             </div>
           </div>
-          <div className='category'>
+          <div className = 'category'>
             <p>카테고리</p>
-            <div className='category_box'>
+            <div className = 'category_box'>
               <CategoryBtn
                 name = "반복수입"
                 value = "월급"
                 checked = { selectedCategory === "월급" }
                 onChange = { updateCategory }
-                selectedCategory ={selectedCategory}
+                selectedCategory = { selectedCategory }
               >
                 월급
               </CategoryBtn>
@@ -226,7 +226,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
                 value = "용돈"
                 checked = { selectedCategory === "용돈" }
                 onChange = { updateCategory }
-                selectedCategory ={selectedCategory}
+                selectedCategory = { selectedCategory }
               >
                 용돈
               </CategoryBtn>
@@ -235,7 +235,7 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
                 value = "지원금"
                 checked = { selectedCategory === "지원금" }
                 onChange = { updateCategory }
-                selectedCategory ={selectedCategory}
+                selectedCategory = { selectedCategory }
               >
                 지원금
               </CategoryBtn>
@@ -244,13 +244,13 @@ export default function EditIncomeRepeat({ category, price, memo, closeSubModal,
                 value = "기타"
                 checked = { selectedCategory === "기타" }
                 onChange = { updateCategory }
-                selectedCategory ={selectedCategory}
+                selectedCategory = { selectedCategory }
               >
                 기타
               </CategoryBtn>
             </div>
           </div>
-          <div className='memo'>
+          <div className = 'memo'>
             <p>메모</p>
             <div>
               <textarea

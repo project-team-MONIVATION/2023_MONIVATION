@@ -90,34 +90,35 @@ export default function ActiveChallengeComp() {
   
   return (
 
-      <Slider {...settings}>
+    <Slider {...settings}>
 
-      {activeChallenge.map((item, index) => (
-          <div key={index} style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gridGap: "16px" }}>
-            <ChallengeList>
-            {item.img.startsWith("http") ? ( // 이미지 URL인 경우
-                <img src={item.img} alt={item.challengeName} />
-              ) : ( // 파일 경로/이름인 경우
-                <img src={require(`../../assets/img/${item.img}`)} alt={item.challengeName} />
-              )}              <p># {item.challengeName}</p>
-              <div>
-                <ChallengeProgressBar
-                  num={getDateDiffNOWpercent(new Date(), item.startDate, item.endDate)}
-                  maxNum={getDateDiffHDpercent(item.endDate, item.startDate)}
-                />
-              </div>
-            </ChallengeList>
+    { activeChallenge.map((item, index) => (
+      <div key = { index } style = {{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gridGap: "16px" }}>
+        <ChallengeList>
+          { item.img.startsWith("http") ? ( // 이미지 URL인 경우
+            <img src = { item.img } alt = { item.challengeName } />
+            ) : ( // 파일 경로/이름인 경우
+            <img src = { require(`../../assets/img/${item.img}`)} alt = { item.challengeName } />
+          )}
+          <p># { item.challengeName }</p>
+          <div>
+            <ChallengeProgressBar
+              num = { getDateDiffNOWpercent(new Date(), item.startDate, item.endDate) }
+              maxNum = { getDateDiffHDpercent(item.endDate, item.startDate) }
+            />
           </div>
-        ))}
-        <div>
-          <ChallengeAdd>
-            <Link to = {"/challenge"}>
-              <p>+</p>
-              <p><span>챌린지</span>를<br />추가해보세요!</p>
-            </Link>         
-          </ChallengeAdd>
-        </div>
+        </ChallengeList>
+      </div>
+    ))}
+    <div>
+      <ChallengeAdd>
+        <Link to = { "/challenge" }>
+          <p>+</p>
+          <p><span>챌린지</span>를<br />추가해보세요!</p>
+        </Link>         
+      </ChallengeAdd>
+    </div>
         
-      </Slider>
+    </Slider>
   )
 }
