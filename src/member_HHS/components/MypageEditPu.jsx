@@ -330,7 +330,8 @@ export default function MypageEditPu() {
                 <p>회원구분 <span>개인회원</span></p>
                 <p>가입일 <span>{ startDate.getFullYear() }.{ startDate.getMonth() + 1 }.{ startDate.getDate() }</span></p>
               </div>
-              <div className = 'delete' onClick={ deleteBtn }>
+              <div className = 'delete' onClick={ deleteBtn }
+                style={{cursor:"pointer"}}>
                 회원탈퇴
               </div>
             </div>
